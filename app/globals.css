@@ -534,10 +534,28 @@ select:focus {
   color: var(--ui-txt);
 }
 
+.icono-opcion__fondo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+}
+
 .icono-opcion img {
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   object-fit: contain;
+}
+
+/* Se funde con el fondo de la paleta del post. */
+.icono-opcion[data-flojo] {
+  border-color: #6b5220;
+}
+
+.icono-opcion[data-flojo] span:last-child {
+  color: #e5a94b;
 }
 
 .icono-opcion span {

@@ -100,6 +100,42 @@ async function guardarManifiesto(indice) {
   return lista.length;
 }
 
+/**
+ * El color dominante de la parte opaca del ícono.
+ *
+ * Los íconos de Thiings traen color fijo y no se recolorean, así que sobre un
+ * fondo de su mismo tono se funden. Guardarlo aquí es lo que le permite al
+ * buscador avisar antes, en vez de que la falla aparezca en el PNG exportado.
+ *
+ * Solo cuentan los píxeles bien opacos: el halo semitransparente del borde
+ * mezcla con el fondo y arrastraría el promedio hacia el gris.
+ */
+async function colorDominante(png) {
+  const { data, info } = await sharp(png)
+    .resize(64, 64, { fit: 'inside' })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const cubos = new Map();
+  for (let i = 0; i < data.length; i += info.channels) {
+    if (data[i + 3] < 200) continue;
+    // Se agrupa en cubos de 32 para que un degradado no se reparta en mil
+    // colores distintos y ninguno gane.
+    const clave = `${data[i] >> 5},${data[i + 1] >> 5},${data[i + 2] >> 5}`;
+    const c = cubos.get(clave) ?? { n: 0, r: 0, g: 0, b: 0 };
+    c.n++; c.r += data[i]; c.g += data[i + 1]; c.b += data[i + 2];
+    cubos.set(clave, c);
+  }
+
+  let mejor = null;
+  for (const c of cubos.values()) if (!mejor || c.n > mejor.n) mejor = c;
+  if (!mejor) return null;
+
+  const hex = (v) => Math.round(v / mejor.n).toString(16).padStart(2, '0');
+  return `#${hex(mejor.r)}${hex(mejor.g)}${hex(mejor.b)}`.toUpperCase();
+}
+
 /** Recorta el transparente y recentra con aire. Devuelve el PNG a 1024 px. */
 async function normalizar(origen) {
   const recortado = await sharp(origen).trim({ threshold: 1 }).toBuffer();
@@ -143,6 +179,7 @@ async function procesar(origen, indice, sinonimos) {
     slug,
     nombre: nombre.replace(/\.png$/i, ''),
     etiquetas: etiquetar(slug, nombre.replace(/\.png$/i, ''), sinonimos),
+    color: await colorDominante(png),
     w: TAM,
     h: TAM,
     bytes: size,

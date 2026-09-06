@@ -59,19 +59,26 @@ const ctx = await navegador.newContext({
 });
 const page = await ctx.newPage();
 
-/** Abre una página del visor a 1:1 y devuelve los slides del mazo pedido. */
-async function abrirVisor(ruta, mazo = 0) {
+/**
+ * Abre una página del visor a 1:1 y devuelve los slides de un mazo.
+ *
+ * El mazo se pide por nombre y no por posición: /plantilla pinta ahora un mazo
+ * por paleta, y una comparación que dependa del orden empieza a medir otra cosa
+ * el día que se agregue una paleta nueva.
+ */
+async function abrirVisor(ruta, mazo) {
   await page.goto(`${base}${ruta}`, { waitUntil: 'networkidle', timeout: 120_000 });
   await page.getByRole('button', { name: '100%' }).click();
   await page.addStyleTag({ content: SIN_CROMO });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(400);
-  return page.locator('.mazo').nth(mazo).locator('.slide');
+  const selector = mazo ? `[data-mazo="${mazo}"]` : '.mazo';
+  return page.locator(selector).first().locator('.slide');
 }
 
 // ── 1. el banco de pruebas contra las capturas publicadas ───────────────────
 console.log(`Capturando el banco de pruebas de ${base}/plantilla …`);
-const banco = await abrirVisor('/plantilla', 0);
+const banco = await abrirVisor('/plantilla', 'referencia');
 const nBanco = await banco.count();
 for (let i = 0; i < nBanco; i++) {
   await banco.nth(i).screenshot({ path: join(dirComparar, `${String(i).padStart(2, '0')}.png`) });
@@ -80,7 +87,7 @@ console.log(`  ${nBanco} slides en salidas/comparar/ — ahora: python scripts/m
 
 // ── 2. la exportación contra la vista previa ────────────────────────────────
 console.log(`Capturando la vista previa de ${base}/post/${slug} …`);
-const previa = await abrirVisor(`/post/${slug}`, 0);
+const previa = await abrirVisor(`/post/${slug}`);
 const total = await previa.count();
 const vistas = [];
 for (let i = 0; i < total; i++) {

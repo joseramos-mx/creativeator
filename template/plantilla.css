@@ -44,7 +44,7 @@
   height: var(--alto);
   position: relative;
   overflow: hidden;
-  background: var(--azul);
+  background: var(--fondo);
   color: var(--c-titulo);
   font-family: var(--sans);
   font-variant-ligatures: none;
@@ -212,7 +212,7 @@
 }
 
 /* La palomita se apoya en la primera línea base del punto, no en su caja. */
-.lista__item img {
+.lista__item svg {
   width: var(--b-palomita);
   height: var(--b-palomita);
   margin-top: var(--b-palomita-offset-y);
@@ -245,6 +245,14 @@
   background-position: center;
   margin-top: var(--b-gap-cuerpo-foto);
   flex: 0 0 auto;
+}
+
+/* Los íconos de Thiings traen color fijo. Sobre un fondo de su mismo tono se
+ * funden, y la sombra de la paleta es lo único que los despega sin tocar el
+ * archivo: sigue la silueta, no una caja. */
+.icono,
+.emblema {
+  filter: var(--sombra-icono);
 }
 
 /* El ícono no lleva margen automático: el bloque entero queda centrado. */
@@ -301,7 +309,7 @@
   margin-bottom: var(--b-gap-desliza);
 }
 
-.desliza img {
+.desliza svg {
   width: var(--b-flecha-ancho);
   height: var(--b-flecha-alto);
   display: block;
@@ -337,7 +345,7 @@
   flex: 0 0 auto;
 }
 
-.papel img {
+.papel svg {
   width: 100%;
   height: 100%;
   display: block;

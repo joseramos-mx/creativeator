@@ -1,11 +1,11 @@
 'use client';
 
 import { useRef } from 'react';
-import { PapelRasgado } from '../partes/PapelRasgado';
+import { PapelRasgado, semillaDeTexto } from '../partes/PapelRasgado';
 import { Pie } from '../partes/Pie';
 import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado, renglones } from '../texto';
-import { velo } from '../tokens';
+import type { NombrePaleta } from '../tokens';
 import type { Marca, SlidePortada } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
 import { useReportarAjuste } from '../avisos';
@@ -22,11 +22,13 @@ export function Portada({
   ayudas,
   id,
   indice,
+  paleta,
 }: {
   slide: SlidePortada;
   marca: Marca;
   ayudas?: Ayudas;
   id?: string;
+  paleta?: NombrePaleta;
   /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
   indice?: number;
 }) {
@@ -36,11 +38,11 @@ export function Portada({
   const ov = slide.overrides ?? {};
 
   return (
-    <div id={id} className="slide slide--portada" style={variablesDePlantilla()}>
+    <div id={id} className="slide slide--portada" style={variablesDePlantilla(paleta)}>
       {slide.foto ? (
         <div className="slide__foto" style={{ backgroundImage: `url(${slide.foto})` }} />
       ) : null}
-      <div className="slide__velo" style={{ background: velo.portada }} />
+      <div className="slide__velo" style={{ background: 'var(--velo-portada)' }} />
 
       <div className="area" ref={area} style={desplaza(ov.offsetY)}>
         <h1
@@ -51,7 +53,7 @@ export function Portada({
         >
           {marcado(slide.titulo)}
         </h1>
-        <PapelRasgado src={marca.papel} pregunta={slide.pregunta} />
+        <PapelRasgado pregunta={slide.pregunta} semilla={semillaDeTexto(slide.titulo + slide.pregunta)} />
       </div>
 
       <div className="logo">

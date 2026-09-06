@@ -13,6 +13,7 @@ import {
   nuevoSlide,
   tituloDeTarjeta,
 } from '@/lib/edicion';
+import type { NombrePaleta } from '@/template/tokens';
 import type { Post, Slide } from '@/template/tipos';
 import type { EstadoAjuste } from '@/template/usarAjuste';
 
@@ -22,6 +23,8 @@ type Props = {
   slide: Slide;
   /** Los últimos íconos usados, de content/marca.json. */
   recientes: string[];
+  /** La paleta del post: decide qué íconos se funden con el fondo. */
+  paleta: NombrePaleta;
   onUsarIcono: (slug: string) => void;
   indice: number;
   total: number;
@@ -36,6 +39,7 @@ type Props = {
 export function PanelSlide({
   slide,
   recientes,
+  paleta,
   onUsarIcono,
   indice,
   total,
@@ -80,7 +84,18 @@ export function PanelSlide({
           <button className="boton sm" title="duplicar" onClick={() => setPost((p) => duplicarSlide(p, indice))}>
             ⧉
           </button>
-          <button className="boton sm" title="borrar" onClick={() => setPost((p) => borrarSlide(p, indice))}>
+          <button
+            className="boton sm"
+            title="borrar"
+            onClick={() => {
+              // Con confirmación a propósito: los otros tres botones son
+              // reversibles de un vistazo y este no. Un clic perdido en la
+              // cabecera de la tarjeta llegó a tirar un slide ya publicado.
+              if (confirm(`¿Borrar el slide ${indice}? Esto no se deshace.`)) {
+                setPost((p) => borrarSlide(p, indice));
+              }
+            }}
+          >
             ✕
           </button>
         </span>
@@ -166,6 +181,7 @@ export function PanelSlide({
                   <BuscadorIconos
                     sugerencia={slide.visual.iconoSugerido}
                     recientes={recientes}
+                    paleta={paleta}
                     onElegir={elegirIcono}
                     onCerrar={() => setBuscando(false)}
                   />

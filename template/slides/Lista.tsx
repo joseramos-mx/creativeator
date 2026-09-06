@@ -9,6 +9,7 @@ import { Palomita } from '../partes/Palomita';
 import { Pie } from '../partes/Pie';
 import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado, renglones } from '../texto';
+import type { NombrePaleta } from '../tokens';
 import type { Marca, SlideLista } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
 import { useReportarAjuste } from '../avisos';
@@ -31,6 +32,7 @@ export function Lista({
   ayudas,
   id,
   indice,
+  paleta,
 }: {
   slide: SlideLista;
   marca: Marca;
@@ -38,6 +40,7 @@ export function Lista({
   ultimo: boolean;
   ayudas?: Ayudas;
   id?: string;
+  paleta?: NombrePaleta;
   /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
   indice?: number;
 }) {
@@ -47,7 +50,7 @@ export function Lista({
   const ov = slide.overrides ?? {};
 
   return (
-    <div id={id} className="slide" style={variablesDePlantilla()}>
+    <div id={id} className="slide" style={variablesDePlantilla(paleta)}>
       <Cabecera marca={marca} />
       <Numero numero={numero} />
 
@@ -64,7 +67,7 @@ export function Lista({
         <ul className="lista">
           {slide.puntos.map((punto, i) => (
             <li className="lista__item" key={i}>
-              <Palomita src={marca.palomita} />
+              <Palomita />
               <p data-base-px={ov.cuerpoPx} style={ov.cuerpoPx ? { fontSize: ov.cuerpoPx } : undefined}>
                 {marcado(punto)}
               </p>
@@ -75,7 +78,7 @@ export function Lista({
 
       <FuenteCitada fuente={slide.fuente} />
       <Pie usuario={marca.usuario} />
-      <Desliza flecha={marca.flecha} visible={!ultimo} />
+      <Desliza visible={!ultimo} />
       <AyudasDeAjuste {...ayudas} />
     </div>
   );

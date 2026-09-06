@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Miniatura } from '@/app/_componentes/Miniatura';
-import { leerMarca, listarPosts, marcaDePost } from '@/lib/posts';
+import { leerMarca, listarPosts } from '@/lib/posts';
 
 /**
  * La lista de carruseles. Un post es un JSON en content/posts/: para agregar
@@ -13,7 +13,6 @@ export const dynamic = 'force-dynamic';
 export default async function Inicio() {
   const marca = await leerMarca();
   const posts = await listarPosts();
-  const marcas = await Promise.all(posts.map((p) => marcaDePost(p.slug)));
 
   return (
     <>
@@ -34,10 +33,10 @@ export default async function Inicio() {
           </p>
         ) : (
           <ul className="lista-posts">
-            {posts.map((post, i) => (
+            {posts.map((post) => (
               <li key={post.slug}>
                 <Link href={`/post/${post.slug}`}>
-                  <Miniatura post={post} marca={marcas[i]} />
+                  <Miniatura post={post} marca={marca} />
                   <div>
                     <strong>{post.tema}</strong>
                     <span>

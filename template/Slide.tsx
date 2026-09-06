@@ -5,6 +5,7 @@ import { Cierre } from './slides/Cierre';
 import { Contenido } from './slides/Contenido';
 import { Lista } from './slides/Lista';
 import { Portada } from './slides/Portada';
+import type { NombrePaleta } from './tokens';
 import { numeroDeSlide, type Marca, type Slide as TSlide } from './tipos';
 
 export type PropsSlide = {
@@ -14,6 +15,8 @@ export type PropsSlide = {
   ayudas?: Ayudas;
   /** La ruta /render se lo pone al slide para que Playwright lo capture. */
   id?: string;
+  /** La paleta del post. Sin ella, la del token por defecto. */
+  paleta?: NombrePaleta;
 };
 
 /**
@@ -23,14 +26,16 @@ export type PropsSlide = {
  * aquí solo se elige el componente y se calcula lo que depende de la posición
  * en el carrusel: el número y si lleva flecha de "desliza".
  */
-export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
+export function Slide({ slides, indice, marca, ayudas, id, paleta }: PropsSlide) {
   const slide = slides[indice];
   const numero = numeroDeSlide(slides, indice);
   const ultimo = indice === slides.length - 1;
 
   switch (slide.tipo) {
     case 'portada':
-      return <Portada slide={slide} marca={marca} ayudas={ayudas} id={id} indice={indice} />;
+      return (
+        <Portada slide={slide} marca={marca} ayudas={ayudas} id={id} indice={indice} paleta={paleta} />
+      );
     case 'contenido':
       return (
         <Contenido
@@ -41,6 +46,7 @@ export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
           ayudas={ayudas}
           id={id}
           indice={indice}
+          paleta={paleta}
         />
       );
     case 'lista':
@@ -53,9 +59,10 @@ export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
           ayudas={ayudas}
           id={id}
           indice={indice}
+          paleta={paleta}
         />
       );
     case 'cierre':
-      return <Cierre slide={slide} marca={marca} numero={numero} ayudas={ayudas} id={id} />;
+      return <Cierre slide={slide} marca={marca} numero={numero} ayudas={ayudas} id={id} paleta={paleta} />;
   }
 }

@@ -12,6 +12,7 @@
  * el editor no podría guardar, queremos enterarnos antes de escribirlo a disco.
  */
 import { z } from 'zod';
+import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/template/tokens';
 
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
 const TextoMarcado = z.string();
@@ -105,6 +106,15 @@ export const Post = z.object({
   creado: z.string(),
   /** Filtra la lista y dice qué falta revisar del mes. */
   estado: z.enum(['borrador', 'aprobado', 'publicado']).default('borrador'),
+  /**
+   * La paleta del carrusel. Se valida contra las llaves que existen de verdad
+   * en template/tokens.ts, así que "naraja" falla al leer el archivo y no
+   * cuatro pasos después, mirando el PNG ya exportado.
+   *
+   * Azul cuando el tema no tiene color obvio. Es la respuesta, no un relleno.
+   */
+  paleta: z.enum(NOMBRES_PALETA).default(PALETA_POR_DEFECTO),
+
   /** El texto que va debajo del carrusel en Instagram. Ver content/voz.md. */
   copy: z.string().optional(),
 
@@ -139,9 +149,6 @@ export const Marca = z.object({
   logo: RutaLocal,
   /** Puede ir vacío mientras no exista la foto del cierre. */
   retrato: z.string(),
-  papel: RutaLocal,
-  palomita: RutaLocal,
-  flecha: RutaLocal,
   iconosRecientes: z.array(z.string()).default([]),
 });
 

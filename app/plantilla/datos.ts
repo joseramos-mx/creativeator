@@ -27,6 +27,7 @@ export const limites: Post = {
   tema: 'Casos límite de la plantilla',
   creado: '2026-09-05',
   estado: 'borrador',
+  paleta: 'azul',
   slides: [
     {
       tipo: 'portada',

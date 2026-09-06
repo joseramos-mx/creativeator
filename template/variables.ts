@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { bloque, color, fuente, lienzo, tipo, track } from './tokens';
+import { bloque, color, fuente, lienzo, paletaDe, tipo, track, type NombrePaleta } from './tokens';
 
 /**
  * Puente entre tokens.ts y plantilla.css.
@@ -8,7 +8,8 @@ import { bloque, color, fuente, lienzo, tipo, track } from './tokens';
  * que se inyectan en el elemento .slide. Así `tokens.ts` sigue siendo la única
  * fuente de verdad y aun así el CSS se puede leer y tocar como CSS normal.
  */
-export function variablesDePlantilla(): CSSProperties {
+export function variablesDePlantilla(paleta?: NombrePaleta): CSSProperties {
+  const p = paletaDe(paleta);
   const v: Record<string, string> = {
     '--ancho': `${lienzo.ancho}px`,
     '--alto': `${lienzo.alto}px`,
@@ -17,16 +18,21 @@ export function variablesDePlantilla(): CSSProperties {
     '--area-top': `${lienzo.areaTop}px`,
     '--area-bottom': `${lienzo.areaBottom}px`,
 
-    '--azul': color.azul,
-    '--c-titulo': color.titulo,
-    '--crema': color.crema,
-    '--c-bajada': color.bajada,
-    '--c-cuerpo': color.cuerpo,
-    '--c-chrome': color.chrome,
-    '--papel': color.papel,
-    '--tinta-papel': color.tintaPapel,
+    // De la paleta del post: el fondo y todo lo que se calcula contra él.
+    '--fondo': p.fondo,
+    '--c-titulo': p.titulo,
+    '--crema': p.crema,
+    '--c-bajada': p.bajada,
+    '--c-cuerpo': p.cuerpo,
+    '--c-chrome': p.chrome,
+    '--papel': p.papel,
+    '--tinta-papel': p.tintaPapel,
+    '--check': p.check,
+    '--velo-portada': p.velo,
+    '--sombra-icono': p.sombraIcono,
+
+    // Del cierre, que va sobre el retrato y no depende de la paleta.
     '--tinta-foto': color.tintaSobreFoto,
-    '--verde': color.verde,
     '--teal': color.tealCta,
 
     '--sans': fuente.sans,

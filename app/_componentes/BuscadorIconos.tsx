@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { buscar, crearBuscador, type Icono } from '@/lib/iconos';
+import { SEPARACION_MINIMA, buscar, crearBuscador, separacion, type Icono } from '@/lib/iconos';
+import { paletaDe, type NombrePaleta } from '@/template/tokens';
 
 /**
  * El buscador de íconos: un modal con campo de búsqueda y rejilla de
@@ -23,15 +24,19 @@ function cargarManifiesto() {
 export function BuscadorIconos({
   sugerencia,
   recientes,
+  paleta,
   onElegir,
   onCerrar,
 }: {
   /** Lo que propuso el brief o la IA, para no empezar con la caja vacía. */
   sugerencia?: string;
   recientes: string[];
+  /** La del post: los íconos se marcan contra su fondo, no contra el azul. */
+  paleta: NombrePaleta;
   onElegir: (slug: string) => void;
   onCerrar: () => void;
 }) {
+  const fondo = paletaDe(paleta).fondo;
   const [manifiesto, setManifiesto] = useState<Icono[] | null>(null);
   const [consulta, setConsulta] = useState(sugerencia ?? '');
   const campo = useRef<HTMLInputElement>(null);
@@ -115,15 +120,7 @@ export function BuscadorIconos({
             </p>
             <div className="rejilla-iconos">
               {resultados.map((icono) => (
-                <button
-                  key={icono.slug}
-                  className="icono-opcion"
-                  title={`${icono.nombre}\n${icono.etiquetas.join(' · ')}`}
-                  onClick={() => onElegir(icono.slug)}
-                >
-                  <img src={`/iconos/thumbs/${icono.slug}.png`} alt="" loading="lazy" />
-                  <span>{icono.slug}</span>
-                </button>
+                <Opcion key={icono.slug} icono={icono} fondo={fondo} onElegir={onElegir} />
               ))}
             </div>
             {sinCoincidencias ? (
@@ -132,9 +129,51 @@ export function BuscadorIconos({
                 <code>content/sinonimos.json</code> y vuelve a correr <code>npm run iconos</code>.
               </p>
             ) : null}
+            <p className="pista">
+              Los marcados en ámbar se funden con el fondo de esta paleta. Se pueden usar, pero
+              van a leerse mal en el teléfono.
+            </p>
           </>
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * Una opción de la rejilla, sobre el fondo de la paleta del post.
+ *
+ * La miniatura se pinta encima de ese fondo a propósito: es la única forma de
+ * ver si el ícono se despega antes de elegirlo, y sale gratis.
+ */
+function Opcion({
+  icono,
+  fondo,
+  onElegir,
+}: {
+  icono: Icono;
+  fondo: string;
+  onElegir: (slug: string) => void;
+}) {
+  const sep = separacion(icono, fondo);
+  const flojo = sep !== null && sep < SEPARACION_MINIMA;
+
+  return (
+    <button
+      className="icono-opcion"
+      data-flojo={flojo ? '' : undefined}
+      title={
+        `${icono.nombre}
+${icono.etiquetas.join(' · ')}` +
+        (sep !== null ? `
+separación del fondo: ${Math.round(sep)}` : '')
+      }
+      onClick={() => onElegir(icono.slug)}
+    >
+      <span className="icono-opcion__fondo" style={{ background: fondo }}>
+        <img src={`/iconos/thumbs/${icono.slug}.png`} alt="" loading="lazy" />
+      </span>
+      <span>{icono.slug}</span>
+    </button>
   );
 }

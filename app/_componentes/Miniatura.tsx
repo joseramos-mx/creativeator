@@ -14,7 +14,7 @@ export function Miniatura({ post, marca, ancho = 132 }: { post: Post; marca: Mar
       aria-hidden
     >
       <div style={{ transform: `scale(${zoom})`, width: lienzo.ancho }}>
-        <Slide slides={post.slides} indice={0} marca={marca} />
+        <Slide slides={post.slides} indice={0} marca={marca} paleta={post.paleta} />
       </div>
     </div>
   );

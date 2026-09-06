@@ -1,3 +1,4 @@
+import { PALETA_POR_DEFECTO } from '@/template/tokens';
 import type { Post, Slide } from '@/template/tipos';
 
 /**
@@ -119,6 +120,10 @@ export function leerBrief(texto: string, slugSugerido?: string): ResultadoBrief 
     tema,
     creado: new Date().toISOString().slice(0, 10),
     estado: 'borrador',
+    // El brief no dice de qué color va el post. Azul es la respuesta por
+    // defecto; el redactor de la fase 6 o el editor la cambian si el tema
+    // tiene color obvio.
+    paleta: PALETA_POR_DEFECTO,
     ...(copy ? { copy } : {}),
     ...(meta.pilar ? { pilar: meta.pilar } : {}),
     ...(meta.objetivo ? { objetivo: meta.objetivo } : {}),

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { leerPost, listarSlugs, marcaDePost } from '@/lib/posts';
+import { leerPost, listarSlugs, leerMarca } from '@/lib/posts';
 import { Slide } from '@/template/Slide';
 import { Listo } from './Listo';
 import './render.css';
@@ -31,11 +31,11 @@ export default async function Render({
   const indice = Number(n) - 1;
   if (!Number.isInteger(indice) || indice < 0 || indice >= post.slides.length) notFound();
 
-  const marca = await marcaDePost(slug);
+  const marca = await leerMarca();
 
   return (
     <>
-      <Slide slides={post.slides} indice={indice} marca={marca} id="slide" />
+      <Slide slides={post.slides} indice={indice} marca={marca} paleta={post.paleta} id="slide" />
       <Listo />
     </>
   );

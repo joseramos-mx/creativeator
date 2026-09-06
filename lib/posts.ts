@@ -2,7 +2,6 @@ import 'server-only';
 
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { papelDePost } from '@/template/papel';
 import { Marca, Post, validar, type TMarca, type TPost } from './schema';
 
 /**
@@ -20,16 +19,6 @@ const POSTS = join(CONTENIDO, 'posts');
 export async function leerMarca(): Promise<TMarca> {
   const crudo = await readFile(join(CONTENIDO, 'marca.json'), 'utf8');
   return validar(Marca, JSON.parse(crudo), 'content/marca.json');
-}
-
-/**
- * La marca que le toca a un post concreto. Lo único que cambia es el papel
- * rasgado: cada carrusel se queda siempre con el suyo para que dos seguidos no
- * lleven el mismo rasgado en el feed.
- */
-export async function marcaDePost(slug: string): Promise<TMarca> {
-  const marca = await leerMarca();
-  return { ...marca, papel: papelDePost(slug) };
 }
 
 export async function leerPost(slug: string): Promise<TPost> {

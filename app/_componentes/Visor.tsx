@@ -2,14 +2,18 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { Slide } from '@/template/Slide';
-import { lienzo } from '@/template/tokens';
+import { lienzo, type NombrePaleta } from '@/template/tokens';
 import type { Marca, Post } from '@/template/tipos';
 
 export type MazoVisible = {
+  /** Identificador estable para los scripts de comparación. */
+  id?: string;
   titulo: string;
   nota?: ReactNode;
   post: Post;
   marca: Marca;
+  /** Pisa la paleta del post. Es lo que permite ver el mismo carrusel en todas. */
+  paleta?: NombrePaleta;
   /** Capturas publicadas, una por slide, para el overlay de la tecla R. */
   capturas?: string[];
 };
@@ -89,8 +93,10 @@ export function Visor({
             <h2>{mazo.titulo}</h2>
             {mazo.nota ? <p>{mazo.nota}</p> : null}
             <Mazo
+              id={mazo.id ?? mazo.titulo}
               post={mazo.post}
               marca={mazo.marca}
+              paleta={mazo.paleta ?? mazo.post.paleta}
               zoom={zoom}
               rejilla={rejilla}
               capturas={overlay ? mazo.capturas : undefined}
@@ -104,22 +110,26 @@ export function Visor({
 }
 
 function Mazo({
+  id,
   post,
   marca,
+  paleta,
   zoom,
   rejilla,
   capturas,
   opacidad,
 }: {
+  id: string;
   post: Post;
   marca: Marca;
+  paleta: NombrePaleta;
   zoom: number;
   rejilla: boolean;
   capturas?: string[];
   opacidad?: number;
 }) {
   return (
-    <div className="mazo">
+    <div className="mazo" data-mazo={id}>
       {post.slides.map((slide, i) => (
         <div
           className="marco"
@@ -138,6 +148,7 @@ function Mazo({
               slides={post.slides}
               indice={i}
               marca={marca}
+              paleta={paleta}
               ayudas={{ rejilla, overlay: capturas?.[i], overlayOpacidad: opacidad }}
             />
           </div>

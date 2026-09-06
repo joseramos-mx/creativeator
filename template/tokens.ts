@@ -39,31 +39,128 @@ export const lienzo = {
   areaBottom: 174,
 } as const;
 
+/**
+ * Los íconos de Thiings traen color fijo y no se recolorean, así que sobre un
+ * fondo de su mismo tono se funden: `silencio` cae a ΔE 27 sobre naranja y
+ * `palomita-verde` a 21 sobre verde. La sombra los despega por su silueta, que
+ * es lo único que se puede hacer sin tocar el archivo.
+ */
+const SOMBRA_ICONO =
+  'drop-shadow(0 1px 1px rgba(28,20,12,.45)) drop-shadow(0 10px 22px rgba(28,20,12,.32))';
+
+/**
+ * Los colores que no dependen de la paleta.
+ *
+ * El slide de cierre va sobre el retrato del médico, no sobre el fondo de
+ * color, así que su tinta y su teal son los mismos en todos los carruseles.
+ */
 export const color = {
-  /** Fondo plano de los slides de contenido. Muestreado: #51A2FF (no #51A2FE). */
-  azul: '#51A2FF',
-  /**
-   * Título. La referencia usa dos cremas casi idénticos: #FAF7F2 en los slides
-   * 01, 04 y 05 y #F3EDE1 en el 02 y el cierre. Aquí se sistematiza: el texto
-   * base va en el claro y el énfasis (negrita y serif itálica) en el cálido.
-   */
-  titulo: '#FAF7F2',
-  crema: '#F3EDE1',
-  /** Bajada en negrita. Es azul muy claro, no blanco puro. */
-  bajada: '#EFF6FF',
-  /** Cuerpo, puntos de lista, cabecera y número: todos el mismo tinte. */
-  cuerpo: '#DBEAFE',
-  /** Usuario del pie, fuente citada y "DESLIZA". */
-  chrome: '#FAF7F2',
-  papel: '#F3F1EC',
-  tintaPapel: '#162456',
   /** Cabecera y número del cierre, que van sobre la parte clara del retrato. */
   tintaSobreFoto: '#322018',
   /** Fondo del cierre mientras no haya retrato, y detrás de él si no cubre. */
   fondoCierre: '#D2BB9C',
-  verde: '#22B04B',
   tealCta: '#079980',
 } as const;
+
+/**
+ * La tinta compartida por todas las paletas.
+ *
+ * El crema de los títulos es de la marca, no del tema: se ve igual sobre azul
+ * que sobre naranja. Vive aquí y no dentro de cada paleta justamente para que
+ * ajustarlo una vez lo arregle en las tres.
+ */
+const tinta = {
+  /** Parte ligera del título, y el cromo del pie. */
+  titulo: '#FAF7F2',
+  /** Énfasis: negrita y serif itálica. */
+  crema: '#F3EDE1',
+  chrome: '#FAF7F2',
+  papel: '#F3F1EC',
+} as const;
+
+/**
+ * Las paletas.
+ *
+ * El fondo dejó de ser identidad de marca: lo decide el tema. Sol y calor van
+ * en naranja, plantas y polen en verde, y lo que no tiene color obvio se queda
+ * en azul.
+ *
+ * ── Por qué paletas cerradas y no un hex por post ───────────────────────────
+ * Porque el fondo es lo de menos: lo difícil es lo que va encima. Los tres
+ * fondos tienen la misma luminancia (0.348, la del azul publicado), y por eso
+ * el contraste del título es 2.47:1 en las tres, idéntico. Un hex libre por
+ * post rompería esa relación sin avisar, y el error aparecería en el PNG ya
+ * exportado.
+ *
+ * Lo que sí cambia con el tono es la separación cromática, y ahí cada paleta
+ * trae su propia respuesta: el cuerpo y la bajada son tintes del mismo tono
+ * que el fondo, la tinta del papel es su versión oscura, y la palomita cambia
+ * en la paleta verde, donde el verde sobre verde desaparecería (ΔE 11).
+ *
+ * Agregar una paleta es agregar una entrada aquí. Lo único que hay que
+ * respetar es la luminancia del fondo; `/plantilla` pinta el mismo carrusel en
+ * todas, una al lado de otra, para verlo antes de usarla.
+ */
+export const paletas = {
+  azul: {
+    nombre: 'Azul',
+    cuando: 'Lo que no tiene color obvio: impétigo, dermatitis. Es la respuesta por defecto.',
+    fondo: '#51A2FF',
+    cuerpo: '#DBEAFE',
+    bajada: '#EFF6FF',
+    tintaPapel: '#162456',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(24,60,120,.10) 0%, rgba(48,120,225,.42) 46%, rgba(81,162,255,.92) 78%, #51A2FF 100%)',
+    /**
+     * Sin sombra: es el fondo de todo el archivo publicado y así se ve. Los
+     * íconos que se funden sobre azul —hoy, `informacion`— los caza el aviso
+     * del editor, que es donde se arreglan: cambiando de ícono.
+     */
+    sombraIcono: 'none',
+    ...tinta,
+  },
+
+  naranja: {
+    nombre: 'Naranja',
+    cuando: 'Sol, calor, verano, quemaduras, sudor.',
+    fondo: '#ED842F',
+    cuerpo: '#FBEBDE',
+    bajada: '#FEF6F0',
+    tintaPapel: '#51331B',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(95,57,27,.10) 0%, rgba(189,108,42,.42) 46%, rgba(237,132,47,.92) 78%, #ED842F 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  verde: {
+    nombre: 'Verde',
+    cuando: 'Plantas, polen, alergia estacional, primavera.',
+    fondo: '#48B45D',
+    cuerpo: '#E5F4E8',
+    bajada: '#F4FAF5',
+    tintaPapel: '#28442E',
+    /** Verde oscuro: el de siempre sobre este fondo tendría ΔE 21, invisible. */
+    check: '#0C4B19',
+    velo:
+      'linear-gradient(180deg, rgba(39,69,45,.10) 0%, rgba(69,136,82,.42) 46%, rgba(72,180,93,.92) 78%, #48B45D 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+} as const;
+
+export type NombrePaleta = keyof typeof paletas;
+
+/** Para que Zod valide contra las llaves que existen de verdad. */
+export const NOMBRES_PALETA = Object.keys(paletas) as [NombrePaleta, ...NombrePaleta[]];
+
+export const PALETA_POR_DEFECTO: NombrePaleta = 'azul';
+
+export function paletaDe(nombre: NombrePaleta | undefined) {
+  return paletas[nombre ?? PALETA_POR_DEFECTO] ?? paletas[PALETA_POR_DEFECTO];
+}
 
 /**
  * Dos regímenes de tracking, y nada más. La medición los separa limpiamente:
@@ -188,12 +285,10 @@ export const bloque = {
 } as const;
 
 /**
- * El único degradado del sistema. La portada termina fundida en el azul plano
- * para que empalme con el slide 01; el cierre se hunde en café oscuro.
+ * El velo del cierre. El de la portada vive en cada paleta, porque termina
+ * fundido en su fondo para empalmar con el slide 01: si se quedara quemado en
+ * azul, cambiar de paleta rompería la portada sin que nada avisara.
  */
 export const velo = {
-  portada:
-    'linear-gradient(180deg, rgba(24,60,120,.10) 0%, rgba(48,120,225,.42) 46%, rgba(81,162,255,.92) 78%, #51A2FF 100%)',
-  cierre:
-    'linear-gradient(180deg, rgba(0,0,0,0) 34%, rgba(28,20,12,.72) 62%, #150F0A 92%)',
+  cierre: 'linear-gradient(180deg, rgba(0,0,0,0) 34%, rgba(28,20,12,.72) 62%, #150F0A 92%)',
 } as const;

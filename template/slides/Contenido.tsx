@@ -8,7 +8,7 @@ import { Numero } from '../partes/Numero';
 import { Pie } from '../partes/Pie';
 import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado, renglones } from '../texto';
-import { bloque, lienzo } from '../tokens';
+import { bloque, lienzo, type NombrePaleta } from '../tokens';
 import type { Marca, Overrides, SlideContenido } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
 import { useReportarAjuste } from '../avisos';
@@ -31,6 +31,7 @@ export function Contenido({
   ayudas,
   id,
   indice,
+  paleta,
 }: {
   slide: SlideContenido;
   marca: Marca;
@@ -38,6 +39,7 @@ export function Contenido({
   ultimo: boolean;
   ayudas?: Ayudas;
   id?: string;
+  paleta?: NombrePaleta;
   /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
   indice?: number;
 }) {
@@ -47,7 +49,7 @@ export function Contenido({
   const ov = slide.overrides ?? {};
 
   return (
-    <div id={id} className="slide" style={variablesDePlantilla()}>
+    <div id={id} className="slide" style={variablesDePlantilla(paleta)}>
       <Cabecera marca={marca} />
       <Numero numero={numero} />
 
@@ -105,7 +107,7 @@ export function Contenido({
 
       <FuenteCitada fuente={slide.fuente} />
       <Pie usuario={marca.usuario} />
-      <Desliza flecha={marca.flecha} visible={!ultimo} />
+      <Desliza visible={!ultimo} />
       <AyudasDeAjuste {...ayudas} />
     </div>
   );

@@ -244,6 +244,11 @@ tamaño real; `medir.py` lo compara contra las capturas de `public/referencia/` 
 dice, renglón por renglón, cuántos píxeles se corrió el diseño. Es lo que
 convierte "se ve parecido" en un número.
 
+Esa comparación tiene un **post de control**: el de impétigo, que es de donde
+salieron las capturas, y que se publicó en azul. `medir.py` lo comprueba antes
+de medir nada y se detiene si alguien le cambió la paleta, porque entonces ya no
+estaría midiendo el diseño sino el cambio de color.
+
 **2. ¿El PNG es lo que vi?** El mismo script exporta el carrusel por la ruta real
 de exportación —a escala 1, para que los dos lados midan lo mismo— y lo compara
 píxel a píxel contra la vista previa.
@@ -277,10 +282,48 @@ tocar `app/`, algo se rompió.
 | La cabecera, el pie, la flecha, la palomita, el papel | `template/partes/` |
 | Qué campos acepta un post | `lib/schema.ts` |
 | Tu nombre, ciudad, plataforma de citas, logotipo | `content/marca.json` |
-| El papel rasgado, la palomita y la flecha (dibujos) | `npm run graficos` |
+| El papel rasgado, la palomita y la flecha | `template/partes/` (van dibujados en línea) |
+| El color de fondo y todo lo que va encima | `template/tokens.ts`, en `paletas` |
 
 `tokens.ts` es la única fuente de verdad de los números. `plantilla.css` no tiene
 ni un valor suelto: los lee de ahí a través de `template/variables.ts`.
+
+### Las paletas
+
+El fondo no es identidad de marca: lo decide el tema. En el JSON del post,
+`paleta: "naranja"`, y el esquema lo valida contra las paletas que existen de
+verdad, así que `"naraja"` falla al leer el archivo y no cuatro pasos después,
+mirando el PNG ya exportado.
+
+| Paleta | Cuándo |
+|---|---|
+| `azul` | Lo que no tiene color obvio: impétigo, dermatitis. **Es la respuesta por defecto**, no un relleno. |
+| `naranja` | Sol, calor, verano, quemaduras, sudor. |
+| `verde` | Plantas, polen, alergia estacional, primavera. |
+
+**Por qué paletas cerradas y no un color libre.** Porque el fondo es lo de
+menos: lo difícil es lo que va encima. Los tres fondos tienen la misma
+luminancia, y por eso el contraste del título es 2.47:1 en las tres, idéntico.
+Un hex por post rompería esa relación sin avisar.
+
+Lo que sí cambia con el tono es la separación de color, y ahí cada paleta trae
+su respuesta: el cuerpo y la bajada son tintes de su propio fondo, la tinta del
+papel es su versión oscura, y la palomita cambia en la paleta verde, donde el
+verde de siempre desaparecería.
+
+**Agregar una paleta** es agregar una entrada en `paletas`. Lo único que hay que
+respetar es la luminancia del fondo. `/plantilla` pinta el mismo carrusel en
+todas, una debajo de otra, para revisarla antes de usarla; ese es el trato:
+cada paleta se mira una vez, con contenido de verdad encima, y a partir de ahí
+es una opción segura.
+
+**Los íconos son el límite.** Los de Thiings traen color fijo y no se
+recolorean, así que sobre un fondo de su mismo tono se funden. Dos cosas para
+eso: la ingesta guarda el color dominante de cada uno, y el buscador pinta las
+miniaturas sobre el fondo de la paleta del post y marca en ámbar las que se
+pierden. Además, las paletas cálidas le ponen una sombra a los íconos, que los
+despega por su silueta. La paleta azul no la lleva: es como está publicado el
+archivo entero.
 
 ### El marcado de los títulos
 

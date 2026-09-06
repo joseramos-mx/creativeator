@@ -6,6 +6,7 @@ import { Pie } from '../partes/Pie';
 import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado } from '../texto';
 import { color, velo } from '../tokens';
+import type { NombrePaleta } from '../tokens';
 import type { Marca, SlideCierre } from '../tipos';
 import { variablesDePlantilla } from '../variables';
 
@@ -25,18 +26,20 @@ export function Cierre({
   numero,
   ayudas,
   id,
+  paleta,
 }: {
   slide: SlideCierre;
   marca: Marca;
   numero: string | null;
   ayudas?: Ayudas;
   id?: string;
+  paleta?: NombrePaleta;
 }) {
   return (
     <div
       id={id}
       className="slide slide--cierre slide--tintaOscura"
-      style={{ ...variablesDePlantilla(), background: color.fondoCierre }}
+      style={{ ...variablesDePlantilla(paleta), background: color.fondoCierre }}
     >
       {marca.retrato ? (
         <div className="slide__foto" style={{ backgroundImage: `url(${marca.retrato})` }} />

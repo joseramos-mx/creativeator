@@ -8,9 +8,10 @@
    "herencia",
    "dna"
   ],
+  "color": "#E8D1B0",
   "w": 1024,
   "h": 1024,
-  "bytes": 528127
+  "bytes": 800106
  },
  {
   "slug": "alerta",
@@ -22,9 +23,10 @@
    "cuidado",
    "ojo"
   ],
+  "color": "#F9C834",
   "w": 1024,
   "h": 1024,
-  "bytes": 453536
+  "bytes": 1255690
  },
  {
   "slug": "correr",
@@ -35,9 +37,10 @@
    "deporte",
    "sudor"
   ],
+  "color": "#EDB88A",
   "w": 1024,
   "h": 1024,
-  "bytes": 586173
+  "bytes": 857648
  },
  {
   "slug": "cuidado-de-piel",
@@ -50,9 +53,10 @@
    "rutina",
    "crema"
   ],
+  "color": "#EBD7B4",
   "w": 1024,
   "h": 1024,
-  "bytes": 867231
+  "bytes": 1377600
  },
  {
   "slug": "curitas",
@@ -64,9 +68,10 @@
    "herida",
    "parche"
   ],
+  "color": "#EEC599",
   "w": 1024,
   "h": 1024,
-  "bytes": 977884
+  "bytes": 1463796
  },
  {
   "slug": "informacion",
@@ -77,9 +82,10 @@
    "dato",
    "aviso"
   ],
+  "color": "#6CABCF",
   "w": 1024,
   "h": 1024,
-  "bytes": 831905
+  "bytes": 1414167
  },
  {
   "slug": "llanto",
@@ -91,9 +97,10 @@
    "molestia",
    "dolor"
   ],
+  "color": "#4F2E17",
   "w": 1024,
   "h": 1024,
-  "bytes": 830958
+  "bytes": 1249077
  },
  {
   "slug": "palomita-verde",
@@ -106,9 +113,10 @@
    "si",
    "lista"
   ],
+  "color": "#4C8C2C",
   "w": 1024,
   "h": 1024,
-  "bytes": 441637
+  "bytes": 1370661
  },
  {
   "slug": "preservativo",
@@ -119,9 +127,10 @@
    "its",
    "proteccion"
   ],
+  "color": "#DBC8AF",
   "w": 1024,
   "h": 1024,
-  "bytes": 871395
+  "bytes": 1304679
  },
  {
   "slug": "silencio",
@@ -132,9 +141,10 @@
    "secreto",
    "shh"
   ],
+  "color": "#F6AE2A",
   "w": 1024,
   "h": 1024,
-  "bytes": 772312
+  "bytes": 1277758
  },
  {
   "slug": "termometro",
@@ -145,8 +155,9 @@
    "temperatura",
    "thermometer"
   ],
+  "color": "#EAE4DB",
   "w": 1024,
   "h": 1024,
-  "bytes": 405070
+  "bytes": 668894
  }
 ]

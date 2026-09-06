@@ -13,7 +13,7 @@ import {
 } from '@/lib/edicion';
 import { Slide } from '@/template/Slide';
 import { ProveedorDeAvisos } from '@/template/avisos';
-import { bloque, lienzo, tipo } from '@/template/tokens';
+import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
 import type { Marca, Post } from '@/template/tipos';
 import type { EstadoAjuste } from '@/template/usarAjuste';
 
@@ -219,6 +219,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
             key={i}
             slide={slide}
             recientes={recientes}
+            paleta={post.paleta}
             onUsarIcono={usarIcono}
             indice={i}
             total={post.slides.length}
@@ -304,6 +305,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
                     slides={post.slides}
                     indice={i}
                     marca={marca}
+                    paleta={post.paleta}
                     ayudas={{ rejilla, overlay: overlay ? capturas?.[i] : undefined }}
                   />
                 </div>
@@ -355,6 +357,19 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             </select>
           </div>
           <div>
+            <label>Paleta</label>
+            <select
+              value={post.paleta}
+              onChange={(e) => setPost((p) => ({ ...p, paleta: e.target.value as Post['paleta'] }))}
+            >
+              {Object.entries(paletas).map(([nombre, p]) => (
+                <option key={nombre} value={nombre}>
+                  {p.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label>Pilar — la línea editorial</label>
             <input
               value={post.pilar ?? ''}
@@ -362,6 +377,8 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             />
           </div>
         </div>
+
+        <p className="pista">{paletas[post.paleta].cuando}</p>
 
         <label>Objetivo — la acción buscada</label>
         <input

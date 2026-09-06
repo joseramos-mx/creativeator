@@ -7,7 +7,6 @@
     "dev:solo": "next dev",
     "build": "next build",
     "start": "next start",
-    "graficos": "node scripts/graficos.mjs",
     "iconos": "node scripts/ingesta-iconos.mjs",
     "iconos:vigilar": "node scripts/ingesta-iconos.mjs --vigilar"
   },
