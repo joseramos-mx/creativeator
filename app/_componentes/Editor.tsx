@@ -7,6 +7,7 @@ import { Afirmaciones } from './Afirmaciones';
 import { ImportarBrief } from './ImportarBrief';
 import { PanelSlide, type Seleccion } from './PanelSlide';
 import {
+  FOTO_PENDIENTE,
   aceptaImagen,
   cambiarTamIcono,
   empujarOverride,
@@ -312,12 +313,45 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
                     ayudas={{ rejilla, overlay: overlay ? capturas?.[i] : undefined }}
                   />
                 </div>
+
+                <IdeaDeImagen slide={slide} />
               </div>
             ))}
           </div>
         </ProveedorDeAvisos>
       </main>
     </div>
+  );
+}
+
+/**
+ * Lo que la foto debería mostrar, escrito debajo de la foto misma.
+ *
+ * El campo existe desde la fase 2 y no lo veía nadie: vivía dentro de la
+ * tarjeta del slide, plegada, y para leerlo había que ir a abrirla. Así es como
+ * el slide 03 de impétigo acabó publicado con la foto de un gimnasio —la idea
+ * decía otra cosa y nadie la tenía delante—. Aquí está donde se mira el
+ * carrusel, que es el único sitio donde se nota que la foto no dice lo que dice
+ * el texto.
+ *
+ * Va fuera de `.marco__lienzo` a propósito: la exportación se verifica píxel a
+ * píxel contra esta vista y lo que se captura es `.slide`, así que esta banda
+ * no puede colarse en el PNG.
+ */
+function IdeaDeImagen({ slide }: { slide: Post['slides'][number] }) {
+  if (slide.tipo !== 'contenido' || slide.visual.clase !== 'foto') return null;
+
+  const falta = slide.visual.src === FOTO_PENDIENTE;
+  const idea = slide.visual.ideaImagen;
+  const sinCredito = !slide.visual.credito;
+  if (!idea && !falta && !sinCredito) return null;
+
+  return (
+    <span className="idea" data-falta={falta || !idea ? '' : undefined}>
+      {falta ? <b>falta la foto · </b> : null}
+      {idea ?? 'sin idea de imagen: escribe qué debería mostrar'}
+      {sinCredito && !falta ? <em> · sin fuente ni licencia</em> : null}
+    </span>
   );
 }
 

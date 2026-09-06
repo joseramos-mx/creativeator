@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
 import { afirmacionesDe } from './afirmaciones';
 import { desescapar } from './brief';
+import { FOTO_PENDIENTE } from './edicion';
 import { leerMarca } from './posts';
 import type { TMarca, TPost, TSlide } from './schema';
 
@@ -265,7 +266,7 @@ function aPost(r: TRedaccion, slug: string): TPost {
       // para quien busque la foto, el segundo para el buscador de íconos.
       visual:
         s.visual === 'foto'
-          ? { clase: 'foto', src: '/media/pendiente.jpg', ...(s.ideaImagen ? { ideaImagen: s.ideaImagen } : {}) }
+          ? { clase: 'foto', src: FOTO_PENDIENTE, ...(s.ideaImagen ? { ideaImagen: s.ideaImagen } : {}) }
           : s.visual === 'icono'
             ? { clase: 'icono', ...(s.iconoSugerido ? { iconoSugerido: s.iconoSugerido } : {}) }
             : { clase: 'ninguno' },

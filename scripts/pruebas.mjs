@@ -146,6 +146,64 @@ ok(
   (await page.locator('.marco--soltable').last().getAttribute('data-soltando')) === null,
   'el cierre no acepta imagen',
 );
+// Cambiar la foto no borra lo que la foto debería mostrar: soltarla es el
+// gesto de intentar cumplir esa idea, no de renunciar a ella.
+ok(
+  leer(EDICION).slides[1].visual.ideaImagen !== undefined,
+  'y la idea de imagen sobrevive al cambio de foto',
+);
+
+/* ── la idea de imagen, junto a la imagen ────────────────────────────────── */
+console.log('\nIdea de imagen y crédito');
+
+// El campo existía y no lo veía nadie: por eso se publicó un slide con la foto
+// de un gimnasio. Tiene que estar donde se mira el carrusel, no dentro de una
+// tarjeta plegada.
+const banda = page.locator('.marco--soltable').nth(1).locator('.idea');
+ok((await banda.count()) === 1, 'el slide con foto lleva la idea de imagen debajo');
+ok(
+  (await banda.innerText()).includes(leer(EDICION).slides[1].visual.ideaImagen),
+  'y dice lo que la foto debería mostrar',
+);
+ok(
+  (await page.locator('.marco--soltable').nth(2).locator('.idea').count()) === 0,
+  'el slide con ícono no la lleva',
+);
+ok(
+  /sin fuente ni licencia/.test(await banda.innerText()),
+  'y avisa de que la foto no tiene procedencia registrada',
+);
+
+const tarjetaFoto = await abrirTarjeta(page, 1);
+// Media procedencia no se guarda: un crédito a medias parece registrado y no
+// dice de dónde salió la foto.
+await tarjetaFoto.locator('input[placeholder*="Unsplash,"]').fill('Unsplash');
+await espera(1200);
+ok(leer(EDICION).slides[1].visual.credito === undefined, 'con solo la fuente no se guarda nada');
+await tarjetaFoto.locator('input[placeholder*="Unsplash License"]').fill('Unsplash License');
+await esperarA(() => leer(EDICION).slides[1].visual.credito !== undefined);
+const credito = leer(EDICION).slides[1].visual.credito ?? {};
+ok(
+  credito.fuente === 'Unsplash' && credito.licencia === 'Unsplash License',
+  `con las dos sí: ${JSON.stringify(credito)}`,
+);
+ok(
+  !/sin fuente ni licencia/.test(await banda.innerText()),
+  'y la banda deja de avisar',
+);
+
+// Y al revés: cambiar la foto tira el crédito, porque describía a la anterior.
+// Un crédito heredado es peor que ninguno: parece registrado y miente.
+await slide01.dispatchEvent('drop', { dataTransfer: dt });
+await esperarA(() => leer(EDICION).slides[1].visual.credito === undefined);
+ok(
+  leer(EDICION).slides[1].visual.credito === undefined,
+  'cambiar la foto borra el crédito de la anterior',
+);
+ok(
+  leer(EDICION).slides[1].visual.ideaImagen !== undefined,
+  'pero no la idea de imagen',
+);
 
 /* ── empuje y contador de overrides ──────────────────────────────────────── */
 console.log('\nModo de empuje');

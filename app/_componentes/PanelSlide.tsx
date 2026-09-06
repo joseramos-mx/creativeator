@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { BuscadorIconos } from './BuscadorIconos';
 import {
+  FOTO_PENDIENTE,
   OVERRIDES_DEMASIADOS,
   borrarSlide,
   cambiarSlide,
@@ -14,7 +15,7 @@ import {
   tituloDeTarjeta,
 } from '@/lib/edicion';
 import type { NombrePaleta } from '@/template/tokens';
-import type { Post, Slide } from '@/template/tipos';
+import type { Credito, Post, Slide } from '@/template/tipos';
 import type { EstadoAjuste } from '@/template/usarAjuste';
 
 export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' | 'media' };
@@ -111,6 +112,12 @@ export function PanelSlide({
             <label>Pregunta del papel rasgado</label>
             <input value={slide.pregunta} onChange={(e) => cambiar({ pregunta: e.target.value } as Partial<Slide>)} />
             <Imagen ruta={slide.foto} />
+            {slide.foto ? (
+              <CamposCredito
+                credito={slide.fotoCredito}
+                cambiar={(fotoCredito) => cambiar({ fotoCredito } as Partial<Slide>)}
+              />
+            ) : null}
           </>
         ) : null}
 
@@ -134,7 +141,7 @@ export function PanelSlide({
                 const clase = e.target.value as 'ninguno' | 'foto' | 'icono';
                 if (clase === 'ninguno') return cambiar({ visual: { clase: 'ninguno' } } as Partial<Slide>);
                 if (clase === 'icono') return cambiar({ visual: { clase: 'icono', tam: 260 } } as Partial<Slide>);
-                cambiar({ visual: { clase: 'foto', src: '/media/pendiente.jpg' } } as Partial<Slide>);
+                cambiar({ visual: { clase: 'foto', src: FOTO_PENDIENTE } } as Partial<Slide>);
               }}
             >
               <option value="ninguno">ninguno</option>
@@ -157,6 +164,13 @@ export function PanelSlide({
                     cambiar({
                       visual: { ...slide.visual, ideaImagen: e.target.value || undefined },
                     } as Partial<Slide>)
+                  }
+                />
+
+                <CamposCredito
+                  credito={slide.visual.credito}
+                  cambiar={(credito) =>
+                    cambiar({ visual: { ...slide.visual, credito } } as Partial<Slide>)
                   }
                 />
               </>
@@ -358,7 +372,7 @@ function Ajustes({
 function Imagen({ ruta }: { ruta?: string }) {
   return (
     <p className="pista">
-      {ruta && ruta !== '/media/pendiente.jpg' ? (
+      {ruta && ruta !== FOTO_PENDIENTE ? (
         <>
           Imagen: <code>{ruta}</code>
         </>
@@ -367,5 +381,84 @@ function Imagen({ ruta }: { ruta?: string }) {
       )}{' '}
       Arrástrala sobre el slide de la derecha para cambiarla.
     </p>
+  );
+}
+
+/**
+ * De dónde salió la foto y bajo qué términos.
+ *
+ * Se pregunta aquí, cuando la foto se pone, porque es el único momento en que
+ * alguien lo sabe. Un mes después, mirando el JSON, ya nadie se acuerda de si
+ * esa imagen era de banco, del consultorio o de una búsqueda.
+ *
+ * El crédito llega al JSON solo cuando están la fuente y la licencia. Uno a
+ * medias es peor que ninguno: parece registrado y no dice lo que hace falta.
+ */
+function CamposCredito({
+  credito,
+  cambiar,
+}: {
+  credito?: Credito;
+  cambiar: (c: Credito | undefined) => void;
+}) {
+  const [c, setC] = useState<Partial<Credito>>(credito ?? {});
+
+  const poner = (campo: keyof Credito, valor: string) => {
+    const nuevo = { ...c, [campo]: valor || undefined };
+    setC(nuevo);
+    cambiar(nuevo.fuente && nuevo.licencia ? (nuevo as Credito) : undefined);
+  };
+
+  const aMedias = Boolean(c.fuente) !== Boolean(c.licencia);
+
+  return (
+    <>
+      <div className="fila">
+        <div>
+          <label>De dónde salió</label>
+          <input
+            value={c.fuente ?? ''}
+            placeholder="Unsplash, consultorio…"
+            onChange={(e) => poner('fuente', e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Licencia</label>
+          <input
+            value={c.licencia ?? ''}
+            placeholder="Unsplash License, propia…"
+            onChange={(e) => poner('licencia', e.target.value)}
+          />
+        </div>
+      </div>
+
+      {aMedias ? (
+        <p className="pista pista--aviso">
+          Faltan las dos para que el crédito se guarde: {c.fuente ? 'la licencia' : 'de dónde salió'}.
+        </p>
+      ) : null}
+
+      <div className="fila">
+        <div>
+          <label>Autor (si la licencia pide crédito)</label>
+          <input value={c.autor ?? ''} onChange={(e) => poner('autor', e.target.value)} />
+        </div>
+        <div>
+          <label>Enlace al original</label>
+          <input
+            value={c.url ?? ''}
+            placeholder="https://…"
+            onChange={(e) => poner('url', e.target.value)}
+          />
+        </div>
+      </div>
+
+      <label>Consentimiento, si sale una persona identificable</label>
+      <input
+        value={c.consentimiento ?? ''}
+        placeholder="firmado 2026-03-04, expediente 218"
+        onChange={(e) => poner('consentimiento', e.target.value)}
+      />
+    </>
   );
 }

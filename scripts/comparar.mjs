@@ -44,7 +44,10 @@ mkdirSync(dirVerificar, { recursive: true });
  * apoyada en enteros también.
  */
 const SIN_CROMO =
-  '.cromo,.etiqueta,nextjs-portal{display:none!important}' +
+  // `.idea` va aquí por la misma razón que `.etiqueta`: son ayudas del editor
+  // dibujadas encima del slide. Playwright captura la región de la página, no
+  // el subárbol del elemento, así que lo que se superpone sale en el PNG.
+  '.cromo,.etiqueta,.idea,nextjs-portal{display:none!important}' +
   '.banco > section > h2,.banco > section > p{display:none!important}' +
   '.banco{padding:0!important}.mazo{gap:0!important;padding:0!important}' +
   // el editor: fuera el panel y la barra, y el lienzo pegado a la esquina
@@ -124,6 +127,21 @@ for (let i = 1; i <= total; i++) {
 
 const copy = zip.file('copy.txt');
 console.log(copy ? '  el ZIP incluye copy.txt' : '  ATENCIÓN: el ZIP no trae copy.txt');
+
+// Los créditos de las fotos viajan con las imágenes. Si se quedan en el JSON,
+// quien publique no tiene la licencia delante en el momento de publicar.
+const creditos = zip.file('creditos.txt');
+if (creditos) {
+  const texto = await creditos.async('string');
+  const sinRegistrar = (texto.match(/SIN REGISTRAR/g) ?? []).length;
+  console.log(
+    sinRegistrar === 0
+      ? '  el ZIP incluye creditos.txt, con todas las fotos registradas'
+      : `  el ZIP incluye creditos.txt · ${sinRegistrar} foto(s) sin fuente ni licencia`,
+  );
+} else {
+  console.log('  el ZIP no trae creditos.txt (este carrusel no lleva fotos)');
+}
 
 // ── 3. la diferencia ───────────────────────────────────────────────────────
 console.log('\nDiferencia entre el PNG exportado y la vista previa:');

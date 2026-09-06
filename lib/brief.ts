@@ -1,5 +1,6 @@
 import { PALETA_POR_DEFECTO } from '@/template/tokens';
 import type { Post, Slide } from '@/template/tipos';
+import { FOTO_PENDIENTE } from './edicion';
 
 /**
  * lib/brief.ts — de un brief pegado a mano al JSON del carrusel.
@@ -299,7 +300,7 @@ function aSlide(bloque: Bloque, avisos: string[]): Slide | null {
         // Ni la idea de imagen ni el ícono sugerido se dibujan: son
         // instrucciones para el humano y para el buscador de íconos.
         visual: c.imagen
-          ? { clase: 'foto', src: '/media/pendiente.jpg', ideaImagen: c.imagen }
+          ? { clase: 'foto', src: FOTO_PENDIENTE, ideaImagen: c.imagen }
           : c.icono
             ? { clase: 'icono', iconoSugerido: c.icono }
             : { clase: 'ninguno' },

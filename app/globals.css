@@ -668,3 +668,32 @@ select:focus {
 .redaccion .chip {
   flex: none;
 }
+
+/* ── la idea de imagen, debajo del slide ── */
+
+.idea {
+  position: absolute;
+  z-index: 70;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5px 9px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #d8e0ea;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.idea b {
+  color: #f0c579;
+}
+
+.idea em {
+  color: #e5a94b;
+  font-style: normal;
+}
+
+.idea[data-falta] {
+  background: rgba(58, 40, 12, 0.88);
+  color: #f0c579;
+}

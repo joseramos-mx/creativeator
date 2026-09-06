@@ -8,6 +8,12 @@ import type { Overrides, Post, Slide } from '@/template/tipos';
  * en qué se copió y qué no.
  */
 
+/**
+ * La foto que todavía no está. No es un marcador de posición bonito: es lo que
+ * hace que el editor pueda decir "falta la foto" en vez de enseñar un hueco.
+ */
+export const FOTO_PENDIENTE = '/media/pendiente.jpg';
+
 export function cambiarSlide(post: Post, i: number, cambios: Partial<Slide>): Post {
   const slides = post.slides.map((s, j) => (j === i ? ({ ...s, ...cambios } as Slide) : s));
   return { ...post, slides };
@@ -104,16 +110,38 @@ export function aceptaImagen(slide: Slide): boolean {
   return slide.tipo === 'portada' || slide.tipo === 'contenido';
 }
 
-/** Dónde va la imagen que se soltó, según el tipo de slide. */
+/**
+ * Dónde va la imagen que se soltó, según el tipo de slide.
+ *
+ * Dos campos se comportan al revés al cambiar la foto, y el motivo es el mismo
+ * en los dos casos:
+ *
+ *  · `ideaImagen` **se conserva**. Dice qué debería mostrar el slide, y soltar
+ *    una foto es justamente el gesto de intentar cumplirlo. Borrarla ahí es
+ *    perder el criterio en el momento exacto en que sirve para comprobarlo.
+ *  · `credito` **se borra**. Describe de dónde salió la foto anterior. Dejarlo
+ *    puesto le atribuiría a la nueva una procedencia que no es la suya, y un
+ *    crédito falso es peor que ninguno: parece registrado.
+ */
 export function ponerImagen(post: Post, i: number, ruta: string): Post {
   const slide = post.slides[i];
-  if (slide.tipo === 'portada') return cambiarSlide(post, i, { foto: ruta } as Partial<Slide>);
+
+  if (slide.tipo === 'portada') {
+    return cambiarSlide(post, i, { foto: ruta, fotoCredito: undefined } as Partial<Slide>);
+  }
+
   if (slide.tipo === 'contenido') {
-    const alto = slide.visual.clase === 'foto' ? slide.visual.alto : undefined;
+    const antes = slide.visual.clase === 'foto' ? slide.visual : undefined;
     return cambiarSlide(post, i, {
-      visual: { clase: 'foto', src: ruta, ...(alto ? { alto } : {}) },
+      visual: {
+        clase: 'foto',
+        src: ruta,
+        ...(antes?.alto ? { alto: antes.alto } : {}),
+        ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
+      },
     } as Partial<Slide>);
   }
+
   return post;
 }
 

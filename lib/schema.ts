@@ -38,6 +38,29 @@ export const Overrides = z
   })
   .partial();
 
+/**
+ * De dónde salió la foto y bajo qué términos.
+ *
+ * Va en el JSON del post y no en una hoja aparte porque la hoja aparte se
+ * pierde. Una foto clínica publicada sin saber de dónde vino es un problema
+ * que aparece meses después, cuando ya está en el feed y nadie se acuerda: si
+ * era de banco, de un paciente o de una búsqueda de imágenes.
+ *
+ * `fuente` es de dónde se sacó —Unsplash, Freepik, el consultorio— y
+ * `licencia` bajo qué se puede usar. Los dos hacen falta: "Unsplash" sin más
+ * no dice si esa foto en concreto pedía atribución. `autor` y `url` son
+ * opcionales porque no todas las licencias los exigen, pero cuando la licencia
+ * pide crédito, ahí es donde va.
+ */
+export const Credito = z.object({
+  fuente: z.string().min(1, 'de dónde salió la foto'),
+  licencia: z.string().min(1, 'bajo qué términos se puede usar'),
+  autor: z.string().optional(),
+  url: z.string().optional(),
+  /** Consentimiento de la persona fotografiada, cuando la hay. */
+  consentimiento: z.string().optional(),
+});
+
 export const Visual = z.discriminatedUnion('clase', [
   z.object({ clase: z.literal('ninguno') }),
   z.object({
@@ -46,6 +69,7 @@ export const Visual = z.discriminatedUnion('clase', [
     alto: z.number().positive().optional(),
     /** Qué buscar en el banco de fotos. Lo llena la IA; no se dibuja. */
     ideaImagen: z.string().optional(),
+    credito: Credito.optional(),
   }),
   z.object({
     clase: z.literal('icono'),
@@ -67,7 +91,14 @@ const Portada = z.object({
   tipo: z.literal('portada'),
   titulo: TextoMarcado,
   pregunta: z.string(),
+  /**
+   * La portada lleva la foto suelta y no un `visual` como los de contenido,
+   * porque aquí es fondo a sangre y no un bloque. El crédito va aparte por la
+   * misma razón, pero es el mismo: una foto de portada sin procedencia es
+   * exactamente el mismo problema que una de dentro.
+   */
   foto: RutaLocal.optional(),
+  fotoCredito: Credito.optional(),
   overrides: Overrides.optional(),
 });
 
@@ -208,6 +239,7 @@ export const Marca = z.object({
   iconosRecientes: z.array(z.string()).default([]),
 });
 
+export type TCredito = z.infer<typeof Credito>;
 export type TOverrides = z.infer<typeof Overrides>;
 export type TVisual = z.infer<typeof Visual>;
 export type TEmblema = z.infer<typeof Emblema>;
