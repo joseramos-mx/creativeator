@@ -3,9 +3,9 @@
 Genera los carruseles de Instagram de la cuenta a partir de una plantilla fija.
 Corre en tu computadora, no en internet.
 
-**Vas en la fase 1 de 6.** Por ahora existe el diseño: los tipos de slide, los
-valores de la plantilla y el ajuste automático del texto. Todavía no hay editor,
-ni exportación a PNG, ni redacción con IA.
+**Vas en la fase 3 de 6.** Ya existen el diseño, el contenido en archivos y la
+exportación a PNG. Faltan el editor visual, la librería de íconos y la redacción
+con IA.
 
 ---
 
@@ -16,20 +16,133 @@ npm install        # solo la primera vez
 npm run dev
 ```
 
-Abre <http://localhost:3000/plantilla>. Si el puerto 3000 está ocupado, Next.js
-te dice en la terminal cuál usó.
+Abre <http://localhost:3000>. Si el puerto está ocupado, Next.js te dice en la
+terminal cuál usó.
 
-Esa página es el **banco de pruebas**: dos carruseles de mentira que ejercitan
-todos los tipos de slide. Es donde se prueba un cambio de diseño sin tocar
-contenido real.
+| Página | Qué es |
+|---|---|
+| `/` | La lista de carruseles, con la portada de cada uno. |
+| `/post/<slug>` | El carrusel completo y el botón de exportar. |
+| `/plantilla` | El banco de pruebas: aquí se prueba un cambio de diseño sin tocar contenido. |
+| `/render/<slug>/<n>` | Un slide solo, sin nada alrededor. No es para ti: es la que captura Playwright. |
+
+En `/` y `/post` funcionan las mismas teclas que en el banco:
 
 | Tecla | Qué hace |
 |---|---|
-| `G` | Enciende la rejilla: márgenes, área de contenido y las franjas donde Instagram encima su propia interfaz. |
-| `R` | Encima la captura del post ya publicado, en modo diferencia. Lo que coincide se apaga; lo que baila queda brillante. |
+| `G` | Rejilla: márgenes, área de contenido y las franjas donde Instagram encima su interfaz. |
+| `R` | Encima la captura del post publicado, en modo diferencia (solo en el banco). |
 | `[` `]` | Sube y baja la opacidad de esa captura. |
 
-Los botones de 34 %, 50 % y 100 % cambian el zoom. Para comparar de verdad, 100 %.
+---
+
+## Un carrusel es un archivo
+
+Cada post vive en `content/posts/<slug>.json`. No hay base de datos: el sistema
+de archivos es la base de datos y git es el historial. Para agregar uno a mano,
+copia otro, cámbiale el `slug` y los textos, y aparece solo en la lista.
+
+```json
+{
+  "slug": "impetigo-regreso-a-clases",
+  "tema": "Impétigo en el regreso a clases",
+  "creado": "2026-09-01",
+  "estado": "publicado",
+  "pieDeFoto": "El texto del post de Instagram, con sus hashtags.",
+  "slides": [
+    { "tipo": "portada", "titulo": "*La infección de*\nRegreso **a clases**",
+      "pregunta": "¿Qué es el impétigo?", "foto": "/media/…/portada.jpg" },
+    { "tipo": "contenido", "titulo": "…", "bajada": "…", "cuerpo": "…",
+      "visual": { "clase": "foto", "src": "/media/…/01.jpg" },
+      "fuente": "Cleveland Clinic." },
+    { "tipo": "lista", "titulo": "…", "puntos": ["…", "…", "…", "…"] },
+    { "tipo": "cierre" }
+  ]
+}
+```
+
+Cosas que conviene saber del formato:
+
+- **Cada tipo de slide tiene sus campos y no acepta los del otro.** Si le pones
+  `puntos` a un slide de contenido, el archivo no pasa y la app te dice el campo
+  exacto en vez de pintar la página a medias.
+- **El cierre no guarda nada.** Sale todo de `content/marca.json`, así que el día
+  que cambies de ciudad o de plataforma de citas se corrige en un solo lugar y se
+  arregla el archivo histórico completo.
+- **Las rutas de imagen son locales**, siempre dentro de `public/`. Una URL
+  externa es un error de validación a propósito: los enlaces caducan y el PNG
+  sale con un hueco meses después.
+- **`estado`** es `borrador`, `aprobado` o `publicado`. Sirve para saber qué
+  falta revisar del mes.
+- **`overrides`** es la excepción de un slide: `offsetY`, `tituloPx`, `cuerpoPx`,
+  `mediaAncho`, `mediaAlto`. Vive en el contenido, nunca en los tokens. Si un
+  slide junta muchos, la señal es que el token está mal.
+
+El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
+archivo, al guardar desde el editor (fase 4) y al validar lo que devuelva el
+modelo al redactar (fase 6). Es el mismo en los tres a propósito.
+
+---
+
+## Exportar
+
+Desde `/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
+por slide porque abre un navegador de verdad.
+
+Te bajas un ZIP con `01.png` … `07.png` y el `pie-de-foto.txt`. Los mismos
+archivos quedan además en `salidas/<slug>/`, que suele ser más cómodo que
+descomprimir.
+
+Los PNG salen a **2160 × 2700**, el doble del lienzo. Instagram recomprime, y
+entregarle el doble de píxeles conserva mucho mejor los bordes de la tipografía.
+
+Por debajo es `POST /api/exportar`:
+
+```jsonc
+{ "slug": "impetigo-regreso-a-clases",
+  "slides": [2, 5],   // opcional: posiciones, empezando en 1. La portada es la 1.
+  "escala": 1 }       // opcional: 2 por omisión
+```
+
+Un solo slide responde el PNG; varios, el ZIP.
+
+**Por qué Playwright y no una librería en el navegador.** `html2canvas` y
+parecidas reimplementan el motor de render en JavaScript, y se rompen con
+`clip-path`, con degradados, con `background-size: cover` y con las fuentes que
+todavía no cargaron. Sirven para una vista previa rápida, no para el entregable.
+El costo es que hace falta un proceso de Node, así que la app corre local. Para
+el flujo de una persona eso no es una limitación, es una simplificación.
+
+---
+
+## Las dos verificaciones
+
+```bash
+node scripts/comparar.mjs 3000    # captura y compara
+python scripts/medir.py           # el informe contra la referencia
+```
+
+**1. ¿Se parece a lo publicado?** El primer script captura el banco de pruebas a
+tamaño real; `medir.py` lo compara contra las capturas de `public/referencia/` y
+dice, renglón por renglón, cuántos píxeles se corrió el diseño. Es lo que
+convierte "se ve parecido" en un número.
+
+**2. ¿El PNG es lo que vi?** El mismo script exporta el carrusel por la ruta real
+de exportación —a escala 1, para que los dos lados midan lo mismo— y lo compara
+píxel a píxel contra la vista previa.
+
+Esta segunda es la que conviene vigilar. Si sale distinta, casi siempre es que el
+ajuste automático de texto no corrió en `/render` y el PNG salió con la letra en
+otro tamaño. El hook vive en `template/` y lo usan las dos rutas justamente para
+que no pueda pasar, pero es el error clásico de este tipo de proyecto.
+
+Siempre quedan unas decenas de píxeles de diferencia en el borde de un ícono
+escalado y en el tramado de los degradados: son deltas de 1 a 6 sobre 255 que no
+ve nadie. Por eso el veredicto no cuenta píxeles distintos sino píxeles que se
+movieron más de 8, y avisa a partir de 400. Cuando el ajuste de verdad no corre,
+el número se va a cientos de miles: no hay zona gris.
+
+Los mapas de diferencias quedan en `salidas/verificar/diff-NN.png`, en rojo.
 
 ---
 
@@ -45,17 +158,14 @@ tocar `app/`, algo se rompió.
 | Cómo se acomodan las piezas de un slide | `template/plantilla.css` |
 | Qué lleva cada tipo de slide | `template/slides/` |
 | La cabecera, el pie, la flecha, la palomita, el papel | `template/partes/` |
+| Qué campos acepta un post | `lib/schema.ts` |
 | Tu nombre, ciudad, plataforma de citas, logotipo | `content/marca.json` |
 | El papel rasgado, la palomita y la flecha (dibujos) | `npm run graficos` |
 
 `tokens.ts` es la única fuente de verdad de los números. `plantilla.css` no tiene
-ni un valor suelto: los lee de ahí a través de `template/variables.ts`. Cambias
-el token y cambia en los dos lados.
+ni un valor suelto: los lee de ahí a través de `template/variables.ts`.
 
 ### El marcado de los títulos
-
-Los títulos mezclan tres estilos en un renglón. En vez de armar el diseño, se
-escribe una sola cadena con dos marcas:
 
 ```
 *así*      sale en serif itálica color crema
@@ -82,14 +192,9 @@ Si un bloque llega al mínimo (título 44 px, cuerpo 26 px), el problema es que 
 texto es largo: hay que recortarlo, no seguir encogiéndolo. A partir de la fase 4
 el editor te lo va a marcar.
 
-### Cuando un slide necesita una excepción
-
-Para empujar algo en **un** slide sin tocar la plantilla existe `overrides`:
-`offsetY` (subir o bajar el bloque), `tituloPx`, `cuerpoPx`, `mediaAncho`,
-`mediaAlto`. Vive en el contenido del post, no en los tokens.
-
-Si un slide junta muchos overrides, la señal es que el token está mal y conviene
-subir el cambio a la plantilla.
+El ajuste se recalcula cuando terminan de cargar las fuentes. Sin eso, el primer
+cálculo mide con las métricas de la letra sustituta y el PNG puede salir con otro
+tamaño que la vista previa, según quién gane la carrera.
 
 ---
 
@@ -98,9 +203,9 @@ subir el cambio a la plantilla.
 No están puestos a ojo. Se midieron sobre las siete capturas del carrusel de
 impétigo que están en `public/referencia/`:
 
-- Los **colores** son el color más repetido de cada zona de texto, no una
-  estimación. Ahí salió que el azul del fondo es `#51A2FF`, que el cuerpo va en
-  `#DBEAFE` y que la bajada va en `#EFF6FF`, que no es blanco.
+- Los **colores** son el color más repetido de cada zona de texto. Ahí salió que
+  el azul del fondo es `#51A2FF`, que el cuerpo va en `#DBEAFE` y que la bajada
+  va en `#EFF6FF`, que no es blanco.
 - Los **tamaños de letra y el tracking** se resolvieron comparando la caja de
   tinta de cada renglón publicado contra la misma frase compuesta en Albert Sans.
   Cuatro renglones de cuerpo independientes dieron el mismo resultado —34 px y
@@ -109,16 +214,6 @@ impétigo que están en `public/referencia/`:
   neutro (−0.012em) y todo lo que es título o cromo va apretado (−0.06em). Ese
   apretón es el aire de la marca; si un título se ve suelto, revisa eso antes que
   nada.
-
-Para volver a medir después de un cambio:
-
-```bash
-node scripts/comparar.mjs 3000   # captura los slides a tamaño real
-python scripts/medir.py          # los compara contra las capturas publicadas
-```
-
-Te dice, renglón por renglón, cuántos píxeles se corrió el diseño. Es lo que
-convierte "se ve parecido" en un número.
 
 ---
 
@@ -138,14 +233,12 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 
 | Fase | Qué trae |
 |---|---|
-| 1 · plantilla | ✅ Los tipos de slide y sus valores. Estás aquí. |
-| 2 · contenido | Los posts pasan a archivos `content/posts/*.json`, validados con Zod. |
-| 3 · exportación | El botón que da los PNG a 1080×1350, capturados con Playwright. |
+| 1 · plantilla | ✅ Los tipos de slide y sus valores. |
+| 2 · contenido | ✅ Los posts en `content/posts/*.json`, validados con Zod. |
+| 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el pie de foto. |
 | 4 · editor | Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | La librería de Thiings alojada aquí, con buscador. |
 | 6 · redacción | Escribir el carrusel y el mes completo con la API de Anthropic. |
-
-Al terminar cada fase tienes algo que puedes ver y usar.
 
 ---
 
@@ -156,8 +249,7 @@ Al terminar cada fase tienes algo que puedes ver y usar.
 - **Los íconos de Thiings** no se versionan: `public/iconos/*` está en
   `.gitignore` porque su licencia prohíbe redistribuirlos. Se versiona solo el
   manifiesto. Los once que hay ahora son de prueba.
-- **Las imágenes se guardan siempre** en `public/media/`. Nada de enlaces a
-  Pinterest: caducan y el PNG sale con un hueco.
 - **Falta tu retrato** para el slide de cierre. Ponlo en
   `public/marca/retrato.jpg` y apunta ahí `retrato` en `content/marca.json`.
   Mientras tanto ese slide sale con el fondo café y el degradado, sin foto.
+- **`salidas/` no se versiona.** Se regenera cada vez que exportas.

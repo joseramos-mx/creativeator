@@ -28,19 +28,21 @@ export function Lista({
   numero,
   ultimo,
   ayudas,
+  id,
 }: {
   slide: SlideLista;
   marca: Marca;
   numero: string | null;
   ultimo: boolean;
   ayudas?: Ayudas;
+  id?: string;
 }) {
   const area = useRef<HTMLDivElement>(null);
   usarAjuste(area, [slide.titulo, slide.puntos]);
   const ov = slide.overrides ?? {};
 
   return (
-    <div className="slide" style={variablesDePlantilla()}>
+    <div id={id} className="slide" style={variablesDePlantilla()}>
       <Cabecera marca={marca} />
       <Numero numero={numero} />
 

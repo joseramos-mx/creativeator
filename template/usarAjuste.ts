@@ -36,67 +36,86 @@ export function usarAjuste(
   });
 
   useLayoutEffect(() => {
-    const area = ref.current;
-    if (!area) return;
+    let vivo = true;
 
-    const titulo = area.querySelector<HTMLElement>('.titulo');
-    const cuerpos = Array.from(
-      area.querySelectorAll<HTMLElement>('.cuerpo, .bajada, .lista__item p'),
-    );
+    const ajustar = () => {
+      const area = ref.current;
+      if (!area || !vivo) return;
 
-    // Se parte siempre del tamaño base, no del ajuste de la vuelta anterior.
-    // Base es el override del slide si lo hay, y si no el valor del token: si
-    // aquí se borrara el tamaño a secas, el ajuste se comería los overrides.
-    if (titulo) reiniciar(titulo);
-    for (const c of cuerpos) reiniciar(c);
+      const titulo = area.querySelector<HTMLElement>('.titulo');
+      const cuerpos = Array.from(
+        area.querySelectorAll<HTMLElement>('.cuerpo, .bajada, .lista__item p'),
+      );
 
-    const basePx = (el: HTMLElement) => parseFloat(getComputedStyle(el).fontSize);
+      // Se parte siempre del tamaño base, no del ajuste de la vuelta anterior.
+      // Base es el override del slide si lo hay, y si no el valor del token: si
+      // aquí se borrara el tamaño a secas, el ajuste se comería los overrides.
+      if (titulo) reiniciar(titulo);
+      for (const c of cuerpos) reiniciar(c);
 
-    // 1 — el título respeta los saltos escritos
-    let tituloPx = titulo ? basePx(titulo) : 0;
-    let tituloApretado = false;
-    if (titulo) {
-      const escritos = Number(titulo.dataset.renglones ?? 1);
-      while (renglonesPintados(titulo) > escritos) {
-        if (tituloPx - ajuste.paso < ajuste.tituloMin) {
-          tituloApretado = true;
+      const basePx = (el: HTMLElement) => parseFloat(getComputedStyle(el).fontSize);
+
+      // 1 — el título respeta los saltos escritos
+      let tituloPx = titulo ? basePx(titulo) : 0;
+      let tituloApretado = false;
+      if (titulo) {
+        const escritos = Number(titulo.dataset.renglones ?? 1);
+        while (renglonesPintados(titulo) > escritos) {
+          if (tituloPx - ajuste.paso < ajuste.tituloMin) {
+            tituloApretado = true;
+            break;
+          }
+          tituloPx -= ajuste.paso;
+          titulo.style.fontSize = `${tituloPx}px`;
+        }
+      }
+
+      // 2 — el bloque completo cabe en el área
+      const escalas = cuerpos.map(basePx);
+      let cuerpoApretado = false;
+
+      for (let vuelta = 0; vuelta < 40 && desborda(area); vuelta++) {
+        const puedeCuerpo = escalas.some((px) => px - ajuste.paso >= ajuste.cuerpoMin);
+        if (puedeCuerpo) {
+          cuerpos.forEach((el, i) => {
+            if (escalas[i] - ajuste.paso >= ajuste.cuerpoMin) {
+              escalas[i] -= ajuste.paso;
+              el.style.fontSize = `${escalas[i]}px`;
+            }
+          });
+          cuerpoApretado = escalas.some((px) => px <= ajuste.cuerpoMin);
+        } else if (titulo && tituloPx - ajuste.paso >= ajuste.tituloMin) {
+          tituloPx -= ajuste.paso;
+          titulo.style.fontSize = `${tituloPx}px`;
+          tituloApretado = tituloPx <= ajuste.tituloMin;
+        } else {
+          tituloApretado = tituloApretado || Boolean(titulo);
+          cuerpoApretado = cuerpoApretado || cuerpos.length > 0;
           break;
         }
-        tituloPx -= ajuste.paso;
-        titulo.style.fontSize = `${tituloPx}px`;
       }
+
+      setEstado((prev) =>
+        prev.tituloApretado === tituloApretado && prev.cuerpoApretado === cuerpoApretado
+          ? prev
+          : { tituloApretado, cuerpoApretado },
+      );
+    };
+
+    ajustar();
+
+    // Y otra vez cuando las fuentes estén listas. Con font-display: block el
+    // texto se maqueta con las métricas del sustituto mientras la fuente real
+    // no llegue, así que el primer ajuste puede haber medido otra letra. Sin
+    // esto, el PNG exportado sale con un tamaño distinto al de la vista previa
+    // según quién gane la carrera, que es de los errores más difíciles de ver.
+    if (typeof document !== 'undefined' && document.fonts) {
+      document.fonts.ready.then(ajustar);
     }
 
-    // 2 — el bloque completo cabe en el área
-    const escalas = cuerpos.map(basePx);
-    let cuerpoApretado = false;
-
-    for (let vuelta = 0; vuelta < 40 && desborda(area); vuelta++) {
-      const puedeCuerpo = escalas.some((px) => px - ajuste.paso >= ajuste.cuerpoMin);
-      if (puedeCuerpo) {
-        cuerpos.forEach((el, i) => {
-          if (escalas[i] - ajuste.paso >= ajuste.cuerpoMin) {
-            escalas[i] -= ajuste.paso;
-            el.style.fontSize = `${escalas[i]}px`;
-          }
-        });
-        cuerpoApretado = escalas.some((px) => px <= ajuste.cuerpoMin);
-      } else if (titulo && tituloPx - ajuste.paso >= ajuste.tituloMin) {
-        tituloPx -= ajuste.paso;
-        titulo.style.fontSize = `${tituloPx}px`;
-        tituloApretado = tituloPx <= ajuste.tituloMin;
-      } else {
-        tituloApretado = tituloApretado || Boolean(titulo);
-        cuerpoApretado = cuerpoApretado || cuerpos.length > 0;
-        break;
-      }
-    }
-
-    setEstado((prev) =>
-      prev.tituloApretado === tituloApretado && prev.cuerpoApretado === cuerpoApretado
-        ? prev
-        : { tituloApretado, cuerpoApretado },
-    );
+    return () => {
+      vivo = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 

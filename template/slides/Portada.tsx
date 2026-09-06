@@ -19,17 +19,19 @@ export function Portada({
   slide,
   marca,
   ayudas,
+  id,
 }: {
   slide: SlidePortada;
   marca: Marca;
   ayudas?: Ayudas;
+  id?: string;
 }) {
   const area = useRef<HTMLDivElement>(null);
   usarAjuste(area, [slide.titulo, slide.pregunta]);
   const ov = slide.overrides ?? {};
 
   return (
-    <div className="slide slide--portada" style={variablesDePlantilla()}>
+    <div id={id} className="slide slide--portada" style={variablesDePlantilla()}>
       {slide.foto ? (
         <div className="slide__foto" style={{ backgroundImage: `url(${slide.foto})` }} />
       ) : null}

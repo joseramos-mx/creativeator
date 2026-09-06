@@ -28,19 +28,21 @@ export function Contenido({
   numero,
   ultimo,
   ayudas,
+  id,
 }: {
   slide: SlideContenido;
   marca: Marca;
   numero: string | null;
   ultimo: boolean;
   ayudas?: Ayudas;
+  id?: string;
 }) {
   const area = useRef<HTMLDivElement>(null);
   usarAjuste(area, [slide.titulo, slide.bajada, slide.cuerpo, slide.visual]);
   const ov = slide.overrides ?? {};
 
   return (
-    <div className="slide" style={variablesDePlantilla()}>
+    <div id={id} className="slide" style={variablesDePlantilla()}>
       <Cabecera marca={marca} />
       <Numero numero={numero} />
 

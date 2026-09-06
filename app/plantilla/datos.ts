@@ -1,87 +1,17 @@
 import type { Post } from '@/template/tipos';
 
 /**
- * Datos quemados del banco de pruebas.
+ * Los casos límite del banco de pruebas.
  *
- * El primer mazo es el carrusel de impétigo tal como se publicó: mismos textos,
- * mismos tipos de slide y mismo orden que las capturas de public/referencia/.
- * Sirve para superponer la captura con la tecla R y ver dónde baila la
- * plantilla. Si un día cambias un token, este mazo es el que te dice si lo
- * mejoraste o lo rompiste.
+ * Textos que no caben, título de tres renglones, lista de cinco puntos, slide
+ * sin elemento visual. No se parecen a nada publicado a propósito: están para
+ * reventar el ajuste automático antes de que lo reviente un post real.
  *
- * El segundo mazo son los casos límite: los textos que no caben, el título de
- * tres renglones, la lista de cinco. No se parecen a nada publicado a propósito;
- * están para reventar el ajuste automático antes de que lo reviente un post real.
- *
- * En la fase 2 esto se muda a content/posts/*.json y se lee desde el servidor.
+ * Esto sí se queda quemado en el código, porque no es contenido: es la prueba.
+ * El carrusel publicado, que sí es contenido, vive en content/posts/.
  */
 
-const MEDIA = '/media/impetigo-regreso-a-clases';
-
-export const publicado: Post = {
-  slug: 'impetigo-regreso-a-clases',
-  tema: 'Impétigo en el regreso a clases',
-  creado: '2026-09-04',
-  estado: 'publicado',
-  slides: [
-    {
-      tipo: 'portada',
-      titulo: '*La infección de*\nRegreso **a clases**',
-      pregunta: '¿Qué es el impétigo?',
-      foto: `${MEDIA}/portada.jpg`,
-    },
-    {
-      tipo: 'contenido',
-      titulo: 'El impétigo se dispara\n**en el regreso a clases.**',
-      bajada: 'Costras color miel en la cara de tu hijo: ojo, es contagioso.',
-      cuerpo:
-        'Esas llaguitas con costra amarilla o color miel, casi siempre alrededor de la nariz y la boca, son impétigo: una infección bacteriana de la piel muy común en niños y muy contagiosa. Y el regreso a clases es justo cuando más se dispara.',
-      visual: { clase: 'foto', src: `${MEDIA}/01.jpg` },
-      fuente: 'Cleveland Clinic.',
-    },
-    {
-      tipo: 'contenido',
-      titulo: '*¿Cómo* **reconocerlo?**',
-      cuerpo:
-        'Empieza como pequeñas ampollas o granitos rojos que se rompen y forman una costra amarillenta, como si la piel tuviera miel encima. Suele picar. Es de las infecciones de piel más frecuentes en la infancia: cerca del 10% de las consultas de piel en niños.',
-      visual: { clase: 'icono', slug: 'informacion', tam: 280 },
-      fuente: 'StatPearls y KidsHealth.',
-    },
-    {
-      tipo: 'contenido',
-      emblema: { slug: 'alerta' },
-      titulo: '**Por qué se riega** *tan rápido.*',
-      cuerpo:
-        'Se contagia al tocar las llagas y también al compartir toallas, ropa o cobijas. El calor y los lugares con muchos niños, como la escuela, lo disparan. Sin tratamiento, puede seguir contagiando durante semanas.',
-      visual: { clase: 'foto', src: `${MEDIA}/03.jpg` },
-      fuente: 'Mayo Clinic y AAP.',
-    },
-    {
-      tipo: 'lista',
-      titulo: '**Qué hacer y qué no.**',
-      // En el post publicado este título va más chico que el de token.
-      overrides: { tituloPx: 75 },
-      puntos: [
-        'Necesita antibiótico: en crema si es poco, tomado si está extendido. Termina el tratamiento completo.',
-        'Que no se rasque: uñas cortas, lava manos seguido y cubre las llagas.',
-        'No compartas toallas, ropa ni sábanas mientras esté activo.',
-        'Puede volver a clases unas 24 horas después de empezar el antibiótico.',
-      ],
-      fuente: 'Mayo Clinic y AAP.',
-    },
-    {
-      tipo: 'contenido',
-      titulo: '¿Cuándo verlo con el **médico?**',
-      cuerpo:
-        'No lo trates a ciegas ni con remedios: necesita el antibiótico correcto y dejar de contagiar. Y ojo, se confunde con un fuego, que es viral y se trata distinto. Si tu hijo tiene estas costras, o si hay fiebre o se extiende, acude a valoración.',
-      visual: { clase: 'icono', slug: 'termometro', tam: 430 },
-      fuente: 'Cleveland Clinic.',
-    },
-    { tipo: 'cierre' },
-  ],
-};
-
-/** Las capturas publicadas, en el mismo orden que los slides de arriba. */
+/** Las capturas publicadas, en el orden de los slides del post de impétigo. */
 export const capturas = [
   '/referencia/portada.png',
   '/referencia/contenido-01.png',

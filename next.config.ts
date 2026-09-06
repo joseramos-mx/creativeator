@@ -11,6 +11,12 @@ const config: NextConfig = {
    * en las capturas, así que va apagado.
    */
   devIndicators: false,
+
+  /**
+   * Playwright abre un navegador de verdad desde el route handler: es un
+   * paquete de Node, no de bundle. Empaquetarlo rompe la ruta de exportación.
+   */
+  serverExternalPackages: ['playwright'],
 };
 
 export default config;

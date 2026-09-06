@@ -23,13 +23,16 @@ export function Cierre({
   marca,
   numero,
   ayudas,
+  id,
 }: {
   marca: Marca;
   numero: string | null;
   ayudas?: Ayudas;
+  id?: string;
 }) {
   return (
     <div
+      id={id}
       className="slide slide--cierre slide--tintaOscura"
       style={{ ...variablesDePlantilla(), background: color.fondoCierre }}
     >

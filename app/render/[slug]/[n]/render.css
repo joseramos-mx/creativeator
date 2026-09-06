@@ -1,0 +1,10 @@
+/* Solo para la ruta /render: el slide y nada más.
+ *
+ * El fondo va transparente para que, si algo del slide no cubriera el lienzo,
+ * se note en el PNG en vez de disimularse contra un blanco. */
+
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}

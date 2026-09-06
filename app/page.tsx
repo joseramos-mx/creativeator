@@ -1,23 +1,57 @@
 import Link from 'next/link';
+import { Miniatura } from '@/app/_componentes/Miniatura';
+import { leerMarca, listarPosts, marcaDePost } from '@/lib/posts';
 
 /**
- * Portada de la aplicación. En la fase 2 esta página se vuelve la lista de
- * carruseles, con su miniatura, su estado y su fecha. Por ahora solo lleva al
- * banco de pruebas, que es lo único que existe.
+ * La lista de carruseles. Un post es un JSON en content/posts/: para agregar
+ * uno a mano basta con copiar otro y cambiarle el slug y los textos.
+ *
+ * En la fase 6 aquí van también los botones de redactar uno y de generar el mes.
  */
-export default function Inicio() {
+export const dynamic = 'force-dynamic';
+
+export default async function Inicio() {
+  const marca = await leerMarca();
+  const posts = await listarPosts();
+  const marcas = await Promise.all(posts.map((p) => marcaDePost(p.slug)));
+
   return (
-    <main className="banco">
-      <h2>Fase 1 · la plantilla</h2>
-      <p>
-        Por ahora el proyecto es solo el diseño: los tipos de slide, los tokens y el ajuste
-        automático de texto. Todavía no hay editor, ni exportación, ni redacción con IA.
-      </p>
-      <p>
+    <>
+      <header className="cromo">
+        <h1>Carruseles · {marca.usuario}</h1>
+        <p>{posts.length === 1 ? '1 carrusel' : `${posts.length} carruseles`} en content/posts/</p>
+        <span className="sep" />
         <Link className="boton" href="/plantilla">
-          Ver la plantilla →
+          Banco de pruebas →
         </Link>
-      </p>
-    </main>
+      </header>
+
+      <main className="banco">
+        {posts.length === 0 ? (
+          <p>
+            Todavía no hay carruseles. Un post es un archivo JSON en{' '}
+            <code>content/posts/</code>.
+          </p>
+        ) : (
+          <ul className="lista-posts">
+            {posts.map((post, i) => (
+              <li key={post.slug}>
+                <Link href={`/post/${post.slug}`}>
+                  <Miniatura post={post} marca={marcas[i]} />
+                  <div>
+                    <strong>{post.tema}</strong>
+                    <span>
+                      <em data-estado={post.estado}>{post.estado}</em> · {post.slides.length} slides ·{' '}
+                      {post.creado}
+                    </span>
+                    <span>{post.pieDeFoto ? 'con pie de foto' : 'sin pie de foto'}</span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </main>
+    </>
   );
 }
