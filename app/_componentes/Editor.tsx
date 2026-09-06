@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BotonExportar } from './BotonExportar';
+import { Afirmaciones } from './Afirmaciones';
 import { ImportarBrief } from './ImportarBrief';
 import { PanelSlide, type Seleccion } from './PanelSlide';
 import {
@@ -13,6 +14,7 @@ import {
 } from '@/lib/edicion';
 import { Slide } from '@/template/Slide';
 import { ProveedorDeAvisos } from '@/template/avisos';
+import { pendientes } from '@/lib/afirmaciones';
 import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
 import type { Marca, Post } from '@/template/tipos';
 import type { EstadoAjuste } from '@/template/usarAjuste';
@@ -212,6 +214,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
         </div>
 
         <Ficha post={post} setPost={setPost} />
+        <Afirmaciones post={post} revisor={marca.nombre} setPost={setPost} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
 
         {post.slides.map((slide, i) => (
@@ -333,9 +336,12 @@ function esFoto(slide: Post['slides'][number]) {
 /** Los datos del carrusel que no se pintan en ningún slide. */
 function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) => void }) {
   const [copiado, setCopiado] = useState(false);
+  // Un carrusel no se declara aprobado con afirmaciones sin mirar. El esquema
+  // lo rechaza al guardar; aquí se apaga la opción para no chocar contra ello.
+  const sinRevisar = pendientes(post, post.revisiones).length;
 
   return (
-    <details className="tarjeta" open>
+    <details className="tarjeta" data-ficha open>
       <summary>
         <span className="chip">ficha</span>
         <span className="tarjeta__titulo">{post.tema}</span>
@@ -352,8 +358,12 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
               onChange={(e) => setPost((p) => ({ ...p, estado: e.target.value as Post['estado'] }))}
             >
               <option value="borrador">borrador</option>
-              <option value="aprobado">aprobado</option>
-              <option value="publicado">publicado</option>
+              <option value="aprobado" disabled={sinRevisar > 0}>
+                aprobado
+              </option>
+              <option value="publicado" disabled={sinRevisar > 0}>
+                publicado
+              </option>
             </select>
           </div>
           <div>
@@ -377,6 +387,13 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             />
           </div>
         </div>
+
+        {sinRevisar > 0 ? (
+          <p className="pista pista--aviso">
+            Quedan {sinRevisar} {sinRevisar === 1 ? 'afirmación' : 'afirmaciones'} sin revisar: hasta
+            entonces el carrusel se queda en borrador.
+          </p>
+        ) : null}
 
         <p className="pista">{paletas[post.paleta].cuando}</p>
 

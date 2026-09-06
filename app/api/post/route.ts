@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { Post, validar } from '@/lib/schema';
+import { PostGuardable, validar } from '@/lib/schema';
 
 /**
  * POST /api/post — guarda el JSON del carrusel.
@@ -11,7 +11,7 @@ import { Post, validar } from '@/lib/schema';
 export async function POST(req: Request) {
   try {
     const { post } = await req.json();
-    const limpio = validar(Post, post, 'el carrusel que mandó el editor');
+    const limpio = validar(PostGuardable, post, 'el carrusel que mandó el editor');
     const ruta = join(process.cwd(), 'content', 'posts', `${limpio.slug}.json`);
     await writeFile(ruta, `${JSON.stringify(limpio, null, 2)}\n`, 'utf8');
     return Response.json({ ok: true, guardado: new Date().toISOString() });

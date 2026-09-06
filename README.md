@@ -240,6 +240,39 @@ el flujo de una persona eso no es una limitación, es una simplificación.
 
 ---
 
+## La cola de revisión
+
+Un modelo puede escribir una cifra plausible con una institución real al lado
+—"cerca del 10% de las consultas de piel en niños (StatPearls)"— y eso es más
+difícil de cazar que un error obvio, porque llega ya vestido de verificado.
+
+Por eso el editor extrae del carrusel las afirmaciones que hay que mirar y no
+deja marcarlo como aprobado hasta que estén revisadas una por una. El post de
+impétigo, por ejemplo, tiene nueve.
+
+Entran por cuatro disparadores, que se acumulan:
+
+| | qué lo dispara |
+|---|---|
+| `cifra` | un porcentaje, "N de cada N", una cantidad con unidad |
+| `fuente` | una institución nombrada, en el slide o dentro del copy |
+| `seguridad` | un modal junto a tratamiento, contagio, vuelta a clases o consulta: "necesita antibiótico", "puede volver a clases" |
+| cifra sin fuente | no es para revisar, es una regla rota |
+
+**Las que llevan cifra exigen el enlace a la fuente.** Pegar la URL obliga a
+haber abierto la fuente; con el campo opcional, "la verifiqué" se vuelve trámite.
+En las demás el enlace es opcional.
+
+Cada revisión se guarda por una **huella** del texto: si cambias una coma, la
+afirmación vuelve sola a la cola. No se puede aprobar una frase y luego cambiarla.
+
+**Lo que esto no hace.** El sistema no comprueba nada: no abre la fuente, no
+valida el enlace, no contrasta la atribución. Una entrada en `revisiones`
+significa una sola cosa, que **una persona la miró un día**. Por eso el JSON
+guarda `revisadaPor` y `fecha`, y no un `"verificada"` que dentro de seis meses
+alguien leería como si el sistema hubiera comprobado algo. Está explicado largo
+en `references/ia.md` de la skill.
+
 ## Las pruebas
 
 ```bash

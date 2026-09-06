@@ -62,7 +62,7 @@ export function PanelSlide({
   };
 
   return (
-    <details className="tarjeta" open={abierta}>
+    <details className="tarjeta" data-slide={indice} open={abierta}>
       <summary
         onClick={(e) => {
           e.preventDefault();
@@ -145,7 +145,20 @@ export function PanelSlide({
             {slide.visual.clase === 'foto' ? (
               <>
                 <Imagen ruta={slide.visual.src} />
-                {slide.visual.ideaImagen ? <p className="pista">Buscar: “{slide.visual.ideaImagen}”</p> : null}
+                {/* La idea de imagen es lo que habría cazado la foto del gimnasio:
+                    dice qué debería mostrar el slide. Va como campo y no como
+                    nota al pie porque hay que poder corregir lo que escribió la
+                    IA, y porque un campo se lee y una nota al pie no. */}
+                <label>Qué debería mostrar esta imagen</label>
+                <input
+                  value={slide.visual.ideaImagen ?? ''}
+                  placeholder="niño con costras color miel alrededor de la boca"
+                  onChange={(e) =>
+                    cambiar({
+                      visual: { ...slide.visual, ideaImagen: e.target.value || undefined },
+                    } as Partial<Slide>)
+                  }
+                />
               </>
             ) : null}
 

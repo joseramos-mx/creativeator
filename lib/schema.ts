@@ -13,6 +13,7 @@
  */
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/template/tokens';
+import { pendientes } from './afirmaciones';
 
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
 const TextoMarcado = z.string();
@@ -100,6 +101,25 @@ const Cierre = z.object({
 
 export const Slide = z.discriminatedUnion('tipo', [Portada, Contenido, Lista, Cierre]);
 
+/**
+ * Una afirmación que alguien miró.
+ *
+ * No hay campo de estado a propósito. Que exista la entrada quiere decir que
+ * una persona la leyó, y nada más: el sistema no comprueba nada, así que no
+ * puede haber un "verificada" escrito por una máquina que dentro de seis meses
+ * alguien lea como si lo fuera. Y no hace falta un estado de "rechazada":
+ * corregir el texto cambia su huella, y la afirmación vuelve sola a la cola.
+ */
+export const Revision = z.object({
+  revisadaPor: z.string(),
+  fecha: z.string(),
+  /** Obligatorio en las que llevan cifra. Ver `pendientes()`. */
+  enlace: z.string().optional(),
+  /** El texto tal como se revisó, para poder leerlo sin descifrar la huella. */
+  texto: z.string(),
+  nota: z.string().optional(),
+});
+
 export const Post = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/, 'solo minúsculas, números y guiones'),
   tema: z.string(),
@@ -135,7 +155,43 @@ export const Post = z.object({
 
   hashtags: z.array(z.string()).optional(),
 
+  /** Las afirmaciones ya revisadas, por huella. Ver lib/afirmaciones.ts. */
+  revisiones: z.record(z.string(), Revision).optional(),
+
   slides: z.array(Slide).min(2),
+});
+
+/**
+ * El mismo post, con la barrera de las afirmaciones.
+ *
+ * Va aparte de `Post` a propósito: **la barrera es del guardado, no de la
+ * lectura**. Si la validación de lectura la exigiera, un carrusel publicado
+ * antes de que este mecanismo existiera dejaría de poder abrirse, y el archivo
+ * histórico se volvería ilegible por una regla que no existía cuando se
+ * escribió. Leer nunca se bloquea; declararlo aprobado, sí.
+ *
+ * Y va en el estado, no en la exportación: `borrador` se guarda siempre, así
+ * que redactar y editar no se interrumpen nunca.
+ */
+export const PostGuardable = Post.superRefine((post, ctx) => {
+  if (post.estado === 'borrador') return;
+
+  const faltan = pendientes(post, post.revisiones);
+  if (faltan.length === 0) return;
+
+  ctx.addIssue({
+    code: 'custom',
+    path: ['estado'],
+    message:
+      `no se puede guardar como "${post.estado}" con ${faltan.length} ` +
+      `${faltan.length === 1 ? 'afirmación sin revisar' : 'afirmaciones sin revisar'}:\n` +
+      faltan
+        .map((a) => {
+          const falta = post.revisiones?.[a.huella] ? 'le falta el enlace' : 'sin revisar';
+          return `      · ${a.donde} (${a.disparadores.join('+')}, ${falta})`;
+        })
+        .join('\n'),
+  });
 });
 
 export const Marca = z.object({

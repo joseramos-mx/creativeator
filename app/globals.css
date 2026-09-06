@@ -584,3 +584,55 @@ select:focus {
   color: var(--ui-dim);
   vertical-align: middle;
 }
+
+/* ── cola de revisión de afirmaciones ── */
+
+.afirmacion {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--ui-line);
+  border-left: 3px solid #e5a94b;
+  border-radius: 10px;
+  background: #12161d;
+}
+
+.afirmacion[data-revisada] {
+  border-left-color: #46c07a;
+  opacity: 0.72;
+}
+
+.afirmacion__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.afirmacion__cabecera .chip[data-disparador='cifra'] {
+  border-color: #7a4a4a;
+  color: #ffa8a8;
+}
+
+.afirmacion__cabecera .chip[data-disparador='seguridad'] {
+  border-color: #6b5220;
+  color: #e5a94b;
+}
+
+.afirmacion__texto {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--ui-txt);
+  white-space: pre-wrap;
+}
+
+.afirmacion mark {
+  background: #4a3413;
+  color: #ffd79a;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+.afirmacion a {
+  color: var(--ui-acc);
+}
