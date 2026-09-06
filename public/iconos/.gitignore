@@ -1,0 +1,11 @@
+# Generado por lib/manifiesto.ts. No se edita a mano.
+#
+# public/iconos/* está ignorado porque la colección de Thiings no se puede
+# redistribuir. Los íconos propios sí se versionan: la restricción es de
+# ellos, no nuestra. La lista sale del campo `origen` del manifiesto, así
+# que el siguiente generado aparece aquí solo.
+!.gitignore
+!lupa.png
+!thumbs/
+thumbs/*
+!thumbs/lupa.png

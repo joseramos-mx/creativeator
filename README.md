@@ -3,8 +3,49 @@
 Genera los carruseles de Instagram de la cuenta a partir de una plantilla fija.
 Corre en tu computadora, no en internet.
 
-**Vas en la fase 5 de 6.** Ya existen el diseño, el contenido en archivos, la
-exportación a PNG, el editor y la librería de íconos. Falta la redacción con IA.
+Las seis fases están construidas. Lo que sigue es un mapa de qué está
+encendido, qué está apagado y por qué.
+
+---
+
+## Estado: qué está encendido y qué no
+
+**Encendido y en uso.**
+
+| | Qué hace | Llave |
+|---|---|---|
+| Plantilla y editor | Los cuatro tipos de slide, el ajuste automático, el empuje con flechas | — |
+| Exportación | PNG a 2160×2700, ZIP con `copy.txt` y `creditos.txt` | — |
+| Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
+| Paletas | Azul, naranja y verde por tema, elegidas por el redactor | — |
+| Redacción con IA | `/api/redactar`: el tema entra, el borrador sale | `ANTHROPIC_API_KEY` |
+| Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
+| Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
+| Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
+| Íconos generados | Gemini, croma, la misma puerta que los descargados | `GEMINI_API_KEY` con facturación |
+
+**Apagado, y el porqué de cada uno.**
+
+- **Unsplash como buscador automático.** Sus Términos de la API obligan a
+  hotlinkear las imágenes y a enlazar el perfil del fotógrafo cada vez que se
+  muestran; aquí la foto se hornea dentro de un PNG que va a Instagram. **La
+  restricción es del canal, no de la foto**: bajarla del sitio a mano sí da uso
+  comercial libre. Vía manual documentada más abajo.
+- **DermNet.** CC BY-NC-ND: la cuenta de una consulta privada es uso comercial
+  (NC) y recortar la foto dentro del slide es obra derivada (ND). Dos de dos en
+  contra. Para uso comercial venden una licencia aparte.
+- **CDC PHIL como adaptador.** Sus imágenes sirven, pero no tiene API y su FAQ
+  dice "la mayoría" de dominio público, no todas. Sin una interfaz que devuelva
+  el estado de cada una, un adaptador tendría que suponer que todas lo son. Vía
+  manual.
+- **CC BY-SA en el archivo clínico.** Se puede usar, pero el share-alike
+  alcanzaría al carrusel entero. Es una línea en `lib/bancos/commons.ts` si
+  algún día se decide asumirlo; el porqué está escrito ahí al lado.
+- **El doble render de íconos.** Sobre un fondo de color plano una lente
+  transparente se lee como un agujero, así que el vidrio va opaco por diseño y
+  el croma basta. Espera a un concepto que de verdad necesite translucidez.
+- **`/api/mes`**, la generación del mes completo. Es lo único de la fase 6 que
+  no está.
 
 ---
 
@@ -510,22 +551,30 @@ editor y llenar el crédito a mano.
 
 ## Las pruebas
 
+Una que abre el navegador y cinco que no.
+
 ```bash
-npm run pruebas 3002      # el editor, las paletas, la cola y el banco de fotos
-npm run banco             # el disparador de seguridad, contra quince frases
-npm run banco-fotos       # el adaptador de bancos, contra una respuesta guardada
-npm run banco-clinicas    # el archivo clínico y la barrera de aprobación
-npm run banco-croma       # el recorte del fondo verde de un ícono generado
-npm run banco-manifiesto  # que la ingesta no borre lo que no calculó
+npm run pruebas 3002      # el editor entero, con Playwright y servidor
+```
+
+| Banco | Qué mide | Por qué no se puede mirar a ojo |
+|---|---|---|
+| `npm run banco` | El disparador de seguridad, contra quince frases | "Necesita antibiótico" y "suele picar de noche" tienen las dos un verbo, y solo una manda hacer algo |
+| `npm run banco-fotos` | El adaptador de Pexels y el descarte | Aparta el gimnasio del slide del contagio, y prueba lo que pasa cuando la respuesta viene rota |
+| `npm run banco-clinicas` | El archivo clínico y la barrera de aprobación | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
+| `npm run banco-croma` | El recorte del fondo verde | El halo verde no se ve sobre el blanco del editor y sí sobre el azul del slide |
+| `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
+
+```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
 ```
 
-Los dos `banco*` corren sin navegador y sin servidor, y sobre todo **sin salir a
-la red**: `banco-fotos` mide el adaptador de Pexels contra una respuesta real
-guardada en `scripts/muestras/` y contra copias mutadas a mano. Los casos de
-fallo —una foto sin autor, un campo de licencia que el adaptador no reconoce—
-salen tan baratos como el camino feliz, que es justo al revés de lo que pasa
-cuando las pruebas salen a la red.
+**Los cinco `banco*` corren sin navegador, sin servidor y sin salir a la red.**
+Miden contra respuestas reales congeladas en `scripts/muestras/` y contra copias
+mutadas a mano. Eso es lo que hace que los casos de fallo —una foto sin autor,
+una licencia no comercial, un campo que el adaptador no reconoce— salgan tan
+baratos como el camino feliz, que es justo al revés de lo que pasa cuando las
+pruebas salen a la red.
 
 En el editor, los slugs que empiezan por `laboratorio-` van a un banco de
 imágenes falso que lee esa misma muestra y "descarga" un archivo local. Así la
@@ -709,20 +758,32 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 |---|---|
 | 1 · plantilla | ✅ Los tipos de slide y sus valores. |
 | 2 · contenido | ✅ Los posts en `content/posts/*.json`, validados con Zod. |
-| 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy. |
+| 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy y los créditos. |
 | 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | ✅ La librería alojada aquí, con ingesta, manifiesto y buscador. |
-| 6 · redacción | Escribir el carrusel y el mes completo con la API de Anthropic. |
+| 6 · redacción | ✅ `/api/redactar` y la cola de afirmaciones. Falta `/api/mes`. |
+| + imágenes | ✅ Pexels para contexto, Wikimedia Commons para clínicas, con registro de licencia. |
+| + generación | ✅ Íconos con Gemini, croma y la misma puerta que los descargados. |
+
+**Lo único pendiente es `/api/mes`**: proponer los temas del mes, dejar que se
+tachen los que no sirven, y redactar uno por uno guardando cada borrador en
+cuanto llega. Está descrito en `references/ia.md` de la skill.
 
 ---
 
 ## Cosas que conviene saber
 
-- **La llave de la API** (fase 6) va en `.env.local`, que no se sube a ningún
-  lado. Solo se usa del lado del servidor.
-- **Los íconos de Thiings** no se versionan: `public/iconos/*` está en
-  `.gitignore` porque su licencia prohíbe redistribuirlos. Se versiona solo el
-  manifiesto. Los once que hay ahora son de prueba.
+- **Las llaves** van en `.env.local`, que no se sube a ningún lado, y solo se
+  usan del lado del servidor: `ANTHROPIC_API_KEY` para redactar,
+  `PEXELS_API_KEY` para las fotos de contexto y `GEMINI_API_KEY` para generar
+  íconos. Wikimedia Commons no pide ninguna.
+- **Los íconos de Thiings no se versionan**: `public/iconos/*` está en
+  `.gitignore` porque su licencia prohíbe redistribuirlos, y se versiona el
+  manifiesto. **Los íconos propios sí**, porque esa restricción es de ellos y no
+  nuestra. Las excepciones se derivan del campo `origen` del manifiesto y las
+  escribe la propia ingesta en `public/iconos/.gitignore`, así que el siguiente
+  generado se versiona solo, sin que nadie mantenga una lista. Los once de
+  Thiings que hay son de prueba; la lupa es propia.
 - **Falta tu retrato** para el slide de cierre. Ponlo en
   `public/marca/retrato.jpg` y apunta ahí `retrato` en `content/marca.json`.
   Mientras tanto ese slide sale con el fondo café y el degradado, sin foto.

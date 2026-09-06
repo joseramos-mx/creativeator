@@ -14,7 +14,7 @@
  * que nadie va a echar de menos hasta que los necesite.
  */
 
-import { CAMPOS_DE_LA_INGESTA, fusionar } from '../lib/manifiesto.ts';
+import { CAMPOS_DE_LA_INGESTA, fusionar, gitignoreDeIconos } from '../lib/manifiesto.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -89,6 +89,47 @@ ok(
   CAMPOS_DE_LA_INGESTA.every((c) => c in calculada),
   `los ${CAMPOS_DE_LA_INGESTA.length} campos declarados son los que la ingesta escribe`,
 );
+
+/* ── qué se versiona y qué no ────────────────────────────────────────────── */
+console.log('\nLas excepciones de git salen del campo, no de una lista');
+
+const conGenerado = gitignoreDeIconos([
+  { slug: 'termometro' },
+  { slug: 'lupa', origen: 'generado' },
+]);
+
+ok(conGenerado.includes('!lupa.png'), 'el generado se versiona');
+ok(!conGenerado.includes('!termometro.png'), 'y el de Thiings no: su licencia lo prohíbe');
+ok(conGenerado.includes('!.gitignore'), 'el propio archivo se versiona, o no serviría de nada');
+
+// El buscador del editor pinta thumbs/<slug>.png. Sin la miniatura, un clon
+// recién bajado enseñaría el ícono roto en la rejilla.
+ok(conGenerado.includes('!thumbs/lupa.png'), 'la miniatura del generado también');
+ok(!conGenerado.includes('!thumbs/termometro.png'), 'y la del de Thiings no');
+
+// Las tres líneas, y en este orden: git no puede volver a incluir nada dentro
+// de un directorio excluido, así que primero hay que rescatar la carpeta.
+const orden = ['!thumbs/', 'thumbs/*', '!thumbs/lupa.png'].map((l) =>
+  conGenerado.split('\n').indexOf(l),
+);
+ok(
+  orden.every((i) => i >= 0) && orden[0] < orden[1] && orden[1] < orden[2],
+  'rescatar la carpeta va antes de volver a ignorar su contenido',
+);
+
+// Y el que se añada mañana entra solo, sin tocar nada.
+const conDos = gitignoreDeIconos([
+  { slug: 'lupa', origen: 'generado' },
+  { slug: 'gotero', origen: 'generado' },
+]);
+ok(
+  conDos.includes('!gotero.png') && conDos.includes('!thumbs/gotero.png'),
+  'un segundo generado aparece sin que nadie escriba una línea',
+);
+
+// Sin ninguno propio, no se estorba con las tres líneas de thumbs.
+const soloThiings = gitignoreDeIconos([{ slug: 'termometro' }, { slug: 'curitas' }]);
+ok(!soloThiings.includes('thumbs/'), 'sin íconos propios no se escribe nada de thumbs');
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
 if (fallos > 0) process.exitCode = 1;

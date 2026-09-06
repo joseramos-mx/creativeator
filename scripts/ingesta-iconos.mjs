@@ -22,8 +22,10 @@
  * está en el buscador del editor, sin copiar archivos a mano. `npm run dev` lo
  * arranca junto al servidor.
  *
- * Licencia: los íconos de Thiings no se pueden redistribuir. public/iconos/
- * está en .gitignore y solo se versiona el manifiesto.
+ * Licencia: los íconos de Thiings no se pueden redistribuir, así que
+ * public/iconos/ está en .gitignore. Los íconos propios —los generados— sí se
+ * versionan: la restricción es de ellos, no nuestra, y las excepciones las
+ * escribe esta misma función a partir del campo `origen`.
  */
 
 import { watch } from 'chokidar';
@@ -31,7 +33,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 import { etiquetar, slugificar } from '../lib/iconos/etiquetas.ts';
-import { fusionar } from '../lib/manifiesto.ts';
+import { fusionar, gitignoreDeIconos } from '../lib/manifiesto.ts';
 
 const VIGILAR = process.argv.includes('--vigilar');
 
@@ -82,6 +84,9 @@ async function cargarManifiesto() {
 async function guardarManifiesto(indice) {
   const lista = [...indice.values()].sort((a, b) => a.slug.localeCompare(b.slug));
   await fs.writeFile(MANIFEST, `${JSON.stringify(lista, null, 1)}\n`);
+  // Las excepciones de git salen del campo `origen` de cada entrada, no de una
+  // lista escrita a mano. Ver lib/manifiesto.ts.
+  await fs.writeFile(path.join(DESTINO, '.gitignore'), gitignoreDeIconos(lista));
   return lista.length;
 }
 

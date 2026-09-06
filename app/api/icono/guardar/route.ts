@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { etiquetar, slugificar } from '@/lib/iconos/etiquetas';
-import { fusionar, type Entrada } from '@/lib/manifiesto';
+import { fusionar, gitignoreDeIconos, type Entrada } from '@/lib/manifiesto';
 
 /**
  * POST /api/icono/guardar — la variante elegida entra en la librería.
