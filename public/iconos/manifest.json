@@ -103,6 +103,27 @@
   "bytes": 1249077
  },
  {
+  "slug": "lupa",
+  "nombre": "Lupa",
+  "etiquetas": [
+   "lupa",
+   "magnifying",
+   "glass",
+   "buscar",
+   "revisar",
+   "reconocer",
+   "examinar"
+  ],
+  "color": "#9BBBC7",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 514065,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "Una lupa clásica: aro y mango, con la lente de vidrio transparente",
+  "fecha": "2026-09-06"
+ },
+ {
   "slug": "palomita-verde",
   "nombre": "palomita-verde",
   "etiquetas": [

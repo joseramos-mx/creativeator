@@ -30,6 +30,7 @@ import { watch } from 'chokidar';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { etiquetar, slugificar } from '../lib/iconos/etiquetas.ts';
 import { fusionar } from '../lib/manifiesto.ts';
 
 const VIGILAR = process.argv.includes('--vigilar');
@@ -57,15 +58,6 @@ const THUMB = 192;
 const AIRE = 0.04;
 const BYTES_MINIMOS = 2048; // para no tragarse cualquier captura de pantalla
 
-const slugificar = (nombre) =>
-  nombre
-    .replace(/\.png$/i, '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-
 /**
  * Los nombres vienen en inglés y aquí se busca en español, así que cada palabra
  * del slug arrastra sus sinónimos. El diccionario está en content/sinonimos.json
@@ -77,14 +69,6 @@ async function leerSinonimos() {
     .readFile(SINONIMOS, 'utf8')
     .then(JSON.parse)
     .catch(() => ({}));
-}
-
-function etiquetar(slug, nombre, sinonimos) {
-  const palabras = [...slug.split('-'), ...slugificar(nombre).split('-')].filter(Boolean);
-  // Se busca el slug entero y también cada palabra suelta: "cuidado-de-piel"
-  // tiene sus propios sinónimos, y "piel" los suyos.
-  const extra = [slug, ...palabras].flatMap((p) => sinonimos[p] ?? []);
-  return [...new Set([...palabras, ...extra])];
 }
 
 async function cargarManifiesto() {

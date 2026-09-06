@@ -194,13 +194,22 @@ Cuando el brief o la IA sugieren un concepto, el buscador abre con esa palabra y
 escrita. Si no encuentra nada —pasa seguido: el brief pedía "magnifying glass" y
 se publicó otra cosa— enseña la librería completa en vez de una rejilla vacía.
 
-**Primer caso pendiente de generación.** El slide 02 del post de impétigo usa
-`informacion`, que es un ícono azul sobre fondo azul: se separa 33 y el buscador
-lo marca. Lo que se publicó ahí fue una lupa, y la librería no tiene ninguna. No
-se cambia por otro que quede mejor —el post es la referencia contra la que mide
-`medir.py` y tiene que reflejar lo que se publicó, no lo que debió publicarse—,
-así que queda anotado como el primer concepto concreto para la generación de
-íconos de `docs/spec-generacion-visuales.md`.
+**El primer ícono generado, y por qué era este.** El slide 02 del post de
+impétigo usaba `informacion`: un ícono azul sobre fondo azul, ΔE 33, marcado por
+el buscador. Lo que se publicó ahí fue una lupa y la librería no tenía ninguna,
+así que quedó anotado como el primer concepto concreto para la generación —no
+como algo a sustituir por otro que quedara mejor, porque este post es la
+referencia contra la que mide `medir.py` y tiene que reflejar lo que se publicó.
+
+Ya está generada, y los números lo confirman: el ícono pasó de **−61 px de
+desfase contra la captura publicada a +8**, con el ancho exacto (231 px contra
+231), y el desplazamiento máximo de todo el carrusel bajó de 68 a 54 px. Poner
+la lupa acercó el post a lo que se publicó en vez de alejarlo, que era
+justamente la condición.
+
+Su entrada del manifiesto lleva `origen: "generado"`, el modelo, la fecha y el
+prompt. El prompt es el que importa: es lo único que permite regenerar la pieza
+si algún día cambia el estilo de la cuenta.
 
 **Licencia.** Los íconos de Thiings son de pago para uso comercial y su licencia
 prohíbe redistribuirlos. Por eso `public/iconos/*` está en `.gitignore` y solo se

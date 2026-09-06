@@ -2,6 +2,7 @@
   "_comentario": "Palabras del dominio que se buscan en español pero vienen nombradas en inglés. Se edita a mano: para las doscientas que de verdad se usan en dermatología alcanza. Cada clave arrastra sus valores a las etiquetas de búsqueda del ícono.",
 
   "magnifying": ["lupa", "buscar", "revisar", "reconocer"],
+  "lupa": ["magnifying", "glass", "buscar", "revisar", "reconocer", "examinar"],
   "glass": ["lupa", "vidrio"],
   "stethoscope": ["estetoscopio", "medico", "consulta", "doctor"],
   "thermometer": ["termometro", "fiebre", "temperatura"],
