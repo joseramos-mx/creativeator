@@ -19,7 +19,7 @@ encendido, qué está apagado y por qué.
 | Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
 | Paletas | Azul, naranja y verde por tema, elegidas por el redactor | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale | `ANTHROPIC_API_KEY` |
-| Propuesta de temas | `/api/proponer`: sin tema escrito, propone tres para elegir | `ANTHROPIC_API_KEY` |
+| Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
@@ -330,6 +330,32 @@ Su límite: borrar la entrada del manifiesto a mano hace que la siguiente
 ingesta la reconstruya sin la metadata de generación. Es correcto — borrar la
 entrada es pedir que se reconstruya.
 
+## Lo que se decide solo, y lo que no
+
+Tres pasos que antes preguntaban ya no preguntan, porque lo que estaban
+preguntando era preferencia y no criterio: **cambiarlo después en el editor
+cuesta lo mismo que haberlo elegido antes.**
+
+- **Sin tema escrito**, el modelo propone y arranca con el primero. Sigue
+  proponiendo tres —ordenar lo mejor primero le sale mejor que pedirle una sola
+  respuesta— pero cuál se escribe no se pregunta. Se enseña cuál tomó y por qué
+  toca este mes, que es información, no una pregunta.
+- **La foto de banco** se busca, se criba y se pone en un solo clic. Las otras
+  quedan a un botón de distancia y las apartadas también, con su motivo.
+- **El ícono sugerido** se pone si la librería lo tiene. Si no lo tiene, el
+  slide queda marcado como "falta ícono", que es mejor que poner uno parecido.
+
+**Lo que sigue preguntando no es preferencia y no va a dejar de preguntar:**
+
+- **La cola de afirmaciones.** Una cifra plausible con una institución al lado
+  es el error más difícil de cazar. Se revisa de una en una y no hay botón de
+  aprobar todo.
+- **La aprobación de imágenes clínicas.** Que esa piel sea lo que el texto dice
+  que es lo firma un médico, y el servidor lo comprueba contra
+  `content/marca.json`.
+- **El paso de edición entre redactar y exportar.** El borrador se abre en el
+  editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
+
 ## Exportar
 
 Desde `/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
@@ -566,6 +592,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-croma` | El recorte del fondo verde | El halo verde no se ve sobre el blanco del editor y sí sobre el azul del slide |
 | `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
 | `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
+| `npm run banco-iconos` | Que `iconoSugerido` case con el ícono correcto, o con ninguno | Un ícono equivocado ya puesto no lo revisa nadie: sale publicado |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial

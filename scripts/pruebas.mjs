@@ -384,12 +384,21 @@ await abrir(page, EDICION);
 const tarjetaBanco = await abrirTarjeta(page, 1);
 const ideaAntes = leer(EDICION).slides[1].visual.ideaImagen;
 
+// Un solo gesto: busca, aparta y pone la mejor. Elegir entre veinticuatro
+// fotos de aula es preferencia, y cambiarla después cuesta un clic.
 await tarjetaBanco.locator('button:has-text("Buscar foto en el banco")').click();
-await esperarA(async () => (await tarjetaBanco.locator('.foto-opcion').count()) > 0);
-ok((await tarjetaBanco.locator('.foto-opcion').count()) > 0, 'la búsqueda devuelve candidatos');
+await esperarA(() => leer(EDICION).slides[1].visual.credito?.fuente === 'Pexels');
+ok(
+  leer(EDICION).slides[1].visual.credito?.fuente === 'Pexels',
+  'un solo clic busca y deja la foto puesta',
+);
 ok(
   (await tarjetaBanco.locator('input').first().inputValue()).length > 0,
   'y la consulta queda editable, para volver a buscar sin gastar modelo',
+);
+ok(
+  (await tarjetaBanco.locator('button:has-text("ver las otras")').count()) === 1,
+  'las otras están a un clic, pero no estorban',
 );
 
 // La regresión del gimnasio: aquel slide se publicó con la foto de un gimnasio
@@ -405,9 +414,6 @@ ok(
   /gym/.test(await apartada.innerText()),
   `diciendo por qué se apartó: "${(await apartada.innerText()).trim()}"`,
 );
-
-await tarjetaBanco.locator('.foto-opcion:not([data-apartada])').first().click();
-await esperarA(() => leer(EDICION).slides[1].visual.credito?.fuente === 'Pexels');
 
 const dePexels = leer(EDICION).slides[1].visual;
 ok(dePexels.src.includes('/media/laboratorio-edicion/pexels-'), `se descargó a ${dePexels.src}`);

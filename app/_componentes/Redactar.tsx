@@ -16,9 +16,10 @@ import type { Post } from '@/template/tipos';
  *   salió —con qué paleta, con cuántas afirmaciones por revisar— antes de
  *   crear el archivo es lo que evita acumular borradores que nadie quiso.
  *
- * Y si el tema se deja vacío, el modelo propone tres antes de escribir nada.
- * Proponer son segundos y redactar son dos minutos, así que elegir primero sale
- * mucho más barato que descubrir a los dos minutos que no era el tema.
+ * Y si el tema se deja vacío, el modelo propone y arranca con el primero. No
+ * hay paso de elegir: cuál de los temas propuestos se escribe es preferencia, y
+ * cambiarlo después cuesta lo mismo que haberlo elegido antes. Sí se enseña
+ * cuál tomó y por qué toca este mes, que es información y no una pregunta.
  */
 
 type Propuesta = {
@@ -44,20 +45,32 @@ export function Redactar() {
   const [trabajando, setTrabajando] = useState(false);
   const [guardando, setGuardando] = useState(false);
 
-  /** Sin tema escrito: el modelo propone tres y se elige. */
+  /**
+   * Sin tema escrito: el modelo propone y se arranca con el primero.
+   *
+   * Propone tres y no uno porque pedirle que ordene lo mejor primero le sale
+   * mejor que pedirle una sola respuesta; pero cuál de los tres se escribe no
+   * es criterio, es preferencia, y cambiar el tema después cuesta lo mismo que
+   * haberlo elegido antes. Lo que sí se enseña es cuál tomó y por qué.
+   */
   async function proponerTemas() {
     setTrabajando(true);
     setError(undefined);
     setSalida(null);
+    setPropuestas(null);
     try {
       const r = await fetch('/api/proponer', { method: 'POST' });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
-      setPropuestas(cuerpo.propuestas);
+
+      const elegida = cuerpo.propuestas?.[0];
+      if (!elegida) throw new Error('El modelo no propuso ningún tema.');
+      setPropuestas([elegida]);
       setContexto(cuerpo.contexto);
+      setTema(elegida.tema);
+      await redactar(elegida.tema);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudieron proponer temas.');
-    } finally {
       setTrabajando(false);
     }
   }
@@ -128,9 +141,7 @@ export function Redactar() {
           }}
         />
 
-        {/* Sin tema, el botón cambia de trabajo. Proponer son segundos y
-            redactar son dos minutos, así que elegir primero sale mucho más
-            barato que descubrir a los dos minutos que no era el tema. */}
+        {/* Sin tema, el botón hace el trabajo entero: propone y redacta. */}
         <button
           className="boton"
           onClick={() => (tema.trim() ? redactar() : proponerTemas())}
@@ -139,41 +150,23 @@ export function Redactar() {
           {trabajando
             ? tema.trim()
               ? 'redactando… tarda un par de minutos'
-              : 'pensando temas…'
+              : 'eligiendo tema y redactando…'
             : tema.trim()
               ? 'Redactar'
-              : 'Proponer tres temas'}
+              : 'Elegir tema y redactar'}
         </button>
 
         {error ? <p className="aviso">{error}</p> : null}
 
-        {propuestas ? (
-          <>
-            <p className="pista">
-              Tres para {contexto?.mes}, sin repetir lo que ya está publicado. Elige uno y se
-              redacta; o escribe el tuyo arriba.
-            </p>
-            <ol className="propuestas">
-              {propuestas.map((p) => (
-                <li key={p.tema}>
-                  <button
-                    className="propuesta"
-                    onClick={() => {
-                      setTema(p.tema);
-                      setPropuestas(null);
-                      void redactar(p.tema);
-                    }}
-                  >
-                    <strong>{p.tema}</strong>
-                    <span>{p.porQueAhora}</span>
-                    <em data-paleta={p.paleta}>
-                      paleta {p.paleta} · {p.porQuePaleta}
-                    </em>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </>
+        {propuestas?.[0] ? (
+          <div className="propuesta propuesta--tomada">
+            <span className="chip">tema de {contexto?.mes}</span>
+            <strong>{propuestas[0].tema}</strong>
+            <span>{propuestas[0].porQueAhora}</span>
+            <em data-paleta={propuestas[0].paleta}>
+              paleta {propuestas[0].paleta} · {propuestas[0].porQuePaleta}
+            </em>
+          </div>
         ) : null}
 
         {salida ? (

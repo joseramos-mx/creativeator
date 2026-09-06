@@ -7,6 +7,7 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
 import { afirmacionesDe } from './afirmaciones';
+import { mejorCoincidencia, type Icono } from './iconos';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
 import { leerMarca } from './posts';
@@ -122,7 +123,7 @@ export async function redactar(tema: string, slug: string): Promise<ResultadoRed
   const redaccion = respuesta.parsed_output;
   if (!redaccion) throw new Error('El modelo no devolvió la estructura esperada.');
 
-  const post = aPost(redaccion, slug);
+  const post = aPost(redaccion, slug, await leerManifiesto());
   return { post, porQuePaleta: redaccion.porQuePaleta, avisos: revisar(redaccion, post) };
 }
 
@@ -230,7 +231,14 @@ termina en exactamente cinco hashtags en MayúsculasPegadas, con su almohadilla
 
 /* ── de la redacción al post ──────────────────────────────────────────────── */
 
-function aPost(r: TRedaccion, slug: string): TPost {
+/** La librería de íconos, para casar `iconoSugerido` sin abrir el buscador. */
+async function leerManifiesto(): Promise<Icono[]> {
+  return readFile(join(process.cwd(), 'public', 'iconos', 'manifest.json'), 'utf8')
+    .then(JSON.parse)
+    .catch(() => []);
+}
+
+function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
   const slides: TSlide[] = [];
 
   for (const bruto of r.slides) {
@@ -268,7 +276,21 @@ function aPost(r: TRedaccion, slug: string): TPost {
         s.visual === 'foto'
           ? { clase: 'foto', src: FOTO_PENDIENTE, ...(s.ideaImagen ? { ideaImagen: s.ideaImagen } : {}) }
           : s.visual === 'icono'
-            ? { clase: 'icono', ...(s.iconoSugerido ? { iconoSugerido: s.iconoSugerido } : {}) }
+            ? {
+                clase: 'icono',
+                ...(s.iconoSugerido ? { iconoSugerido: s.iconoSugerido } : {}),
+                // El concepto sugerido se casa aquí contra el manifiesto: si la
+                // librería ya lo tiene, el ícono queda puesto y no hay que abrir
+                // el buscador para confirmar lo obvio. Con puntaje dudoso se
+                // deja vacío y el editor marca "falta ícono", que es mejor que
+                // poner uno equivocado y que nadie lo note.
+                ...(s.iconoSugerido
+                  ? (() => {
+                      const encontrado = mejorCoincidencia(manifiesto, s.iconoSugerido);
+                      return encontrado ? { slug: encontrado.slug } : {};
+                    })()
+                  : {}),
+              }
             : { clase: 'ninguno' },
       ...(s.fuente ? { fuente: s.fuente } : {}),
     });

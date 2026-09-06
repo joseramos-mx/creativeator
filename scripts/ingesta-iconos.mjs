@@ -38,6 +38,17 @@ import { fusionar, gitignoreDeIconos } from '../lib/manifiesto.ts';
 const VIGILAR = process.argv.includes('--vigilar');
 
 /**
+ * Recalcula las etiquetas de todo el manifiesto sin volver a tocar los PNG.
+ *
+ * Hace falta porque la ingesta es incremental por tamaño de archivo: editar
+ * `content/sinonimos.json` no cambia ningún PNG, así que sin esto el
+ * diccionario se puede mejorar y no llegar nunca al buscador. Y el diccionario
+ * es la palanca cuando `iconoSugerido` no encuentra algo que sí está — ver
+ * `mejorCoincidencia` en lib/iconos.ts.
+ */
+const REETIQUETAR = process.argv.includes('--reetiquetar');
+
+/**
  * De dónde salen los íconos, en este orden: el argumento, la variable de
  * entorno ICONOS_ORIGEN, o `iconos-entrada/` dentro del proyecto.
  *
@@ -190,6 +201,18 @@ async function main() {
   await fs.mkdir(ORIGEN, { recursive: true });
   const sinonimos = await leerSinonimos();
   const indice = await cargarManifiesto();
+
+  if (REETIQUETAR) {
+    const sinonimosFrescos = await leerSinonimos();
+    for (const [slug, entrada] of indice) {
+      indice.set(slug, {
+        ...entrada,
+        etiquetas: etiquetar(slug, String(entrada.nombre ?? slug), sinonimosFrescos),
+      });
+    }
+    console.log(`${await guardarManifiesto(indice)} íconos reetiquetados con el diccionario de ahora.`);
+    return;
+  }
 
   const entradas = await fs.readdir(ORIGEN, { recursive: true, withFileTypes: true });
   const cuenta = { nuevo: 0, 'sin cambios': 0, ignorado: 0, error: 0 };

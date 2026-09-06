@@ -865,3 +865,18 @@ select:focus {
 .propuesta em[data-paleta='azul'] { border-left-color: #51a2ff; }
 .propuesta em[data-paleta='naranja'] { border-left-color: #ed842f; }
 .propuesta em[data-paleta='verde'] { border-left-color: #48b45d; }
+
+/* El tema que se tomó: es información de lo que pasó, no una elección. */
+.propuesta--tomada {
+  cursor: default;
+  border-style: solid;
+}
+
+.propuesta--tomada:hover {
+  border-color: var(--ui-line);
+}
+
+.propuesta--tomada .chip {
+  align-self: flex-start;
+  margin-bottom: 2px;
+}

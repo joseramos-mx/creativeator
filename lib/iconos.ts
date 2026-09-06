@@ -87,12 +87,93 @@ export function buscar(fuse: Fuse<Icono>, consulta: string, limite = 60): Icono[
 
 /**
  * Lo que hace la IA con `iconoSugerido`: se le pide un concepto corto en inglés
- * y se casa contra el manifiesto. Con puntaje bueno se asigna el slug; con
- * puntaje dudoso se deja vacío y el editor marca "falta ícono", que es mejor
- * que poner un ícono equivocado y que nadie lo note.
+ * y se casa contra el manifiesto, para poner el ícono sin abrir el buscador.
+ *
+ * ── Por qué no basta con buscar la frase ────────────────────────────────────
+ * La primera versión buscaba el concepto entero y se quedaba con el primero. No
+ * encontraba nada: `fuse` compara la consulta contra **cada etiqueta suelta**, y
+ * ninguna etiqueta es "magnifying glass", así que la frase que el redactor
+ * escribe de verdad —siempre de dos palabras— sacaba 0.72 y se descartaba,
+ * mientras que "magnifying" a secas sacaba 0.000. El buscador del editor no lo
+ * notó nunca porque ahí se teclea una palabra.
+ *
+ * Ahora se miran dos señales:
+ *
+ *  · **la frase**, contra el nombre y las etiquetas juntas en un solo texto, que
+ *    es lo que permite que "magnifying glass" case como frase;
+ *  · **las palabras**, cada una por separado, que es lo que rescata
+ *    "warning triangle" cuando solo "warning" está en la librería.
+ *
+ * ── Por qué los umbrales son tan estrictos ──────────────────────────────────
+ * Los dos errores posibles no cuestan lo mismo. No encontrar lo que sí está
+ * cuesta un clic en el editor; poner un ícono equivocado no cuesta nada en el
+ * momento y sale publicado, porque nadie revisa un ícono que ya está puesto.
+ *
+ * Por eso la vía de las palabras exige un acierto **exacto** en al menos una y
+ * que ninguna otra palabra apunte a otro ícono. Es lo que separa
+ * "warning triangle" —donde "warning" es la palabra que manda— de "skin rash",
+ * donde "skin" arrastraría el ícono de cuidado de piel para un carrusel sobre
+ * una erupción. La segunda es la que hay que impedir.
+ *
+ * Cuando algo que sí está en la librería no se encuentra, el arreglo no es
+ * bajar el umbral: es añadir la palabra a `content/sinonimos.json`.
  */
-export function mejorCoincidencia(fuse: Fuse<Icono>, concepto: string): Icono | null {
-  const r = fuse.search(concepto, { limit: 1 })[0];
-  if (!r || (r.score ?? 1) > 0.35) return null;
-  return r.item;
+const FRASE = 0.25;
+const PALABRA_EXACTA = 0.05;
+const PALABRA_FLOJA = 0.2;
+
+export function mejorCoincidencia(manifiesto: Icono[], concepto: string): Icono | null {
+  const q = concepto.trim().toLowerCase();
+  if (!q || manifiesto.length === 0) return null;
+
+  const fuse = crearBuscador(manifiesto);
+
+  // 1. La frase, contra el texto completo de cada ícono.
+  const porFrase = buscadorDeFrase(manifiesto).search(q, { limit: 1 })[0];
+  if (porFrase && (porFrase.score ?? 1) <= FRASE) return porFrase.item;
+
+  // 2. Las palabras. Hace falta un acierto exacto, y que las demás palabras que
+  //    acierten algo apunten al mismo ícono.
+  const palabras = q.split(/\s+/).filter((p) => p.length > 2);
+  if (palabras.length < 2) return null;
+
+  let elegido: Icono | null = null;
+  let exacto = false;
+
+  for (const palabra of palabras) {
+    const r = fuse.search(palabra, { limit: 1 })[0];
+    if (!r || (r.score ?? 1) > PALABRA_FLOJA) continue;
+    if (elegido && r.item.slug !== elegido.slug) return null; // dos palabras, dos íconos
+    elegido = r.item;
+    if ((r.score ?? 1) <= PALABRA_EXACTA) exacto = true;
+  }
+
+  return exacto ? elegido : null;
+}
+
+/**
+ * El mismo manifiesto, con el nombre y las etiquetas juntas en un campo.
+ *
+ * Va aparte de `crearBuscador` porque el buscador del editor no lo necesita:
+ * ahí se teclea una palabra. Es la búsqueda por frase la que necesita un texto
+ * donde "magnifying glass" aparezca seguido.
+ */
+const cache = new WeakMap<Icono[], Fuse<Icono & { texto: string }>>();
+
+function buscadorDeFrase(manifiesto: Icono[]) {
+  const guardado = cache.get(manifiesto);
+  if (guardado) return guardado;
+
+  const conTexto = manifiesto.map((i) => ({
+    ...i,
+    texto: `${i.nombre} ${i.slug} ${(i.etiquetas ?? []).join(' ')}`.toLowerCase(),
+  }));
+  const nuevo = new Fuse(conTexto, {
+    keys: ['texto'],
+    threshold: 0.45,
+    ignoreLocation: true,
+    includeScore: true,
+  });
+  cache.set(manifiesto, nuevo);
+  return nuevo;
 }

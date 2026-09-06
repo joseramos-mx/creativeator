@@ -1,0 +1,94 @@
+{
+  "slug": "ronchas-y-comezon-por-el-uniforme-nuevo-los-broches-metalico",
+  "tema": "Ronchas y comezón por el uniforme nuevo, los broches metálicos y los zapatos escolares: cuándo es dermatitis de contacto y cuándo conviene una prueba de parche",
+  "creado": "2026-09-06",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "La roncha que aparece con el uniforme 🎒\n\nSi a tu hijo le salen ronchas justo donde va el broche del pantalón, donde roza la etiqueta o donde aprieta el zapato, seguramente es dermatitis de contacto. En el regreso a clases se ve más seguido: ropa nueva, calor de la tarde y pie encerrado ocho horas.\n\n🔍 Qué es: la piel reacciona a algo que la toca. La irritativa viene del roce, el sudor y el jabón, y es la más común. La alérgica aparece cuando el cuerpo reconoce un material, como el níquel de los broches (Cleveland Clinic).\n\n🔍 Cómo reconocerlo: la pista es la forma. Una roncha redonda debajo del botón metálico, una placa roja en el empeine con el borde del zapato marcado, ronchas en el cuello siguiendo la etiqueta. En la alérgica la piel tarda de uno a tres días en reaccionar (AAD).\n\n⚠️ Por qué justo ahora: el sudor hace que el metal libere más níquel sobre la piel, y el zapato escolar suma sus propios materiales: hule, pegamentos y lo que se usa para curtir el cuero (AAD · StatPearls).\n\n✅ Qué ayuda en casa: lavar el uniforme antes de estrenarlo, quitar las etiquetas, poner una playera de algodón entre el broche y la piel, y cambiar calcetines a media jornada si el pie suda (AAD · Mayo Clinic).\n\n⚡ Ojo, con qué se confunde: la dermatitis atópica va en los pliegues de codos y rodillas y viene de años atrás. La urticaria hace ronchas que cambian de lugar y se borran en horas. El pie de atleta empieza entre los dedos y descama. La de contacto respeta el borde de lo que toca: por eso se ve dibujada.\n\n📲 ¿La roncha le vuelve cada que se pone el uniforme? Eso ya merece valoración. En consulta revisamos si hace falta una prueba de parche, el estudio que identifica cuál material es el responsable en lugar de andar adivinando prenda por prenda. Agenda en Doctoralia: el enlace está en la biografía.\n\n💬 ¿En qué parte le pica a tu hijo: cuello, cintura o pies? Cuéntamelo en un renglón.\n\n🔖 Guarda este carrusel para cuando compres el próximo uniforme o el siguiente par de zapatos, y mándaselo a la mamá que ya cambió tres veces de calcetines sin que se le quite la comezón.\n\n#DermatitisDeContacto #RegresoAClases #DermatologiaPediatrica #AlergiaAlNiquel #AlergologoDurango",
+  "pilar": "Cuando la ropa irrita",
+  "objetivo": "agendar",
+  "nota": "Regreso a clases",
+  "hashtags": [
+    "#DermatitisDeContacto",
+    "#RegresoAClases",
+    "#DermatologiaPediatrica",
+    "#AlergiaAlNiquel",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La roncha que aparece*\ncon el **uniforme**",
+      "pregunta": "¿Es el uniforme nuevo?"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **dermatitis de contacto?**",
+      "bajada": "No es falta de higiene: es un material sobre la piel.",
+      "cuerpo": "Dermatitis de contacto: la piel se irrita o se alergiza por algo que la toca. Hay dos tipos. La irritativa la causa el roce, el sudor o el jabón, y es la más común. La alérgica aparece cuando el cuerpo reconoce un material, como el níquel del broche.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "school uniform shirt"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se marca** *donde toca.*",
+      "bajada": "La roncha copia la forma de lo que la roza.",
+      "cuerpo": "La pista es la forma. Una roncha redonda justo debajo del botón metálico. Una mancha roja en el empeine, donde aprieta el zapato. Ronchas en el cuello, siguiendo la etiqueta. En la alérgica, la piel tarda de uno a tres días en reaccionar.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/pendiente.jpg",
+        "ideaImagen": "Foto clínica de banco con licencia: dermatitis de contacto en el empeine de un niño, con el borde enrojecido siguiendo la línea del zapato."
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Con el calor* **pica más.**",
+      "bajada": "El sudor saca el níquel del metal.",
+      "cuerpo": "El uniforme está nuevo, la tarde hace sudar y el sudor hace que el metal libere más níquel sobre la piel. Por eso el broche que antes no molestaba, ahora sí. Los zapatos escolares suman su parte: el hule, los pegamentos y lo que se usa para curtir el cuero.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/pendiente.jpg",
+        "ideaImagen": "Foto de banco: niño con uniforme escolar y mochila a la salida de clases a mediodía, con la camisa pegada al cuerpo por el sudor."
+      },
+      "fuente": "AAD · StatPearls"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* que **sí ayudan**",
+      "puntos": [
+        "Lava el uniforme antes de estrenarlo y quítale las etiquetas.",
+        "Pon una playera de algodón entre el broche metálico y la piel.",
+        "Cambia calcetines a media jornada si el pie suda mucho.",
+        "Anota qué traía puesto el día que salió la roncha."
+      ],
+      "fuente": "AAD · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo hacer una **prueba de parche?**",
+      "bajada": "La prueba de parche se hace en consulta, no en casa.",
+      "cuerpo": "Si la roncha vuelve cada que se pone el uniforme, si no mejora al quitar la prenda, si forma ampollas o si le quita el sueño, vale una valoración. La prueba de parche identifica qué material es. Se pegan parches en la espalda y se revisan dos veces en los días siguientes.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/ronchas-y-comezon-por-el-uniforme-nuevo-los-broches-metalico/pexels-5407238.jpg",
+        "ideaImagen": "Foto de banco: parches de prueba epicutánea colocados en la espalda de un paciente durante una consulta, sin mostrar el rostro.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Tima Miroshnichenko",
+          "url": "https://www.pexels.com/photo/stethoscope-and-notebook-on-desk-5407238/"
+        }
+      },
+      "fuente": "AAD · Mayo Clinic"
+    },
+    {
+      "tipo": "cierre",
+      "frase": "La roncha marca el lugar. Ahí está la pista."
+    }
+  ]
+}

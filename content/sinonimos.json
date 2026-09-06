@@ -50,7 +50,7 @@
   "informacion": ["info", "dato", "aviso"],
   "alerta": ["warning", "advertencia", "cuidado", "ojo"],
   "termometro": ["fiebre", "temperatura", "thermometer"],
-  "curitas": ["curita", "bandage", "herida", "parche"],
+  "curitas": ["curita", "bandage", "band", "aid", "bandaid", "herida", "parche"],
   "llanto": ["llorar", "nino", "molestia", "dolor"],
   "silencio": ["callar", "secreto", "shh"],
   "preservativo": ["condon", "its", "proteccion"],

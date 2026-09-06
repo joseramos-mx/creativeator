@@ -53,6 +53,21 @@ export function BuscadorFotos({
   const [buscando, setBuscando] = useState(false);
   const [bajando, setBajando] = useState<string>();
   const [verApartados, setVerApartados] = useState(false);
+  const [verOtras, setVerOtras] = useState(false);
+
+  /**
+   * Busca y pone la mejor, en un solo gesto.
+   *
+   * Elegir entre veinticuatro fotos de aula es preferencia, no criterio: la
+   * primera del banco ya viene ordenada por relevancia y cambiarla después en
+   * el editor cuesta un clic. Lo que no es preferencia —de dónde salió y bajo
+   * qué licencia— se escribe igual, en la misma petición.
+   */
+  async function buscarYPoner() {
+    const hallado = await buscar();
+    const mejor = hallado?.pasan[0];
+    if (mejor) await elegir(mejor);
+  }
 
   async function buscar(propia?: string) {
     setBuscando(true);
@@ -71,8 +86,10 @@ export function BuscadorFotos({
       if (!r.ok) throw new Error(cuerpo.error);
       setHallazgo(cuerpo);
       setQuery(cuerpo.criterios.query);
+      return cuerpo as Hallazgo;
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo buscar.');
+      return null;
     } finally {
       setBuscando(false);
     }
@@ -100,8 +117,8 @@ export function BuscadorFotos({
   return (
     <div className="banco" data-banco>
       {!hallazgo ? (
-        <button className="boton" onClick={() => buscar()} disabled={buscando}>
-          {buscando ? 'leyendo el slide…' : 'Buscar foto en el banco'}
+        <button className="boton" onClick={buscarYPoner} disabled={buscando}>
+          {buscando ? 'buscando y poniendo…' : 'Buscar foto en el banco'}
         </button>
       ) : null}
 
@@ -141,12 +158,18 @@ export function BuscadorFotos({
             </p>
           ) : null}
 
-          <Rejilla
-            candidatos={hallazgo.pasan}
-            bajando={bajando}
-            onElegir={elegir}
-            vacio="Ninguna pasó la criba. Prueba con otra consulta."
-          />
+          {hallazgo.pasan.length === 0 ? (
+            <p className="pista">Ninguna pasó la criba. Prueba con otra consulta.</p>
+          ) : (
+            <>
+              <button className="boton sm" onClick={() => setVerOtras((v) => !v)}>
+                {verOtras ? 'ocultar' : 'ver'} las otras {hallazgo.pasan.length - 1}
+              </button>
+              {verOtras ? (
+                <Rejilla candidatos={hallazgo.pasan.slice(1)} bajando={bajando} onElegir={elegir} />
+              ) : null}
+            </>
+          )}
 
           {hallazgo.apartados.length ? (
             <>
