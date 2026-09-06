@@ -8,8 +8,8 @@
  * Aquí el fallo en cerrado importa más que en el banco de fotos de ambiente, y
  * por una razón concreta: en Pexels la licencia es la misma para todo, así que
  * la constante no puede equivocarse de imagen. En Commons conviven el dominio
- * público, CC0, CC BY-SA y cosas que no se pueden usar en absoluto, y la
- * diferencia entre una y otra es una cadena de texto dentro de la respuesta.
+ * público, CC0, CC BY, CC BY-SA y cosas que no se pueden usar en absoluto, y
+ * la diferencia entre una y otra es una cadena de texto dentro de la respuesta.
  * Inventar licencias y comprobar que las malas no pasan es lo único que separa
  * "leemos la licencia" de "suponemos que es libre".
  */
@@ -40,31 +40,29 @@ console.log('\nLa respuesta real de Wikimedia Commons');
 
 const candidatos = paginas.map(aCandidato);
 ok(candidatos.length === paginas.length, `${candidatos.length} páginas normalizadas`);
+// La muestra trae dominio público, CC0 y CC BY-SA. Las BY-SA no pasan: el
+// share-alike se propagaría al PNG que se sube a Instagram.
+const usables = candidatos.filter((c) => c.credito);
+ok(usables.length > 0, `${usables.length} de ${candidatos.length} usables`);
 ok(
-  candidatos.every((c) => c.credito !== null),
-  'las de la muestra son todas usables: dominio público, CC0 y CC BY-SA',
-);
-ok(
-  candidatos.every((c) => c.credito?.fuente === 'Wikimedia Commons'),
+  usables.every((c) => c.credito?.fuente === 'Wikimedia Commons'),
   'con la fuente escrita',
 );
 ok(
-  candidatos.every((c) => c.credito?.url?.startsWith('https://commons.wikimedia.org/')),
+  usables.every((c) => c.credito?.url?.startsWith('https://commons.wikimedia.org/')),
   'y el enlace a la ficha del archivo, no al JPEG',
 );
 
 // A diferencia de Pexels, aquí la licencia sale de la respuesta y varía.
-const licencias = [...new Set(candidatos.map((c) => c.credito?.licencia))].sort();
-ok(licencias.length > 1, `la licencia es por imagen, no una constante: ${licencias.join(', ')}`);
-
-const conObligacion = candidatos.filter((c) => c.avisos?.length);
+const licencias = [...new Set(candidatos.map((c) => c.credito?.licencia).filter(Boolean))].sort();
+ok(licencias.length > 0, `la licencia es por imagen, no una constante: ${licencias.join(', ')}`);
 ok(
-  conObligacion.length > 0 && conObligacion.every((c) => c.avisos.some((a) => /CC BY/.test(a))),
-  'las CC BY-SA avisan de la obligación de compartir igual antes de firmarlas',
+  !licencias.some((l) => /BY-SA/i.test(l)),
+  'y ninguna usable es CC BY-SA: el share-alike alcanzaría al carrusel entero',
 );
 ok(
-  candidatos.some((c) => c.credito?.licencia === 'Public domain' && !c.avisos?.length),
-  'y el dominio público no arrastra ninguna',
+  usables.some((c) => c.credito?.licencia === 'Public domain' && !c.avisos?.length),
+  'el dominio público no arrastra obligaciones',
 );
 
 /* ── licencias que no pasan ──────────────────────────────────────────────── */
@@ -90,8 +88,18 @@ for (const mala of [
   ok(conLicencia(mala).credito === null, `"${mala || '(vacía)'}" no se puede usar`);
 }
 
-for (const buena of ['pd', 'pd-us', 'cc0', 'cc-by-4.0', 'cc-by-sa-3.0']) {
+for (const buena of ['pd', 'pd-us', 'cc0', 'cc-by-4.0', 'cc-by-3.0']) {
   ok(conLicencia(buena).credito !== null, `"${buena}" sí`);
+}
+
+// Se puede usar, pero el share-alike se propagaría al PNG de Instagram y de ahí
+// al carrusel entero. Queda fuera por decisión, no por licencia inválida: la
+// línea para activarla está escrita en lib/bancos/commons.ts.
+for (const compartirIgual of ['cc-by-sa-3.0', 'cc-by-sa-4.0']) {
+  ok(
+    conLicencia(compartirIgual).credito === null,
+    `"${compartirIgual}" no entra: el share-alike alcanzaría al carrusel`,
+  );
 }
 
 // "cc-by-nc" empieza igual que "cc-by": si la comparación fuera por prefijo
@@ -110,7 +118,8 @@ ok(
   'una restricción de derechos de imagen deja la foto fuera',
 );
 
-const sinAutor = structuredClone(paginas[2]); // una CC BY-SA, que exige atribución
+const sinAutor = structuredClone(paginas[2]);
+sinAutor.imageinfo[0].extmetadata.License = { value: 'cc-by-4.0' }; // exige atribución
 sinAutor.imageinfo[0].extmetadata.Artist = { value: '' };
 ok(
   aCandidato(sinAutor).credito === null,

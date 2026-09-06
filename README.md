@@ -404,8 +404,15 @@ borra nada: dice qué hay que tocar.
 **Wikimedia Commons** es el único con adaptador automático. A diferencia de
 Pexels, aquí la licencia **sí viene por imagen** y varía —dominio público, CC0,
 CC BY, CC BY-SA y también cosas inusables—, así que se lee la de cada archivo y
-se compara contra una lista blanca. Las CC BY-SA pasan pero avisan de la
-obligación de compartir igual, para que el médico lo vea antes de firmar.
+se compara contra una lista blanca: dominio público, CC0 y CC BY.
+
+**CC BY-SA no entra**, aunque se pueda usar. El share-alike no se queda en la
+foto: la plantilla la recorta y la compone dentro del slide, ese slide se
+exporta a un PNG y ese PNG se sube a Instagram. Si eso es obra derivada —y lo
+es—, la obligación de licenciar igual alcanza al carrusel entero, y eso no lo
+va a desenredar nadie dentro de un año. Con veintiuna usables para "impetigo" no
+hace falta correr el riesgo. Si alguna vez se decide asumirlo, es una línea en
+`lib/bancos/commons.ts` y el porqué está escrito ahí al lado.
 
 **DermNet queda fuera.** Sus imágenes son CC BY-NC-ND 3.0: **NC** prohíbe el uso
 comercial y la cuenta de una consulta privada lo es; **ND** prohíbe las obras

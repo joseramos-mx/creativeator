@@ -34,15 +34,25 @@ export const FUENTE = 'Wikimedia Commons';
  * que este adaptador no conozca, o ninguna— deja el candidato sin crédito y sin
  * crédito no se ofrece.
  *
- * CC BY-SA pasa, pero arrastra una obligación que el médico tiene que ver antes
- * de firmar: compartir igual. Por eso no se acepta en silencio, se acepta con
- * un aviso.
+ * ── Por qué CC BY-SA no está ────────────────────────────────────────────────
+ * Se puede usar, y por eso la tentación de dejarla entrar es real: son seis de
+ * cada veintiuna. Pero el share-alike no se queda en la foto. La plantilla la
+ * recorta y la compone dentro del slide, y ese slide se exporta a un PNG que se
+ * sube a Instagram; si eso es obra derivada —y lo es—, la obligación de
+ * licenciar igual alcanza al carrusel entero.
+ *
+ * Nadie va a desenredar eso dentro de un año, cuando el post lleve meses
+ * publicado y nadie recuerde de qué imagen venía la obligación. Con veintiuna
+ * usables no hace falta correr el riesgo.
+ *
+ * Si algún día se decide asumirlo, es esta línea: añadir `/^cc-by-sa-\d/` a la
+ * lista. El aviso de la obligación ya está escrito más abajo y saldría delante
+ * de quien firma.
  */
 const PERMITIDAS = [
   /^pd(-|$)/, // dominio público, en sus muchas variantes
   /^cc0(-|$)/,
   /^cc-by-\d/,
-  /^cc-by-sa-\d/,
 ];
 
 const CON_OBLIGACION: [RegExp, string][] = [

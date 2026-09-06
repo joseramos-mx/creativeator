@@ -438,12 +438,12 @@ const panelClinico = tarjetaClinica.locator('.clinico');
 await panelClinico.locator('button:has-text("Archivo clínico")').click();
 await esperarA(async () => (await panelClinico.locator('.foto-opcion').count()) > 0);
 
-// La muestra de laboratorio trae una CC BY-NC-ND —la licencia de DermNet— que
-// el adaptador tiene que dejar fuera.
+// La muestra de laboratorio trae una CC BY-NC-ND —la de DermNet— y seis
+// CC BY-SA. Ninguna de las siete puede entrar, y el panel lo dice contándolas.
 ok((await panelClinico.locator('.foto-opcion').count()) > 0, 'el archivo devuelve candidatos');
 ok(
-  /1 imagen quedó fuera por su licencia/.test(await panelClinico.innerText()),
-  'y una queda fuera por su licencia, contada y no escondida',
+  /7 imágenes quedaron fuera por su licencia/.test(await panelClinico.innerText()),
+  'y las que no se pueden usar salen contadas, no escondidas',
 );
 
 await panelClinico.locator('.foto-opcion').first().click();
