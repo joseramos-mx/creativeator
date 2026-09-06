@@ -6,7 +6,7 @@ import { Pie } from '../partes/Pie';
 import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado } from '../texto';
 import { color, velo } from '../tokens';
-import type { Marca } from '../tipos';
+import type { Marca, SlideCierre } from '../tipos';
 import { variablesDePlantilla } from '../variables';
 
 /**
@@ -20,11 +20,13 @@ import { variablesDePlantilla } from '../variables';
  * retrato es clara.
  */
 export function Cierre({
+  slide,
   marca,
   numero,
   ayudas,
   id,
 }: {
+  slide: SlideCierre;
   marca: Marca;
   numero: string | null;
   ayudas?: Ayudas;
@@ -45,6 +47,7 @@ export function Cierre({
       <Numero numero={numero} />
 
       <div className="cta">
+        {slide.frase ? <div className="cta__frase">{marcado(slide.frase)}</div> : null}
         <div className="cta__l1">{marcado(`*Consulta en* **${marca.ciudad}**`)}</div>
         <div className="cta__l2">Agenda tu cita desde</div>
         <div className="cta__l3">

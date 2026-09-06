@@ -11,6 +11,7 @@ export type {
   TOverrides as Overrides,
   TPost as Post,
   TSlide as Slide,
+  TSlideCierre as SlideCierre,
   TSlideContenido as SlideContenido,
   TSlideLista as SlideLista,
   TSlidePortada as SlidePortada,

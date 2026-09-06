@@ -1,0 +1,152 @@
+[
+ {
+  "slug": "adn",
+  "nombre": "adn",
+  "etiquetas": [
+   "adn",
+   "genetica",
+   "herencia",
+   "dna"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 528127
+ },
+ {
+  "slug": "alerta",
+  "nombre": "alerta",
+  "etiquetas": [
+   "alerta",
+   "warning",
+   "advertencia",
+   "cuidado",
+   "ojo"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 453536
+ },
+ {
+  "slug": "correr",
+  "nombre": "correr",
+  "etiquetas": [
+   "correr",
+   "ejercicio",
+   "deporte",
+   "sudor"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 586173
+ },
+ {
+  "slug": "cuidado-de-piel",
+  "nombre": "cuidado-de-piel",
+  "etiquetas": [
+   "cuidado",
+   "de",
+   "piel",
+   "skincare",
+   "rutina",
+   "crema"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 867231
+ },
+ {
+  "slug": "curitas",
+  "nombre": "curitas",
+  "etiquetas": [
+   "curitas",
+   "curita",
+   "bandage",
+   "herida",
+   "parche"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 977884
+ },
+ {
+  "slug": "informacion",
+  "nombre": "informacion",
+  "etiquetas": [
+   "informacion",
+   "info",
+   "dato",
+   "aviso"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 831905
+ },
+ {
+  "slug": "llanto",
+  "nombre": "llanto",
+  "etiquetas": [
+   "llanto",
+   "llorar",
+   "nino",
+   "molestia",
+   "dolor"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 830958
+ },
+ {
+  "slug": "palomita-verde",
+  "nombre": "palomita-verde",
+  "etiquetas": [
+   "palomita",
+   "verde",
+   "check",
+   "correcto",
+   "si",
+   "lista"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 441637
+ },
+ {
+  "slug": "preservativo",
+  "nombre": "preservativo",
+  "etiquetas": [
+   "preservativo",
+   "condon",
+   "its",
+   "proteccion"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 871395
+ },
+ {
+  "slug": "silencio",
+  "nombre": "silencio",
+  "etiquetas": [
+   "silencio",
+   "callar",
+   "secreto",
+   "shh"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 772312
+ },
+ {
+  "slug": "termometro",
+  "nombre": "termometro",
+  "etiquetas": [
+   "termometro",
+   "fiebre",
+   "temperatura",
+   "thermometer"
+  ],
+  "w": 1024,
+  "h": 1024,
+  "bytes": 405070
+ }
+]

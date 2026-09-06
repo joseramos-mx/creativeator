@@ -17,3 +17,7 @@ public/iconos/*
 # Python
 __pycache__/
 *.pyc
+
+# La bandeja de entrada de iconos: lo que caiga aqui se ingesta y ya vive
+# en public/iconos.
+iconos-entrada/

@@ -1,0 +1,140 @@
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { buscar, crearBuscador, type Icono } from '@/lib/iconos';
+
+/**
+ * El buscador de íconos: un modal con campo de búsqueda y rejilla de
+ * miniaturas.
+ *
+ * El manifiesto se carga una sola vez y se queda en memoria del módulo. Diez
+ * mil entradas son unos cientos de kilobytes; volver a pedirlo cada vez que se
+ * abre el modal sería trabajo de más para nada.
+ */
+let cache: Promise<Icono[]> | null = null;
+
+function cargarManifiesto() {
+  cache ??= fetch('/iconos/manifest.json')
+    .then((r) => (r.ok ? r.json() : []))
+    .catch(() => [] as Icono[]);
+  return cache;
+}
+
+export function BuscadorIconos({
+  sugerencia,
+  recientes,
+  onElegir,
+  onCerrar,
+}: {
+  /** Lo que propuso el brief o la IA, para no empezar con la caja vacía. */
+  sugerencia?: string;
+  recientes: string[];
+  onElegir: (slug: string) => void;
+  onCerrar: () => void;
+}) {
+  const [manifiesto, setManifiesto] = useState<Icono[] | null>(null);
+  const [consulta, setConsulta] = useState(sugerencia ?? '');
+  const campo = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    cargarManifiesto().then(setManifiesto);
+    campo.current?.focus();
+    campo.current?.select();
+  }, []);
+
+  useEffect(() => {
+    const alTeclear = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCerrar();
+    };
+    window.addEventListener('keydown', alTeclear);
+    return () => window.removeEventListener('keydown', alTeclear);
+  }, [onCerrar]);
+
+  const fuse = useMemo(() => (manifiesto ? crearBuscador(manifiesto) : null), [manifiesto]);
+
+  const { resultados, sinCoincidencias } = useMemo(() => {
+    if (!manifiesto) return { resultados: [] as Icono[], sinCoincidencias: false };
+
+    // Sin búsqueda: primero los recientes, y detrás el resto de la librería.
+    const porSlug = new Map(manifiesto.map((i) => [i.slug, i]));
+    const todos = [
+      ...(recientes.map((s) => porSlug.get(s)).filter(Boolean) as Icono[]),
+      ...manifiesto.filter((i) => !recientes.includes(i.slug)),
+    ];
+
+    if (!consulta.trim()) return { resultados: todos, sinCoincidencias: false };
+
+    const encontrados = fuse ? buscar(fuse, consulta) : [];
+    // Si la búsqueda no da nada, se enseña la librería igual. El concepto que
+    // sugirió el brief casi nunca está tal cual —proponía "magnifying glass" y
+    // se publicó otra cosa—, y abrir en una rejilla vacía no ayuda a nadie.
+    return encontrados.length
+      ? { resultados: encontrados, sinCoincidencias: false }
+      : { resultados: todos, sinCoincidencias: true };
+  }, [manifiesto, fuse, consulta, recientes]);
+
+  const hayRecientes = (!consulta.trim() || sinCoincidencias) && recientes.length > 0;
+
+  return (
+    <div className="modal" onClick={onCerrar}>
+      <div className="modal__caja" onClick={(e) => e.stopPropagation()}>
+        <div className="modal__cabecera">
+          <input
+            ref={campo}
+            value={consulta}
+            placeholder="lupa, estetoscopio, termómetro…"
+            onChange={(e) => setConsulta(e.target.value)}
+          />
+          <button className="boton" onClick={onCerrar}>
+            cerrar
+          </button>
+        </div>
+
+        {sugerencia && consulta === sugerencia ? (
+          <p className="pista">
+            El brief sugería “{sugerencia}”. Búscalo en español si no aparece nada.
+          </p>
+        ) : null}
+
+        {manifiesto === null ? (
+          <p className="pista">Cargando la librería…</p>
+        ) : manifiesto.length === 0 ? (
+          <p className="aviso">
+            No hay manifiesto todavía. Corre <code>npm run iconos</code> apuntando a la carpeta
+            donde tengas los PNG, o deja caer uno en <code>iconos-entrada/</code> con el servidor
+            corriendo.
+          </p>
+        ) : (
+          <>
+            <p className={sinCoincidencias ? 'pista pista--aviso' : 'pista'}>
+              {sinCoincidencias ? (
+                <>Nada con “{consulta}”. Te dejo la librería completa · </>
+              ) : null}
+              {hayRecientes ? 'recientes primero · ' : ''}
+              {resultados.length} de {manifiesto.length} íconos
+            </p>
+            <div className="rejilla-iconos">
+              {resultados.map((icono) => (
+                <button
+                  key={icono.slug}
+                  className="icono-opcion"
+                  title={`${icono.nombre}\n${icono.etiquetas.join(' · ')}`}
+                  onClick={() => onElegir(icono.slug)}
+                >
+                  <img src={`/iconos/thumbs/${icono.slug}.png`} alt="" loading="lazy" />
+                  <span>{icono.slug}</span>
+                </button>
+              ))}
+            </div>
+            {sinCoincidencias ? (
+              <p className="pista">
+                Si la palabra que buscas debería encontrar algo, agrégala a{' '}
+                <code>content/sinonimos.json</code> y vuelve a correr <code>npm run iconos</code>.
+              </p>
+            ) : null}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

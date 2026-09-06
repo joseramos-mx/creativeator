@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -n servidor,iconos -c blue,magenta \"next dev\" \"npm run iconos:vigilar\"",
+    "dev:solo": "next dev",
     "build": "next build",
     "start": "next start",
-    "graficos": "node scripts/graficos.mjs"
+    "graficos": "node scripts/graficos.mjs",
+    "iconos": "node scripts/ingesta-iconos.mjs",
+    "iconos:vigilar": "node scripts/ingesta-iconos.mjs --vigilar"
   },
   "dependencies": {
+    "chokidar": "^5.0.0",
+    "concurrently": "^10.0.5",
+    "fuse.js": "^7.5.0",
     "jszip": "^3.10.1",
     "next": "15.5.4",
     "react": "19.1.1",

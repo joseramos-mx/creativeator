@@ -88,8 +88,14 @@ const Lista = z.object({
   overrides: Overrides.optional(),
 });
 
-/** El cierre no guarda datos: los toma de content/marca.json. */
-const Cierre = z.object({ tipo: z.literal('cierre') });
+/**
+ * El cierre toma de content/marca.json todo menos una cosa: la línea grande,
+ * que sí es de este carrusel. Acepta el marcado de la plantilla.
+ */
+const Cierre = z.object({
+  tipo: z.literal('cierre'),
+  frase: TextoMarcado.optional(),
+});
 
 export const Slide = z.discriminatedUnion('tipo', [Portada, Contenido, Lista, Cierre]);
 
@@ -103,13 +109,20 @@ export const Post = z.object({
   copy: z.string().optional(),
 
   /**
-   * Metadatos del brief. No se pintan en ningún slide: son para decidir y para
-   * darle contexto al modelo cuando redacte (fase 6).
+   * Los tres datos del brief que no se pintan en ningún slide. Sirven para
+   * decidir, y en la fase 6 para darle contexto al modelo cuando redacte.
    */
+
+  /** La línea editorial. Sirve para no repetir eje dos veces en el mes. */
   pilar: z.string().optional(),
+  /**
+   * La acción que se busca del lector: guardar, compartir, comentar, agendar.
+   * Determina cuál de los cierres del copy se enfatiza.
+   */
   objetivo: z.string().optional(),
+  /** El gancho de calendario: qué hace que este tema toque publicarse ahora. */
   nota: z.string().optional(),
-  frase: z.string().optional(),
+
   hashtags: z.array(z.string()).optional(),
 
   slides: z.array(Slide).min(2),
@@ -140,6 +153,7 @@ export type TSlide = z.infer<typeof Slide>;
 export type TSlidePortada = Extract<TSlide, { tipo: 'portada' }>;
 export type TSlideContenido = Extract<TSlide, { tipo: 'contenido' }>;
 export type TSlideLista = Extract<TSlide, { tipo: 'lista' }>;
+export type TSlideCierre = Extract<TSlide, { tipo: 'cierre' }>;
 
 export type TPost = z.infer<typeof Post>;
 export type TMarca = z.infer<typeof Marca>;

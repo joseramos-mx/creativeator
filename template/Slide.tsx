@@ -56,6 +56,6 @@ export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
         />
       );
     case 'cierre':
-      return <Cierre marca={marca} numero={numero} ayudas={ayudas} id={id} />;
+      return <Cierre slide={slide} marca={marca} numero={numero} ayudas={ayudas} id={id} />;
   }
 }

@@ -3,8 +3,8 @@
 Genera los carruseles de Instagram de la cuenta a partir de una plantilla fija.
 Corre en tu computadora, no en internet.
 
-**Vas en la fase 4 de 6.** Ya existen el diseño, el contenido en archivos, la
-exportación a PNG y el editor. Faltan la librería de íconos y la redacción con IA.
+**Vas en la fase 5 de 6.** Ya existen el diseño, el contenido en archivos, la
+exportación a PNG, el editor y la librería de íconos. Falta la redacción con IA.
 
 ---
 
@@ -17,6 +17,9 @@ npm run dev
 
 Abre <http://localhost:3000>. Si el puerto está ocupado, Next.js te dice en la
 terminal cuál usó.
+
+`npm run dev` levanta dos cosas: el servidor y la carpeta vigilada de íconos.
+Si solo quieres el servidor, `npm run dev:solo`.
 
 | Página | Qué es |
 |---|---|
@@ -80,13 +83,23 @@ Cosas que conviene saber del formato:
 - **`overrides`** es la excepción de un slide: `offsetY`, `tituloPx`, `cuerpoPx`,
   `mediaAncho`, `mediaAlto`. Vive en el contenido, nunca en los tokens. Si un
   slide junta muchos, la señal es que el token está mal.
-- **`pilar`, `objetivo`, `nota`, `frase` y `hashtags`** salen del brief. No se
-  pintan en ningún slide: sirven para decidir y, en la fase 6, para darle
-  contexto al modelo cuando redacte.
+- **`pilar`, `objetivo`, `nota` y `hashtags`** salen del brief y no se pintan en
+  ningún slide. `pilar` es la línea editorial, y sirve para no repetir eje dos
+  veces en el mes. `objetivo` es la acción que se busca —guardar, compartir,
+  agendar— y decide a cuál de los cierres del copy se le carga la mano.
+  `nota` es el gancho de calendario: qué hace que toque publicarlo ahora.
+- **`frase`** sí se pinta: es la línea grande del slide de cierre, y acepta el
+  marcado de la plantilla. Es lo único que ese slide no toma de la marca.
 
 El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
-archivo, al guardar desde el editor (fase 4) y al validar lo que devuelva el
-modelo al redactar (fase 6). Es el mismo en los tres a propósito.
+archivo, al guardar desde el editor y al validar lo que devuelva el modelo al
+redactar (fase 6). Es el mismo en los tres a propósito.
+
+En `content/ejemplos/impetigo-brief.md` está el brief de una publicación real,
+con su copy. Sirve de dos cosas: de formato de referencia para el importador, y
+de recordatorio de que **el brief no es el arte final**. En ese ejemplo el título
+de la portada acabó siendo otro, los íconos que proponía no son los que se
+publicaron y la sección de cierre describe una plantilla anterior.
 
 ---
 
@@ -131,10 +144,60 @@ En el panel, **Importar desde el brief**: pega el texto y sale el carrusel. No
 reemplaza nada hasta que ves qué entendió y cuántos slides encontró; el brief se
 escribe a mano y casi siempre trae alguna sorpresa.
 
-El lector está en `lib/brief.ts` y es tolerante: no le importan las mayúsculas,
-los acentos de las etiquetas ni los renglones en blanco de más. Para adaptarlo a
-otro formato de brief solo hay que tocar los dos diccionarios del principio del
-archivo, `ETIQUETAS` y `SECCIONES`.
+El lector está en `lib/brief.ts` y aguanta cómo se escribe de verdad: encabezados
+de Markdown con subtítulo, etiquetas con paréntesis (`Fuente (al pie):`), varias
+etiquetas en un mismo renglón, valores entre comillas y renglones sueltos que son
+notas para el diseñador y no campos. Para adaptarlo a otro formato solo hay que
+tocar el diccionario `ETIQUETAS` del principio del archivo.
+
+El copy sale entero de la sección `## Copy de la publicación`, y los cinco
+hashtags del último renglón de ese copy.
+
+---
+
+## Los íconos
+
+La librería vive en `public/iconos/`: cada ícono a 1024 px, su miniatura a 192 y
+un `manifest.json` con las etiquetas de búsqueda.
+
+**Para meter íconos**, dos caminos:
+
+```bash
+npm run iconos ~/Descargas/thiings   # una carpeta de golpe
+```
+
+o dejar caer el PNG en `iconos-entrada/` con el servidor corriendo: la carpeta
+vigilada lo procesa en dos segundos y aparece en el buscador sin recargar nada.
+Si prefieres que vigile directamente tus descargas:
+
+```bash
+ICONOS_ORIGEN=~/Descargas npm run dev
+```
+
+La carpeta propia es el valor por omisión a propósito: vigilar las descargas es
+más cómodo, pero también significa que cualquier PNG que caiga ahí entra a la
+librería. De todos modos solo entran los PNG con transparencia, que es lo que
+distingue un ícono 3D de una captura de pantalla.
+
+**Qué le hace a cada archivo**: normaliza el nombre a slug, recorta el margen
+transparente y lo recentra sobre un lienzo cuadrado con 4 % de aire. Ese último
+paso es el que importa: sin él, dos íconos puestos al mismo tamaño en CSS se ven
+de tamaños distintos. Es incremental, así que correrlo dos veces no duplica nada.
+
+**Para buscar**, en la tarjeta de un slide con ícono, el botón abre un modal con
+la rejilla. Los nombres vienen en inglés y aquí se busca en español, así que cada
+palabra arrastra sus sinónimos desde `content/sinonimos.json`, que se edita a
+mano: "fiebre" encuentra el termómetro, "advertencia" encuentra la alerta. Los
+últimos doce usados salen primero.
+
+Cuando el brief o la IA sugieren un concepto, el buscador abre con esa palabra ya
+escrita. Si no encuentra nada —pasa seguido: el brief pedía "magnifying glass" y
+se publicó otra cosa— enseña la librería completa en vez de una rejilla vacía.
+
+**Licencia.** Los íconos de Thiings son de pago para uso comercial y su licencia
+prohíbe redistribuirlos. Por eso `public/iconos/*` está en `.gitignore` y solo se
+versiona el manifiesto. Un consultorio publicando contenido de marca es uso
+comercial: la vía gratuita no aplica ni ícono por ícono.
 
 ---
 
@@ -291,7 +354,7 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 | 2 · contenido | ✅ Los posts en `content/posts/*.json`, validados con Zod. |
 | 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy. |
 | 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
-| 5 · íconos | La librería de Thiings alojada aquí, con buscador. |
+| 5 · íconos | ✅ La librería alojada aquí, con ingesta, manifiesto y buscador. |
 | 6 · redacción | Escribir el carrusel y el mes completo con la API de Anthropic. |
 
 ---

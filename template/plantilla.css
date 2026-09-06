@@ -387,6 +387,29 @@
   text-align: center;
 }
 
+/* La línea grande, cuando el carrusel trae una. */
+.cta__frase {
+  margin-bottom: var(--b-gap-frase-cta);
+  font-size: var(--cta-frase-px);
+  font-weight: var(--cta-frase-peso);
+  line-height: var(--cta-frase-lh);
+  letter-spacing: var(--cta-frase-ls);
+  color: var(--c-titulo);
+}
+
+.cta__frase b {
+  font-weight: var(--cta-frase-fuerte);
+  color: var(--crema);
+}
+
+.cta__frase i {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: var(--serif-ls);
+  color: var(--crema);
+}
+
 .cta__l1 {
   font-size: var(--cta-l1-px);
   font-weight: var(--cta-l1-peso);

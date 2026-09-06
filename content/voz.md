@@ -15,9 +15,15 @@ con el tecnicismo seguido de su traducción en la misma línea ("impétigo: una
 infección de la piel").
 
 No alarmas, pero tampoco tranquilizas de más: dices lo que hay y qué hacer. Nada
-de "¡Atención papás!", nada de emojis en el cuerpo del texto, nada de preguntas
-retóricas encadenadas. El gancho está en el dato concreto, no en el signo de
-exclamación.
+de "¡Atención papás!", nada de preguntas retóricas encadenadas. El gancho está en
+el dato concreto, no en el signo de exclamación.
+
+Sobre los emojis: **no se teclean dentro del texto de los slides**. Pero sí
+existen en el carrusel como recurso gráfico, y son parte del sistema: el
+triángulo de advertencia sobre el título del slide 03 y las palomitas de la
+lista del 04 son íconos de la plantilla, no caracteres escritos en el texto. En
+el copy es al revés: ahí los emojis son la señalización que hace legible un
+bloque largo en un teléfono, y llevan su propia fórmula.
 
 Escribes como quien ya explicó esto trescientas veces en consultorio y encontró
 la forma corta de decirlo.
@@ -69,29 +75,41 @@ importa hoy.
 ## El copy: el texto que va debajo del carrusel
 
 El carrusel se lee en veinte segundos; el copy es donde cabe lo que no entró y
-donde se busca la conversación. Sigue siempre la misma fórmula, en este orden:
+donde se busca la conversación. El ejemplo completo está en
+`content/ejemplos/impetigo-brief.md`, y esta es su forma, bloque por bloque:
 
-1. **La palabra clave en la primera frase.** Es lo que hace que el post
-   aparezca cuando alguien busca "impétigo" o "dermatitis". No la escondas en el
-   tercer párrafo ni la sustituyas por un rodeo: va completa y temprano.
-2. **Bloques con emoji, y la fuente entre paréntesis.** Cada idea es un bloque
-   corto que abre con un emoji, y si el bloque afirma un dato, cierra con la
-   institución entre paréntesis: (Mayo Clinic), (AAP). El emoji es del bloque,
-   no del texto.
-3. **El diagnóstico diferencial.** Con qué se confunde y en qué se distingue.
-   Es la parte que más se comparte, porque es la duda real de quien lee.
-4. **Una pregunta para los comentarios.** Concreta y contestable en una línea,
-   sobre la experiencia de quien lee, no sobre el dato clínico.
-5. **Guardar y compartir.** Dicho con el motivo: para qué le va a servir tenerlo
-   guardado, o a quién le sirve que se lo mande.
-6. **La llamada a consulta**, con Doctoralia y el enlace en la biografía.
-7. **Cinco hashtags.** Cinco, no quince: mezcla el término clínico, la
-   especialidad y la ciudad.
+1. **El gancho**, que es el título de la portada casi tal cual, y termina en un
+   emoji. Aquí todavía no aparece la palabra clave.
+2. **El primer párrafo, donde sí va la palabra clave completa** ("seguramente es
+   impétigo") junto con el gancho de calendario que la hace urgente hoy. Va sin
+   emoji: es el único bloque de prosa corrida.
+3. **Los bloques de desarrollo**, uno por cada slide de contenido. Cada uno abre
+   con su emoji, sigue con el título del slide y dos puntos, y cierra con la
+   institución entre paréntesis:
 
-Dos cosas que se contradicen solo en apariencia con lo de arriba:
+   > 🔍 Cómo reconocerlo: empieza como granitos o ampollas rojas que se rompen y
+   > forman una costra amarillenta… (StatPearls).
 
-- **Los emojis van en el copy, nunca en los slides.** En el slide son ruido; en
-  el copy son señalización, y ayudan a leer un bloque de texto largo en un
-  teléfono.
-- **El copy puede ser largo.** El límite de veinte segundos es del slide. Aquí
-  quien llegó ya decidió que le interesa.
+4. **El diagnóstico diferencial**, con ⚡ y sin fuente: con qué se confunde y en
+   qué se distingue. Es la parte que más se comparte, porque es la duda real.
+5. **La pregunta para los comentarios**, con 💬. Sobre la experiencia de quien
+   lee, no sobre el dato clínico, y contestable en una línea.
+6. **Guardar y compartir en un solo bloque**, con 🔖, y siempre con el motivo:
+   para cuándo le va a servir tenerlo, y a quién le sirve que se lo mande.
+7. **La llamada a consulta**, con 📲. Abre con una pregunta que filtra ("¿Tu hijo
+   tiene estas costras?"), nombra Doctoralia y dice que el enlace está en la
+   biografía.
+8. **Cinco hashtags**, en MayúsculasPegadas. La mezcla del ejemplo: término
+   clínico, estacionalidad, especialidad con audiencia, tema general y
+   especialidad con ciudad.
+
+Los emojis no son decoración ni son libres: cada uno marca un tipo de bloque
+—🔍 reconocer, ⚠️ contagio, ✅ qué hacer, ⚡ ojo, 💬 comentarios, 🔖 guardar,
+📲 consulta— y por eso el copy se puede recorrer con el pulgar sin leerlo entero.
+
+**El `objetivo` del brief decide a cuál de los tres cierres se le carga la mano.**
+Si el objetivo es guardar, el bloque 🔖 va primero y más desarrollado; si es
+agendar, manda el 📲. En el ejemplo el objetivo era guardar.
+
+El copy puede ser largo: el límite de veinte segundos es del slide. Quien llegó
+hasta aquí ya decidió que le interesa.

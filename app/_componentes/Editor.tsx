@@ -48,6 +48,10 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
   const [overlay, setOverlay] = useState(false);
   const [zoom, setZoom] = useState(0.42);
   const [soltando, setSoltando] = useState<number | null>(null);
+  // Los recientes se llevan en el editor y no en el servidor: si solo se leyeran
+  // al cargar la página, el ícono que acabas de usar no aparecería arriba hasta
+  // la siguiente recarga, que es justo cuando ya no te sirve.
+  const [recientes, setRecientes] = useState<string[]>(marca.iconosRecientes ?? []);
   const [subiendo, setSubiendo] = useState<number | null>(null);
 
   // ── guardado automático, sin botón ───────────────────────────────────────
@@ -112,6 +116,16 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
     },
     [post.slides, post.slug],
   );
+
+  const usarIcono = useCallback((slug: string) => {
+    setRecientes((prev) => [slug, ...prev.filter((s) => s !== slug)].slice(0, 12));
+    // Se apunta en content/marca.json sin esperar: si falla, no se pierde nada.
+    void fetch('/api/recientes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug }),
+    });
+  }, []);
 
   // Sin esto, soltar fuera de un slide hace que el navegador abra la imagen y
   // se pierda lo que no se hubiera guardado todavía.
@@ -204,6 +218,8 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
           <PanelSlide
             key={i}
             slide={slide}
+            recientes={recientes}
+            onUsarIcono={usarIcono}
             indice={i}
             total={post.slides.length}
             abierta={abierta === i}
@@ -339,7 +355,7 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             </select>
           </div>
           <div>
-            <label>Pilar</label>
+            <label>Pilar — la línea editorial</label>
             <input
               value={post.pilar ?? ''}
               onChange={(e) => setPost((p) => ({ ...p, pilar: e.target.value || undefined }))}
@@ -347,19 +363,13 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
           </div>
         </div>
 
-        <label>Objetivo</label>
+        <label>Objetivo — la acción buscada</label>
         <input
           value={post.objetivo ?? ''}
           onChange={(e) => setPost((p) => ({ ...p, objetivo: e.target.value || undefined }))}
         />
 
-        <label>Frase</label>
-        <input
-          value={post.frase ?? ''}
-          onChange={(e) => setPost((p) => ({ ...p, frase: e.target.value || undefined }))}
-        />
-
-        <label>Nota interna</label>
+        <label>Nota — el gancho de calendario</label>
         <input
           value={post.nota ?? ''}
           onChange={(e) => setPost((p) => ({ ...p, nota: e.target.value || undefined }))}

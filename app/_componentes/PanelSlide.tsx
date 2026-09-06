@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { BuscadorIconos } from './BuscadorIconos';
 import {
   OVERRIDES_DEMASIADOS,
   borrarSlide,
@@ -18,6 +20,9 @@ export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' |
 
 type Props = {
   slide: Slide;
+  /** Los últimos íconos usados, de content/marca.json. */
+  recientes: string[];
+  onUsarIcono: (slug: string) => void;
   indice: number;
   total: number;
   abierta: boolean;
@@ -30,6 +35,8 @@ type Props = {
 
 export function PanelSlide({
   slide,
+  recientes,
+  onUsarIcono,
   indice,
   total,
   abierta,
@@ -39,8 +46,16 @@ export function PanelSlide({
   onSeleccion,
   setPost,
 }: Props) {
+  const [buscando, setBuscando] = useState(false);
   const cambiar = (cambios: Partial<Slide>) => setPost((p) => cambiarSlide(p, indice, cambios));
   const overrides = contarOverrides(slide);
+
+  const elegirIcono = (slug: string) => {
+    if (slide.tipo !== 'contenido' || slide.visual.clase !== 'icono') return;
+    cambiar({ visual: { ...slide.visual, slug } } as Partial<Slide>);
+    setBuscando(false);
+    onUsarIcono(slug);
+  };
 
   return (
     <details className="tarjeta" open={abierta}>
@@ -123,15 +138,10 @@ export function PanelSlide({
               <>
                 <div className="fila">
                   <div>
-                    <label>Ícono (slug de public/iconos)</label>
-                    <input
-                      value={slide.visual.slug ?? ''}
-                      onChange={(e) =>
-                        cambiar({
-                          visual: { ...slide.visual, slug: e.target.value || undefined },
-                        } as Partial<Slide>)
-                      }
-                    />
+                    <label>Ícono</label>
+                    <button className="boton" onClick={() => setBuscando(true)}>
+                      {slide.visual.slug ? `cambiar · ${slide.visual.slug}` : 'buscar ícono…'}
+                    </button>
                   </div>
                   <div style={{ flex: '0 0 92px' }}>
                     <label>Tamaño</label>
@@ -148,9 +158,17 @@ export function PanelSlide({
                 {!slide.visual.slug ? (
                   <p className="pista pista--aviso">
                     Falta elegir el ícono
-                    {slide.visual.iconoSugerido ? ` (el brief sugiere “${slide.visual.iconoSugerido}”)` : ''}. El
-                    buscador llega en la fase 5.
+                    {slide.visual.iconoSugerido ? ` · el brief sugiere “${slide.visual.iconoSugerido}”` : ''}.
                   </p>
+                ) : null}
+
+                {buscando ? (
+                  <BuscadorIconos
+                    sugerencia={slide.visual.iconoSugerido}
+                    recientes={recientes}
+                    onElegir={elegirIcono}
+                    onCerrar={() => setBuscando(false)}
+                  />
                 ) : null}
               </>
             ) : null}
@@ -192,7 +210,17 @@ export function PanelSlide({
         ) : null}
 
         {slide.tipo === 'cierre' ? (
-          <p className="pista">Este slide se arma solo con los datos de content/marca.json.</p>
+          <>
+            <label>Línea grande (opcional) — acepta *itálica* y **negrita**</label>
+            <textarea
+              rows={2}
+              value={slide.frase ?? ''}
+              onChange={(e) => cambiar({ frase: e.target.value || undefined } as Partial<Slide>)}
+            />
+            <p className="pista">
+              Lo demás de este slide se arma solo con los datos de content/marca.json.
+            </p>
+          </>
         ) : null}
 
         {slide.tipo !== 'cierre' ? (

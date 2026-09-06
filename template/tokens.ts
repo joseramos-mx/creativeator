@@ -103,6 +103,11 @@ export const tipo = {
   fuente: { px: 22, ls: '-0.059em', peso: 400 },
   desliza: { px: 21, ls: '0em', peso: 400 },
   pregunta: { px: 28, ls: '-0.020em', peso: 500 },
+  /**
+   * La línea grande del cierre. No aparece en el carrusel publicado que se
+   * midió, así que este tamaño es una decisión, no una medición.
+   */
+  ctaFrase: { px: 52, lh: 1.15, ls: track.titulo, peso: 300, pesoFuerte: 700 },
   ctaL1: { px: 91, lh: 1.05, ls: track.titulo, peso: 300, pesoFuerte: 700 },
   ctaL2: { px: 51, ls: '-0.061em', peso: 400 },
   ctaL3: { px: 66, ls: '-0.020em', peso: 600 },
@@ -163,6 +168,7 @@ export const bloque = {
 
   /** Cierre. */
   ctaBottom: 236,
+  gapFraseCta: 34,
   gapCtaL1L2: 57,
   gapCtaL2L3: 16,
   ctaLogoAncho: 482,
