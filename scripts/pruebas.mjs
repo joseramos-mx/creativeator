@@ -92,18 +92,30 @@ async function abrirTarjeta(page, indice) {
  * Playwright que parece un fallo del editor. Costó media hora una vez.
  */
 async function comprobarServidor() {
-  let html = '';
-  try {
-    html = await (await fetch(`${base}/post/${EDICION}`)).text();
-  } catch {
-    console.error(`\nALTO: no hay servidor en ${base}. Arranca "npm run dev".`);
-    process.exit(1);
-  }
-  if (!html.includes('data-ficha')) {
-    console.error(`\nALTO: lo que responde en ${base} no es el editor de este proyecto.`);
-    console.error('El puerto va como argumento: npm run pruebas 3003');
-    process.exit(1);
-  }
+  let ultimo = '';
+  const responde = async () => {
+    try {
+      ultimo = await (await fetch(`${base}/post/${EDICION}`)).text();
+      return ultimo.includes('data-ficha');
+    } catch {
+      ultimo = '';
+      return false;
+    }
+  };
+
+  // Con reintentos: en desarrollo la primera petición a una ruta la compila, y
+  // mientras tanto Next devuelve un armazón vacío que no lleva `data-ficha`.
+  // Sin esperar, el guardia acusaba de puerto equivocado a un servidor que solo
+  // estaba arrancando.
+  if (await esperarA(responde, 90_000)) return;
+
+  console.error(
+    ultimo
+      ? `\nALTO: lo que responde en ${base} no es el editor de este proyecto.`
+      : `\nALTO: no hay servidor en ${base}. Arranca "npm run dev".`,
+  );
+  console.error('El puerto va como argumento: npm run pruebas 3001');
+  process.exit(1);
 }
 
 const slugs = await reiniciarLaboratorio();
@@ -360,6 +372,62 @@ await espera(1800);
 ok(
   (await page.locator('.afirmacion[data-revisada]').count()) === 1,
   'la revisión de otro bloque sigue en pie',
+);
+
+/* ── buscar la foto en el banco ──────────────────────────────────────────── */
+console.log('\nBanco de imágenes');
+
+// El banco de laboratorio devuelve una muestra real de Pexels guardada en
+// disco y "baja" un archivo local, así que esto recorre las dos etapas y la
+// descarga sin una sola llamada a la red.
+await abrir(page, EDICION);
+const tarjetaBanco = await abrirTarjeta(page, 1);
+const ideaAntes = leer(EDICION).slides[1].visual.ideaImagen;
+
+await tarjetaBanco.locator('button:has-text("Buscar foto en el banco")').click();
+await esperarA(async () => (await tarjetaBanco.locator('.foto-opcion').count()) > 0);
+ok((await tarjetaBanco.locator('.foto-opcion').count()) > 0, 'la búsqueda devuelve candidatos');
+ok(
+  (await tarjetaBanco.locator('input').first().inputValue()).length > 0,
+  'y la consulta queda editable, para volver a buscar sin gastar modelo',
+);
+
+// La regresión del gimnasio: aquel slide se publicó con la foto de un gimnasio
+// porque encajaba con "niños juntos". Con el descarte puesto, se aparta.
+const verApartadas = tarjetaBanco.locator('button:has-text("apartadas")');
+ok((await verApartadas.count()) === 1, 'hay fotos apartadas por el descarte');
+ok(/1 apartada/.test(await verApartadas.innerText()), 'exactamente una: el gimnasio');
+await verApartadas.click();
+await espera(400);
+const apartada = tarjetaBanco.locator('.foto-opcion[data-apartada]');
+ok((await apartada.count()) === 1, 'y se enseña, no se esconde');
+ok(
+  /gym/.test(await apartada.innerText()),
+  `diciendo por qué se apartó: "${(await apartada.innerText()).trim()}"`,
+);
+
+await tarjetaBanco.locator('.foto-opcion:not([data-apartada])').first().click();
+await esperarA(() => leer(EDICION).slides[1].visual.credito?.fuente === 'Pexels');
+
+const dePexels = leer(EDICION).slides[1].visual;
+ok(dePexels.src.includes('/media/laboratorio-edicion/pexels-'), `se descargó a ${dePexels.src}`);
+ok(dePexels.credito?.fuente === 'Pexels', 'con la fuente escrita');
+ok(dePexels.credito?.licencia === 'Pexels License', 'y la licencia');
+ok(
+  dePexels.credito?.licenciaUrl === 'https://www.pexels.com/license/',
+  'con el enlace al texto de la licencia, para no tener que creérsela',
+);
+ok(Boolean(dePexels.credito?.autor), `y el autor: ${dePexels.credito?.autor}`);
+ok(Boolean(dePexels.credito?.url), 'y el enlace a la foto original');
+ok(dePexels.ideaImagen === ideaAntes, 'la idea de imagen sobrevive a la foto del banco');
+
+// El punto de toda la fase: descargar y acreditar son un solo movimiento, así
+// que la banda del lienzo deja de avisar sin que nadie escriba un campo.
+ok(
+  !/sin fuente ni licencia/.test(
+    await page.locator('.marco--soltable').nth(1).locator('.idea').innerText(),
+  ),
+  'y la banda del lienzo ya no avisa: nadie llenó el crédito a mano',
 );
 
 /* ── la barrera de licencia ──────────────────────────────────────────────── */

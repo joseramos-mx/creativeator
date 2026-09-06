@@ -223,6 +223,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
           <PanelSlide
             key={i}
             slide={slide}
+            slug={post.slug}
             recientes={recientes}
             paleta={post.paleta}
             onUsarIcono={usarIcono}

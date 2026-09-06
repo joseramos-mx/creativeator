@@ -273,12 +273,100 @@ guarda `revisadaPor` y `fecha`, y no un `"verificada"` que dentro de seis meses
 alguien leería como si el sistema hubiera comprobado algo. Está explicado largo
 en `references/ia.md` de la skill.
 
+## Las fotos: de dónde salen y bajo qué licencia
+
+Cada foto del carrusel guarda en el JSON de dónde salió y bajo qué términos:
+
+```json
+"credito": {
+  "fuente": "Pexels",
+  "licencia": "Pexels License",
+  "licenciaUrl": "https://www.pexels.com/license/",
+  "autor": "Artem Podrez",
+  "url": "https://www.pexels.com/photo/8088232/"
+}
+```
+
+**Sin eso el carrusel no se puede marcar como aprobado.** Es la misma barrera
+que la de las afirmaciones: va en el estado y no en la exportación, y del
+guardado y no de la lectura, para que un carrusel de antes del mecanismo siga
+abriéndose. Y `"desconocida"` no la pasa, a propósito: si no se sabe de dónde
+salió la foto, el crédito se queda vacío y el post se queda en borrador.
+Rellenar el campo satisfaría la validación sin registrar nada.
+
+### Buscar en el banco
+
+En la tarjeta de un slide con foto, **Buscar foto en el banco**. Dos etapas:
+
+1. Claude lee el slide y su `ideaImagen` y propone la consulta, qué tiene que
+   enseñar la foto y —lo que importa— **qué la descalifica**. Esto cuesta una
+   llamada.
+2. El banco devuelve candidatos. Corregir la consulta y volver a buscar no gasta
+   modelo, solo cuota del banco.
+
+Al elegir una, **se descarga a `public/media/<slug>/` y el crédito se escribe en
+el mismo movimiento**. No hay ventana en la que el archivo esté puesto y la
+procedencia sin escribir; ese era el problema, porque el campo se llenaba a mano
+y por eso estaba vacío en todo el proyecto.
+
+Los candidatos que el banco devuelve sin autor o sin enlace **no se ofrecen**:
+lo que no se puede acreditar no se usa. Salen contados, no escondidos.
+
+**Las apartadas se enseñan.** Los candidatos que encajaban con la consulta y aun
+así estaban mal aparecen en su propia lista, con el término que los apartó. Un
+filtro que quita cosas en silencio no se distingue de una búsqueda con pocos
+resultados, y entonces no se nota cuando está mal puesto. Este descarte existe
+por un caso concreto: el slide del contagio en la escuela se publicó con la foto
+de un gimnasio, porque encajaba con "niños juntos".
+
+Solo fotos **de contexto**: un aula, mochilas, el recreo. Nada clínico. Las
+fotos de lesiones son otro flujo, con aprobación del médico, y no pasan por aquí.
+
+### Por qué Unsplash no está en el buscador
+
+Sus Términos de la API obligan a *hotlinkear* las URLs que devuelve —«All API
+uses must use the hotlinked image URLs returned by the API»— y a enlazar el
+perfil del fotógrafo cada vez que se muestra la imagen. Este proyecto hornea la
+foto dentro de un PNG que se sube a Instagram: ni hay hotlink ni cabe un enlace.
+
+**La restricción es del canal, no de la foto.** La Licencia de Unsplash, la que
+rige cuando bajas la imagen del sitio a mano, sí da uso comercial libre y no
+exige atribución. Así que Unsplash se usa así:
+
+1. buscar y descargar la foto desde `unsplash.com`, con el navegador;
+2. arrastrarla sobre el slide en el editor;
+3. llenar el crédito a mano: fuente `Unsplash`, licencia `Unsplash License`,
+   `licenciaUrl` `https://unsplash.com/license`, y el nombre del fotógrafo y el
+   enlace a la foto, que están en la página de la que la bajaste.
+
+Es más trabajo y por eso el crédito hay que cuidarlo: aquí no hay API que lo
+llene sola.
+
+### Las llaves
+
+`PEXELS_API_KEY` en `.env.local`. El límite gratuito es de 200 peticiones por
+hora y 20 000 al mes, de sobra para un mes de carruseles.
+
 ## Las pruebas
 
 ```bash
-npm run pruebas 3000      # el editor, las paletas y el buscador
+npm run pruebas 3002      # el editor, las paletas, la cola y el banco de fotos
+npm run banco             # el disparador de seguridad, contra quince frases
+npm run banco-fotos       # el adaptador de bancos, contra una respuesta guardada
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
 ```
+
+Los dos `banco*` corren sin navegador y sin servidor, y sobre todo **sin salir a
+la red**: `banco-fotos` mide el adaptador de Pexels contra una respuesta real
+guardada en `scripts/muestras/` y contra copias mutadas a mano. Los casos de
+fallo —una foto sin autor, un campo de licencia que el adaptador no reconoce—
+salen tan baratos como el camino feliz, que es justo al revés de lo que pasa
+cuando las pruebas salen a la red.
+
+En el editor, los slugs que empiezan por `laboratorio-` van a un banco de
+imágenes falso que lee esa misma muestra y "descarga" un archivo local. Así la
+prueba de Playwright recorre buscar, apartar, elegir y acreditar sin gastar
+cuota ni depender de qué fotos tenga Pexels hoy.
 
 Las pruebas corren sobre `laboratorio-edicion` y `laboratorio-paletas`, que son
 posts de verdad —mismo esquema, mismo código de lectura— pero desechables. Se

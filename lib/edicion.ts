@@ -1,4 +1,4 @@
-import type { Overrides, Post, Slide } from '@/template/tipos';
+import type { Credito, Overrides, Post, Slide } from '@/template/tipos';
 
 /**
  * lib/edicion.ts — las operaciones del editor, sin React.
@@ -143,6 +143,36 @@ export function ponerImagen(post: Post, i: number, ruta: string): Post {
   }
 
   return post;
+}
+
+/**
+ * La foto que vino de un banco, con su procedencia, en un solo movimiento.
+ *
+ * Es la diferencia con `ponerImagen`, que borra el crédito a propósito porque
+ * describía a la foto anterior. Aquí el crédito llega con la foto y de la misma
+ * petición, así que no hay ventana en la que el archivo esté puesto y la
+ * procedencia sin escribir. Eso es lo que esta fase vino a resolver: el campo
+ * existía desde antes y estaba vacío en todo el proyecto por llenarse a mano.
+ */
+export function ponerFotoDeBanco(
+  post: Post,
+  i: number,
+  ruta: string,
+  credito: Credito,
+): Post {
+  const slide = post.slides[i];
+  if (slide.tipo !== 'contenido') return post;
+
+  const antes = slide.visual.clase === 'foto' ? slide.visual : undefined;
+  return cambiarSlide(post, i, {
+    visual: {
+      clase: 'foto',
+      src: ruta,
+      credito,
+      ...(antes?.alto ? { alto: antes.alto } : {}),
+      ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
+    },
+  } as Partial<Slide>);
 }
 
 /** Un resumen del slide para la cabecera de su tarjeta. */

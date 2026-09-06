@@ -10,6 +10,7 @@
     "laboratorio": "node scripts/laboratorio.mjs",
     "pruebas": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/pruebas.mjs",
     "banco": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco.mjs",
+    "banco-fotos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-fotos.mjs",
     "iconos": "node scripts/ingesta-iconos.mjs",
     "iconos:vigilar": "node scripts/ingesta-iconos.mjs --vigilar"
   },
@@ -19,6 +20,7 @@
     "concurrently": "^10.0.5",
     "fuse.js": "^7.5.0",
     "jszip": "^3.10.1",
+    "sharp": "^0.34.5",
     "next": "15.5.4",
     "react": "19.1.1",
     "react-dom": "19.1.1",

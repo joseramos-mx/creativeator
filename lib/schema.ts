@@ -56,6 +56,14 @@ export const Overrides = z
 export const Credito = z.object({
   fuente: z.string().min(1, 'de dónde salió la foto'),
   licencia: z.string().min(1, 'bajo qué términos se puede usar'),
+  /**
+   * El texto de la licencia, para que el nombre no haya que creérselo.
+   *
+   * "Pexels License" escrito en un JSON es una afirmación; con el enlace al
+   * lado es una afirmación comprobable, que es toda la diferencia entre este
+   * campo y el "verificada" que este proyecto no escribe en ningún sitio.
+   */
+  licenciaUrl: z.string().optional(),
   autor: z.string().optional(),
   url: z.string().optional(),
   /** Consentimiento de la persona fotografiada, cuando la hay. */

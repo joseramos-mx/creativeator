@@ -697,3 +697,66 @@ select:focus {
   background: rgba(58, 40, 12, 0.88);
   color: #f0c579;
 }
+
+/* ── buscador de fotos en banco ── */
+
+.banco {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--ui-line);
+}
+
+.banco > .fila { align-items: stretch; }
+
+.rejilla-fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 7px;
+  margin-top: 4px;
+}
+
+.foto-opcion {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0;
+  border: 1px solid var(--ui-line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0f131a;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.foto-opcion:hover { border-color: var(--ui-acc); }
+.foto-opcion:disabled { opacity: 0.5; cursor: default; }
+
+.foto-opcion img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+.foto-opcion span {
+  padding: 0 6px 5px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--ui-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foto-opcion[data-apartada] {
+  border-style: dashed;
+  border-color: #6b5220;
+}
+
+.foto-opcion[data-apartada] img { opacity: 0.55; }
+.foto-opcion em { color: #e5a94b; font-style: normal; }

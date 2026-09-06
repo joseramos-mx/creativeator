@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { BuscadorFotos } from './BuscadorFotos';
 import { BuscadorIconos } from './BuscadorIconos';
 import {
   FOTO_PENDIENTE,
@@ -12,6 +13,7 @@ import {
   limpiarOverrides,
   moverSlide,
   nuevoSlide,
+  ponerFotoDeBanco,
   tituloDeTarjeta,
 } from '@/lib/edicion';
 import type { NombrePaleta } from '@/template/tokens';
@@ -22,6 +24,8 @@ export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' |
 
 type Props = {
   slide: Slide;
+  /** El slug del post: la búsqueda de fotos lo necesita para guardar. */
+  slug: string;
   /** Los últimos íconos usados, de content/marca.json. */
   recientes: string[];
   /** La paleta del post: decide qué íconos se funden con el fondo. */
@@ -39,6 +43,7 @@ type Props = {
 
 export function PanelSlide({
   slide,
+  slug,
   recientes,
   paleta,
   onUsarIcono,
@@ -55,11 +60,13 @@ export function PanelSlide({
   const cambiar = (cambios: Partial<Slide>) => setPost((p) => cambiarSlide(p, indice, cambios));
   const overrides = contarOverrides(slide);
 
-  const elegirIcono = (slug: string) => {
+  // `icono` y no `slug`: ahora el panel recibe el slug del post como prop y dos
+  // cosas distintas con el mismo nombre en el mismo archivo se confunden.
+  const elegirIcono = (icono: string) => {
     if (slide.tipo !== 'contenido' || slide.visual.clase !== 'icono') return;
-    cambiar({ visual: { ...slide.visual, slug } } as Partial<Slide>);
+    cambiar({ visual: { ...slide.visual, slug: icono } } as Partial<Slide>);
     setBuscando(false);
-    onUsarIcono(slug);
+    onUsarIcono(icono);
   };
 
   return (
@@ -164,6 +171,14 @@ export function PanelSlide({
                     cambiar({
                       visual: { ...slide.visual, ideaImagen: e.target.value || undefined },
                     } as Partial<Slide>)
+                  }
+                />
+
+                <BuscadorFotos
+                  slug={slug}
+                  indice={indice}
+                  onElegir={(ruta, credito) =>
+                    setPost((p) => ponerFotoDeBanco(p, indice, ruta, credito))
                   }
                 />
 
