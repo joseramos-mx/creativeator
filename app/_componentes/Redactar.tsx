@@ -15,10 +15,25 @@ import type { Post } from '@/template/tipos';
  * · **Enseña antes de escribir a disco.** Una llamada cuesta y tarda; ver qué
  *   salió —con qué paleta, con cuántas afirmaciones por revisar— antes de
  *   crear el archivo es lo que evita acumular borradores que nadie quiso.
+ *
+ * Y si el tema se deja vacío, el modelo propone tres antes de escribir nada.
+ * Proponer son segundos y redactar son dos minutos, así que elegir primero sale
+ * mucho más barato que descubrir a los dos minutos que no era el tema.
  */
+
+type Propuesta = {
+  tema: string;
+  /** Qué hace que este tema toque este mes y no en marzo. */
+  porQueAhora: string;
+  paleta: string;
+  porQuePaleta: string;
+};
+
 export function Redactar() {
   const router = useRouter();
   const [tema, setTema] = useState('');
+  const [propuestas, setPropuestas] = useState<Propuesta[] | null>(null);
+  const [contexto, setContexto] = useState<{ mes: string } | null>(null);
   const [salida, setSalida] = useState<{
     post: Post;
     porQuePaleta: string;
@@ -29,7 +44,26 @@ export function Redactar() {
   const [trabajando, setTrabajando] = useState(false);
   const [guardando, setGuardando] = useState(false);
 
-  async function redactar() {
+  /** Sin tema escrito: el modelo propone tres y se elige. */
+  async function proponerTemas() {
+    setTrabajando(true);
+    setError(undefined);
+    setSalida(null);
+    try {
+      const r = await fetch('/api/proponer', { method: 'POST' });
+      const cuerpo = await r.json();
+      if (!r.ok) throw new Error(cuerpo.error);
+      setPropuestas(cuerpo.propuestas);
+      setContexto(cuerpo.contexto);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudieron proponer temas.');
+    } finally {
+      setTrabajando(false);
+    }
+  }
+
+  async function redactar(elegido?: string) {
+    const cual = (elegido ?? tema).trim();
     setTrabajando(true);
     setError(undefined);
     setSalida(null);
@@ -37,7 +71,7 @@ export function Redactar() {
       const r = await fetch('/api/redactar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tema }),
+        body: JSON.stringify({ tema: cual }),
       });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
@@ -82,21 +116,65 @@ export function Redactar() {
       </summary>
 
       <div className="tarjeta__cuerpo">
-        <label>El tema, como se lo dirías a alguien</label>
+        <label>El tema, como se lo dirías a alguien — o déjalo vacío</label>
         <input
           value={tema}
           placeholder="dermatitis atópica en invierno"
           onChange={(e) => setTema(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && tema.trim().length >= 4 && !trabajando) redactar();
+            if (e.key !== 'Enter' || trabajando) return;
+            if (tema.trim().length >= 4) redactar();
+            else if (!tema.trim()) void proponerTemas();
           }}
         />
 
-        <button className="boton" onClick={redactar} disabled={trabajando || tema.trim().length < 4}>
-          {trabajando ? 'redactando… tarda un par de minutos' : 'Redactar'}
+        {/* Sin tema, el botón cambia de trabajo. Proponer son segundos y
+            redactar son dos minutos, así que elegir primero sale mucho más
+            barato que descubrir a los dos minutos que no era el tema. */}
+        <button
+          className="boton"
+          onClick={() => (tema.trim() ? redactar() : proponerTemas())}
+          disabled={trabajando || (tema.trim().length > 0 && tema.trim().length < 4)}
+        >
+          {trabajando
+            ? tema.trim()
+              ? 'redactando… tarda un par de minutos'
+              : 'pensando temas…'
+            : tema.trim()
+              ? 'Redactar'
+              : 'Proponer tres temas'}
         </button>
 
         {error ? <p className="aviso">{error}</p> : null}
+
+        {propuestas ? (
+          <>
+            <p className="pista">
+              Tres para {contexto?.mes}, sin repetir lo que ya está publicado. Elige uno y se
+              redacta; o escribe el tuyo arriba.
+            </p>
+            <ol className="propuestas">
+              {propuestas.map((p) => (
+                <li key={p.tema}>
+                  <button
+                    className="propuesta"
+                    onClick={() => {
+                      setTema(p.tema);
+                      setPropuestas(null);
+                      void redactar(p.tema);
+                    }}
+                  >
+                    <strong>{p.tema}</strong>
+                    <span>{p.porQueAhora}</span>
+                    <em data-paleta={p.paleta}>
+                      paleta {p.paleta} · {p.porQuePaleta}
+                    </em>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : null}
 
         {salida ? (
           <>

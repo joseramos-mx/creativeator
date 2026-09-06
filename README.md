@@ -19,6 +19,7 @@ encendido, qué está apagado y por qué.
 | Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
 | Paletas | Azul, naranja y verde por tema, elegidas por el redactor | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale | `ANTHROPIC_API_KEY` |
+| Propuesta de temas | `/api/proponer`: sin tema escrito, propone tres para elegir | `ANTHROPIC_API_KEY` |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
@@ -564,6 +565,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-clinicas` | El archivo clínico y la barrera de aprobación | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
 | `npm run banco-croma` | El recorte del fondo verde | El halo verde no se ve sobre el blanco del editor y sí sobre el azul del slide |
 | `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
+| `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial

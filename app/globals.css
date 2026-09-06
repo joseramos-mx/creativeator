@@ -811,3 +811,57 @@ select:focus {
 .pista--clinico {
   color: #d9a8bb;
 }
+
+/* ── propuestas de tema ── */
+
+.propuestas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.propuesta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+  background: #12161d;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.propuesta:hover {
+  border-color: var(--ui-acc);
+}
+
+.propuesta strong {
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.propuesta span {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ui-dim);
+}
+
+.propuesta em {
+  font-size: 10.5px;
+  font-style: normal;
+  line-height: 1.45;
+  color: var(--ui-dim);
+  padding-left: 9px;
+  border-left: 3px solid var(--ui-line);
+}
+
+.propuesta em[data-paleta='azul'] { border-left-color: #51a2ff; }
+.propuesta em[data-paleta='naranja'] { border-left-color: #ed842f; }
+.propuesta em[data-paleta='verde'] { border-left-color: #48b45d; }
