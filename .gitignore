@@ -1,0 +1,19 @@
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# La llave de la API nunca se sube.
+.env.local
+
+# Los PNG exportados se regeneran; no hace falta versionarlos.
+salidas/
+
+# La colección de Thiings es de pago y su licencia prohíbe redistribuirla:
+# el repositorio versiona el manifiesto, no los archivos.
+public/iconos/*
+!public/iconos/manifest.json
+
+# Python
+__pycache__/
+*.pyc
