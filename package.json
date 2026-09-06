@@ -12,6 +12,8 @@
     "banco": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco.mjs",
     "banco-fotos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-fotos.mjs",
     "banco-clinicas": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-clinicas.mjs",
+    "banco-croma": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-croma.mjs",
+    "comparar-iconos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/comparar-iconos.mjs",
     "consentimiento": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/consentimiento.mjs",
     "iconos": "node scripts/ingesta-iconos.mjs",
     "iconos:vigilar": "node scripts/ingesta-iconos.mjs --vigilar"
