@@ -564,3 +564,23 @@ select:focus {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* Los carruseles de laboratorio son sobre los que corren las pruebas: se ven
+ * en la lista, pero apagados, para que nadie los confunda con contenido. */
+
+.lista-posts li[data-laboratorio] a {
+  opacity: 0.62;
+  border-style: dashed;
+}
+
+.chip-lab {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border: 1px solid var(--ui-line);
+  border-radius: 20px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ui-dim);
+  vertical-align: middle;
+}

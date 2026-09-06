@@ -1,0 +1,54 @@
+{
+  "slug": "laboratorio-edicion",
+  "tema": "Laboratorio · edición",
+  "creado": "2026-01-01",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "Carrusel de laboratorio. No es contenido: es sobre lo que corren las pruebas.",
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Carrusel de*\n**laboratorio**",
+      "pregunta": "¿Sobre qué corren las pruebas?",
+      "foto": "/media/laboratorio-edicion/portada.jpg"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Un slide **con foto**",
+      "bajada": "Con bajada, para que el bloque cargue lo que puede cargar.",
+      "cuerpo": "Este slide existe para probar el arrastre de imágenes sobre el propio slide y el empuje con flechas. Su foto se reemplaza en cada corrida y no le importa a nadie.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/laboratorio-edicion/01.jpg",
+        "ideaImagen": "lo que la prueba espera encontrar descrito aquí"
+      },
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Un slide* **con ícono**",
+      "cuerpo": "Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide.",
+      "visual": {
+        "clase": "icono",
+        "slug": "informacion",
+        "tam": 280,
+        "iconoSugerido": "magnifying glass"
+      },
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Una lista** de cuatro.",
+      "puntos": [
+        "El primer punto, con su palomita.",
+        "El segundo, para ver la separación entre puntos.",
+        "El tercero, que en la paleta verde cambia de color.",
+        "Y el cuarto, que es el máximo cómodo."
+      ],
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "cierre"
+    }
+  ]
+}

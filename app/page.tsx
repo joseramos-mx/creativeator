@@ -34,11 +34,16 @@ export default async function Inicio() {
         ) : (
           <ul className="lista-posts">
             {posts.map((post) => (
-              <li key={post.slug}>
+              <li key={post.slug} data-laboratorio={post.slug.startsWith('laboratorio-') ? '' : undefined}>
                 <Link href={`/post/${post.slug}`}>
                   <Miniatura post={post} marca={marca} />
                   <div>
-                    <strong>{post.tema}</strong>
+                    <strong>
+                      {post.tema}
+                      {post.slug.startsWith('laboratorio-') ? (
+                        <em className="chip-lab">laboratorio</em>
+                      ) : null}
+                    </strong>
                     <span>
                       <em data-estado={post.estado}>{post.estado}</em> · {post.slides.length} slides ·{' '}
                       {post.creado}

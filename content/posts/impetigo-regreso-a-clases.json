@@ -40,7 +40,7 @@
       "cuerpo": "Empieza como pequeñas ampollas o granitos rojos que se rompen y forman una costra amarillenta, como si la piel tuviera miel encima. Suele picar. Es de las infecciones de piel más frecuentes en la infancia: cerca del 10% de las consultas de piel en niños.",
       "visual": {
         "clase": "icono",
-        "slug": "llanto",
+        "slug": "informacion",
         "tam": 280,
         "iconoSugerido": "magnifying glass"
       },

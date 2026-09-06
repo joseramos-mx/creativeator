@@ -21,3 +21,6 @@ __pycache__/
 # La bandeja de entrada de iconos: lo que caiga aqui se ingesta y ya vive
 # en public/iconos.
 iconos-entrada/
+
+# Las fotos de laboratorio las recrea scripts/laboratorio.mjs.
+public/media/laboratorio-*/

@@ -194,6 +194,14 @@ Cuando el brief o la IA sugieren un concepto, el buscador abre con esa palabra y
 escrita. Si no encuentra nada —pasa seguido: el brief pedía "magnifying glass" y
 se publicó otra cosa— enseña la librería completa en vez de una rejilla vacía.
 
+**Primer caso pendiente de generación.** El slide 02 del post de impétigo usa
+`informacion`, que es un ícono azul sobre fondo azul: se separa 33 y el buscador
+lo marca. Lo que se publicó ahí fue una lupa, y la librería no tiene ninguna. No
+se cambia por otro que quede mejor —el post es la referencia contra la que mide
+`medir.py` y tiene que reflejar lo que se publicó, no lo que debió publicarse—,
+así que queda anotado como el primer concepto concreto para la generación de
+íconos de `docs/spec-generacion-visuales.md`.
+
 **Licencia.** Los íconos de Thiings son de pago para uso comercial y su licencia
 prohíbe redistribuirlos. Por eso `public/iconos/*` está en `.gitignore` y solo se
 versiona el manifiesto. Un consultorio publicando contenido de marca es uso
@@ -231,6 +239,27 @@ El costo es que hace falta un proceso de Node, así que la app corre local. Para
 el flujo de una persona eso no es una limitación, es una simplificación.
 
 ---
+
+## Las pruebas
+
+```bash
+npm run pruebas 3000      # el editor, las paletas y el buscador
+npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
+```
+
+Las pruebas corren sobre `laboratorio-edicion` y `laboratorio-paletas`, que son
+posts de verdad —mismo esquema, mismo código de lectura— pero desechables. Se
+reinician antes de cada corrida, así que pueden escribir, borrar y empujar lo
+que quieran.
+
+**Nunca tocan contenido publicado**, y no es una promesa: `soloLaboratorio()`
+para el proceso si un slug no empieza por `laboratorio-`. La regla existe porque
+una prueba llegó a borrar un slide de un post publicado —un clic calculado sobre
+una lista que se estaba repintando cayó en el botón equivocado—. El slide se
+recuperó de git, pero el problema no era el slide.
+
+En la lista de carruseles salen apagados y con su etiqueta, para que nadie los
+confunda con contenido.
 
 ## Las dos verificaciones
 

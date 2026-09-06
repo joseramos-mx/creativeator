@@ -1,0 +1,52 @@
+{
+  "slug": "laboratorio-paletas",
+  "tema": "Laboratorio · paletas",
+  "creado": "2026-01-01",
+  "estado": "borrador",
+  "paleta": "azul",
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El velo sigue*\na la **paleta**",
+      "pregunta": "¿Termina fundido en el fondo?",
+      "foto": "/media/laboratorio-edicion/portada.jpg"
+    },
+    {
+      "tipo": "contenido",
+      "emblema": {
+        "slug": "alerta"
+      },
+      "titulo": "Con **emblema** encima",
+      "cuerpo": "El triángulo de alerta es amarillo por semántica y no se puede cambiar de color: sobre naranja es donde se mide si la sombra lo despega.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/laboratorio-edicion/01.jpg"
+      },
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Un **ícono** sobre el fondo",
+      "cuerpo": "Los de Thiings traen color fijo y no se recolorean, así que aquí se mide cuáles se funden con cada paleta y si la sombra los despega.",
+      "visual": {
+        "clase": "icono",
+        "slug": "informacion",
+        "tam": 280
+      },
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Palomitas** sobre el fondo",
+      "puntos": [
+        "En la paleta verde la palomita cambia de color.",
+        "Con el verde de siempre desaparecería."
+      ],
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "cierre",
+      "frase": "Y la línea grande del cierre."
+    }
+  ]
+}
