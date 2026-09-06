@@ -347,12 +347,88 @@ llene sola.
 `PEXELS_API_KEY` en `.env.local`. El límite gratuito es de 200 peticiones por
 hora y 20 000 al mes, de sobra para un mes de carruseles.
 
+### Las fotos clínicas van por otra cola
+
+Una foto de aula y una foto de piel enferma se eligen con el mismo gesto y no
+son la misma decisión. En la de aula lo único que se revisa es de dónde salió;
+en la de piel, además, **si esa imagen es lo que el texto dice que es**, y eso
+lo firma un médico. Por eso el archivo clínico es un panel aparte, se ve
+distinto, y lo que sale de él no se puede insertar sin firma.
+
+En la tarjeta de un slide con foto: **Archivo clínico — imágenes de lesión**.
+El sistema propone; el médico inserta. El botón no se activa hasta que se
+escribe su nombre, y el servidor lo vuelve a comprobar: lo que queda en el JSON
+es una firma, y un botón desactivado en el navegador no basta para eso.
+
+Lo que se guarda al aprobar:
+
+```json
+"clinica": true,
+"aprobacion": {
+  "aprobadaPor": "Dr. Edwin Maldonado",
+  "fecha": "2026-09-06",
+  "huella": "9f2c…"
+}
+```
+
+**La huella es de los bytes de la imagen, no de su ruta.** Si el archivo cambia
+—alguien lo sustituye por otro con el mismo nombre—, la firma deja de valer y el
+carrusel vuelve a borrador. Es la misma idea que sostiene la cola de
+afirmaciones: allí editar el texto devuelve la afirmación a la cola, aquí
+cambiar la imagen devuelve la aprobación al médico.
+
+Y como allí, esto no dice que el sistema haya comprobado nada. Dice que una
+persona con cédula miró esa imagen concreta un día concreto.
+
+### El consentimiento es una referencia, no un sí
+
+Para las fotos del consultorio, `credito.consentimiento.referencia` guarda el
+identificador del documento firmado. Nunca un booleano.
+
+La razón no es burocrática. Un sí/no contesta "¿firmó?", que es la pregunta
+fácil y solo hace falta una vez. La pregunta difícil llega meses después y va al
+revés: **un paciente retira su consentimiento y hay que encontrar todo lo suyo
+que esté publicado.** Un sí no se puede buscar.
+
+```bash
+npm run consentimiento                      # todo lo que lleva consentimiento
+npm run consentimiento "expediente 218"     # solo ese
+npm run consentimiento -- --clinicas        # todas las fotos clínicas
+```
+
+Devuelve el carrusel, el slide, la ruta del archivo y si está publicado. No
+borra nada: dice qué hay que tocar.
+
+### De dónde salen, y de dónde no
+
+**Wikimedia Commons** es el único con adaptador automático. A diferencia de
+Pexels, aquí la licencia **sí viene por imagen** y varía —dominio público, CC0,
+CC BY, CC BY-SA y también cosas inusables—, así que se lee la de cada archivo y
+se compara contra una lista blanca. Las CC BY-SA pasan pero avisan de la
+obligación de compartir igual, para que el médico lo vea antes de firmar.
+
+**DermNet queda fuera.** Sus imágenes son CC BY-NC-ND 3.0: **NC** prohíbe el uso
+comercial y la cuenta de una consulta privada lo es; **ND** prohíbe las obras
+derivadas, que es exactamente lo que hace la plantilla al recortar la foto
+dentro del slide. Para uso comercial DermNet vende una licencia aparte. Dos de
+dos en contra, así que no está ni como opción configurable.
+
+**CDC PHIL queda fuera del adaptador, pero sirve a mano.** Sus imágenes están
+casi todas en dominio público, pero **no tiene API**, y su propio FAQ dice "la
+mayoría", no "todas": hay imágenes con copyright de terceros mezcladas. Sin una
+interfaz que devuelva el estado de cada una, un adaptador tendría que suponer
+que todas son libres, que es el fallo en abierto que este proyecto no hace. La
+vía es la misma que la de Unsplash: buscar en `phil.cdc.gov`, comprobar en la
+ficha que esa imagen concreta es de dominio público, bajarla, subirla por el
+editor y llenar el crédito a mano.
+
 ## Las pruebas
 
 ```bash
 npm run pruebas 3002      # el editor, las paletas, la cola y el banco de fotos
 npm run banco             # el disparador de seguridad, contra quince frases
 npm run banco-fotos       # el adaptador de bancos, contra una respuesta guardada
+npm run banco-clinicas    # el archivo clínico y la barrera de aprobación
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
 ```
 

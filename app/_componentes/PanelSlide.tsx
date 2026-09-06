@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { BuscadorClinicas } from './BuscadorClinicas';
 import { BuscadorFotos } from './BuscadorFotos';
 import { BuscadorIconos } from './BuscadorIconos';
 import {
@@ -13,6 +14,7 @@ import {
   limpiarOverrides,
   moverSlide,
   nuevoSlide,
+  ponerClinica,
   ponerFotoDeBanco,
   tituloDeTarjeta,
 } from '@/lib/edicion';
@@ -26,6 +28,8 @@ type Props = {
   slide: Slide;
   /** El slug del post: la búsqueda de fotos lo necesita para guardar. */
   slug: string;
+  /** El nombre del médico: el único que firma una imagen clínica. */
+  medico: string;
   /** Los últimos íconos usados, de content/marca.json. */
   recientes: string[];
   /** La paleta del post: decide qué íconos se funden con el fondo. */
@@ -44,6 +48,7 @@ type Props = {
 export function PanelSlide({
   slide,
   slug,
+  medico,
   recientes,
   paleta,
   onUsarIcono,
@@ -174,11 +179,29 @@ export function PanelSlide({
                   }
                 />
 
+                {slide.visual.clinica ? (
+                  <p className="pista pista--clinico">
+                    Imagen clínica
+                    {slide.visual.aprobacion
+                      ? `, aprobada por ${slide.visual.aprobacion.aprobadaPor} el ${slide.visual.aprobacion.fecha}.`
+                      : ' sin aprobar: el carrusel no puede salir de borrador.'}
+                  </p>
+                ) : null}
+
                 <BuscadorFotos
                   slug={slug}
                   indice={indice}
                   onElegir={(ruta, credito) =>
                     setPost((p) => ponerFotoDeBanco(p, indice, ruta, credito))
+                  }
+                />
+
+                <BuscadorClinicas
+                  slug={slug}
+                  indice={indice}
+                  medico={medico}
+                  onAprobar={(ruta, credito, aprobacion) =>
+                    setPost((p) => ponerClinica(p, indice, ruta, credito, aprobacion))
                   }
                 />
 
@@ -418,7 +441,7 @@ function CamposCredito({
 }) {
   const [c, setC] = useState<Partial<Credito>>(credito ?? {});
 
-  const poner = (campo: keyof Credito, valor: string) => {
+  const poner = (campo: keyof Credito, valor: Credito[keyof Credito]) => {
     const nuevo = { ...c, [campo]: valor || undefined };
     setC(nuevo);
     cambiar(nuevo.fuente && nuevo.licencia ? (nuevo as Credito) : undefined);
@@ -468,12 +491,23 @@ function CamposCredito({
         </div>
       </div>
 
-      <label>Consentimiento, si sale una persona identificable</label>
+      <label>Consentimiento — la referencia del documento, no un "sí"</label>
       <input
-        value={c.consentimiento ?? ''}
-        placeholder="firmado 2026-03-04, expediente 218"
-        onChange={(e) => poner('consentimiento', e.target.value)}
+        value={c.consentimiento?.referencia ?? ''}
+        placeholder="expediente 218, consentimiento del 2026-03-04"
+        onChange={(e) =>
+          poner(
+            'consentimiento',
+            e.target.value
+              ? { referencia: e.target.value, fecha: new Date().toISOString().slice(0, 10) }
+              : undefined,
+          )
+        }
       />
+      <p className="pista">
+        Se guarda para poder buscarlo: el consentimiento se puede retirar, y ese día hay que
+        encontrar en qué carruseles salió la foto. <code>npm run consentimiento</code> los lista.
+      </p>
     </>
   );
 }

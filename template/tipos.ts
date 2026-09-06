@@ -6,6 +6,7 @@
  * separarse. Son re-exportaciones de tipo, así que Zod no entra al navegador.
  */
 export type {
+  TAprobacion as Aprobacion,
   TCredito as Credito,
   TEmblema as Emblema,
   TMarca as Marca,

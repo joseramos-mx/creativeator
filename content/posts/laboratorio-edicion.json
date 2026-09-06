@@ -29,8 +29,8 @@
       "pregunta": "¿Sobre qué corren las pruebas?",
       "foto": "/media/laboratorio-edicion/portada.jpg",
       "fotoCredito": {
-        "fuente": "Consultorio",
-        "licencia": "propia"
+        "fuente": "Banco de prueba",
+        "licencia": "de prueba"
       }
     },
     {
@@ -40,11 +40,19 @@
       "cuerpo": "Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. ",
       "visual": {
         "clase": "foto",
-        "src": "/media/laboratorio-edicion/pexels-8088232.jpg",
+        "src": "/media/laboratorio-edicion/clinica-file-porrigo-impetigo-contagiosa-2-jpg.jpg",
         "ideaImagen": "lo que la prueba espera encontrar descrito aquí",
         "credito": {
-          "fuente": "Consultorio",
-          "licencia": "propia"
+          "fuente": "Wikimedia Commons",
+          "licencia": "Public domain",
+          "autor": "George Henry Fox",
+          "url": "https://commons.wikimedia.org/wiki/File:Porrigo_(impetigo_contagiosa)_2.jpg"
+        },
+        "clinica": true,
+        "aprobacion": {
+          "aprobadaPor": "Dr. Edwin Maldonado",
+          "fecha": "2026-09-06",
+          "huella": "53c12ed506692289e88caf1e89d0f80f"
         }
       },
       "fuente": "Prueba.",

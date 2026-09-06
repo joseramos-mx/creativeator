@@ -430,6 +430,85 @@ ok(
   'y la banda del lienzo ya no avisa: nadie llenó el crédito a mano',
 );
 
+/* ── el archivo clínico ──────────────────────────────────────────────────── */
+console.log('\nArchivo clínico');
+
+const tarjetaClinica = await abrirTarjeta(page, 1);
+const panelClinico = tarjetaClinica.locator('.clinico');
+await panelClinico.locator('button:has-text("Archivo clínico")').click();
+await esperarA(async () => (await panelClinico.locator('.foto-opcion').count()) > 0);
+
+// La muestra de laboratorio trae una CC BY-NC-ND —la licencia de DermNet— que
+// el adaptador tiene que dejar fuera.
+ok((await panelClinico.locator('.foto-opcion').count()) > 0, 'el archivo devuelve candidatos');
+ok(
+  /1 imagen quedó fuera por su licencia/.test(await panelClinico.innerText()),
+  'y una queda fuera por su licencia, contada y no escondida',
+);
+
+await panelClinico.locator('.foto-opcion').first().click();
+await espera(300);
+const firma = panelClinico.locator('.clinico__firma');
+ok((await firma.count()) === 1, 'al elegir una, pide la firma');
+
+// El sistema propone; el médico inserta. Sin su nombre no hay botón.
+const botonFirmar = firma.locator('button:has-text("firma"), button:has-text("Aprobar")');
+ok(await botonFirmar.isDisabled(), 'sin el nombre del médico no se puede aprobar');
+ok(
+  (await botonFirmar.innerText()).includes(medico),
+  `el botón dice quién firma: "${await botonFirmar.innerText()}"`,
+);
+
+// Y el servidor lo comprueba también, no solo el botón: lo que se escribe en el
+// JSON es la firma de alguien con cédula.
+const conOtroNombre = await (
+  await fetch(`${base}/api/fotos/aprobar`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      slug: soloLaboratorio(EDICION),
+      candidato: { id: 'x', descarga: 'https://ejemplo.test/x.jpg', credito: { fuente: 'a', licencia: 'b' } },
+      aprobadaPor: 'Quien Revisa',
+    }),
+  })
+).json();
+ok(
+  /solo la puede aprobar/.test(conOtroNombre.error ?? ''),
+  'y el servidor rechaza otra firma aunque el botón se saltara',
+);
+
+await firma.locator('input').first().fill(medico);
+await espera(200);
+ok(!(await botonFirmar.isDisabled()), 'con su nombre, sí');
+await botonFirmar.click();
+await esperarA(() => leer(EDICION).slides[1].visual.aprobacion !== undefined);
+
+const clinica = leer(EDICION).slides[1].visual;
+ok(clinica.clinica === true, 'la foto queda marcada como clínica');
+ok(clinica.aprobacion?.aprobadaPor === medico, `firmada por ${clinica.aprobacion?.aprobadaPor}`);
+ok(Boolean(clinica.aprobacion?.fecha), `con fecha ${clinica.aprobacion?.fecha}`);
+ok(
+  (clinica.aprobacion?.huella ?? '').length === 32,
+  'y la huella de los bytes de la imagen, no de la ruta',
+);
+ok(clinica.credito?.fuente === 'Wikimedia Commons', 'con su crédito del archivo');
+
+// Lo que sostiene la firma: si el archivo cambia, se cae. Se simula mandando el
+// post con la huella cambiada, que es lo que pasaría si alguien sustituyera el
+// JPEG por otro con el mismo nombre.
+const conHuellaVieja = conTodoRevisado('aprobado');
+conHuellaVieja.slides[1].visual.aprobacion.huella = 'huelladeotracosa'.padEnd(32, '0');
+for (const slide of conHuellaVieja.slides) {
+  const credito = { fuente: 'Consultorio', licencia: 'propia' };
+  if (slide.tipo === 'portada' && slide.foto) slide.fotoCredito = credito;
+}
+const caida = await guardar(conHuellaVieja);
+ok(caida.estado === 400, 'con la imagen cambiada, el carrusel no se aprueba');
+ok(
+  /cambió después de que/.test(caida.cuerpo.error ?? ''),
+  `y lo dice: "${(caida.cuerpo.error ?? '').split('\n').pop()?.trim()}"`,
+);
+
 /* ── la barrera de licencia ──────────────────────────────────────────────── */
 console.log('\nBarrera de licencia');
 
@@ -451,7 +530,9 @@ function conTodoRevisado(estado) {
   return post;
 }
 
-const guardar = async (post) => {
+// Declaración y no `const`: se usa desde la sección del archivo clínico, que
+// va antes en el archivo, y una función declarada se iza.
+async function guardar(post) {
   soloLaboratorio(post.slug);
   const r = await fetch(`${base}/api/post`, {
     method: 'POST',
@@ -459,7 +540,7 @@ const guardar = async (post) => {
     body: JSON.stringify({ post }),
   });
   return { estado: r.status, cuerpo: await r.json() };
-};
+}
 
 const comoBorrador = await guardar(conTodoRevisado('borrador'));
 ok(comoBorrador.estado === 200, 'como borrador se guarda aunque falte la licencia');
@@ -479,9 +560,12 @@ ok(
 // sirve: lo que tiene que impedir es publicar sin saber de dónde salió la foto.
 const conLicencia = conTodoRevisado('aprobado');
 for (const slide of conLicencia.slides) {
-  const credito = { fuente: 'Consultorio', licencia: 'propia' };
-  if (slide.tipo === 'portada' && slide.foto) slide.fotoCredito = credito;
-  if (slide.visual?.clase === 'foto') slide.visual.credito = credito;
+  // Se rellena solo lo que falta. La foto clínica de la sección anterior ya
+  // trae el suyo de Wikimedia Commons, y pisarlo con "Consultorio" le pediría
+  // además la referencia del consentimiento: sería probar otra cosa.
+  const credito = { fuente: 'Banco de prueba', licencia: 'de prueba' };
+  if (slide.tipo === 'portada' && slide.foto && !slide.fotoCredito) slide.fotoCredito = credito;
+  if (slide.visual?.clase === 'foto' && !slide.visual.credito) slide.visual.credito = credito;
 }
 const conTodo = await guardar(conLicencia);
 ok(conTodo.estado === 200, 'con la procedencia registrada sí se aprueba');

@@ -1,4 +1,4 @@
-import type { Credito, Overrides, Post, Slide } from '@/template/tipos';
+import type { Aprobacion, Credito, Overrides, Post, Slide } from '@/template/tipos';
 
 /**
  * lib/edicion.ts — las operaciones del editor, sin React.
@@ -169,6 +169,38 @@ export function ponerFotoDeBanco(
       clase: 'foto',
       src: ruta,
       credito,
+      ...(antes?.alto ? { alto: antes.alto } : {}),
+      ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
+    },
+  } as Partial<Slide>);
+}
+
+/**
+ * La imagen clínica aprobada, con su crédito y su firma, de una vez.
+ *
+ * Se marca `clinica: true` aquí y no en el esquema por omisión: una foto es
+ * clínica porque alguien la puso por la cola clínica, y esa marca es lo que
+ * hace que la barrera de guardado le exija firma. Si se pierde, la foto de una
+ * lesión pasaría por la puerta de las fotos de aula.
+ */
+export function ponerClinica(
+  post: Post,
+  i: number,
+  ruta: string,
+  credito: Credito,
+  aprobacion: Aprobacion,
+): Post {
+  const slide = post.slides[i];
+  if (slide.tipo !== 'contenido') return post;
+
+  const antes = slide.visual.clase === 'foto' ? slide.visual : undefined;
+  return cambiarSlide(post, i, {
+    visual: {
+      clase: 'foto',
+      src: ruta,
+      credito,
+      clinica: true,
+      aprobacion,
       ...(antes?.alto ? { alto: antes.alto } : {}),
       ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
     },

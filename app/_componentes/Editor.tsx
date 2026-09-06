@@ -16,6 +16,7 @@ import {
 import { Slide } from '@/template/Slide';
 import { ProveedorDeAvisos } from '@/template/avisos';
 import { pendientes } from '@/lib/afirmaciones';
+import { faltaClinico } from '@/lib/clinicas';
 import { fotosSinCredito } from '@/lib/fotos';
 import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
 import type { Marca, Post } from '@/template/tipos';
@@ -224,6 +225,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
             key={i}
             slide={slide}
             slug={post.slug}
+            medico={marca.nombre}
             recientes={recientes}
             paleta={post.paleta}
             onUsarIcono={usarIcono}
@@ -377,7 +379,8 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
   // aquí se apaga la opción para no chocar contra ello.
   const sinRevisar = pendientes(post, post.revisiones).length;
   const sinLicencia = fotosSinCredito(post).length;
-  const trabado = sinRevisar > 0 || sinLicencia > 0;
+  const sinFirmar = faltaClinico(post).length;
+  const trabado = sinRevisar > 0 || sinLicencia > 0 || sinFirmar > 0;
 
   return (
     <details className="tarjeta" data-ficha open>
@@ -431,6 +434,14 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
           <p className="pista pista--aviso">
             Quedan {sinRevisar} {sinRevisar === 1 ? 'afirmación' : 'afirmaciones'} sin revisar: hasta
             entonces el carrusel se queda en borrador.
+          </p>
+        ) : null}
+
+        {sinFirmar > 0 ? (
+          <p className="pista pista--clinico">
+            {sinFirmar === 1 ? 'Hay una imagen clínica' : `Hay ${sinFirmar} imágenes clínicas`} sin
+            la firma del médico, o con la firma caída porque el archivo cambió. Se aprueban desde el
+            archivo clínico de su slide.
           </p>
         ) : null}
 

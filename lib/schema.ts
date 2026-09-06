@@ -14,6 +14,7 @@
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/template/tokens';
 import { pendientes } from './afirmaciones';
+import { faltaClinico } from './clinicas';
 import { fotosSinCredito } from './fotos';
 
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
@@ -66,8 +67,39 @@ export const Credito = z.object({
   licenciaUrl: z.string().optional(),
   autor: z.string().optional(),
   url: z.string().optional(),
-  /** Consentimiento de la persona fotografiada, cuando la hay. */
-  consentimiento: z.string().optional(),
+  /**
+   * El consentimiento de la persona fotografiada: **la referencia del
+   * documento, nunca un sí**.
+   *
+   * Un booleano diría que alguien firmó algo alguna vez y no serviría para
+   * nada más. El consentimiento es revocable, así que el día que un paciente
+   * lo retire hay que poder encontrar en qué carruseles salió su foto, y para
+   * eso hace falta un identificador que se pueda buscar. Ver
+   * `scripts/consentimiento.mjs`.
+   */
+  consentimiento: z
+    .object({
+      referencia: z.string().min(1, 'el identificador del documento firmado'),
+      fecha: z.string().optional(),
+    })
+    .optional(),
+});
+
+/**
+ * La firma del médico sobre una imagen clínica.
+ *
+ * `huella` es del archivo, no de la ruta: si la imagen cambia, la aprobación
+ * deja de valer. Es la misma idea que sostiene la cola de afirmaciones —editar
+ * el texto devuelve la afirmación a la cola— aplicada a los bytes de una foto.
+ *
+ * Y como allí, esto no dice que el sistema haya comprobado nada. Dice que una
+ * persona con cédula miró esa imagen concreta un día concreto.
+ */
+export const Aprobacion = z.object({
+  aprobadaPor: z.string().min(1),
+  fecha: z.string(),
+  huella: z.string().min(1),
+  nota: z.string().optional(),
 });
 
 export const Visual = z.discriminatedUnion('clase', [
@@ -79,6 +111,16 @@ export const Visual = z.discriminatedUnion('clase', [
     /** Qué buscar en el banco de fotos. Lo llena la IA; no se dibuja. */
     ideaImagen: z.string().optional(),
     credito: Credito.optional(),
+    /**
+     * Foto de lesión: piel enferma, no ambiente.
+     *
+     * Va por una cola distinta de la contextual y la firma el médico, porque
+     * lo que hay que juzgar es distinto. En una foto de aula lo único que se
+     * revisa es de dónde salió; en una de piel, además, si esa imagen
+     * corresponde a lo que el texto dice que es.
+     */
+    clinica: z.literal(true).optional(),
+    aprobacion: Aprobacion.optional(),
   }),
   z.object({
     clase: z.literal('icono'),
@@ -233,6 +275,21 @@ export const PostGuardable = Post.superRefine((post, ctx) => {
     });
   }
 
+  // La tercera barrera: las fotos de lesión las firma el médico. La huella del
+  // archivo se comprueba en la ruta de guardado, que sí puede leer el disco;
+  // aquí se caza lo que se ve sin leerlo, que es lo que ni siquiera tiene firma.
+  const clinicas = faltaClinico(post);
+  if (clinicas.length > 0) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['estado'],
+      message:
+        `no se puede guardar como "${post.estado}" con ${clinicas.length} ` +
+        `${clinicas.length === 1 ? 'foto clínica pendiente' : 'fotos clínicas pendientes'}:\n` +
+        clinicas.map((f) => `      · ${f.donde}: ${f.que}`).join('\n'),
+    });
+  }
+
   // La segunda barrera, del mismo tipo y por la misma razón: lo que no se puede
   // decir de dónde salió no se declara aprobado. "Desconocida" no la pasa a
   // propósito; si no se sabe, el carrusel se queda en borrador.
@@ -264,6 +321,7 @@ export const Marca = z.object({
 });
 
 export type TCredito = z.infer<typeof Credito>;
+export type TAprobacion = z.infer<typeof Aprobacion>;
 export type TOverrides = z.infer<typeof Overrides>;
 export type TVisual = z.infer<typeof Visual>;
 export type TEmblema = z.infer<typeof Emblema>;

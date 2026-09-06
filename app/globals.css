@@ -760,3 +760,54 @@ select:focus {
 
 .foto-opcion[data-apartada] img { opacity: 0.55; }
 .foto-opcion em { color: #e5a94b; font-style: normal; }
+
+/* ── archivo clínico ── */
+
+.clinico {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.clinico[data-clinico] {
+  padding: 12px 14px;
+  border: 1px solid #6b3f52;
+  border-left-width: 3px;
+  border-radius: 10px;
+  background: #1b1218;
+}
+
+.clinico__cabecera {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #d9a8bb;
+}
+
+.chip--clinico {
+  flex: none;
+  border-color: #7a4a5e;
+  color: #e79ab8;
+}
+
+.clinico__firma {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #6b3f52;
+}
+
+.clinico .foto-opcion[data-elegida] {
+  border-color: #e79ab8;
+  border-width: 2px;
+}
+
+.pista--clinico {
+  color: #d9a8bb;
+}

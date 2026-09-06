@@ -40,6 +40,12 @@ export type Candidato = {
    * decir de dónde salió, no se usa.
    */
   credito: TCredito | null;
+  /**
+   * Lo que quien apruebe tiene que ver antes de firmar: una licencia que
+   * arrastra obligaciones, una restricción que marca el banco. No impide usar
+   * la imagen; impide usarla sin enterarse.
+   */
+  avisos?: string[];
 };
 
 /** Lo que decide qué se busca y qué no puede salir. Ver lib/criterios.ts. */
@@ -47,6 +53,8 @@ export type Criterios = { query: string; criterios: string; descartar: string[] 
 
 export type Banco = {
   nombre: string;
+  /** Los clínicos van por otra cola y los firma el médico. Ver lib/clinicas.ts. */
+  clinico?: true;
   /** Si falta la llave, el editor lo dice en vez de fallar al buscar. */
   disponible: () => boolean;
   /**
