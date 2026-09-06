@@ -83,10 +83,28 @@ const CIFRA =
  * antibiótico" de "suele picar": las dos tienen verbo, solo una manda hacer algo.
  */
 const MODAL =
-  /\b(necesita\w*|hace falta|puede[ns]?|pueden|debe[ns]?|hay que|tiene[n]? que|conviene|no\s+\w+|termina\w*|acude\w*|acudir|cubre\w*|evita\w*|aplica\w*|suspend\w*)\b/i;
+  /\b(necesita\w*|hace falta|puede[ns]?|pueden|debe[ns]?|hay que|tiene[n]? que|conviene|termina\w*|acude\w*|acudir|agenda\w*|cubre\w*|evita\w*|aplica\w*|suspend\w*)\b/i;
 
-const ACCION =
-  /\b(antibi[oó]tico\w*|trat\w*|remedio\w*|automedic\w*|crema|pomada|medicamento\w*|dosis|receta|clases|escuela|guarder[ií]a|volver|regresar|aisla\w*|contagi\w*|compart\w*|toalla\w*|s[aá]bana\w*|llaga\w*|valoraci[oó]n|consulta|m[eé]dico|urgencias?)\b/i;
+/** El terreno donde una indicación equivocada hace daño. */
+const TERRENO =
+  '(?:antibi[oó]tico\\w*|trat\\w*|remedio\\w*|automedic\\w*|crema|pomada|medicamento\\w*|dosis|receta|clases|escuela|guarder[ií]a|volver|regresar|aisla\\w*|contagi\\w*|compart\\w*|toalla\\w*|s[aá]bana\\w*|llaga\\w*|valoraci[oó]n|consulta|m[eé]dico|urgencias?)';
+
+const ACCION = new RegExp(`\\b${TERRENO}\\b`, 'i');
+
+/**
+ * "No lo trates a ciegas" es una indicación y hay que revisarla. "La crema ya
+ * no alcanza" no lo es, y "no despierta al niño de noche" tampoco.
+ *
+ * La regla que las separa: **una negación cuenta como directiva solo cuando lo
+ * negado es la acción misma.** Antes bastaba con `no` seguido de cualquier
+ * palabra, y con eso tres frases del terreno —donde "crema" aparece a dos
+ * renglones de cualquier negación— entraban en la cola sin ser indicaciones.
+ * Un revisor que abre tres fichas para nada aprende a pasarlas de corrido.
+ */
+const NEGACION = new RegExp(
+  `\\bno\\s+(?:(?:se|lo|la|le|les|los|te|nos|me)\\s+)?${TERRENO}`,
+  'i',
+);
 
 /**
  * La unidad de revisión es el bloque, no la frase.
@@ -100,8 +118,18 @@ export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
 
   post.slides.forEach((slide, i) => {
     const etiqueta = `slide ${String(i).padStart(2, '0')}`;
-    if (slide.bajada) bloques.push({ donde: `${etiqueta} · bajada`, texto: slide.bajada, fuente: slide.fuente });
-    if (slide.cuerpo) bloques.push({ donde: `${etiqueta} · cuerpo`, texto: slide.cuerpo, fuente: slide.fuente });
+
+    // La bajada y el cuerpo son una unidad, no dos. Comparten la atribución
+    // del slide y se leen seguidos: la bajada es la entrada del párrafo. Cuando
+    // se contaban por separado, una sola fuente citada abría dos revisiones
+    // idénticas, y revisar dos veces lo mismo es lo que enseña a revisar de
+    // corrido, que es justo lo que la cola existe para impedir.
+    const texto = [slide.bajada, slide.cuerpo].filter(Boolean).join('\n');
+    if (texto) {
+      const parte = slide.bajada && slide.cuerpo ? 'texto' : slide.bajada ? 'bajada' : 'cuerpo';
+      bloques.push({ donde: `${etiqueta} · ${parte}`, texto, fuente: slide.fuente });
+    }
+
     if (slide.puntos?.length) {
       bloques.push({ donde: `${etiqueta} · lista`, texto: slide.puntos.join('\n'), fuente: slide.fuente });
     }
@@ -130,9 +158,11 @@ export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
     }
     const modal = MODAL.exec(bloque.texto);
     const accion = ACCION.exec(bloque.texto);
-    if (modal && accion) {
+    const negacion = NEGACION.exec(bloque.texto);
+    if ((modal && accion) || negacion) {
       disparadores.push('seguridad');
-      marcas.push(`${modal[0]} … ${accion[0]}`);
+      // La negación ya lleva la acción dentro, así que se marca entera.
+      marcas.push(negacion && !modal ? negacion[0] : `${modal?.[0]} … ${accion?.[0]}`);
     }
 
     if (disparadores.length === 0) continue;
