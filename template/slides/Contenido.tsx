@@ -11,6 +11,7 @@ import { marcado, renglones } from '../texto';
 import { bloque, lienzo } from '../tokens';
 import type { Marca, Overrides, SlideContenido } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
+import { useReportarAjuste } from '../avisos';
 import { variablesDePlantilla } from '../variables';
 
 /**
@@ -29,6 +30,7 @@ export function Contenido({
   ultimo,
   ayudas,
   id,
+  indice,
 }: {
   slide: SlideContenido;
   marca: Marca;
@@ -36,9 +38,12 @@ export function Contenido({
   ultimo: boolean;
   ayudas?: Ayudas;
   id?: string;
+  /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
+  indice?: number;
 }) {
   const area = useRef<HTMLDivElement>(null);
-  usarAjuste(area, [slide.titulo, slide.bajada, slide.cuerpo, slide.visual]);
+  const ajuste = usarAjuste(area, [slide.titulo, slide.bajada, slide.cuerpo, slide.visual]);
+  useReportarAjuste(indice, ajuste);
   const ov = slide.overrides ?? {};
 
   return (

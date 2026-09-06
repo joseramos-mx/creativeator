@@ -30,7 +30,7 @@ export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
 
   switch (slide.tipo) {
     case 'portada':
-      return <Portada slide={slide} marca={marca} ayudas={ayudas} id={id} />;
+      return <Portada slide={slide} marca={marca} ayudas={ayudas} id={id} indice={indice} />;
     case 'contenido':
       return (
         <Contenido
@@ -40,11 +40,20 @@ export function Slide({ slides, indice, marca, ayudas, id }: PropsSlide) {
           ultimo={ultimo}
           ayudas={ayudas}
           id={id}
+          indice={indice}
         />
       );
     case 'lista':
       return (
-        <Lista slide={slide} marca={marca} numero={numero} ultimo={ultimo} ayudas={ayudas} id={id} />
+        <Lista
+          slide={slide}
+          marca={marca}
+          numero={numero}
+          ultimo={ultimo}
+          ayudas={ayudas}
+          id={id}
+          indice={indice}
+        />
       );
     case 'cierre':
       return <Cierre marca={marca} numero={numero} ayudas={ayudas} id={id} />;

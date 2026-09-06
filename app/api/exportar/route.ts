@@ -62,11 +62,11 @@ export async function POST(req: Request) {
     const zip = new JSZip();
     for (const a of archivos) zip.file(a.nombre, a.png);
 
-    // El pie de foto viaja con las imágenes: es la otra mitad del trabajo de
-    // publicar, y buscarlo aparte es justo lo que se hace a mano hoy.
-    if (post.pieDeFoto) {
-      zip.file('pie-de-foto.txt', post.pieDeFoto);
-      await writeFile(join(carpeta, 'pie-de-foto.txt'), post.pieDeFoto, 'utf8');
+    // El copy viaja con las imágenes: es la otra mitad del trabajo de publicar,
+    // y buscarlo aparte es justo lo que se hace a mano hoy.
+    if (post.copy) {
+      zip.file('copy.txt', post.copy);
+      await writeFile(join(carpeta, 'copy.txt'), post.copy, 'utf8');
     }
 
     const blob = await zip.generateAsync({ type: 'nodebuffer' });

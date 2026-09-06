@@ -46,7 +46,10 @@ mkdirSync(dirVerificar, { recursive: true });
 const SIN_CROMO =
   '.cromo,.etiqueta,nextjs-portal{display:none!important}' +
   '.banco > section > h2,.banco > section > p{display:none!important}' +
-  '.banco{padding:0!important}.mazo{gap:0!important}' +
+  '.banco{padding:0!important}.mazo{gap:0!important;padding:0!important}' +
+  // el editor: fuera el panel y la barra, y el lienzo pegado a la esquina
+  '.panel,.lienzo__barra{display:none!important}' +
+  '.editor,.lienzo{display:block!important;height:auto!important;overflow:visible!important;padding:0!important}' +
   '.marco{margin:0!important;border-radius:0!important;box-shadow:none!important;background:none!important}';
 
 const navegador = await chromium.launch();
@@ -112,8 +115,8 @@ for (let i = 1; i <= total; i++) {
   exportados.push(ruta);
 }
 
-const pie = zip.file('pie-de-foto.txt');
-console.log(pie ? '  el ZIP incluye pie-de-foto.txt' : '  ATENCIÓN: el ZIP no trae pie-de-foto.txt');
+const copy = zip.file('copy.txt');
+console.log(copy ? '  el ZIP incluye copy.txt' : '  ATENCIÓN: el ZIP no trae copy.txt');
 
 // ── 3. la diferencia ───────────────────────────────────────────────────────
 console.log('\nDiferencia entre el PNG exportado y la vista previa:');

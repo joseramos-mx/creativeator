@@ -44,7 +44,7 @@ export default async function Inicio() {
                       <em data-estado={post.estado}>{post.estado}</em> · {post.slides.length} slides ·{' '}
                       {post.creado}
                     </span>
-                    <span>{post.pieDeFoto ? 'con pie de foto' : 'sin pie de foto'}</span>
+                    <span>{post.copy ? 'con copy' : 'sin copy'}</span>
                   </div>
                 </Link>
               </li>

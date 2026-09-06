@@ -11,6 +11,7 @@ import { AyudasDeAjuste, type Ayudas } from '../partes/Ayudas';
 import { marcado, renglones } from '../texto';
 import type { Marca, SlideLista } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
+import { useReportarAjuste } from '../avisos';
 import { variablesDePlantilla } from '../variables';
 import { areaDesplazada } from './Contenido';
 
@@ -29,6 +30,7 @@ export function Lista({
   ultimo,
   ayudas,
   id,
+  indice,
 }: {
   slide: SlideLista;
   marca: Marca;
@@ -36,9 +38,12 @@ export function Lista({
   ultimo: boolean;
   ayudas?: Ayudas;
   id?: string;
+  /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
+  indice?: number;
 }) {
   const area = useRef<HTMLDivElement>(null);
-  usarAjuste(area, [slide.titulo, slide.puntos]);
+  const ajuste = usarAjuste(area, [slide.titulo, slide.puntos]);
+  useReportarAjuste(indice, ajuste);
   const ov = slide.overrides ?? {};
 
   return (

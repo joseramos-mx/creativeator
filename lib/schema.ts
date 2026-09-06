@@ -99,8 +99,19 @@ export const Post = z.object({
   creado: z.string(),
   /** Filtra la lista y dice qué falta revisar del mes. */
   estado: z.enum(['borrador', 'aprobado', 'publicado']).default('borrador'),
-  /** El texto del post de Instagram: gancho, resumen, fuentes y hashtags. */
-  pieDeFoto: z.string().optional(),
+  /** El texto que va debajo del carrusel en Instagram. Ver content/voz.md. */
+  copy: z.string().optional(),
+
+  /**
+   * Metadatos del brief. No se pintan en ningún slide: son para decidir y para
+   * darle contexto al modelo cuando redacte (fase 6).
+   */
+  pilar: z.string().optional(),
+  objetivo: z.string().optional(),
+  nota: z.string().optional(),
+  frase: z.string().optional(),
+  hashtags: z.array(z.string()).optional(),
+
   slides: z.array(Slide).min(2),
 });
 

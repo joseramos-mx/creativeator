@@ -65,3 +65,33 @@ niños y muy contagiosa. Y el regreso a clases es justo cuando más se dispara."
 
 Concreto, visual, sin adjetivos de relleno, y termina con el gancho de por qué
 importa hoy.
+
+## El copy: el texto que va debajo del carrusel
+
+El carrusel se lee en veinte segundos; el copy es donde cabe lo que no entró y
+donde se busca la conversación. Sigue siempre la misma fórmula, en este orden:
+
+1. **La palabra clave en la primera frase.** Es lo que hace que el post
+   aparezca cuando alguien busca "impétigo" o "dermatitis". No la escondas en el
+   tercer párrafo ni la sustituyas por un rodeo: va completa y temprano.
+2. **Bloques con emoji, y la fuente entre paréntesis.** Cada idea es un bloque
+   corto que abre con un emoji, y si el bloque afirma un dato, cierra con la
+   institución entre paréntesis: (Mayo Clinic), (AAP). El emoji es del bloque,
+   no del texto.
+3. **El diagnóstico diferencial.** Con qué se confunde y en qué se distingue.
+   Es la parte que más se comparte, porque es la duda real de quien lee.
+4. **Una pregunta para los comentarios.** Concreta y contestable en una línea,
+   sobre la experiencia de quien lee, no sobre el dato clínico.
+5. **Guardar y compartir.** Dicho con el motivo: para qué le va a servir tenerlo
+   guardado, o a quién le sirve que se lo mande.
+6. **La llamada a consulta**, con Doctoralia y el enlace en la biografía.
+7. **Cinco hashtags.** Cinco, no quince: mezcla el término clínico, la
+   especialidad y la ciudad.
+
+Dos cosas que se contradicen solo en apariencia con lo de arriba:
+
+- **Los emojis van en el copy, nunca en los slides.** En el slide son ruido; en
+  el copy son señalización, y ayudan a leer un bloque de texto largo en un
+  teléfono.
+- **El copy puede ser largo.** El límite de veinte segundos es del slide. Aquí
+  quien llegó ya decidió que le interesa.

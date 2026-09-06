@@ -8,6 +8,7 @@ import { marcado, renglones } from '../texto';
 import { velo } from '../tokens';
 import type { Marca, SlidePortada } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
+import { useReportarAjuste } from '../avisos';
 import { variablesDePlantilla } from '../variables';
 
 /**
@@ -20,14 +21,18 @@ export function Portada({
   marca,
   ayudas,
   id,
+  indice,
 }: {
   slide: SlidePortada;
   marca: Marca;
   ayudas?: Ayudas;
   id?: string;
+  /** Posición en el carrusel, para que el aviso de ajuste sepa de quién es. */
+  indice?: number;
 }) {
   const area = useRef<HTMLDivElement>(null);
-  usarAjuste(area, [slide.titulo, slide.pregunta]);
+  const ajuste = usarAjuste(area, [slide.titulo, slide.pregunta]);
+  useReportarAjuste(indice, ajuste);
   const ov = slide.overrides ?? {};
 
   return (

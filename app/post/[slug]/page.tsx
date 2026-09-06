@@ -1,14 +1,13 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Visor } from '@/app/_componentes/Visor';
-import { BotonExportar } from '@/app/_componentes/BotonExportar';
+import { Editor } from '@/app/_componentes/Editor';
+import { capturas } from '@/app/plantilla/datos';
 import { listarSlugs, leerPost, marcaDePost } from '@/lib/posts';
 
 /**
- * /post/[slug] — el carrusel completo.
+ * /post/[slug] — el editor.
  *
- * En la fase 4 esta página se convierte en el editor de dos columnas. Por ahora
- * pinta el carrusel y deja exportarlo, que es lo que la fase 3 vino a resolver.
+ * El servidor lee el post una vez y de ahí en adelante manda el editor, que
+ * guarda solo contra /api/post. Sin botón de guardar y sin recargar.
  */
 export const dynamic = 'force-dynamic';
 
@@ -17,22 +16,10 @@ export default async function Carrusel({ params }: { params: Promise<{ slug: str
   const slugs = await listarSlugs();
   if (!slugs.includes(slug)) notFound();
 
-  const post = await leerPost(slug);
-  const marca = await marcaDePost(slug);
+  const [post, marca] = await Promise.all([leerPost(slug), marcaDePost(slug)]);
 
-  return (
-    <Visor
-      titulo={post.tema}
-      subtitulo={`${post.slides.length} slides · ${post.estado} · ${post.creado}`}
-      acciones={
-        <>
-          <Link className="boton" href="/">
-            ← carruseles
-          </Link>
-          <BotonExportar slug={slug} slides={post.slides.length} />
-        </>
-      }
-      mazos={[{ titulo: 'Slides', post, marca }]}
-    />
-  );
+  // El overlay de referencia solo tiene sentido donde hay capturas publicadas.
+  const referencia = slug === 'impetigo-regreso-a-clases' ? capturas : undefined;
+
+  return <Editor inicial={post} marca={marca} capturas={referencia} />;
 }

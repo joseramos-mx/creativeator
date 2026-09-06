@@ -3,9 +3,8 @@
 Genera los carruseles de Instagram de la cuenta a partir de una plantilla fija.
 Corre en tu computadora, no en internet.
 
-**Vas en la fase 3 de 6.** Ya existen el diseño, el contenido en archivos y la
-exportación a PNG. Faltan el editor visual, la librería de íconos y la redacción
-con IA.
+**Vas en la fase 4 de 6.** Ya existen el diseño, el contenido en archivos, la
+exportación a PNG y el editor. Faltan la librería de íconos y la redacción con IA.
 
 ---
 
@@ -22,17 +21,15 @@ terminal cuál usó.
 | Página | Qué es |
 |---|---|
 | `/` | La lista de carruseles, con la portada de cada uno. |
-| `/post/<slug>` | El carrusel completo y el botón de exportar. |
+| `/post/<slug>` | El editor: formulario a la izquierda, carrusel a la derecha. |
 | `/plantilla` | El banco de pruebas: aquí se prueba un cambio de diseño sin tocar contenido. |
 | `/render/<slug>/<n>` | Un slide solo, sin nada alrededor. No es para ti: es la que captura Playwright. |
-
-En `/` y `/post` funcionan las mismas teclas que en el banco:
 
 | Tecla | Qué hace |
 |---|---|
 | `G` | Rejilla: márgenes, área de contenido y las franjas donde Instagram encima su interfaz. |
-| `R` | Encima la captura del post publicado, en modo diferencia (solo en el banco). |
-| `[` `]` | Sube y baja la opacidad de esa captura. |
+| `R` | Encima la captura del post publicado, en modo diferencia. |
+| `[` `]` | Sube y baja la opacidad de esa captura (en el banco). |
 
 ---
 
@@ -48,7 +45,13 @@ copia otro, cámbiale el `slug` y los textos, y aparece solo en la lista.
   "tema": "Impétigo en el regreso a clases",
   "creado": "2026-09-01",
   "estado": "publicado",
-  "pieDeFoto": "El texto del post de Instagram, con sus hashtags.",
+  "copy": "El texto que va debajo del carrusel en Instagram.",
+  "pilar": "prevención",
+  "objetivo": "que reconozcan el impétigo antes de que se riegue",
+  "frase": "Costras color miel en la cara de tu hijo",
+  "nota": "publicar la primera semana de agosto",
+  "hashtags": ["#impetigo", "#dermatologiapediatrica", "#regresoaclases",
+               "#dermatologodurango", "#pielsana"],
   "slides": [
     { "tipo": "portada", "titulo": "*La infección de*\nRegreso **a clases**",
       "pregunta": "¿Qué es el impétigo?", "foto": "/media/…/portada.jpg" },
@@ -77,10 +80,61 @@ Cosas que conviene saber del formato:
 - **`overrides`** es la excepción de un slide: `offsetY`, `tituloPx`, `cuerpoPx`,
   `mediaAncho`, `mediaAlto`. Vive en el contenido, nunca en los tokens. Si un
   slide junta muchos, la señal es que el token está mal.
+- **`pilar`, `objetivo`, `nota`, `frase` y `hashtags`** salen del brief. No se
+  pintan en ningún slide: sirven para decidir y, en la fase 6, para darle
+  contexto al modelo cuando redacte.
 
 El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
 archivo, al guardar desde el editor (fase 4) y al validar lo que devuelva el
 modelo al redactar (fase 6). Es el mismo en los tres a propósito.
+
+---
+
+## El editor
+
+Formulario a la izquierda, carrusel a la derecha. Cuatro cosas son las que se
+notan al usarlo todos los días:
+
+**La imagen se suelta sobre el slide, no sobre un campo.** Arrastra la foto y
+suéltala encima del slide de la derecha. El slide se ilumina cuando la va a
+aceptar; el de cierre y el de lista no la aceptan y no se iluminan. La imagen se
+guarda en `public/media/<slug>/`, con el nombre normalizado y bajada a 1600 px
+de ancho.
+
+**No hay botón de guardar.** Se guarda solo, 600 ms después de la última tecla,
+y el indicador de arriba dice en qué va. Si el guardado falla —porque el
+contenido dejó de ser válido, por ejemplo—, lo dice ahí mismo con el motivo.
+
+**Cuando un texto no cabe, el aviso dice qué hacer.** Si el ajuste automático
+llegó al mínimo, la tarjeta del slide avisa: *"hay que recortar el título y el
+cuerpo"*. No dice que se encogió la letra, que es lo que pasó pero no lo que
+resuelve el problema.
+
+**Las flechas empujan el slide.** Haz clic en un título, un texto o una imagen y
+usa las teclas. Solo en desarrollo:
+
+| Tecla | Qué hace |
+|---|---|
+| `↑` `↓` | Sube y baja el bloque (`offsetY`). Con la imagen seleccionada, cambia su alto. |
+| `+` `−` | Cambia el tamaño de lo seleccionado: título, cuerpo o imagen. |
+| `Shift` | Multiplica el paso por diez. |
+| `Esc` | Suelta la selección. |
+
+Todo eso escribe en `overrides`, nunca en los tokens. Cuando el valor vuelve a
+coincidir con el de la plantilla, el override desaparece del JSON en vez de
+quedarse escrito. Y cuando un slide junta tres o más, la tarjeta avisa: si te
+pasa en varios slides, lo que está mal es el valor de la plantilla, no el slide.
+
+### Importar un brief
+
+En el panel, **Importar desde el brief**: pega el texto y sale el carrusel. No
+reemplaza nada hasta que ves qué entendió y cuántos slides encontró; el brief se
+escribe a mano y casi siempre trae alguna sorpresa.
+
+El lector está en `lib/brief.ts` y es tolerante: no le importan las mayúsculas,
+los acentos de las etiquetas ni los renglones en blanco de más. Para adaptarlo a
+otro formato de brief solo hay que tocar los dos diccionarios del principio del
+archivo, `ETIQUETAS` y `SECCIONES`.
 
 ---
 
@@ -89,7 +143,7 @@ modelo al redactar (fase 6). Es el mismo en los tres a propósito.
 Desde `/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
 por slide porque abre un navegador de verdad.
 
-Te bajas un ZIP con `01.png` … `07.png` y el `pie-de-foto.txt`. Los mismos
+Te bajas un ZIP con `01.png` … `07.png` y el `copy.txt`. Los mismos
 archivos quedan además en `salidas/<slug>/`, que suele ser más cómodo que
 descomprimir.
 
@@ -235,8 +289,8 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 |---|---|
 | 1 · plantilla | ✅ Los tipos de slide y sus valores. |
 | 2 · contenido | ✅ Los posts en `content/posts/*.json`, validados con Zod. |
-| 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el pie de foto. |
-| 4 · editor | Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
+| 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy. |
+| 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | La librería de Thiings alojada aquí, con buscador. |
 | 6 · redacción | Escribir el carrusel y el mes completo con la API de Anthropic. |
 
