@@ -14,6 +14,7 @@
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/template/tokens';
 import { pendientes } from './afirmaciones';
+import { fotosSinCredito } from './fotos';
 
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
 const TextoMarcado = z.string();
@@ -208,21 +209,36 @@ export const PostGuardable = Post.superRefine((post, ctx) => {
   if (post.estado === 'borrador') return;
 
   const faltan = pendientes(post, post.revisiones);
-  if (faltan.length === 0) return;
+  if (faltan.length > 0) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['estado'],
+      message:
+        `no se puede guardar como "${post.estado}" con ${faltan.length} ` +
+        `${faltan.length === 1 ? 'afirmación sin revisar' : 'afirmaciones sin revisar'}:\n` +
+        faltan
+          .map((a) => {
+            const falta = post.revisiones?.[a.huella] ? 'le falta el enlace' : 'sin revisar';
+            return `      · ${a.donde} (${a.disparadores.join('+')}, ${falta})`;
+          })
+          .join('\n'),
+    });
+  }
 
-  ctx.addIssue({
-    code: 'custom',
-    path: ['estado'],
-    message:
-      `no se puede guardar como "${post.estado}" con ${faltan.length} ` +
-      `${faltan.length === 1 ? 'afirmación sin revisar' : 'afirmaciones sin revisar'}:\n` +
-      faltan
-        .map((a) => {
-          const falta = post.revisiones?.[a.huella] ? 'le falta el enlace' : 'sin revisar';
-          return `      · ${a.donde} (${a.disparadores.join('+')}, ${falta})`;
-        })
-        .join('\n'),
-  });
+  // La segunda barrera, del mismo tipo y por la misma razón: lo que no se puede
+  // decir de dónde salió no se declara aprobado. "Desconocida" no la pasa a
+  // propósito; si no se sabe, el carrusel se queda en borrador.
+  const sinCredito = fotosSinCredito(post);
+  if (sinCredito.length > 0) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['estado'],
+      message:
+        `no se puede guardar como "${post.estado}" con ${sinCredito.length} ` +
+        `${sinCredito.length === 1 ? 'foto sin fuente ni licencia' : 'fotos sin fuente ni licencia'}:\n` +
+        sinCredito.map((f) => `      · ${f.donde} (${f.src})`).join('\n'),
+    });
+  }
 });
 
 export const Marca = z.object({

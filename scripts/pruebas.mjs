@@ -16,6 +16,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 import { PREFIJO, reiniciarLaboratorio } from './laboratorio.mjs';
+import { afirmacionesDe } from '../lib/afirmaciones.ts';
 
 const puerto = process.argv[2] ?? '3000';
 const base = `http://localhost:${puerto}`;
@@ -360,6 +361,63 @@ ok(
   (await page.locator('.afirmacion[data-revisada]').count()) === 1,
   'la revisión de otro bloque sigue en pie',
 );
+
+/* ── la barrera de licencia ──────────────────────────────────────────────── */
+console.log('\nBarrera de licencia');
+
+/** El post de laboratorio con todo revisado, para aislar la barrera de fotos. */
+function conTodoRevisado(estado) {
+  const post = leer(EDICION);
+  post.estado = estado;
+  post.revisiones = Object.fromEntries(
+    afirmacionesDe(post).map((a) => [
+      a.huella,
+      {
+        revisadaPor: medico,
+        fecha: '2026-01-01',
+        texto: a.texto,
+        ...(a.exigeEnlace ? { enlace: 'https://ejemplo.test/fuente' } : {}),
+      },
+    ]),
+  );
+  return post;
+}
+
+const guardar = async (post) => {
+  soloLaboratorio(post.slug);
+  const r = await fetch(`${base}/api/post`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ post }),
+  });
+  return { estado: r.status, cuerpo: await r.json() };
+};
+
+const comoBorrador = await guardar(conTodoRevisado('borrador'));
+ok(comoBorrador.estado === 200, 'como borrador se guarda aunque falte la licencia');
+
+const sinLicencia = await guardar(conTodoRevisado('aprobado'));
+ok(sinLicencia.estado === 400, 'como aprobado, no');
+ok(
+  /sin fuente ni licencia/.test(sinLicencia.cuerpo.error ?? ''),
+  `y dice por qué: ${(sinLicencia.cuerpo.error ?? '').split('\n')[1]?.trim()}`,
+);
+ok(
+  leer(EDICION).estado === 'borrador',
+  'el archivo en disco no cambió de estado',
+);
+
+// Y con la procedencia puesta, sí. Una barrera que no deja pasar nada tampoco
+// sirve: lo que tiene que impedir es publicar sin saber de dónde salió la foto.
+const conLicencia = conTodoRevisado('aprobado');
+for (const slide of conLicencia.slides) {
+  const credito = { fuente: 'Consultorio', licencia: 'propia' };
+  if (slide.tipo === 'portada' && slide.foto) slide.fotoCredito = credito;
+  if (slide.visual?.clase === 'foto') slide.visual.credito = credito;
+}
+const conTodo = await guardar(conLicencia);
+ok(conTodo.estado === 200, 'con la procedencia registrada sí se aprueba');
+ok(leer(EDICION).estado === 'aprobado', 'y el archivo lo refleja');
 
 /* ── que el laboratorio siga siendo laboratorio ──────────────────────────── */
 console.log('\nEl guardia');

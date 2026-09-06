@@ -114,10 +114,18 @@ const NEGACION = new RegExp(
  * entero con su atribución al lado.
  */
 export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
-  const bloques: { donde: string; texto: string; fuente?: string }[] = [];
+  const bloques: { donde: string; texto: string; fuente?: string; consulta?: boolean }[] = [];
+
+  // El slide de "cuándo acudir a consulta" entra a la cola por posición y no
+  // por lo que diga. Se escribe con un imperativo distinto cada vez —"Agenda
+  // valoración", "Llévalo con el médico", "Acude si…"— y MODAL es una lista a
+  // mano que siempre va a ir por detrás de la siguiente forma de decirlo. Lo
+  // léxico se queda: esto se suma, no lo sustituye.
+  const consulta = ultimoContenido(post);
 
   post.slides.forEach((slide, i) => {
     const etiqueta = `slide ${String(i).padStart(2, '0')}`;
+    const esConsulta = i === consulta;
 
     // La bajada y el cuerpo son una unidad, no dos. Comparten la atribución
     // del slide y se leen seguidos: la bajada es la entrada del párrafo. Cuando
@@ -127,7 +135,12 @@ export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
     const texto = [slide.bajada, slide.cuerpo].filter(Boolean).join('\n');
     if (texto) {
       const parte = slide.bajada && slide.cuerpo ? 'texto' : slide.bajada ? 'bajada' : 'cuerpo';
-      bloques.push({ donde: `${etiqueta} · ${parte}`, texto, fuente: slide.fuente });
+      bloques.push({
+        donde: `${etiqueta} · ${parte}`,
+        texto,
+        fuente: slide.fuente,
+        consulta: esConsulta,
+      });
     }
 
     if (slide.puntos?.length) {
@@ -163,6 +176,9 @@ export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
       disparadores.push('seguridad');
       // La negación ya lleva la acción dentro, así que se marca entera.
       marcas.push(negacion && !modal ? negacion[0] : `${modal?.[0]} … ${accion?.[0]}`);
+    } else if (bloque.consulta) {
+      disparadores.push('seguridad');
+      marcas.push('el slide de consulta');
     }
 
     if (disparadores.length === 0) continue;
@@ -179,6 +195,21 @@ export function afirmacionesDe(post: PostRevisable): Afirmacion[] {
   }
 
   return afirmaciones;
+}
+
+/**
+ * Cuál es el slide de acudir a consulta: el último de contenido.
+ *
+ * La estructura de la cuenta lo pone siempre ahí —portada, tres de contenido,
+ * la lista, el de consulta, el cierre—, así que la posición lo identifica sin
+ * depender de cómo esté redactado. Si un carrusel tuviera un solo slide de
+ * contenido, ese sería, y firmarlo el médico es la respuesta conservadora.
+ */
+function ultimoContenido(post: PostRevisable): number {
+  for (let i = post.slides.length - 1; i >= 0; i--) {
+    if (post.slides[i].tipo === 'contenido') return i;
+  }
+  return -1;
 }
 
 /**

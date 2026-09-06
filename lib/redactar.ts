@@ -198,9 +198,9 @@ clínicas vienen de banco con licencia o del consultorio.
 Una cifra plausible con una institución al lado es el error más difícil de
 cazar, porque llega con aspecto de verificado. Por eso:
 
-  · Prefiere lo cualitativo. "Es de las infecciones de piel más frecuentes en
-    la infancia" es mejor que "cerca del 10% de las consultas" si no estás
-    seguro de la cifra. Bajar la especificidad siempre es preferible.
+  · Prefiere lo cualitativo. "Es de los motivos de consulta más frecuentes en
+    verano" es mejor que "el 18% de las consultas de verano" si no estás seguro
+    de la cifra. Bajar la especificidad siempre es preferible.
   · Si usas una cifra, tiene que llevar su institución en "fuente". Una cifra
     sin respaldo no debe existir.
   · Nunca atribuyas lo que no puedes atribuir. Si no sabes qué institución
@@ -213,19 +213,19 @@ StatPearls.
 
 ## Los tres campos que no se pintan en ningún slide
 
-  · pilar — la línea editorial del post, en tres o cuatro palabras. El del
-    carrusel de impétigo es "Diagnóstico que salva". Sirve para no repetir eje
-    dos veces en el mismo mes.
+  · pilar — la línea editorial del post, en tres o cuatro palabras: "Cuidado
+    diario de la piel", "Lo que no es alergia". Sirve para no repetir eje dos
+    veces en el mismo mes.
   · objetivo — qué se busca del lector: guardar, compartir, comentar o agendar.
     Decide a cuál de los cierres del copy se le carga la mano.
-  · nota — el gancho de calendario, corto: "Regreso a clases", "Primeros
-    calores". Qué hace que este tema toque publicarse ahora.
+  · nota — el gancho de calendario, corto: "Primeros calores", "Semana de
+    frío". Qué hace que este tema toque publicarse ahora.
 
 ## El copy
 
 Sigue la fórmula que está en tus instrucciones, con sus bloques y sus emojis, y
 termina en exactamente cinco hashtags en MayúsculasPegadas, con su almohadilla
-("#RegresoAClases"). El último cruza especialidad y ciudad.`;
+("#PielSensible"). El último cruza especialidad y ciudad.`;
 }
 
 /* ── de la redacción al post ──────────────────────────────────────────────── */

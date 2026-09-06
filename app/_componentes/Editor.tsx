@@ -16,6 +16,7 @@ import {
 import { Slide } from '@/template/Slide';
 import { ProveedorDeAvisos } from '@/template/avisos';
 import { pendientes } from '@/lib/afirmaciones';
+import { fotosSinCredito } from '@/lib/fotos';
 import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
 import type { Marca, Post } from '@/template/tipos';
 import type { EstadoAjuste } from '@/template/usarAjuste';
@@ -370,9 +371,12 @@ function esFoto(slide: Post['slides'][number]) {
 /** Los datos del carrusel que no se pintan en ningún slide. */
 function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) => void }) {
   const [copiado, setCopiado] = useState(false);
-  // Un carrusel no se declara aprobado con afirmaciones sin mirar. El esquema
-  // lo rechaza al guardar; aquí se apaga la opción para no chocar contra ello.
+  // Un carrusel no se declara aprobado con afirmaciones sin mirar ni con fotos
+  // de las que no se sabe de dónde salieron. El esquema lo rechaza al guardar;
+  // aquí se apaga la opción para no chocar contra ello.
   const sinRevisar = pendientes(post, post.revisiones).length;
+  const sinLicencia = fotosSinCredito(post).length;
+  const trabado = sinRevisar > 0 || sinLicencia > 0;
 
   return (
     <details className="tarjeta" data-ficha open>
@@ -392,10 +396,10 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
               onChange={(e) => setPost((p) => ({ ...p, estado: e.target.value as Post['estado'] }))}
             >
               <option value="borrador">borrador</option>
-              <option value="aprobado" disabled={sinRevisar > 0}>
+              <option value="aprobado" disabled={trabado}>
                 aprobado
               </option>
-              <option value="publicado" disabled={sinRevisar > 0}>
+              <option value="publicado" disabled={trabado}>
                 publicado
               </option>
             </select>
@@ -426,6 +430,14 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
           <p className="pista pista--aviso">
             Quedan {sinRevisar} {sinRevisar === 1 ? 'afirmación' : 'afirmaciones'} sin revisar: hasta
             entonces el carrusel se queda en borrador.
+          </p>
+        ) : null}
+
+        {sinLicencia > 0 ? (
+          <p className="pista pista--aviso">
+            {sinLicencia === 1 ? 'Hay una foto' : `Hay ${sinLicencia} fotos`} sin fuente ni licencia.
+            Se registran en la tarjeta de su slide, y si no se sabe de dónde salieron, no hay nada
+            que escribir: "desconocida" no es una licencia.
           </p>
         ) : null}
 

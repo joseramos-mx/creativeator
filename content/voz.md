@@ -46,15 +46,23 @@ Un solo renglón de texto con dos marcas:
 - `**así**` sale en negrita
 - `\n` corta la línea
 
-La mezcla es lo que le da el aire a la marca. Ejemplos reales de la cuenta:
+La mezcla es lo que le da el aire a la marca. Cuatro formas que funcionan, cada
+una sobre un tema distinto:
 
-- `*La infección de*\nRegreso **a clases**`
-- `*¿Cómo* **reconocerlo?**`
-- `**Por qué se riega** *tan rápido.*`
-- `¿Cuándo verlo con el **médico?**`
+- `*La rozadura que*\nno **se quita**`
+- `*¿Por qué* **le sale?**`
+- `**Se pone peor** *con el calor.*`
+- `¿Cuánto dura una **quemadura?**`
 
 Los títulos son cortos: cuatro a siete palabras. Si no cabe en dos renglones, no
 es un título.
+
+> Estos cuatro están escritos para enseñar la forma, no salieron de un post
+> publicado. Los que sí lo estaban venían todos del carrusel de impétigo, y eso
+> hacía imposible medir al modelo con ese tema: escribía los ejemplos de vuelta
+> en lugar de resolverlo. En cuanto haya un segundo carrusel publicado,
+> sustitúyelos por títulos suyos: un ejemplo real corrige el tono mucho mejor
+> que uno construido.
 
 ## Largo de los textos
 
@@ -65,12 +73,17 @@ es un título.
 
 ## Ejemplo de un cuerpo que sí funciona
 
-"Esas llaguitas con costra amarilla o color miel, casi siempre alrededor de la
-nariz y la boca, son impétigo: una infección bacteriana de la piel muy común en
-niños y muy contagiosa. Y el regreso a clases es justo cuando más se dispara."
+"Esa irritación roja y brillante en los pliegues, que se ve peor después de la
+siesta, casi siempre es dermatitis del pañal. No es que el pañal esté sucio: es
+que la piel lleva horas húmeda y encerrada. Y con el calor de estos meses pasa
+en la mitad del tiempo."
 
 Concreto, visual, sin adjetivos de relleno, y termina con el gancho de por qué
 importa hoy.
+
+> Este cuerpo, como los títulos de arriba, está escrito para enseñar la forma.
+> El original era el del carrusel de impétigo y se movió por la misma razón; el
+> texto tal como se publicó sigue en `content/ejemplos/impetigo-brief.md`.
 
 ## El copy: el texto que va debajo del carrusel
 

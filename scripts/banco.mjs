@@ -71,9 +71,25 @@ const BANCO = [
   { salta: false, texto: 'El impétigo es una infección bacteriana de la piel, muy común en niños.' },
 ];
 
-/** Una frase sola, sin fuente: así el único disparador posible es seguridad. */
+/**
+ * Una frase sola, sin fuente: así el único disparador posible es seguridad.
+ *
+ * Va con un segundo slide de contenido detrás para que la frase que se mide no
+ * sea la última: el último slide de contenido dispara por posición —es el de
+ * acudir a consulta— y eso taparía lo que este banco comprueba, que es lo
+ * léxico.
+ */
 function salta(texto) {
-  const [afirmacion] = afirmacionesDe({ slides: [{ tipo: 'contenido', cuerpo: texto }] });
+  // Se busca por texto y no por posición en la lista: el slide de relleno
+  // también entra en la cola —es el último de contenido— y sería el primero
+  // que devuelve cuando la frase medida no dispara nada, que es justo el caso
+  // que este banco necesita distinguir.
+  const afirmacion = afirmacionesDe({
+    slides: [
+      { tipo: 'contenido', cuerpo: texto },
+      { tipo: 'contenido', cuerpo: 'Un slide detrás, para que el de arriba no sea el último.' },
+    ],
+  }).find((a) => a.texto === texto);
   return {
     salta: Boolean(afirmacion?.disparadores.includes('seguridad')),
     marca: afirmacion?.marcas.find((m) => !/^\d/.test(m)) ?? '',

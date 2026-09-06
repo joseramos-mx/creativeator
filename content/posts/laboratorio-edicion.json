@@ -2,14 +2,24 @@
   "slug": "laboratorio-edicion",
   "tema": "Laboratorio · edición ·",
   "creado": "2026-01-01",
-  "estado": "borrador",
+  "estado": "aprobado",
   "paleta": "azul",
   "copy": "Carrusel de laboratorio. No es contenido: es sobre lo que corren las pruebas.",
   "revisiones": {
     "e4e5cd0b": {
-      "revisadaPor": "Quien Revisa",
-      "fecha": "2026-09-06",
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
       "texto": "Con bajada, para que el bloque cargue lo que puede cargar.\nUn texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. "
+    },
+    "c978ac28": {
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
+      "texto": "Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica."
+    },
+    "39c89e4f": {
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
+      "texto": "El primer punto, con su palomita.\nEl segundo, para ver la separación entre puntos.\nEl tercero, que en la paleta verde cambia de color.\nY el cuarto, que es el máximo cómodo."
     }
   },
   "slides": [
@@ -17,7 +27,11 @@
       "tipo": "portada",
       "titulo": "*Carrusel de*\n**laboratorio**",
       "pregunta": "¿Sobre qué corren las pruebas?",
-      "foto": "/media/laboratorio-edicion/portada.jpg"
+      "foto": "/media/laboratorio-edicion/portada.jpg",
+      "fotoCredito": {
+        "fuente": "Consultorio",
+        "licencia": "propia"
+      }
     },
     {
       "tipo": "contenido",
@@ -26,8 +40,12 @@
       "cuerpo": "Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. ",
       "visual": {
         "clase": "foto",
-        "src": "/media/laboratorio-edicion/foto-arrastrada-nandu-mtpfy12k.jpg",
-        "ideaImagen": "lo que la prueba espera encontrar descrito aquí"
+        "src": "/media/laboratorio-edicion/foto-arrastrada-nandu-mtpgfnq4.jpg",
+        "ideaImagen": "lo que la prueba espera encontrar descrito aquí",
+        "credito": {
+          "fuente": "Consultorio",
+          "licencia": "propia"
+        }
       },
       "fuente": "Prueba.",
       "overrides": {

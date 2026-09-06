@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "laboratorio": "node scripts/laboratorio.mjs",
-    "pruebas": "node scripts/pruebas.mjs",
+    "pruebas": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/pruebas.mjs",
     "banco": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco.mjs",
     "iconos": "node scripts/ingesta-iconos.mjs",
     "iconos:vigilar": "node scripts/ingesta-iconos.mjs --vigilar"
