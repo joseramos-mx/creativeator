@@ -188,6 +188,14 @@ async function main() {
 
   vigia.on('add', async (ruta) => {
     try {
+      // Se relee el manifiesto en cada archivo nuevo. El vigía se queda horas
+      // corriendo junto al servidor, y en ese rato alguien puede haber borrado
+      // un ícono a mano; con el índice solo en memoria, el siguiente guardado
+      // resucitaría lo borrado.
+      const enDisco = await cargarManifiesto();
+      for (const [slug, entrada] of indice) if (!enDisco.has(slug)) indice.delete(slug);
+      for (const [slug, entrada] of enDisco) indice.set(slug, entrada);
+
       const que = await procesar(ruta, indice, sinonimos);
       if (que !== 'nuevo') return;
       const total = await guardarManifiesto(indice);
