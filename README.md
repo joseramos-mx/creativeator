@@ -209,6 +209,76 @@ comercial: la vía gratuita no aplica ni ícono por ícono.
 
 ---
 
+### Generar un ícono: la tubería está lista y apagada
+
+Cuando la librería no tiene el concepto —el caso concreto es la lupa del slide
+02, ver arriba— se puede generar uno. **Falta una sola cosa para encenderlo:
+facturación en el proyecto de Google detrás de `GEMINI_API_KEY`.**
+
+No es que la cuota esté agotada. Los tres modelos de imagen de Gemini tienen
+límite **cero** en el tramo gratuito:
+
+```
+Quota exceeded for metric: generate_content_free_tier_requests,
+limit: 0, model: gemini-3.1-flash-image
+```
+
+La llave en sí está bien: con `gemini-3.6-flash` (texto) responde a la primera.
+Esperar no sirve, porque no es un límite por minuto ni por día. Hay que activar
+cobros en Google AI Studio para ese proyecto.
+
+Con eso hecho, lo demás ya está:
+
+```bash
+curl -X POST localhost:3001/api/icono   -H 'Content-Type: application/json'   -d '{"concepto":"Una lupa clásica, con mango y aro metálico","n":3}'
+
+npm run comparar-iconos <archivo.png> lupa   # el candidato contra la librería
+```
+
+**El estilo vive en `content/estilo-iconos.md`**, hermano de `voz.md`: se
+antepone a cada concepto en cada llamada y se edita ahí, no en el código. Su
+descripción sale de mirar la librería que ya está —plástico mate con brillo
+satinado, sombra propia sin sombra proyectada, vista de tres cuartos—, porque
+un ícono que no comparta esas tres cosas se nota en el mismo carrusel.
+
+**El alfa se recupera por croma.** Gemini no devuelve canal alfa, así que se
+pide fondo verde `#00FF00` y se recorta con `lib/iconos/croma.ts`. El recorte
+no decide píxel a píxel: inunda desde el borde de la imagen, porque un píxel
+del borde del objeto y un verde hoja saturado son el mismo color aislados y
+solo los separa dónde están. `npm run banco-croma` lo comprueba con imágenes
+hechas a mano, incluido el límite conocido — un verde muy saturado y oscuro sí
+se confunde con el croma, y ahí la salida es pedir el fondo en otro color.
+
+**No se genera al renderizar, nunca.** El ícono se resuelve en el editor y
+queda en disco. Si `/render` dependiera de una llamada externa, la exportación
+del mes tardaría minutos y fallaría a la mitad.
+
+**Lo que no se genera son fotos clínicas.** El criterio no es el estilo ni el
+realismo: es la función. Si la imagen es lo que el lector debe aprender a
+reconocer en su propia piel, tiene que ser real y aprobada. Está escrito en el
+propio `estilo-iconos.md`, donde lo va a leer quien edite el estilo.
+
+### El manifiesto: quién es dueño de cada campo
+
+La ingesta reconstruía cada entrada desde cero a partir del PNG, así que un
+ícono generado perdía `origen`, `proveedor`, `fecha` y —el que duele— `prompt`
+cada vez que volvía a pasar por ella. Con el prompt se pierde lo único que
+permite regenerar la pieza si cambia el estilo de la cuenta.
+
+La regla, en `lib/manifiesto.ts`: **la ingesta es dueña de los campos que
+deriva del PNG y de ninguno más.** Todo lo demás se conserva, incluido lo que
+nadie ha previsto todavía; no hay lista de campos a salvar.
+
+La alternativa evidente era un `icono.json` al lado del PNG. Se descartó porque
+`public/iconos/*` está en `.gitignore` —los íconos de Thiings no se pueden
+redistribuir— y lo único versionado es `manifest.json`: un archivo acompañante
+sería *menos* durable que el manifiesto al que pretende proteger, y añade su
+propio modo de fallo, que es mover el PNG sin su JSON.
+
+Su límite: borrar la entrada del manifiesto a mano hace que la siguiente
+ingesta la reconstruya sin la metadata de generación. Es correcto — borrar la
+entrada es pedir que se reconstruya.
+
 ## Exportar
 
 Desde `/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
@@ -436,6 +506,8 @@ npm run pruebas 3002      # el editor, las paletas, la cola y el banco de fotos
 npm run banco             # el disparador de seguridad, contra quince frases
 npm run banco-fotos       # el adaptador de bancos, contra una respuesta guardada
 npm run banco-clinicas    # el archivo clínico y la barrera de aprobación
+npm run banco-croma       # el recorte del fondo verde de un ícono generado
+npm run banco-manifiesto  # que la ingesta no borre lo que no calculó
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
 ```
 

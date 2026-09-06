@@ -30,6 +30,7 @@ import { watch } from 'chokidar';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
+import { fusionar } from '../lib/manifiesto.ts';
 
 const VIGILAR = process.argv.includes('--vigilar');
 
@@ -175,15 +176,23 @@ async function procesar(origen, indice, sinonimos) {
   await fs.writeFile(path.join(DESTINO, `${slug}.png`), png);
   await sharp(png).resize(THUMB, THUMB).png().toFile(path.join(THUMBS, `${slug}.png`));
 
-  indice.set(slug, {
+  // Se fusiona con lo que ya hubiera en vez de reconstruir la entrada entera:
+  // la ingesta es dueña de lo que deriva del PNG y de nada más. Sin esto, un
+  // ícono generado perdía su `origen`, su `proveedor` y sobre todo su `prompt`
+  // —lo único que permite regenerarlo— cada vez que volvía a pasar por aquí.
+  // Ver lib/manifiesto.ts.
+  indice.set(
     slug,
-    nombre: nombre.replace(/\.png$/i, ''),
-    etiquetas: etiquetar(slug, nombre.replace(/\.png$/i, ''), sinonimos),
-    color: await colorDominante(png),
-    w: TAM,
-    h: TAM,
-    bytes: size,
-  });
+    fusionar(indice.get(slug), {
+      slug,
+      nombre: nombre.replace(/\.png$/i, ''),
+      etiquetas: etiquetar(slug, nombre.replace(/\.png$/i, ''), sinonimos),
+      color: await colorDominante(png),
+      w: TAM,
+      h: TAM,
+      bytes: size,
+    }),
+  );
   return 'nuevo';
 }
 
