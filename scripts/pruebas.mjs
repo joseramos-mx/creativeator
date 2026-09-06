@@ -60,6 +60,11 @@ function soloLaboratorio(slug) {
 const leer = (slug) =>
   JSON.parse(readFileSync(join(process.cwd(), 'content', 'posts', `${slug}.json`), 'utf8'));
 
+/** El nombre del médico: el único que puede firmar una indicación clínica. */
+const medico = JSON.parse(
+  readFileSync(join(process.cwd(), 'content', 'marca.json'), 'utf8'),
+).nombre;
+
 async function abrir(page, slug) {
   soloLaboratorio(slug);
   await page.goto(`${base}/post/${slug}`, { waitUntil: 'networkidle', timeout: 120_000 });
@@ -77,9 +82,33 @@ async function abrirTarjeta(page, indice) {
   return tarjeta;
 }
 
+/**
+ * Que en el puerto esté este editor y no otra cosa.
+ *
+ * Sin esto, apuntar al puerto equivocado no falla de forma legible: las
+ * primeras comprobaciones "pasan" —contar un botón que no existe devuelve
+ * cero— y el error aparece treinta segundos después, como un timeout de
+ * Playwright que parece un fallo del editor. Costó media hora una vez.
+ */
+async function comprobarServidor() {
+  let html = '';
+  try {
+    html = await (await fetch(`${base}/post/${EDICION}`)).text();
+  } catch {
+    console.error(`\nALTO: no hay servidor en ${base}. Arranca "npm run dev".`);
+    process.exit(1);
+  }
+  if (!html.includes('data-ficha')) {
+    console.error(`\nALTO: lo que responde en ${base} no es el editor de este proyecto.`);
+    console.error('El puerto va como argumento: npm run pruebas 3003');
+    process.exit(1);
+  }
+}
+
 const slugs = await reiniciarLaboratorio();
 console.log(`Laboratorio reiniciado: ${slugs.join(', ')}`);
 await espera(1200);
+await comprobarServidor();
 
 const navegador = await chromium.launch();
 const page = await navegador.newPage({ viewport: { width: 1600, height: 1000 } });
@@ -223,6 +252,30 @@ ok(
   /opcional/.test(await primera.locator('label').first().innerText()),
   'sin cifra, el enlace es opcional',
 );
+
+// Nadie firma sin decir quién es. El nombre se escribe: antes se heredaba de
+// la marca, y entonces cualquiera que pulsara "la revisé" firmaba como el
+// médico. En una indicación clínica eso es peor que no tener firma.
+ok(
+  await primera.locator('button').last().isDisabled(),
+  'sin nombre de revisor no se puede firmar',
+);
+await page.locator('[data-cola] > .tarjeta__cuerpo > input').fill('Quien Revisa');
+await espera(300);
+
+// Y las de seguridad solo las firma el médico: son criterio clínico, no un
+// dato que se compruebe abriendo una fuente.
+const deSeguridad = page.locator('[data-cola] .afirmacion', {
+  has: page.locator('.chip[data-disparador="seguridad"]'),
+});
+ok((await deSeguridad.count()) === 1, 'hay una afirmación de seguridad en el laboratorio');
+const botonSeguridad = deSeguridad.locator('button').last();
+ok(await botonSeguridad.isDisabled(), 'y otro revisor no la puede firmar');
+ok(
+  (await botonSeguridad.innerText()).includes(medico),
+  `el botón dice quién la firma: "${await botonSeguridad.innerText()}"`,
+);
+
 await primera.locator('button:has-text("la revisé")').click();
 await esperarA(() => Object.keys(leer(EDICION).revisiones ?? {}).length > 0);
 ok(
@@ -235,6 +288,10 @@ ok(Object.keys(guardadas).length === 1, 'y se guarda en el JSON, por huella');
 ok(
   unaRevision.revisadaPor && unaRevision.fecha && unaRevision.texto && !('estado' in unaRevision),
   `guarda quién y cuándo, no un "verificada": ${JSON.stringify(unaRevision).slice(0, 90)}`,
+);
+ok(
+  unaRevision.revisadaPor === 'Quien Revisa',
+  `firma quien revisó, no el médico: "${unaRevision.revisadaPor}"`,
 );
 
 // Cambiar el texto revisado la devuelve a la cola: es lo que sostiene todo.

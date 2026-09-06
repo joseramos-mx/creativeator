@@ -3,7 +3,7 @@
   "tema": "Laboratorio · paletas",
   "creado": "2026-01-01",
   "estado": "borrador",
-  "paleta": "azul",
+  "paleta": "verde",
   "slides": [
     {
       "tipo": "portada",
@@ -13,11 +13,11 @@
     },
     {
       "tipo": "contenido",
+      "titulo": "Con **emblema** encima",
+      "cuerpo": "El triángulo de alerta es amarillo por semántica y no se puede cambiar de color: sobre naranja es donde se mide si la sombra lo despega.",
       "emblema": {
         "slug": "alerta"
       },
-      "titulo": "Con **emblema** encima",
-      "cuerpo": "El triángulo de alerta es amarillo por semántica y no se puede cambiar de color: sobre naranja es donde se mide si la sombra lo despega.",
       "visual": {
         "clase": "foto",
         "src": "/media/laboratorio-edicion/01.jpg"

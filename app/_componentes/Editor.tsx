@@ -214,7 +214,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
         </div>
 
         <Ficha post={post} setPost={setPost} />
-        <Afirmaciones post={post} revisor={marca.nombre} setPost={setPost} />
+        <Afirmaciones post={post} medico={marca.nombre} setPost={setPost} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
 
         {post.slides.map((slide, i) => (

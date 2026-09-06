@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { afirmacionesDe, type Afirmacion } from '@/lib/afirmaciones';
 import type { Post } from '@/template/tipos';
 
@@ -18,14 +18,32 @@ import type { Post } from '@/template/tipos';
  */
 export function Afirmaciones({
   post,
-  revisor,
+  medico,
   setPost,
 }: {
   post: Post;
-  /** Quién firma la revisión: el nombre de content/marca.json. */
-  revisor: string;
+  /** El nombre del médico, de content/marca.json. Solo él firma lo clínico. */
+  medico: string;
   setPost: (f: (p: Post) => Post) => void;
 }) {
+  /**
+   * Quién está revisando. Se escribe, no se hereda de la marca.
+   *
+   * Antes se rellenaba solo con el nombre del médico, así que si revisaba otra
+   * persona la firma quedaba a nombre de él. En una indicación clínica eso es
+   * peor que no tener firma: es una atribución falsa.
+   */
+  const [revisor, setRevisor] = useState('');
+  useEffect(() => setRevisor(localStorage.getItem('revisor') ?? ''), []);
+  const cambiarRevisor = (nombre: string) => {
+    setRevisor(nombre);
+    try {
+      localStorage.setItem('revisor', nombre);
+    } catch {
+      // navegador sin almacenamiento: se pierde al recargar y no pasa nada
+    }
+  };
+
   const afirmaciones = useMemo(() => afirmacionesDe(post), [post]);
   const revisiones = post.revisiones ?? {};
 
@@ -55,12 +73,26 @@ export function Afirmaciones({
           cambias el texto.
         </p>
 
+        <label>Quién revisa — es el nombre que queda firmado</label>
+        <input
+          value={revisor}
+          placeholder="tu nombre"
+          onChange={(e) => cambiarRevisor(e.target.value)}
+        />
+        {revisor && revisor !== medico ? (
+          <p className="pista">
+            Las indicaciones de seguridad las firma {medico}: son criterio clínico, no un dato que
+            se comprueba abriendo una fuente.
+          </p>
+        ) : null}
+
         {afirmaciones.map((a) => (
           <Ficha
             key={a.huella}
             afirmacion={a}
             revision={revisiones[a.huella]}
             revisor={revisor}
+            medico={medico}
             setPost={setPost}
           />
         ))}
@@ -73,11 +105,13 @@ function Ficha({
   afirmacion: a,
   revision,
   revisor,
+  medico,
   setPost,
 }: {
   afirmacion: Afirmacion;
   revision?: NonNullable<Post['revisiones']>[string];
   revisor: string;
+  medico: string;
   setPost: (f: (p: Post) => Post) => void;
 }) {
   const [enlace, setEnlace] = useState(revision?.enlace ?? '');
@@ -85,6 +119,17 @@ function Ficha({
 
   const faltaEnlace = a.exigeEnlace && !enlace.trim();
   const revisada = Boolean(revision) && !(a.exigeEnlace && !revision?.enlace);
+
+  // Una indicación de seguridad la firma el médico y nadie más. Una cifra la
+  // puede comprobar cualquiera abriendo la fuente; decir "necesita antibiótico"
+  // es criterio clínico y lleva cédula detrás.
+  const soloMedico = a.disparadores.includes('seguridad');
+  const puedeFirmar = revisor.trim() !== '' && (!soloMedico || revisor.trim() === medico);
+  const motivo = !revisor.trim()
+    ? 'escribe arriba quién revisa'
+    : soloMedico
+      ? `esta la firma ${medico}`
+      : 'pega el enlace para poder marcarla';
 
   const guardar = () =>
     setPost((p) => ({
@@ -150,8 +195,8 @@ function Ficha({
           />
           <label>Nota (opcional)</label>
           <input value={nota} onChange={(e) => setNota(e.target.value)} />
-          <button className="boton" onClick={guardar} disabled={faltaEnlace}>
-            {faltaEnlace ? 'pega el enlace para poder marcarla' : 'la revisé'}
+          <button className="boton" onClick={guardar} disabled={faltaEnlace || !puedeFirmar}>
+            {faltaEnlace || !puedeFirmar ? motivo : 'la revisé'}
           </button>
         </>
       )}
