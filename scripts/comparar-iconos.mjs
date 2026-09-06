@@ -1,5 +1,5 @@
 /**
- * scripts/comparar-iconos.mjs — `npm run comparar-iconos <archivo.png> [nombre]`
+ * scripts/comparar-iconos.mjs — `npm run comparar-iconos <a.png> [b.png …]`
  *
  * Pone un ícono candidato al lado de la librería, sobre las tres paletas.
  *
@@ -21,8 +21,9 @@ import sharp from 'sharp';
 import { paletas } from '../template/tokens.ts';
 import { separacion, SEPARACION_MINIMA } from '../lib/iconos.ts';
 
-const candidato = process.argv[2];
-const nombreCandidato = process.argv[3] ?? (candidato ? path.basename(candidato, '.png') : '');
+// Varios candidatos a la vez: al generar salen tres variantes y lo que hay que
+// decidir es cuál de ellas empata, no si una suelta es aceptable.
+const candidatos = process.argv.slice(2).filter((a) => a.endsWith('.png'));
 
 const RAIZ = process.cwd();
 const ICONOS = path.join(RAIZ, 'public', 'iconos');
@@ -36,11 +37,16 @@ const TITULO = 40;
 
 const manifiesto = JSON.parse(await readFile(path.join(ICONOS, 'manifest.json'), 'utf8'));
 
-/** El candidato primero, para que se vea contra la librería y no perdido en ella. */
+/** Los candidatos primero, para verlos contra la librería y no perdidos en ella. */
 const piezas = [];
-if (candidato) {
-  const png = await readFile(path.resolve(candidato));
-  piezas.push({ slug: nombreCandidato, png, color: await colorDominante(png), esCandidato: true });
+for (const ruta of candidatos) {
+  const png = await readFile(path.resolve(ruta));
+  piezas.push({
+    slug: path.basename(ruta, '.png'),
+    png,
+    color: await colorDominante(png),
+    esCandidato: true,
+  });
 }
 for (const entrada of manifiesto) {
   piezas.push({
@@ -110,10 +116,10 @@ await sharp({
   .toFile(destino);
 
 console.log(`\n${piezas.length} íconos sobre ${nombres.length} paletas → ${destino}`);
-if (candidato) {
-  console.log(`\nEl candidato es "${nombreCandidato}", el del marco.`);
+for (const pieza of piezas.filter((p) => p.esCandidato)) {
+  console.log(`\n${pieza.slug} · color dominante ${pieza.color} · el del marco`);
   for (const nombre of nombres) {
-    const d = separacion({ color: piezas[0].color }, paletas[nombre].fondo);
+    const d = separacion({ color: pieza.color }, paletas[nombre].fondo);
     const veredicto = d === null ? 'sin color' : d < SEPARACION_MINIMA ? 'SE FUNDE' : 'se ve';
     console.log(`  sobre ${nombre.padEnd(8)} ΔE ${String(Math.round(d ?? 0)).padStart(3)}  ${veredicto}`);
   }
