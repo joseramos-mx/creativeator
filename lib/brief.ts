@@ -335,8 +335,13 @@ function sacarHashtags(linea: string) {
   return encontrados?.length ? encontrados : undefined;
 }
 
-/** En el brief los saltos de los títulos se escriben \n a mano. */
-function desescapar(s: string) {
+/**
+ * Los saltos de los títulos se escriben `\n` a mano: en el brief porque se
+ * teclea, y en lo que devuelve el modelo porque así lo describe voz.md. En los
+ * dos casos llegan como dos caracteres y hay que convertirlos, o el slide
+ * acaba con un "\n" impreso en medio del título.
+ */
+export function desescapar(s: string) {
   return s.replace(/\\n/g, '\n');
 }
 

@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import { Miniatura } from '@/app/_componentes/Miniatura';
+import { Redactar } from '@/app/_componentes/Redactar';
 import { leerMarca, listarPosts } from '@/lib/posts';
 
 /**
  * La lista de carruseles. Un post es un JSON en content/posts/: para agregar
  * uno a mano basta con copiar otro y cambiarle el slug y los textos.
  *
- * En la fase 6 aquí van también los botones de redactar uno y de generar el mes.
+ * Redactar uno con la IA también empieza aquí, y termina en el editor: lo que
+ * escribe el modelo entra como borrador y no hay camino de ahí a un PNG que no
+ * pase por una persona.
  */
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +29,8 @@ export default async function Inicio() {
       </header>
 
       <main className="banco">
+        <Redactar />
+
         {posts.length === 0 ? (
           <p>
             Todavía no hay carruseles. Un post es un archivo JSON en{' '}

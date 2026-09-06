@@ -636,3 +636,35 @@ select:focus {
 .afirmacion a {
   color: var(--ui-acc);
 }
+
+/* ── redactar ── */
+
+.tarjeta[data-redactar] {
+  max-width: 640px;
+  margin: 0 auto 22px;
+}
+
+.redaccion {
+  margin: 10px 0 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: slide;
+}
+
+.redaccion li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px dashed var(--ui-line);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.redaccion li:last-child {
+  border-bottom: 0;
+}
+
+.redaccion .chip {
+  flex: none;
+}
