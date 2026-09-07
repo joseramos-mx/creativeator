@@ -1,0 +1,95 @@
+{
+  "slug": "el-brote-de-dermatitis-atopica-que-llega-cuando-se-acaban-la",
+  "tema": "Brote de dermatitis atópica al terminar las lluvias: piel seca, comezón nocturna y cómo ajustar la rutina de crema antes de que la piel se agriete",
+  "creado": "2026-09-07",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "La comezón que llega de noche 🌙\n\nSi tu hijo se rasca mientras duerme, amanece con rayones y tiene la piel áspera en los pliegues, seguramente es dermatitis atópica. Ahora que se acaban las lluvias baja la humedad del aire, la piel pierde agua más rápido y es cuando más brotes vemos en consulta.\n\n🔍 Cómo reconocerlo: manchas rojas o rosadas, secas y ásperas al tacto. En bebés, en los cachetes y por fuera de brazos y piernas; en niños más grandes, dentro del codo y atrás de la rodilla. La comezón empeora de noche y llega a interrumpir el sueño (Mayo Clinic).\n\n⚠️ Por qué justo ahora: el aire seco y frío es uno de los detonantes conocidos del eccema. Sin la humedad de la temporada de lluvias, la piel pasa de tirante a descamada y de descamada a agrietada en pocos días (AAD).\n\n✅ Qué sí ayuda todos los días: crema espesa o ungüento en lugar de loción, humectar dentro de los primeros tres minutos después del baño con la piel aún húmeda, baños cortos con agua tibia y limpiador sin perfume, y uñas cortas para que el rascado nocturno haga menos daño (AAD).\n\n⚡ Ojo, con qué se confunde: la piel reseca de temporada mejora sola con crema en unos días; el eccema regresa en los mismos lugares y pica de noche. La tiña forma una mancha redonda con el borde más marcado. La dermatitis por contacto aparece justo donde tocó algo: el elástico, la etiqueta, el jabón nuevo. Si no sabes cuál de las tres es, se revisa.\n\n💬 ¿A tu hijo le da más comezón en la noche o al salir del baño? Cuéntame en un renglón, me ayuda a saber qué explicar después.\n\n🔖 Guarda este carrusel: la rutina de los cuatro puntos es la que vas a querer tener a la mano las próximas semanas, cuando el aire esté más seco y la piel empiece a tirar. Y compártelo con la mamá o el papá que ya está batallando con las noches de rascado: ahorra varias madrugadas.\n\n📲 ¿Tu hijo lleva noches rascándose y la crema ya no le rinde? Podemos revisarlo y ajustar la rutina antes de que la piel se agriete. Agenda en Doctoralia, el enlace está en la biografía.\n\n#DermatitisAtopica #PielSecaDeTemporada #DermatologiaPediatrica #ComezonNocturna #AlergologoDurango",
+  "pilar": "Cuidado diario de la piel",
+  "objetivo": "guardar",
+  "nota": "Se acaba la temporada de lluvias y baja la humedad",
+  "hashtags": [
+    "#DermatitisAtopica",
+    "#PielSecaDeTemporada",
+    "#DermatologiaPediatrica",
+    "#ComezonNocturna",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La comezón que*\nllega **de noche**",
+      "pregunta": "¿Por qué empeora de noche?"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **el eccema?**",
+      "cuerpo": "La dermatitis atópica, o eccema, es una piel que no retiene bien el agua. Se seca, se irrita y da comezón. Va por brotes: semanas tranquilas y de pronto vuelve. No se contagia y no es falta de higiene. Casi siempre empieza en los primeros años de vida.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "water drop"
+      },
+      "fuente": "AAD · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Cómo se ve**\n*en la piel*",
+      "cuerpo": "Manchas rojas o rosadas, secas y ásperas al tacto. En bebés suele salir en los cachetes y por fuera de brazos y piernas. En niños más grandes, en los pliegues: dentro del codo y atrás de la rodilla. La comezón empeora de noche y amanecen con rayones.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "AAD · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se seca el aire,**\n*se seca la piel*",
+      "cuerpo": "Cuando se van las lluvias baja la humedad y la piel pierde agua más rápido. Se suman el viento seco y el agua caliente del baño. Ahí llegan los brotes: primero se siente tirante, luego se descama y termina agrietándose. Ajustar la crema ahora te ahorra esa última parte.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/el-brote-de-dermatitis-atopica-que-llega-cuando-se-acaban-la/pexels-18094977.jpg",
+        "ideaImagen": "Un niño en casa junto a la ventana, cielo despejado afuera y luz seca de tarde.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Pragyan Bezbaruah",
+          "url": "https://www.pexels.com/photo/little-girl-by-the-window-18094977/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* **que sí sirven**",
+      "puntos": [
+        "Crema espesa o ungüento dos veces al día, aunque la piel se vea bien.",
+        "Después del baño, humecta en los primeros tres minutos, con la piel todavía húmeda.",
+        "Baños cortos con agua tibia, no caliente, y limpiador suave sin perfume.",
+        "Uñas cortas y ropa de algodón: menos daño por rascado de noche."
+      ],
+      "fuente": "AAD · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo hay que **revisarla?**",
+      "cuerpo": "Pide valoración si la comezón no lo deja dormir, si el brote no cede con la rutina de siempre, o si aparecen costras amarillentas, pus o dolor: la piel rascada se puede infectar. También si las placas le cubren buena parte del cuerpo o le arde al bañarse.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/el-brote-de-dermatitis-atopica-que-llega-cuando-se-acaban-la/pexels-6684174.jpg",
+        "ideaImagen": "Un niño dormido en su cama de noche, con las cobijas revueltas.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "cottonbro studio",
+          "url": "https://www.pexels.com/photo/kids-sleeping-on-their-beds-6684174/"
+        }
+      },
+      "fuente": "Mayo Clinic · KidsHealth"
+    },
+    {
+      "tipo": "cierre",
+      "frase": "La crema se ajusta antes de que se agriete, no después."
+    }
+  ]
+}

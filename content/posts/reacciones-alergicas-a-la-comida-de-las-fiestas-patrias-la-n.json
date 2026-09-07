@@ -1,0 +1,108 @@
+{
+  "slug": "reacciones-alergicas-a-la-comida-de-las-fiestas-patrias-la-n",
+  "tema": "Reacciones alérgicas a la comida de las fiestas patrias: nuez, cacahuate y ajonjolí escondidos en los platillos, y qué hacer cuando salen ronchas en plena fiesta",
+  "creado": "2026-09-07",
+  "estado": "borrador",
+  "paleta": "naranja",
+  "copy": "La roncha que sale en la fiesta 🍽️\n\nSi a tu hijo le salieron ronchas después del pozole, del mole o de los chiles en nogada, lo más probable es que estés viendo una reacción alérgica a un alimento. Y septiembre es el mes en que más nuez, cacahuate y ajonjolí pasan por la mesa, en platillos que cocinó alguien más y que nadie sirvió pensando en alergias.\n\n🔍 Cómo se reconoce: ronchas rojas o rosas, levantadas y con comezón, que salen en minutos y cambian de lugar; a veces con hinchazón de labios o párpados, comezón en la boca, vómito o dolor de panza. Casi siempre empieza en las primeras dos horas después de comer, y basta una cantidad pequeña (Mayo Clinic, KidsHealth).\n\n⚠️ Dónde se esconde: el mole lleva cacahuate, almendra y ajonjolí, que también es un alérgeno reconocido; la nogada es puré de nuez; el pozole llega con guarniciones que pasan de mesa en mesa. En una fiesta no hay etiqueta que leer (AAP).\n\n✅ Si salen ronchas ahí mismo: suspende ese platillo y aparta lo que sobró, revisa labios, párpados y lengua, y si le cuesta respirar, se pone pálido o se desvanece, llama a emergencias. Anota la hora y qué comió (Mayo Clinic).\n\n⚡ Ojo con dos confusiones. El cacahuate no es una nuez: es una leguminosa, y un niño puede reaccionar a uno y comer el otro sin problema. Y alergia no es lo mismo que intolerancia: la intolerancia da síntomas de panza, no ronchas ni hinchazón.\n\n🔖 Guárdalo antes del 15. Con el plato en la mano y la música alta no vas a tener tiempo de buscar qué hacer; tenerlo guardado es tenerlo en dos toques. Y mándaselo a quien cocina: a la abuela, a tu cuñada, a la mamá que organiza la comida. A ella le sirve más que a ti, porque es la que decide qué lleva la olla.\n\n💬 ¿Cuál es el platillo de estas fiestas que te da más pendiente servirle? Dímelo en un renglón.\n\n📲 ¿Tu hijo ya tuvo ronchas después de comer y no sabes qué fue? Se puede estudiar. Agenda tu cita en Doctoralia, el enlace está en la biografía.\n\n#AlergiaAlimentaria #FiestasPatrias #AlergologiaPediatrica #RonchasEnLaPiel #AlergologoDurango",
+  "pilar": "Alergia alimentaria en niños",
+  "objetivo": "guardar",
+  "nota": "Semana del 15 de septiembre",
+  "hashtags": [
+    "#AlergiaAlimentaria",
+    "#FiestasPatrias",
+    "#AlergologiaPediatrica",
+    "#RonchasEnLaPiel",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La roncha que sale*\n**en la fiesta**",
+      "pregunta": "¿Fue el cacahuate?",
+      "foto": "/media/reacciones-alergicas-a-la-comida-de-las-fiestas-patrias-la-n/pexels-4262004.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "August de Richelieu",
+        "url": "https://www.pexels.com/photo/family-setting-the-table-for-dinner-4262004/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **una alergia alimentaria?**",
+      "bajada": "El cuerpo confunde un alimento con una amenaza.",
+      "cuerpo": "Tu hijo come algo. Su sistema de defensa lo lee como un peligro y responde. Eso es una alergia alimentaria. No es empacho ni comida pesada. Basta una cantidad pequeña para que arranque, y casi siempre empieza en las primeras dos horas, a veces en minutos.",
+      "visual": {
+        "clase": "icono",
+        "slug": "alerta",
+        "iconoSugerido": "shield alert"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo se ve* **una reacción?**",
+      "bajada": "Ronchas que salen rápido, pican y cambian de lugar.",
+      "cuerpo": "Empieza con ronchas rojas o rosas, levantadas, con mucha comezón. Aparecen en minutos y se mueven: una se borra y sale otra en otro lado. Puede venir con hinchazón de labios o párpados, comezón en la boca, vómito o dolor de panza. La piel es lo primero que se ve.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se esconde** *en el mole.*",
+      "bajada": "En la fiesta nadie sabe qué lleva cada platillo.",
+      "cuerpo": "El mole lleva cacahuate, almendra y ajonjolí, que también es un alérgeno reconocido. La nogada del chile en nogada es puré de nuez. El pozole llega con guarniciones que pasan de mesa en mesa. Aquí no hay etiqueta: el platillo lo sirvió alguien que no recuerda la receta completa.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/reacciones-alergicas-a-la-comida-de-las-fiestas-patrias-la-n/pexels-7601436.jpg",
+        "ideaImagen": "Cazuela de mole recién servida sobre una mesa de casa, con cacahuates y almendras crudos a un lado.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Los Muertos Crew",
+          "url": "https://www.pexels.com/photo/ingredients-on-wooden-chopping-board-7601436/"
+        }
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Si salen ronchas* **en la fiesta**",
+      "puntos": [
+        "Suspende ese platillo y aparta lo que sobró: sirve para identificar el ingrediente.",
+        "Revisa labios, párpados y lengua. Si se hinchan, no esperes a ver si baja.",
+        "Si le cuesta respirar, se pone pálido o se desvanece, llama a emergencias.",
+        "Anota la hora, qué comió y cuánto tardó en salir. Eso es lo que sirve en consulta."
+      ],
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **hay que valorarlo?**",
+      "bajada": "Una reacción que ya pasó también se estudia.",
+      "cuerpo": "Agenda si tu hijo ya tuvo una reacción, aunque se le haya quitado solo. También si le salen ronchas cada vez que come cierto alimento, si hubo hinchazón de labios o lengua, o si ya le quitas comidas por miedo. En consulta se busca qué fue y qué sí puede comer.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/reacciones-alergicas-a-la-comida-de-las-fiestas-patrias-la-n/pexels-7653331.jpg",
+        "ideaImagen": "Mamá con su hijo pequeño sentados frente al escritorio de un consultorio, conversando, ambiente tranquilo y luminoso.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Pavel Danilyuk",
+          "url": "https://www.pexels.com/photo/people-sitting-at-the-table-7653331/"
+        }
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "cierre",
+      "frase": "*La roncha se va.*\n**La duda, no.**"
+    }
+  ]
+}

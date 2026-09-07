@@ -880,3 +880,53 @@ select:focus {
   align-self: flex-start;
   margin-bottom: 2px;
 }
+
+/* ── la barra de trabajo ── */
+
+.progreso {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.progreso__barra {
+  height: 5px;
+  border-radius: 3px;
+  background: #1a1f28;
+  overflow: hidden;
+}
+
+.progreso__relleno {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--ui-acc), #7fb2ff);
+  /* La anchura la pone React contra el reloj; el brillo es lo que se mueve
+     solo, y es lo que distingue "trabajando" de "colgado". */
+  background-size: 200% 100%;
+  animation: progreso-brillo 1.4s linear infinite;
+  transition: width 0.9s linear;
+}
+
+@keyframes progreso-brillo {
+  from { background-position: 200% 0; }
+  to { background-position: 0 0; }
+}
+
+/* Sin animación para quien la pidió apagada: la barra sigue avanzando, que es
+   la información; lo que se detiene es el brillo. */
+@media (prefers-reduced-motion: reduce) {
+  .progreso__relleno {
+    animation: none;
+    transition: none;
+  }
+}
+
+.progreso .pista {
+  margin: 0;
+}
+
+.progreso b {
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-txt);
+}

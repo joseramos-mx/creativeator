@@ -3,6 +3,7 @@ import 'server-only';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { esSignoClinico } from './clinico';
 import { proporcionDeFondo, quitarCroma } from './croma';
 
 /**
@@ -50,6 +51,17 @@ export async function generar(
 ): Promise<IconoGenerado[]> {
   const llave = process.env.GEMINI_API_KEY;
   if (!llave) throw new Error('Falta GEMINI_API_KEY en .env.local.');
+
+  // Antes de gastar nada. La instrucción de no dibujar signos clínicos está en
+  // content/estilo-iconos.md y el modelo la sigue en cuanto al estilo, pero
+  // seguía dibujando lo que se le pedía. Lo que faltaba era negarse a pedirlo.
+  const clinico = esSignoClinico(concepto);
+  if (clinico) {
+    throw new Error(
+      `"${concepto}" no se genera: ${clinico}. Las imágenes de lesiones salen ` +
+        'del archivo clínico y las aprueba el médico.',
+    );
+  }
 
   const estilo = await leerEstilo();
   const prompt = `${concepto}.\n\n${estilo}`;

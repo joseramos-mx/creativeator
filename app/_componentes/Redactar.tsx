@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { afirmacionesDe } from '@/lib/afirmaciones';
 import type { Post } from '@/template/tipos';
 
@@ -21,6 +21,50 @@ import type { Post } from '@/template/tipos';
  * cambiarlo después cuesta lo mismo que haberlo elegido antes. Sí se enseña
  * cuál tomó y por qué toca este mes, que es información y no una pregunta.
  */
+
+type Fase = 'proponiendo' | 'redactando';
+
+/** Cuánto tarda cada fase en una corrida normal, en segundos. */
+const DURACION: Record<Fase, number> = { proponiendo: 20, redactando: 150 };
+
+const TEXTO: Record<Fase, string> = {
+  proponiendo: 'Eligiendo tema…',
+  redactando: 'Escribiendo el carrusel, buscando las fotos y generando los íconos que falten…',
+};
+
+/**
+ * La barra mientras se trabaja.
+ *
+ * **Es indeterminada a propósito.** Todo el trabajo va en una sola petición y
+ * el servidor no manda avance, así que una barra que dijera "62 %" se lo
+ * estaría inventando. Lo que sí se sabe es en qué fase va y cuánto lleva, y eso
+ * es lo que contesta la pregunta de quien mira: ¿sigue viva y cuánto llevo
+ * esperando?
+ *
+ * El relleno avanza contra la duración típica pero **nunca llega al final**: se
+ * frena asintóticamente en el 92 %. Una barra que se planta en 100 % y sigue
+ * esperando es peor que no tener barra, porque enseña a no creerle.
+ *
+ * Pasada la duración típica lo dice, en vez de fingir que todo va bien.
+ */
+function Progreso({ fase, segundos }: { fase: Fase; segundos: number }) {
+  const tipico = DURACION[fase];
+  // Se acerca al 92 % y ahí se queda: el último tramo no se puede saber.
+  const avance = 92 * (1 - Math.exp(-segundos / (tipico / 1.6)));
+  const tarde = segundos > tipico * 1.6;
+
+  return (
+    <div className="progreso" role="status" aria-live="polite">
+      <div className="progreso__barra">
+        <div className="progreso__relleno" style={{ width: `${avance.toFixed(1)}%` }} />
+      </div>
+      <p className="pista">
+        {TEXTO[fase]} <b>{segundos}s</b>
+        {tarde ? ' · está tardando más de lo normal, pero sigue trabajando.' : ''}
+      </p>
+    </div>
+  );
+}
 
 type Propuesta = {
   tema: string;
@@ -44,6 +88,17 @@ export function Redactar() {
   const [error, setError] = useState<string>();
   const [trabajando, setTrabajando] = useState(false);
   const [guardando, setGuardando] = useState(false);
+  const [fase, setFase] = useState<Fase | null>(null);
+  const [segundos, setSegundos] = useState(0);
+
+  // El reloj corre en el navegador porque el servidor no manda avance: todo el
+  // trabajo va en una petición. Ver el comentario de `Progreso`.
+  useEffect(() => {
+    if (!fase) return;
+    setSegundos(0);
+    const t = setInterval(() => setSegundos((s) => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [fase]);
 
   /**
    * Sin tema escrito: el modelo propone y se arranca con el primero.
@@ -55,6 +110,7 @@ export function Redactar() {
    */
   async function proponerTemas() {
     setTrabajando(true);
+    setFase('proponiendo');
     setError(undefined);
     setSalida(null);
     setPropuestas(null);
@@ -72,12 +128,14 @@ export function Redactar() {
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudieron proponer temas.');
       setTrabajando(false);
+      setFase(null);
     }
   }
 
   async function redactar(elegido?: string) {
     const cual = (elegido ?? tema).trim();
     setTrabajando(true);
+    setFase('redactando');
     setError(undefined);
     setSalida(null);
     try {
@@ -94,6 +152,7 @@ export function Redactar() {
       setError(e instanceof Error ? e.message : 'No se pudo redactar.');
     } finally {
       setTrabajando(false);
+      setFase(null);
     }
   }
 
@@ -155,6 +214,8 @@ export function Redactar() {
               ? 'Redactar'
               : 'Elegir tema y redactar'}
         </button>
+
+        {fase ? <Progreso fase={fase} segundos={segundos} /> : null}
 
         {error ? <p className="aviso">{error}</p> : null}
 

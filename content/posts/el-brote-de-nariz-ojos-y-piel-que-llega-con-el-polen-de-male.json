@@ -1,0 +1,86 @@
+{
+  "slug": "el-brote-de-nariz-ojos-y-piel-que-llega-con-el-polen-de-male",
+  "tema": "Rinitis y conjuntivitis alérgica por polen de malezas de otoño, y su efecto en la piel de los niños",
+  "creado": "2026-09-07",
+  "estado": "borrador",
+  "paleta": "verde",
+  "copy": "No es gripa. Es el polen. 🍂\n\nSi tu hijo lleva semanas estornudando, con los ojos rojos y sin una sola línea de fiebre, seguramente es rinitis alérgica estacional. En otoño el disparador que domina es el polen de las malezas, y esas semanas en Durango ya empezaron. Por eso hoy conviene distinguirla del resfriado que \"no termina de irse\".\n\n🔍 Tres pistas en la cara: estornudos en serie al despertar, moco claro como agua, comezón en nariz y ojos, y el gesto de frotarse la nariz hacia arriba con la palma una y otra vez (StatPearls).\n\n⚠️ Por qué justo ahora: el polen de malezas se libera en otoño y el viento lo transporta, así que no hace falta tener la planta en el jardín; los conteos suelen ser más altos por la mañana. Y en los niños con dermatitis atópica, el polen es uno de los disparadores que empeoran el eczema (Mayo Clinic, AAD).\n\n✅ Qué sí ayuda en casa: ventanas cerradas temprano, baño y ropa limpia al volver de la calle, nada de tender ropa afuera estas semanas, lavado nasal con solución salina y crema humectante a diario (Mayo Clinic, AAD).\n\n⚡ Con qué se confunde: con el resfriado común. El resfriado dura unos días y se va, puede dar fiebre y el moco se vuelve espeso. La alergia dura mientras haya polen, no da fiebre y lo que manda es la comezón: nariz, ojos, paladar. Si llevan tres semanas iguales, no era un virus.\n\n🔖 Guárdalo para la mañana en que amanezca con los ojos hinchados y no sepas si mandarlo a la escuela: aquí tienes las tres pistas y las cuatro medidas de casa en una sola pantalla, sin buscar nada. Y mándaselo a la mamá del salón que anda diciendo que a su hijo \"le pega el clima\" cada octubre.\n\n💬 ¿A tu hijo le empieza siempre en el mismo mes del año? Cuéntame cuál, en una línea.\n\n📲 ¿Tu hijo lleva semanas con la nariz y los ojos así? Se puede estudiar qué se lo dispara y controlarlo, no solo esperar a que pase la temporada. Agenda conmigo en Doctoralia: el enlace está en la biografía.\n\n#RinitisAlérgica #PolenDeOtoño #AlergologíaPediátrica #PielDeNiños #DermatólogoEnDurango",
+  "pilar": "Alergia estacional en niños",
+  "objetivo": "guardar",
+  "nota": "Temporada de polen de malezas",
+  "hashtags": [
+    "#RinitisAlérgica",
+    "#PolenDeOtoño",
+    "#AlergologíaPediátrica",
+    "#PielDeNiños",
+    "#DermatólogoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*No es gripa.*\n**Es el polen.**",
+      "pregunta": "¿Por qué justo ahora?"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **la fiebre del heno?**",
+      "bajada": "No da fiebre, aunque se llame fiebre del heno.",
+      "cuerpo": "Es rinitis alérgica: el cuerpo reacciona al polen como si fuera una amenaza. En primavera manda el polen de los árboles; en otoño, el de las malezas. Por eso la nariz, los ojos y la piel se quejan al mismo tiempo y en las mismas semanas del año.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/pendiente.jpg",
+        "ideaImagen": "Rama de maleza en flor a contraluz soltando polen en un terreno seco."
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Tres pistas** *en la cara.*",
+      "bajada": "Comezón y moco claro, no fiebre ni moco espeso.",
+      "cuerpo": "Estornudos en serie al despertar y moco claro, como agua. Ojos rojos, llorosos y con comezón. Y el gesto que delata: se frota la nariz hacia arriba con la palma, una y otra vez. A veces deja ojeras marcadas aunque haya dormido bien.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/pendiente.jpg",
+        "ideaImagen": "Niño frotándose la nariz hacia arriba con la palma de la mano, con los ojos irritados."
+      },
+      "fuente": "StatPearls"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El polen viaja*\n**con el viento.**",
+      "bajada": "El viento lo trae aunque no veas la planta.",
+      "cuerpo": "El polen de malezas se libera en otoño y el viento lo mueve, así que no necesitas tener la planta cerca para respirarlo. Los conteos suelen ser más altos por la mañana. Y si tu hijo tiene dermatitis atópica, estas son las semanas en que más le brota.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "wind"
+      },
+      "fuente": "Mayo Clinic · AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Qué sí ayuda** *en casa.*",
+      "puntos": [
+        "Ventanas cerradas por la mañana, que es cuando más polen hay.",
+        "Baño y ropa limpia al volver de la calle: el polen se queda en el pelo.",
+        "No tiendas la ropa afuera durante estas semanas.",
+        "Lavado nasal con solución salina y crema humectante todos los días."
+      ],
+      "fuente": "Mayo Clinic · AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo **hay que revisarlo?**",
+      "bajada": "La tos nocturna y el ronquido sí ameritan revisión.",
+      "cuerpo": "Agenda valoración si amanece con los ojos hinchados varios días seguidos, si duerme con la boca abierta o ronca, si aparece tos de noche o le silba el pecho, y si el eczema no cede con la crema de siempre. También si ya le está costando la escuela.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "stethoscope"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "cierre",
+      "frase": "*La alergia de otoño*\n**no se aguanta: se trata.**"
+    }
+  ]
+}

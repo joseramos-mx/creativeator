@@ -19,6 +19,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { mejorCoincidencia } from '../lib/iconos.ts';
+import { esSignoClinico } from '../lib/iconos/clinico.ts';
 import { etiquetar, slugificar } from '../lib/iconos/etiquetas.ts';
 
 let fallos = 0;
@@ -130,6 +131,46 @@ ok(
   mejorCoincidencia(conUnoNuevo, 'birthday cake') === null,
   'y lo que no está sigue sin casar',
 );
+
+/* ── lo que no se genera ─────────────────────────────────────────────────── */
+console.log('\nEl signo clínico no se dibuja');
+
+// Los tres primeros salieron de carruseles de verdad, con la generación
+// automática ya enchufada. "grouped raised bumps on arm skin" produjo un
+// antebrazo con ronchas: exactamente la imagen que un papá usaría para decidir
+// si lo que ve en su hijo es eso. La regla estaba escrita en tres archivos y
+// aun así se coló, porque estaba solo en prompts.
+for (const concepto of [
+  'grouped raised bumps on arm skin',
+  'hives welts',
+  'swollen lips',
+  'rash on the face',
+  'eczema patch',
+  'honey colored crusts around the mouth',
+  'ronchas en el brazo',
+  'peeling skin',
+]) {
+  const motivo = esSignoClinico(concepto);
+  ok(motivo !== null, `"${concepto}" no se genera — ${motivo ?? 'PASÓ'}`);
+}
+
+// Y los objetos del mismo tema sí pasan: el filtro tiene que dejar trabajar,
+// no vaciar el carrusel.
+console.log('\nY el objeto que lo acompaña sí');
+for (const concepto of [
+  'cream tube',
+  'cold compress',
+  'mosquito',
+  'antihistamine box',
+  'milk carton and egg',
+  'magnifying glass',
+  'fork with clock',
+  'cotton clothes',
+  'washing machine',
+]) {
+  const motivo = esSignoClinico(concepto);
+  ok(motivo === null, `"${concepto}" sí${motivo ? ` — pero lo bloqueó: ${motivo}` : ''}`);
+}
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
 if (fallos > 0) process.exitCode = 1;
