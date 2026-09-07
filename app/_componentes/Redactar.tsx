@@ -221,10 +221,17 @@ export function Redactar() {
   );
 }
 
-/** Las fotos que ya quedaron puestas, no las que faltan. */
+/**
+ * Las fotos que ya quedaron puestas, no las que faltan.
+ *
+ * Cuenta también la de la portada, que va en su propio campo: es la más
+ * visible del carrusel y la que se nota cuando falta.
+ */
 function conFoto(post: Post) {
-  return post.slides.filter(
-    (s) => s.tipo === 'contenido' && s.visual.clase === 'foto' && s.visual.credito,
+  return post.slides.filter((s) =>
+    s.tipo === 'portada'
+      ? Boolean(s.fotoCredito)
+      : s.tipo === 'contenido' && s.visual.clase === 'foto' && Boolean(s.visual.credito),
   ).length;
 }
 

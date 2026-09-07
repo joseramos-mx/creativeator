@@ -172,10 +172,20 @@ async function rellenarFotos(
 
   await Promise.all(
     post.slides.map(async (slide, i) => {
-      if (slide.tipo !== 'contenido' || slide.visual.clase !== 'foto') return;
+      // La portada lleva la foto suelta y a sangre; los de contenido, dentro
+      // del visual. Son dos campos distintos y las dos hacen falta: sin la de
+      // portada el carrusel abre con un fondo plano.
+      const esPortada = slide.tipo === 'portada';
+      const esContenido = slide.tipo === 'contenido' && slide.visual.clase === 'foto';
+      if (!esPortada && !esContenido) return;
+
       const pedido = r.slides[i];
       const consulta = pedido?.busqueda?.trim() || pedido?.ideaImagen?.trim();
-      if (!consulta) return;
+      const donde = esPortada ? 'la portada' : `el slide ${String(i).padStart(2, '0')}`;
+      if (!consulta) {
+        if (esPortada) avisos.push('La portada va sin foto: el modelo no propuso qué buscar.');
+        return;
+      }
 
       try {
         const candidatos = await banco.buscar(consulta, 24);
@@ -183,18 +193,24 @@ async function rellenarFotos(
         const mejor = pasan[0];
         if (!mejor?.credito) {
           avisos.push(
-            `Sin foto para el slide ${String(i).padStart(2, '0')}: el banco no devolvió nada usable ` +
+            `Sin foto para ${donde}: el banco no devolvió nada usable ` +
               `para "${consulta}"${apartados.length ? ` (${apartados.length} apartada(s) por el descarte)` : ''}.`,
           );
           return;
         }
-        slide.visual.src = await descargarFoto(banco, mejor, slug);
-        slide.visual.credito = mejor.credito;
+
+        const ruta = await descargarFoto(banco, mejor, slug);
+        if (slide.tipo === 'portada') {
+          slide.foto = ruta;
+          slide.fotoCredito = mejor.credito;
+        } else if (slide.tipo === 'contenido' && slide.visual.clase === 'foto') {
+          slide.visual.src = ruta;
+          slide.visual.credito = mejor.credito;
+        }
       } catch (e) {
         // Una foto que no se pudo bajar no tira el carrusel entero.
         avisos.push(
-          `Sin foto para el slide ${String(i).padStart(2, '0')}: ` +
-            `${e instanceof Error ? e.message : 'no se pudo bajar'}.`,
+          `Sin foto para ${donde}: ${e instanceof Error ? e.message : 'no se pudo bajar'}.`,
         );
       }
     }),
@@ -236,7 +252,8 @@ Las citas se agendan en ${marca.plataforma}, con el enlace en la biografía.
 
 Siete slides, en este orden, que es el de la cuenta:
 
-  1. portada    — titulo con marcado, pregunta de cinco palabras o menos
+  1. portada    — titulo con marcado, pregunta de cinco palabras o menos, y
+                  su búsqueda de foto: la portada siempre lleva fondo
   2. contenido  — qué es
   3. contenido  — cómo se reconoce
   4. contenido  — por qué importa ahora, o cómo se contagia
@@ -270,8 +287,10 @@ clínicas vienen de banco con licencia o del consultorio.
 
 ## La búsqueda de la foto
 
-En los slides con "foto", la foto se busca y se pone sola con lo que escribas
-en estos dos campos. Nadie los va a revisar antes, así que valen lo que valgan:
+**La portada siempre lleva foto**, a sangre y de fondo, y los slides con
+"foto" llevan la suya. En los dos casos la foto se busca y se pone sola con lo
+que escribas en estos dos campos. Nadie los va a revisar antes, así que valen
+lo que valgan:
 
   · busqueda — en inglés, de tres a seis palabras, del vocabulario con el que
     indexan los bancos de fotos de ambiente. "children classroom backpacks
@@ -288,10 +307,23 @@ infección en la escuela se publicó una vez con la foto de un gimnasio: encajab
 con "niños juntos" y no enseñaba nada de lo que decía el texto. Piensa qué
 buscaría alguien con tu consulta y saldría mal.
 
+**La de la portada es distinta.** Va a sangre, con un velo encima que la
+oscurece arriba y termina fundida en el color plano abajo, y el título grande
+cae a media altura.
+
+Un primer plano de una persona funciona y es lo que la cuenta publica: su
+portada de impétigo es una cara ocupando el encuadre entero. Lo que importa no
+es evitar caras, es **que lo que se quiere ver quede en los dos tercios de
+arriba**, porque el tercio inferior se lo come el fundido. Y que la escena
+tenga aire: una foto llena de detalle fino compite con el título.
+
+Busca la escena donde ocurre el tema —la recámara de noche, el patio de la
+escuela, el parque en otoño—, no el síntoma.
+
 **Solo ambiente, nunca clínica.** Un aula, mochilas, el recreo, una toalla
 colgada, una rutina de casa. Nada de piel enferma: esas fotos salen de un
-archivo con licencia y las aprueba el médico una por una. Si el slide pide una
-lesión, pon "ninguno" en visual y no lo fuerces.
+archivo con licencia y las aprueba el médico una por una. Si un slide de
+contenido pide una lesión, pon "ninguno" en visual y no lo fuerces.
 
 ## Las cifras y las fuentes — lo más importante
 
