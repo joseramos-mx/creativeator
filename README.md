@@ -20,7 +20,7 @@ encendido, qué está apagado y por qué.
 | Paletas | Veinticinco tonos a la misma luminancia; diez las elige el redactor, el resto a mano | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
-| El calendario | `npm run mes`: lee `content/calendario.tsv` y escribe los que faltan | las mismas tres |
+| El calendario | Panel en la portada o `npm run mes`: lee la hoja y escribe los que faltan | las mismas tres |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
@@ -381,6 +381,16 @@ cuesta lo mismo que haberlo elegido antes.**
 
 ## El calendario: escribir los que faltan
 
+El calendario editorial vive en **`content/calendario.tsv`**. Se sube de dos
+maneras y las dos escriben el mismo archivo, así que da igual cuál se use:
+
+**Desde la portada** — «Escribir varios desde el calendario». Se suelta el CSV o
+el TSV en el recuadro, sale la hoja entera con lo ya escrito apagado y lo que
+falta marcado, y un botón que dice cuántos va a escribir. Se pueden desmarcar
+los que no toquen ahora.
+
+**Desde la terminal**, que es lo mismo sin navegador:
+
 ```
 npm run dev                              # en otra terminal, y anota el puerto
 npm run mes -- 3001 --plan               # qué falta, sin escribir ni gastar nada
@@ -388,10 +398,6 @@ npm run mes -- 3001                      # escribe todos los que faltan
 npm run mes -- 3001 --desde colageno     # de esa fila en adelante
 npm run mes -- 3001 --desde 4            # lo mismo, por el número de la hoja
 ```
-
-El calendario editorial vive en **`content/calendario.tsv`**: se copia la tabla
-desde la hoja de cálculo y se pega ahí. Con eso, `npm run mes` compara la hoja
-contra lo que ya está escrito y redacta lo que falta.
 
 | No. | Fecha | Día | Tipo | Pilar | Tema | Objetivo | Nota estratégica |
 |---|---|---|---|---|---|---|---|
@@ -431,11 +437,25 @@ daría por no escrito y lo redactaría otra vez — una llamada larga para acaba
 con dos carruseles del mismo tema. Los textos sí coinciden al 100 % con la
 medida de `lib/mes.ts`, que es la misma que detecta repetidos.
 
+### Por qué el panel no es "un botón que lo hace todo"
+
+Doce carruseles son media hora y una ruta de Next se corta a los cinco minutos,
+así que una sola petición que lo haga todo no existe. Las opciones eran una cola
+de trabajos en el servidor —con su estado, su reinicio y su endpoint de
+consulta— o que el bucle viva en el navegador y llame a `/api/redactar` una vez
+por fila, que es exactamente lo que hace `npm run mes` desde la terminal.
+
+Gana lo segundo, y no solo por ser menos código: **cada carrusel se guarda en
+cuanto sale**. Si se cierra la pestaña a la mitad, lo escrito está escrito y al
+volver a abrir el panel salen los que falten. Lo que cuesta es que la pestaña
+tiene que quedarse abierta mientras trabaja; el panel lo dice en pantalla y
+pregunta antes de cerrarla.
+
 ### Lo demás que hace la tanda
 
 - **Habla por HTTP con el servidor de desarrollo** y llama a `/api/redactar`, la
-  misma ruta que el botón del panel. Mismo prompt, mismas fotos, mismos íconos.
-  No es una segunda implementación que se va separando sola.
+  misma ruta que el botón de redactar uno. Mismo prompt, mismas fotos, mismos
+  íconos. No es una segunda implementación que se va separando sola.
 - **Ninguna foto se usa dos veces.** Nueve carruseles sobre temas vecinos le
   piden al banco escenas parecidas, y la mejor foto de aula suele ser la misma.
   Cada llamada devuelve las que gastó y la siguiente las recibe apartadas.

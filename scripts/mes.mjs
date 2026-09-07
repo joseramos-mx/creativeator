@@ -36,7 +36,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afirmacionesDe } from '../lib/afirmaciones.ts';
 import { desde, leerCalendario } from '../lib/calendario.ts';
-import { IDENTICOS, parecido, revisarTanda } from '../lib/mes.ts';
+import { revisarTanda, yaEscrito } from '../lib/mes.ts';
 import { aSlug } from '../lib/slug.ts';
 
 const CONTENIDO = join(process.cwd(), 'content');
@@ -138,26 +138,22 @@ async function comprobarServidor() {
 function loQueYaHay() {
   const archivos = readdirSync(POSTS).filter((f) => f.endsWith('.json'));
   const posts = archivos.map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')));
+  // Los de laboratorio son andamio de las pruebas, no contenido de la cuenta.
+  const dela = posts.filter((p) => !p.slug.startsWith('laboratorio-'));
   return {
     slugs: new Set(posts.map((p) => p.slug)),
-    // Los de laboratorio son andamio de las pruebas, no contenido de la cuenta.
-    temas: posts.filter((p) => !p.slug.startsWith('laboratorio-')).map((p) => p.tema),
-  };
-}
+    temas: dela.map((p) => p.tema),
+    /* La forma que espera `yaEscrito`. La decisión de si un tema ya está
+       escrito vive en lib/mes.ts y la comparten el script y el panel: es la
+       que sostiene "escribe los que faltan", y dos copias que se separaran
+       darían dos respuestas distintas a la misma pregunta.
 
-/**
- * Si este tema ya está escrito, devuelve con cuál. Si no, `null`.
- *
- * **Por el tema y no solo por el slug**, y esto no es un adorno: la hoja dice
- * "Impétigo: la infección del regreso a clases" y el archivo que ya existe se
- * llama `impetigo-regreso-a-clases`. Los slugs no coinciden, así que comparar
- * nombres de archivo lo daría por no escrito y lo volvería a redactar — una
- * llamada larga para acabar con dos carruseles del mismo tema. Los textos sí
- * coinciden al 100 % con la medida de `lib/mes.ts`.
- */
-function yaEscrito(tema, slug, yaHay) {
-  if (yaHay.slugs.has(slug) || existsSync(join(POSTS, `${slug}.json`))) return slug;
-  return yaHay.temas.find((t) => parecido(tema, t) >= IDENTICOS) ?? null;
+       Van **todos**, laboratorio incluido, y eso es a propósito: excluirlos de
+       aquí dejaría que un tema cuyo slug cayera en `laboratorio-edicion` lo
+       sobrescribiera. Sus temas —"Laboratorio · paletas"— no pueden parecerse
+       a uno de la hoja, así que entrar no cuesta nada. */
+    escritos: posts.map((p) => ({ slug: p.slug, tema: p.tema })),
+  };
 }
 
 /* ── de dónde salen los temas ────────────────────────────────────────────── */
@@ -205,7 +201,7 @@ if (calendario) {
 
   for (const f of candidatas) {
     const slug = aSlug(f.tema);
-    const hecho = yaEscrito(f.tema, slug, yaHay);
+    const hecho = yaEscrito(f.tema, slug, yaHay.escritos);
     if (hecho) {
       console.log(`  ✓ ${f.fecha}  ${f.tema}\n      ya está escrito (${hecho})`);
       continue;
@@ -311,6 +307,7 @@ for (const [i, item] of cola.entries()) {
     await pedir('/api/post', { post: r.post });
     yaHay.slugs.add(slug);
     yaHay.temas.push(r.post.tema);
+    yaHay.escritos.push({ slug, tema: r.post.tema });
 
     const afirmaciones = afirmacionesDe(r.post);
     const seguridad = afirmaciones.filter((a) => a.disparadores.includes('seguridad'));

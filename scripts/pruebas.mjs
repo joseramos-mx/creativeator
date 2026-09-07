@@ -58,8 +58,30 @@ function soloLaboratorio(slug) {
   return slug;
 }
 
-const leer = (slug) =>
-  JSON.parse(readFileSync(join(process.cwd(), 'content', 'posts', `${slug}.json`), 'utf8'));
+/** Dormir de verdad dentro de una función síncrona, sin quemar el procesador. */
+const dormirSync = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+
+/**
+ * El JSON de un post, releyendo si se pilla a medio escribir.
+ *
+ * `esperarA` llama a esto en bucle mientras el guardado automático escribe el
+ * mismo archivo, y `writeFile` no es atómico: trunca y luego escribe, así que
+ * hay una ventana de milisegundos en la que el archivo está vacío. Sin los
+ * reintentos, la suite reventaba de vez en cuando con "Unexpected end of JSON
+ * input" en una prueba distinta cada vez — que es lo peor que puede hacer una
+ * prueba, porque parece un fallo del editor y no lo es.
+ */
+const leer = (slug) => {
+  const ruta = join(process.cwd(), 'content', 'posts', `${slug}.json`);
+  for (let intento = 0; ; intento++) {
+    try {
+      return JSON.parse(readFileSync(ruta, 'utf8'));
+    } catch (e) {
+      if (intento >= 8) throw e;
+      dormirSync(25);
+    }
+  }
+};
 
 /** El nombre del médico: el único que puede firmar una indicación clínica. */
 const medico = JSON.parse(
@@ -612,6 +634,67 @@ for (const slide of conLicencia.slides) {
 const conTodo = await guardar(conLicencia);
 ok(conTodo.estado === 200, 'con la procedencia registrada sí se aprueba');
 ok(leer(EDICION).estado === 'aprobado', 'y el archivo lo refleja');
+
+/* ── el panel del calendario ─────────────────────────────────────────────── */
+console.log('\nPanel del calendario');
+
+/*
+ * Solo lectura: **no se sube nada**. `POST /api/calendario` reemplaza
+ * content/calendario.tsv, y una prueba que pise el calendario editorial de
+ * verdad haría más daño que el fallo que busca. Lo que se comprueba aquí es lo
+ * que la ruta ya devuelve y cómo se pinta.
+ */
+{
+  const pagina = await navegador.newPage({ viewport: { width: 1200, height: 1400 } });
+  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+
+  const panel = pagina.locator('details[data-calendario]');
+  ok((await panel.count()) === 1, 'el panel está en la portada');
+  await panel.locator('summary').click();
+
+  const hoja = await (await fetch(`${base}/api/calendario`)).json();
+
+  if (!hoja.hay || !hoja.filas?.length) {
+    console.log('  —    no hay content/calendario.tsv, así que esta parte se salta');
+  } else {
+    await pagina.waitForSelector('.calendario > li', { timeout: 20_000 });
+    const filas = await pagina.locator('.calendario > li').count();
+    ok(filas === hoja.filas.length, `se pintan las ${hoja.filas.length} filas de la hoja`);
+
+    // Lo ya escrito sale marcado y con la casilla apagada. Es lo que impide
+    // volver a pagar un carrusel que ya existe de un clic distraído.
+    const hechos = hoja.filas.filter((f) => f.hecho).length;
+    ok(
+      (await pagina.locator('.calendario > li[data-hecho]').count()) === hechos,
+      `${hechos} marcado(s) como ya escrito(s)`,
+    );
+    ok(
+      (await pagina.locator('.calendario > li[data-hecho] input:checked').count()) === 0,
+      'y ninguno de ésos va marcado para escribir',
+    );
+    ok(
+      (await pagina.locator('.calendario input:checked').count()) === hoja.filas.length - hechos,
+      'los que faltan sí, todos: el camino de cero clics es "escríbelos todos"',
+    );
+
+    const boton = (await pagina.locator('details[data-calendario] .boton').first().innerText()).trim();
+    ok(
+      boton === `Escribir ${hoja.filas.length - hechos}`,
+      `el botón dice cuántos va a escribir → "${boton}"`,
+    );
+
+    // Desmarcar uno tiene que bajar la cuenta del botón: si no, lo que dice el
+    // botón y lo que va a hacer son dos cosas distintas.
+    await pagina.locator('.calendario > li:not([data-hecho]) input').first().uncheck();
+    const menos = (await pagina.locator('details[data-calendario] .boton').first().innerText()).trim();
+    ok(
+      menos === `Escribir ${hoja.filas.length - hechos - 1}`,
+      `y baja al desmarcar uno → "${menos}"`,
+    );
+  }
+
+  await pagina.close();
+}
 
 /* ── que el laboratorio siga siendo laboratorio ──────────────────────────── */
 console.log('\nEl guardia');

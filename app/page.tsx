@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Calendario } from '@/app/_componentes/Calendario';
 import { Miniatura } from '@/app/_componentes/Miniatura';
 import { Redactar } from '@/app/_componentes/Redactar';
 import { leerMarca, listarPosts } from '@/lib/posts';
@@ -9,7 +10,8 @@ import { leerMarca, listarPosts } from '@/lib/posts';
  *
  * Redactar uno con la IA también empieza aquí, y termina en el editor: lo que
  * escribe el modelo entra como borrador y no hay camino de ahí a un PNG que no
- * pase por una persona.
+ * pase por una persona. Lo mismo vale para los doce de un calendario: la tanda
+ * es más rápida de escribir, no de revisar.
  */
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +32,7 @@ export default async function Inicio() {
 
       <main className="banco">
         <Redactar />
+        <Calendario />
 
         {posts.length === 0 ? (
           <p>

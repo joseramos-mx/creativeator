@@ -107,6 +107,29 @@ export function parecido(a: string, b: string): number {
 export const PARECIDOS = 0.6;
 export const IDENTICOS = 0.85;
 
+/**
+ * Si este tema ya está escrito, con cuál. Si no, `null`.
+ *
+ * **Por el tema y no solo por el nombre de archivo**, y esto no es un adorno:
+ * la hoja dice "Impétigo: la infección del regreso a clases" y el archivo que
+ * ya existe se llama `impetigo-regreso-a-clases`. Los slugs no coinciden, así
+ * que comparar nombres lo daría por no escrito y lo volvería a redactar — una
+ * llamada larga para acabar con dos carruseles del mismo tema. Los textos sí
+ * coinciden al 100 % con la medida de aquí arriba.
+ *
+ * Recibe la lista en vez de leerla del disco para que este archivo siga sin un
+ * solo import: lo cargan igual el script de la tanda, el banco y el servidor.
+ */
+export function yaEscrito(
+  tema: string,
+  slug: string,
+  escritos: { slug: string; tema: string }[],
+): string | null {
+  const porNombre = escritos.find((p) => p.slug === slug);
+  if (porNombre) return porNombre.slug;
+  return escritos.find((p) => parecido(tema, p.tema) >= IDENTICOS)?.tema ?? null;
+}
+
 export type Choque = {
   /** La posición del tema dentro de lo que propuso el modelo. */
   indice: number;

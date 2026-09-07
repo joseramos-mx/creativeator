@@ -930,3 +930,158 @@ select:focus {
   font-variant-numeric: tabular-nums;
   color: var(--ui-txt);
 }
+
+/* ── el calendario ── */
+
+.tarjeta[data-calendario] {
+  max-width: 760px;
+  margin: 0 auto 22px;
+}
+
+/* La zona de soltar. Es un <label> con el input escondido dentro, así que el
+   clic y el arrastre llevan al mismo sitio sin JavaScript de por medio. */
+.soltar {
+  display: block;
+  padding: 16px;
+  border: 1px dashed var(--ui-line);
+  border-radius: 8px;
+  background: #12161d;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.soltar:hover,
+.soltar:focus-within {
+  border-color: var(--ui-acc);
+}
+
+.soltar[data-encima] {
+  border-color: var(--ui-acc);
+  border-style: solid;
+  background: #172234;
+}
+
+.soltar strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ui-txt);
+  font-size: 13px;
+}
+
+.soltar span {
+  display: block;
+  max-width: 52ch;
+  margin: 0 auto;
+  color: var(--ui-dim);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.calendario {
+  margin: 12px 0 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendario li {
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--ui-line);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.calendario li:last-child {
+  border-bottom: 0;
+}
+
+/* Lo ya escrito se apaga en vez de esconderse: que la hoja se vea entera es lo
+   que deja comprobar de un vistazo que no falta ninguna fila. */
+.calendario li[data-hecho] {
+  opacity: 0.45;
+}
+
+.calendario li[data-fase='escribiendo'] {
+  background: #141c28;
+  box-shadow: inset 2px 0 0 var(--ui-acc);
+  padding-left: 8px;
+}
+
+.calendario li[data-fase='fallo'] {
+  box-shadow: inset 2px 0 0 #c2603f;
+  padding-left: 8px;
+}
+
+.calendario label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+  color: var(--ui-txt);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+}
+
+.calendario label:has(input:disabled) {
+  cursor: default;
+}
+
+.calendario input[type='checkbox'] {
+  flex: none;
+  width: auto;
+  margin: 0;
+  accent-color: var(--ui-acc);
+}
+
+.calendario__fecha {
+  flex: none;
+  color: var(--ui-dim);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+}
+
+.calendario__tema {
+  flex: 1;
+}
+
+.calendario__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-left: 26px;
+  color: var(--ui-dim);
+  font-size: 11px;
+}
+
+.calendario__meta em {
+  font-style: normal;
+}
+
+.calendario__meta b {
+  color: #7fb2ff;
+  font-weight: 500;
+}
+
+.calendario__estado {
+  display: block;
+  margin-left: 26px;
+  color: var(--ui-dim);
+  font-size: 11px;
+}
+
+.calendario__estado[data-vivo] {
+  color: var(--ui-acc);
+  font-variant-numeric: tabular-nums;
+}
+
+.calendario__estado[data-fallo] {
+  color: #e08a6a;
+}
+
+.calendario .avisos {
+  margin-left: 26px;
+}
