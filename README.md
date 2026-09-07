@@ -18,7 +18,7 @@ encendido, qué está apagado y por qué.
 | Exportación | PNG a 2160×2700, ZIP con `copy.txt` y `creditos.txt` | — |
 | Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
 | Paletas | Azul, naranja y verde por tema, elegidas por el redactor | — |
-| Redacción con IA | `/api/redactar`: el tema entra, el borrador sale | `ANTHROPIC_API_KEY` |
+| Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
@@ -340,8 +340,15 @@ cuesta lo mismo que haberlo elegido antes.**
   proponiendo tres —ordenar lo mejor primero le sale mejor que pedirle una sola
   respuesta— pero cuál se escribe no se pregunta. Se enseña cuál tomó y por qué
   toca este mes, que es información, no una pregunta.
-- **La foto de banco** se busca, se criba y se pone en un solo clic. Las otras
-  quedan a un botón de distancia y las apartadas también, con su motivo.
+- **Las fotos de ambiente ya vienen puestas.** El carrusel redactado sale con
+  sus imágenes descargadas y acreditadas, no con el hueco: el propio redactor
+  devuelve la consulta al banco y los términos de descarte de cada slide en la
+  misma llamada, así que no cuesta ni una llamada más. Si un slide se queda sin
+  foto usable, ese slide —y solo ese— sale con el hueco señalado y un aviso;
+  el texto es lo caro y no se tira por una imagen.
+- **La foto de banco, a mano**, también se busca, se criba y se pone en un solo
+  clic. Las otras quedan a un botón de distancia y las apartadas también, con
+  su motivo.
 - **El ícono sugerido** se pone si la librería lo tiene. Si no lo tiene, el
   slide queda marcado como "falta ícono", que es mejor que poner uno parecido.
 

@@ -182,5 +182,32 @@ function ficticio(id, descripcion) {
   };
 }
 
+/* ── el relleno automático ───────────────────────────────────────────────── */
+console.log('\nLo que el relleno automático necesita del modelo');
+
+// El redactor devuelve `busqueda` y `descartar` por slide, en la misma llamada,
+// y con eso la foto se pone sin preguntar. Si la consulta llegara vacía, el
+// slide se quedaría sin foto en silencio: por eso hay respaldo.
+const consultaDe = (slide) => slide.busqueda?.trim() || slide.ideaImagen?.trim() || '';
+
+ok(
+  consultaDe({ busqueda: 'children classroom', ideaImagen: 'un aula' }) === 'children classroom',
+  'con busqueda se usa la busqueda',
+);
+ok(
+  consultaDe({ busqueda: '  ', ideaImagen: 'niños en el recreo' }) === 'niños en el recreo',
+  'sin ella, la idea de imagen hace de respaldo',
+);
+ok(consultaDe({ busqueda: '', ideaImagen: '' }) === '', 'y sin ninguna, no se busca nada');
+
+// Lo que sostiene que el relleno pueda ser automático: el descarte corre igual
+// que cuando alguien elige a mano. Es la misma criba, no una versión relajada.
+const comoEnElRelleno = cribar(comoAquelDia, DESCARTAR);
+ok(comoEnElRelleno.pasan[0]?.id !== 'gimnasio', 'la que se pondría sola nunca es la apartada');
+ok(
+  comoEnElRelleno.pasan[0]?.credito != null,
+  'y siempre trae crédito: sin él no se ofrece, ni a mano ni solo',
+);
+
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
 if (fallos > 0) process.exitCode = 1;

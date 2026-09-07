@@ -175,6 +175,11 @@ export function Redactar() {
               <strong>{salida.post.slides.length} slides</strong> · paleta{' '}
               <strong>{salida.post.paleta}</strong> — {salida.porQuePaleta}
             </p>
+            <p className="pista">
+              {conFoto(salida.post) === 0
+                ? 'Sin fotos: este carrusel va con íconos.'
+                : `${conFoto(salida.post)} ${conFoto(salida.post) === 1 ? 'foto puesta' : 'fotos puestas'} del banco, con su autor y su licencia. Cámbialas en el editor si alguna no te convence.`}
+            </p>
 
             <ol className="redaccion">
               {salida.post.slides.map((s, i) => (
@@ -214,6 +219,13 @@ export function Redactar() {
       </div>
     </details>
   );
+}
+
+/** Las fotos que ya quedaron puestas, no las que faltan. */
+function conFoto(post: Post) {
+  return post.slides.filter(
+    (s) => s.tipo === 'contenido' && s.visual.clase === 'foto' && s.visual.credito,
+  ).length;
 }
 
 function titulo(s: Post['slides'][number]) {

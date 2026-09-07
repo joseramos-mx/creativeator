@@ -5,14 +5,20 @@ import { redactar } from '@/lib/redactar';
 import { Post, validar } from '@/lib/schema';
 
 /**
- * POST /api/redactar — `{ tema, slug? }` → el borrador del carrusel.
+ * POST /api/redactar — `{ tema, slug? }` → el borrador del carrusel, con fotos.
  *
  * **No guarda nada**, igual que /api/importar y por la misma razón: lo que
  * devuelve el modelo se enseña antes de reemplazar el contenido del editor.
  * Aquí pesa más todavía, porque una llamada cuesta y porque el paso de edición
  * entre redactar y exportar no es opcional: sale como `borrador` y la cola de
  * afirmaciones decide si algún día puede ser otra cosa.
+ *
+ * Lo único que sí toca el disco es la descarga de las fotos de ambiente, que se
+ * ponen solas en `public/media/<slug>/`. Son archivos nuevos en una carpeta
+ * nueva: si el borrador se descarta, sobra una carpeta y nada más.
  */
+
+export const maxDuration = 300;
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json(

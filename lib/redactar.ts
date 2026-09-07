@@ -7,6 +7,8 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
 import { afirmacionesDe } from './afirmaciones';
+import { bancoDe, cribar } from './bancos';
+import { descargarFoto } from './bancos/descargar';
 import { mejorCoincidencia, type Icono } from './iconos';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
@@ -50,6 +52,17 @@ const SlideRedactado = z.object({
   visual: z.enum(['foto', 'icono', 'ninguno']),
   ideaImagen: z.string(),
   iconoSugerido: z.string(),
+  /**
+   * La consulta al banco de fotos, en inglés, y lo que descalifica una foto
+   * aunque encaje con ella.
+   *
+   * Van aquí y no en una segunda llamada porque el modelo que escribió el slide
+   * ya sabe qué debería enseñar la foto: pedírselo aparte sería volver a
+   * explicarle el slide que acaba de escribir, y costaría una llamada por cada
+   * foto del carrusel.
+   */
+  busqueda: z.string(),
+  descartar: z.array(z.string()),
 });
 
 const Redaccion = z.object({
@@ -124,7 +137,68 @@ export async function redactar(tema: string, slug: string): Promise<ResultadoRed
   if (!redaccion) throw new Error('El modelo no devolvió la estructura esperada.');
 
   const post = aPost(redaccion, slug, await leerManifiesto());
-  return { post, porQuePaleta: redaccion.porQuePaleta, avisos: revisar(redaccion, post) };
+  const avisos = revisar(redaccion, post);
+  await rellenarFotos(post, redaccion, slug, avisos);
+  return { post, porQuePaleta: redaccion.porQuePaleta, avisos };
+}
+
+/**
+ * Pone las fotos de ambiente, sin preguntar.
+ *
+ * El carrusel sale con las imágenes puestas y no con el hueco. Elegir entre
+ * veinticuatro fotos de aula es preferencia, no criterio, y cambiar una después
+ * en el editor cuesta un clic; lo que no es preferencia —de dónde salió y bajo
+ * qué licencia— se escribe igual, en el mismo movimiento.
+ *
+ * Cada slide va por su cuenta y **ningún fallo interrumpe la redacción**. Si el
+ * banco no devuelve nada usable, ese slide se queda con la foto pendiente y la
+ * banda del lienzo lo dice: es preferible un hueco señalado que un carrusel a
+ * medio redactar, porque el texto es lo caro y la foto se pone en un clic.
+ *
+ * Solo el banco de ambiente. Lo clínico no pasa por aquí ni puede: va por la
+ * cola que firma el médico.
+ */
+async function rellenarFotos(
+  post: TPost,
+  r: TRedaccion,
+  slug: string,
+  avisos: string[],
+): Promise<void> {
+  const banco = bancoDe(slug);
+  if (!banco.disponible()) {
+    avisos.push(`El banco de fotos no está configurado, así que van sin imagen.`);
+    return;
+  }
+
+  await Promise.all(
+    post.slides.map(async (slide, i) => {
+      if (slide.tipo !== 'contenido' || slide.visual.clase !== 'foto') return;
+      const pedido = r.slides[i];
+      const consulta = pedido?.busqueda?.trim() || pedido?.ideaImagen?.trim();
+      if (!consulta) return;
+
+      try {
+        const candidatos = await banco.buscar(consulta, 24);
+        const { pasan, apartados } = cribar(candidatos, pedido?.descartar ?? []);
+        const mejor = pasan[0];
+        if (!mejor?.credito) {
+          avisos.push(
+            `Sin foto para el slide ${String(i).padStart(2, '0')}: el banco no devolvió nada usable ` +
+              `para "${consulta}"${apartados.length ? ` (${apartados.length} apartada(s) por el descarte)` : ''}.`,
+          );
+          return;
+        }
+        slide.visual.src = await descargarFoto(banco, mejor, slug);
+        slide.visual.credito = mejor.credito;
+      } catch (e) {
+        // Una foto que no se pudo bajar no tira el carrusel entero.
+        avisos.push(
+          `Sin foto para el slide ${String(i).padStart(2, '0')}: ` +
+            `${e instanceof Error ? e.message : 'no se pudo bajar'}.`,
+        );
+      }
+    }),
+  );
 }
 
 /** El error de la API, dicho en el idioma del editor y no en el del SDK. */
@@ -193,6 +267,31 @@ En cada slide de contenido elige "foto", "icono" o "ninguno", y llena:
 
 Nunca pidas una foto que muestre una lesión inventada o generada: las fotos
 clínicas vienen de banco con licencia o del consultorio.
+
+## La búsqueda de la foto
+
+En los slides con "foto", la foto se busca y se pone sola con lo que escribas
+en estos dos campos. Nadie los va a revisar antes, así que valen lo que valgan:
+
+  · busqueda — en inglés, de tres a seis palabras, del vocabulario con el que
+    indexan los bancos de fotos de ambiente. "children classroom backpacks
+    school", no "impetigo contagion at school".
+
+  · descartar — de dos a seis términos, en inglés, **de una sola palabra
+    siempre que sirva**, que aparecerían en la descripción de una foto que
+    encaja con la consulta y aun así está mal para este slide. El descarte
+    busca la secuencia entera, así que "gym equipment" no aparta una foto
+    descrita como "a gym full of adults", y "gym" sí.
+
+Este segundo campo es el que importa. Un slide sobre cómo se contagia una
+infección en la escuela se publicó una vez con la foto de un gimnasio: encajaba
+con "niños juntos" y no enseñaba nada de lo que decía el texto. Piensa qué
+buscaría alguien con tu consulta y saldría mal.
+
+**Solo ambiente, nunca clínica.** Un aula, mochilas, el recreo, una toalla
+colgada, una rutina de casa. Nada de piel enferma: esas fotos salen de un
+archivo con licencia y las aprueba el médico una por una. Si el slide pide una
+lesión, pon "ninguno" en visual y no lo fuerces.
 
 ## Las cifras y las fuentes — lo más importante
 

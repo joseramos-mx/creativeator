@@ -1,7 +1,5 @@
-import { mkdir, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import sharp from 'sharp';
 import { bancoDe } from '@/lib/bancos';
+import { descargarFoto } from '@/lib/bancos/descargar';
 import { Credito, validar } from '@/lib/schema';
 
 /**
@@ -17,7 +15,6 @@ import { Credito, validar } from '@/lib/schema';
  * hueco meses después de publicado.
  */
 
-const ANCHO_MAX = 1600;
 
 export async function POST(req: Request) {
   try {
@@ -40,30 +37,11 @@ export async function POST(req: Request) {
     }
     const credito = validar(Credito, candidato.credito, 'el crédito del banco');
 
-    const banco = bancoDe(slug);
-    const original = await banco.bajar(candidato);
-
-    const entrada = sharp(original);
-    const meta = await entrada.metadata();
-    const salida =
-      (meta.width ?? 0) > ANCHO_MAX
-        ? entrada.resize({ width: ANCHO_MAX }).jpeg({ quality: 88, mozjpeg: true })
-        : entrada.jpeg({ quality: 88, mozjpeg: true });
-
-    // El nombre lleva el proveedor y el id: con el JSON delante o sin él, se
-    // puede volver a la foto original desde el nombre del archivo.
-    const nombre = `${aTrozo(candidato.proveedor)}-${aTrozo(String(candidato.id))}.jpg`;
-    const carpeta = join(process.cwd(), 'public', 'media', slug);
-    await mkdir(carpeta, { recursive: true });
-    await writeFile(join(carpeta, nombre), await salida.toBuffer());
-
-    return Response.json({ ruta: `/media/${slug}/${nombre}`, credito });
+    const ruta = await descargarFoto(bancoDe(slug), candidato, slug);
+    return Response.json({ ruta, credito });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudo traer la foto.';
     return Response.json({ error }, { status: 502 });
   }
 }
 
-function aTrozo(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'foto';
-}
