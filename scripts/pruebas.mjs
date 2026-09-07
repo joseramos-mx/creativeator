@@ -573,7 +573,14 @@ async function guardar(post) {
 const comoBorrador = await guardar(conTodoRevisado('borrador'));
 ok(comoBorrador.estado === 200, 'como borrador se guarda aunque falte la licencia');
 
-const sinLicencia = await guardar(conTodoRevisado('aprobado'));
+// La condición se monta aquí y no se hereda de las secciones de arriba: antes
+// dependía de que quedara alguna foto sin acreditar por casualidad, y el día
+// que el buscador de portada las acreditó todas, esta prueba pasó a medir otra
+// cosa sin que nadie lo pidiera.
+const aMedias = conTodoRevisado('aprobado');
+delete aMedias.slides[0].fotoCredito;
+
+const sinLicencia = await guardar(aMedias);
 ok(sinLicencia.estado === 400, 'como aprobado, no');
 ok(
   /sin fuente ni licencia/.test(sinLicencia.cuerpo.error ?? ''),
