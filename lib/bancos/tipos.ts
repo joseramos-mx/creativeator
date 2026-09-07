@@ -66,7 +66,16 @@ export type Banco = {
    * los escribe Claude leyendo el slide.
    */
   criterios?: () => Criterios;
-  buscar: (query: string, cuantas: number) => Promise<Candidato[]>;
+  /**
+   * `orientacion` no es un adorno: la caja de un slide de contenido es
+   * apaisada y la de la portada es vertical, y pedir la que no toca hace que
+   * el recorte se coma la foto. Ver lib/bancos/encuadre.ts.
+   */
+  buscar: (
+    query: string,
+    cuantas: number,
+    orientacion?: 'landscape' | 'portrait',
+  ) => Promise<Candidato[]>;
   /** Los bytes de la foto elegida. Se separa de `buscar` para poder fingirla. */
   bajar: (candidato: Candidato) => Promise<Buffer>;
 };

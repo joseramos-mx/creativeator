@@ -286,11 +286,18 @@ const flojosDe = async (paleta) => {
 const fondoDe = () =>
   page.locator('.marco .slide').nth(1).evaluate((e) => getComputedStyle(e).backgroundColor);
 
-ok((await flojosDe('azul')) === 'informacion', 'sobre azul se funde informacion');
+// Se comprueba que esté, no que sea el único: la librería crece —cada ícono
+// generado entra en ella— y una lista exacta convertiría cualquier ícono nuevo
+// en un fallo de esta prueba, que no mide eso.
+ok((await flojosDe('azul')).includes('informacion'), 'sobre azul se funde informacion');
 ok((await fondoDe()) === 'rgb(81, 162, 255)', 'y el fondo es el azul');
-ok((await flojosDe('naranja')) === 'alerta, correr, silencio', 'sobre naranja, otros tres');
+const flojosNaranja = await flojosDe('naranja');
+ok(
+  ['alerta', 'correr', 'silencio'].every((i) => flojosNaranja.includes(i)),
+  'sobre naranja se funden alerta, correr y silencio',
+);
 ok((await fondoDe()) === 'rgb(237, 132, 47)', 'y el fondo es el naranja');
-ok((await flojosDe('verde')) === 'palomita-verde', 'sobre verde, la palomita');
+ok((await flojosDe('verde')).includes('palomita-verde'), 'sobre verde, la palomita');
 ok(leer(PALETAS).paleta === 'verde', 'la paleta se guarda en el JSON');
 
 const velo = await page

@@ -5,6 +5,13 @@ import type { Banco } from './tipos';
 
 export type { Banco, Candidato } from './tipos';
 export { cribar, type Apartado, type Cribado } from './descartar';
+export {
+  CAJA_CONTENIDO,
+  CAJA_PORTADA,
+  porEncuadre,
+  visibleTrasRecorte,
+  type Caja,
+} from './encuadre';
 
 /**
  * Qué banco atiende a este carrusel.

@@ -48,15 +48,17 @@ export const pexels: Banco = {
 
   disponible: () => Boolean(process.env.PEXELS_API_KEY),
 
-  async buscar(query, cuantas) {
+  async buscar(query, cuantas, orientacion = 'landscape') {
     const llave = process.env.PEXELS_API_KEY;
     if (!llave) throw new Error('Falta PEXELS_API_KEY en .env.local.');
 
     const url = new URL(API);
     url.searchParams.set('query', query);
     url.searchParams.set('per_page', String(Math.min(cuantas, 40)));
-    // Vertical, que es la forma del hueco de la plantilla.
-    url.searchParams.set('orientation', 'portrait');
+    // La forma del hueco donde va a caer. Estaba fija en vertical, y como la
+    // caja de los slides de contenido es apaisada, cada foto perdía dos tercios
+    // en el recorte. Ver lib/bancos/encuadre.ts.
+    url.searchParams.set('orientation', orientacion);
 
     const r = await fetch(url, { headers: { Authorization: llave } });
     if (r.status === 429) {

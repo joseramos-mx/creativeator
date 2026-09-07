@@ -20,7 +20,7 @@ export type Icono = {
  * que le pasa a `palomita-verde` sobre la paleta verde (ΔE 21) o a `silencio`
  * sobre naranja (27), mientras que sobre azul los dos se ven perfectamente.
  */
-export function separacion(icono: Icono, fondo: string): number | null {
+export function separacion(icono: Pick<Icono, 'color'>, fondo: string): number | null {
   if (!icono.color) return null;
   return deltaE(icono.color, fondo);
 }
@@ -122,6 +122,25 @@ const FRASE = 0.25;
 const PALABRA_EXACTA = 0.05;
 const PALABRA_FLOJA = 0.2;
 
+/**
+ * Conectores, fuera. No aportan significado y sí arrastran íconos.
+ *
+ * No es una precaución teórica: "milk carton and egg" devolvía **curitas**,
+ * porque "and" es subcadena de "band" y "bandaid" y casaba a 0.001 — más
+ * exacto que ninguna palabra de verdad. Lo mismo hacían "the" con termometro
+ * (0.023) y "for" con informacion (0.001).
+ *
+ * Es el fallo que este archivo existe para impedir, y se coló por donde no se
+ * estaba mirando: el umbral estricto no sirve de nada si la palabra que lo
+ * cumple es una que no significa nada.
+ */
+const CONECTORES = new Set([
+  'and', 'or', 'the', 'a', 'an', 'of', 'in', 'on', 'at', 'to', 'for', 'with',
+  'from', 'by', 'as', 'into', 'over', 'under', 'up', 'out', 'off',
+  'y', 'o', 'de', 'del', 'la', 'el', 'los', 'las', 'un', 'una', 'en', 'con',
+  'por', 'para', 'sin', 'sobre',
+]);
+
 export function mejorCoincidencia(manifiesto: Icono[], concepto: string): Icono | null {
   const q = concepto.trim().toLowerCase();
   if (!q || manifiesto.length === 0) return null;
@@ -134,21 +153,33 @@ export function mejorCoincidencia(manifiesto: Icono[], concepto: string): Icono 
 
   // 2. Las palabras. Hace falta un acierto exacto, y que las demás palabras que
   //    acierten algo apunten al mismo ícono.
-  const palabras = q.split(/\s+/).filter((p) => p.length > 2);
+  const palabras = q
+    .split(/[\s-]+/)
+    .filter((p) => p.length > 2 && !CONECTORES.has(p));
   if (palabras.length < 2) return null;
 
   let elegido: Icono | null = null;
   let exacto = false;
+  let aciertos = 0;
 
   for (const palabra of palabras) {
     const r = fuse.search(palabra, { limit: 1 })[0];
     if (!r || (r.score ?? 1) > PALABRA_FLOJA) continue;
     if (elegido && r.item.slug !== elegido.slug) return null; // dos palabras, dos íconos
     elegido = r.item;
+    aciertos++;
     if ((r.score ?? 1) <= PALABRA_EXACTA) exacto = true;
   }
 
-  return exacto ? elegido : null;
+  // Más de la mitad de las palabras, no una suelta. Una sola palabra que acierta
+  // es casi siempre la genérica del concepto, y la genérica arrastra cualquier
+  // cosa: "skin rash" devolvía el ícono de la prueba de alergia porque "skin"
+  // está en su slug, y "rash" no estaba en ningún sitio.
+  //
+  // El precio es perder "warning triangle" → alerta, donde solo "warning"
+  // acierta. Se paga con gusto: fallar cuesta generar un ícono parecido por unos
+  // centavos, y acertar mal cuesta publicar la imagen equivocada.
+  return exacto && aciertos * 2 > palabras.length ? elegido : null;
 }
 
 /**

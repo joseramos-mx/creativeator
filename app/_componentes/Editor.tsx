@@ -293,7 +293,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
                 }}
               >
                 <span className="etiqueta">
-                  {i === 0 ? 'portada' : i === post.slides.length - 1 ? 'cierre' : String(i).padStart(2, '0')}
+                  {etiquetaDe(slide, i)}
                   {subiendo === i ? ' · subiendo…' : ''}
                   {soltando === i ? ' · suelta aquí' : ''}
                 </span>
@@ -357,6 +357,20 @@ function IdeaDeImagen({ slide }: { slide: Post['slides'][number] }) {
       {sinCredito && !falta ? <em> · sin fuente ni licencia</em> : null}
     </span>
   );
+}
+
+/**
+ * Cómo se llama un slide en la etiqueta del lienzo.
+ *
+ * Sale de su tipo y no de su posición. Desde que el redactor dejó de escribir
+ * el cierre —la cuenta usa siempre el mismo, ya hecho—, el último slide de un
+ * carrusel generado es el de acudir a consulta, y llamarlo "cierre" por estar
+ * al final es mentir sobre lo que se está mirando.
+ */
+function etiquetaDe(slide: Post['slides'][number], i: number) {
+  return slide.tipo === 'portada' || slide.tipo === 'cierre'
+    ? slide.tipo
+    : String(i).padStart(2, '0');
 }
 
 /** Qué bloque del slide se tocó, para saber qué empujan las teclas. */

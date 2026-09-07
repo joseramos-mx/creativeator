@@ -5,11 +5,15 @@
 # ellos, no nuestra. La lista sale del campo `origen` del manifiesto, así
 # que el siguiente generado aparece aquí solo.
 !.gitignore
+!allergy-skin-prick-test.png
+!fork-with-clock.png
 !ice-cube.png
 !lupa.png
 !snowflake.png
 !thumbs/
 thumbs/*
+!thumbs/allergy-skin-prick-test.png
+!thumbs/fork-with-clock.png
 !thumbs/ice-cube.png
 !thumbs/lupa.png
 !thumbs/snowflake.png

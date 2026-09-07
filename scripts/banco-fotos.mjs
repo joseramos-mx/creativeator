@@ -24,6 +24,13 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { aCandidato, LICENCIA, LICENCIA_URL } from '../lib/bancos/pexels.ts';
 import { cribar } from '../lib/bancos/descartar.ts';
+import {
+  CAJA_CONTENIDO,
+  CAJA_PORTADA,
+  MINIMO_VISIBLE,
+  porEncuadre,
+  visibleTrasRecorte,
+} from '../lib/bancos/encuadre.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -207,6 +214,64 @@ ok(comoEnElRelleno.pasan[0]?.id !== 'gimnasio', 'la que se pondría sola nunca e
 ok(
   comoEnElRelleno.pasan[0]?.credito != null,
   'y siempre trae crédito: sin él no se ofrece, ni a mano ni solo',
+);
+
+/* ── el encuadre ─────────────────────────────────────────────────────────── */
+console.log('\nCuánto sobrevive al recorte');
+
+// El número que explicó las fotos cortadas: la caja de contenido es 745×341 y
+// se le pedían retratos al banco. Un 2:3 dentro de 2,18:1 conserva el 31 %.
+const retrato = visibleTrasRecorte(2000, 3000, CAJA_CONTENIDO);
+ok(
+  Math.abs(retrato - 0.305) < 0.01,
+  `un retrato 2:3 en la caja de contenido conserva el ${Math.round(retrato * 100)} %`,
+);
+ok(retrato < MINIMO_VISIBLE, 'y por eso no se ofrece: no es la foto, es una tira suya');
+
+const apaisada = visibleTrasRecorte(3000, 2000, CAJA_CONTENIDO);
+ok(
+  apaisada > MINIMO_VISIBLE,
+  `una apaisada 3:2 conserva el ${Math.round(apaisada * 100)} % y sí sirve`,
+);
+
+// Y al revés en la portada, que es el lienzo entero y sí es vertical.
+ok(
+  visibleTrasRecorte(2000, 3000, CAJA_PORTADA) > MINIMO_VISIBLE,
+  'en la portada el retrato es el que encaja',
+);
+// Y una apaisada en la portada se queda justo en el filo: conserva el 53 %,
+// apenas por encima del mínimo. Pasa, y está bien que pase — la portada lleva
+// un velo encima y el recorte se nota menos que en un bloque de contenido—,
+// pero conviene que el número esté escrito y no descubrirlo el día que una
+// portada salga rara.
+const anchaEnPortada = visibleTrasRecorte(3000, 2000, CAJA_PORTADA);
+ok(
+  Math.abs(anchaEnPortada - 0.533) < 0.01,
+  `una apaisada en la portada conserva el ${Math.round(anchaEnPortada * 100)} %: en el filo`,
+);
+ok(anchaEnPortada > MINIMO_VISIBLE, 'pasa, pero por poco');
+
+ok(
+  Math.abs(visibleTrasRecorte(745, 341, CAJA_CONTENIDO) - 1) < 0.001,
+  'una foto de la forma exacta de la caja conserva el 100 %',
+);
+ok(visibleTrasRecorte(0, 0, CAJA_CONTENIDO) === 0, 'y una sin medidas no se cuela como perfecta');
+
+console.log('\nOrdenar sin inventar relevancia');
+
+const conFormas = [
+  { ...ficticio('vertical', 'a'), ancho: 2000, alto: 3000 },
+  { ...ficticio('ancha-1', 'b'), ancho: 3000, alto: 2000 },
+  { ...ficticio('ancha-2', 'c'), ancho: 2400, alto: 1600 },
+];
+const { encajan, recortadas } = porEncuadre(conFormas, CAJA_CONTENIDO);
+ok(encajan.length === 2 && recortadas.length === 1, 'aparta la vertical y deja las dos anchas');
+ok(recortadas[0].id === 'vertical', 'y la apartada es la vertical');
+// El banco ya ordenó por relevancia; aquí no se sabe de eso. Solo se hunde lo
+// que no cabe, y el resto conserva su orden.
+ok(
+  encajan[0].id === 'ancha-1' && encajan[1].id === 'ancha-2',
+  'las que encajan conservan el orden del banco, no se reordenan por forma',
 );
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);

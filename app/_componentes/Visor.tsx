@@ -137,7 +137,9 @@ function Mazo({
           style={{ width: lienzo.ancho * zoom, height: lienzo.alto * zoom }}
         >
           <span className="etiqueta">
-            {i === 0 ? 'portada' : i === post.slides.length - 1 ? 'cierre' : String(i).padStart(2, '0')}{' '}
+            {slide.tipo === 'portada' || slide.tipo === 'cierre'
+              ? slide.tipo
+              : String(i).padStart(2, '0')}{' '}
             · {slide.tipo}
           </span>
           {/* A 100 % no se aplica transform: una capa de composición puede cambiar

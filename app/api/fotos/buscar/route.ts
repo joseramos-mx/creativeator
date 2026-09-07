@@ -1,4 +1,4 @@
-import { bancoDe, cribar } from '@/lib/bancos';
+import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from '@/lib/bancos';
 import { criteriosDe, type TCriterios } from '@/lib/criterios';
 import { leerPost } from '@/lib/posts';
 
@@ -63,10 +63,23 @@ export async function POST(req: Request) {
                   : undefined,
             });
 
-    const candidatos = await banco.buscar(criterios.query, CUANTAS);
-    const { pasan, apartados, sinCredito } = cribar(candidatos, criterios.descartar);
+    // La misma caja que usaría el relleno automático, para que elegir a mano y
+    // dejar que elija no den fotos con encuadres distintos.
+    const caja = slide.tipo === 'portada' ? CAJA_PORTADA : CAJA_CONTENIDO;
+    const orientacion = caja.ancho >= caja.alto ? 'landscape' : 'portrait';
 
-    return Response.json({ banco: banco.nombre, criterios, pasan, apartados, sinCredito });
+    const candidatos = await banco.buscar(criterios.query, CUANTAS, orientacion);
+    const { pasan, apartados, sinCredito } = cribar(candidatos, criterios.descartar);
+    const { encajan, recortadas } = porEncuadre(pasan, caja);
+
+    return Response.json({
+      banco: banco.nombre,
+      criterios,
+      pasan: encajan,
+      apartados,
+      sinCredito,
+      recortadas: recortadas.length,
+    });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudo buscar.';
     return Response.json({ error }, { status: 502 });

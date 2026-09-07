@@ -83,7 +83,9 @@ export function PanelSlide({
         }}
       >
         <span className="chip">
-          {indice === 0 ? 'portada' : indice === total - 1 ? 'cierre' : String(indice).padStart(2, '0')}
+          {slide.tipo === 'portada' || slide.tipo === 'cierre'
+            ? slide.tipo
+            : String(indice).padStart(2, '0')}
         </span>
         <span className="tarjeta__titulo">{tituloDeTarjeta(slide)}</span>
         {aviso?.tituloApretado || aviso?.cuerpoApretado ? <span className="punto" title="hay que recortar" /> : null}

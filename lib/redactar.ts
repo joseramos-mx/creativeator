@@ -7,9 +7,9 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
 import { afirmacionesDe } from './afirmaciones';
-import { bancoDe, cribar } from './bancos';
+import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
 import { descargarFoto } from './bancos/descargar';
-import { mejorCoincidencia, type Icono } from './iconos';
+import { SEPARACION_MINIMA, mejorCoincidencia, separacion, type Icono } from './iconos';
 import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemini';
 import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
@@ -76,7 +76,7 @@ const Redaccion = z.object({
   pilar: z.string(),
   objetivo: z.enum(['guardar', 'compartir', 'comentar', 'agendar']),
   nota: z.string(),
-  slides: z.array(SlideRedactado).min(4).max(9),
+  slides: z.array(SlideRedactado).min(4).max(8),
   copy: z.string(),
   hashtags: z.array(z.string()),
   /**
@@ -191,8 +191,27 @@ async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
       if (!variante) throw new Error('el modelo no devolvió imagen');
       if (variante.aviso) avisos.push(`Ícono "${concepto}": ${variante.aviso}`);
 
-      const { slug: puesto } = await guardarIcono(variante.png, concepto, concepto, MODELO_ICONOS);
+      const { slug: puesto, entrada } = await guardarIcono(
+        variante.png,
+        concepto,
+        concepto,
+        MODELO_ICONOS,
+      );
       slide.visual.slug = puesto;
+
+      // Lo que nadie miraba al ponerlo solo: un ícono generado puede salir del
+      // color del fondo y desaparecer. Pasó con "fork with clock", que salió
+      // azul grisáceo y sobre la paleta azul se separaba 25. El editor ya lo
+      // marca cuando alguien abre el buscador, pero el relleno automático no
+      // abre nada, así que aquí se dice.
+      const fondo = paletas[post.paleta].fondo;
+      const delta = separacion({ color: entrada.color as string | null }, fondo);
+      if (delta !== null && delta < SEPARACION_MINIMA) {
+        avisos.push(
+          `El ícono "${puesto}" se funde con la paleta ${post.paleta} (ΔE ${Math.round(delta)}). ` +
+            'Cámbialo en el editor o regenéralo.',
+        );
+      }
     } catch (e) {
       avisos.push(
         `Sin ícono para el slide ${String(i).padStart(2, '0')} ("${concepto}"): ` +
@@ -247,14 +266,22 @@ async function rellenarFotos(
         return;
       }
 
+      // La caja donde va a caer decide dos cosas: qué orientación se le pide al
+      // banco y cuánto recorte se tolera. Ver lib/bancos/encuadre.ts.
+      const caja = esPortada ? CAJA_PORTADA : CAJA_CONTENIDO;
+      const orientacion = caja.ancho >= caja.alto ? 'landscape' : 'portrait';
+
       try {
-        const candidatos = await banco.buscar(consulta, 24);
+        const candidatos = await banco.buscar(consulta, 24, orientacion);
         const { pasan, apartados } = cribar(candidatos, pedido?.descartar ?? []);
-        const mejor = pasan[0];
+        const { encajan, recortadas } = porEncuadre(pasan, caja);
+        const mejor = encajan[0];
         if (!mejor?.credito) {
           avisos.push(
             `Sin foto para ${donde}: el banco no devolvió nada usable ` +
-              `para "${consulta}"${apartados.length ? ` (${apartados.length} apartada(s) por el descarte)` : ''}.`,
+              `para "${consulta}"` +
+              `${apartados.length ? `, ${apartados.length} apartada(s) por el descarte` : ''}` +
+              `${recortadas.length ? `, ${recortadas.length} descartada(s) porque el recorte se las comía` : ''}.`,
           );
           return;
         }
@@ -310,7 +337,7 @@ Las citas se agendan en ${marca.plataforma}, con el enlace en la biografía.
 
 ## Estructura
 
-Siete slides, en este orden, que es el de la cuenta:
+Seis slides, en este orden, que es el de la cuenta:
 
   1. portada    — titulo con marcado, pregunta de cinco palabras o menos, y
                   su búsqueda de foto: la portada siempre lleva fondo
@@ -319,7 +346,9 @@ Siete slides, en este orden, que es el de la cuenta:
   4. contenido  — por qué importa ahora, o cómo se contagia
   5. lista      — cuatro puntos accionables
   6. contenido  — cuándo acudir a consulta
-  7. cierre     — sin campos, salvo la línea grande si el tema pide una
+
+**No escribas slide de cierre.** La cuenta usa siempre el mismo, ya hecho, y
+se añade después. Si escribieras uno, habría que borrarlo cada vez.
 
 En cada slide rellena solo lo que le toca y deja el resto vacío ("" o []).
 
@@ -340,7 +369,21 @@ En cada slide de contenido elige "foto", "icono" o "ninguno", y llena:
   · ideaImagen — qué debe mostrar la foto, en una frase concreta y en español.
     Esto no se dibuja: es la instrucción para quien busque la imagen, y es lo
     que evita que acabe puesta una foto que no enseña lo que dice el texto.
-  · iconoSugerido — el concepto en inglés, corto ("magnifying glass").
+  · iconoSugerido — el concepto en inglés, corto y **del tema**.
+
+    Esto es lo que más se descuida. El ícono tiene que nombrar la cosa de la
+    que habla el slide, no el hecho de que sea un carrusel médico. En un
+    carrusel de alergia alimentaria van cacahuates, un camarón, un vaso de
+    leche, una etiqueta de ingredientes; en uno de dermatitis del pañal, un
+    pañal o un bote de crema; en uno de polen, una flor o una rama.
+
+    **No propongas "warning triangle", "magnifying glass" ni "stethoscope"**
+    salvo que el slide trate literalmente de eso. Son los tres a los que se
+    cae por defecto cualquier tema de salud, y un carrusel donde todos los
+    íconos son la lupa y el triángulo de alerta no dice nada de su tema.
+
+    Y no te limites a lo que creas que existe: si el concepto no está en la
+    librería se fabrica, así que pide lo que de verdad ilustra el slide.
 
 Nunca pidas una foto que muestre una lesión inventada o generada: las fotos
 clínicas vienen de banco con licencia o del consultorio.
@@ -512,7 +555,11 @@ function revisar(r: TRedaccion, post: TPost): string[] {
     avisos.push(`Devolvió ${r.hashtags.length} hashtags; la fórmula pide cinco.`);
   }
   if (post.slides[0]?.tipo !== 'portada') avisos.push('El primer slide no es la portada.');
-  if (post.slides.at(-1)?.tipo !== 'cierre') avisos.push('El último slide no es el cierre.');
+  // El cierre no se redacta: la cuenta usa siempre el mismo, ya hecho, y se
+  // añade después. Si el modelo escribe uno, se avisa para poder quitarlo.
+  if (post.slides.some((s) => s.tipo === 'cierre')) {
+    avisos.push('Escribió un slide de cierre; ese no se genera, quítalo.');
+  }
 
   // El cruce: lo que se lee en el texto contra lo que el modelo dice haber
   // afirmado. Las que aparecen aquí y no en su lista no son un descuido menor.
