@@ -1,0 +1,99 @@
+{
+  "slug": "salpullido-despues-de-un-antibiotico-como-saber-si-el-nino-e",
+  "tema": "Salpullido después de un antibiótico: alergia real o exantema viral en niños",
+  "creado": "2026-09-07",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "Le salió salpullido con el antibiótico 🤔\n\nAntes de anotarlo como alérgico, vale la pena mirar dos detalles. En temporada de anginas y otitis se recetan más antibióticos y se ven más salpullidos, y muchos de ellos no son alergia al medicamento: son el exantema del virus que el niño ya traía. Distinguirlos a tiempo evita que cargue una etiqueta de alérgico a la penicilina durante años.\n\n💊 Qué es: manchitas rojas que aparecen al cuarto o quinto día del tratamiento, sobre todo en pecho y espalda. La alergia real al antibiótico existe, pero es menos común de lo que parece (AAP).\n\n🔍 Cómo reconocerlo: importa la forma y el momento. Ronchas que cambian de lugar, hinchazón de labios o párpados y aparición en las primeras horas de la dosis piden valoración rápida. Manchitas planas, parejas y que salen al tercer o cuarto día suelen ser virales (Mayo Clinic).\n\n⚠️ Por qué importa hoy: la mayoría de los niños etiquetados como alérgicos a la penicilina no lo son cuando se les evalúa, y esa etiqueta los deja con opciones de tratamiento menos convenientes (AAP).\n\n✅ Qué hacer: fotos con luz de día, de cerca y de cuerpo entero. Anota el día del tratamiento y la hora en que salió. Llama a quien recetó antes de suspender. Guarda la caja o la receta (KidsHealth).\n\n⚡ Ojo: se confunde con urticaria por otras causas, con exantemas virales como el de la roséola y con las manchas que deja la fiebre al bajar. La pista está en el tiempo entre la dosis y el salpullido, y en si hay ronchas que se mueven o manchitas quietas.\n\n💬 ¿A tu hijo ya le anotaron alguna vez que es alérgico a un antibiótico? Cuéntame en una línea cómo fue.\n\n🔖 Guarda este post ahora, no cuando pase: si el salpullido sale un domingo a las diez de la noche, vas a querer la lista de las cuatro cosas a la mano y no buscándola. Y mándaselo a la mamá o el papá que ya trae a su hijo con antibiótico esta semana, o a quien te haya dicho que su niño 'es alérgico a la penicilina' sin que nadie se lo haya comprobado.\n\n📲 ¿A tu hijo le salió salpullido con un antibiótico y quedaron con la duda? Se puede estudiar con calma. Agenda en Doctoralia, el enlace está en la biografía.\n\n#AlergiaAMedicamentos #TemporadaDeAnginas #DermatologiaPediatrica #SalpullidoInfantil #AlergologoDurango",
+  "pilar": "Lo que no es alergia",
+  "objetivo": "guardar",
+  "nota": "Temporada de anginas y otitis: más antibióticos recetados",
+  "hashtags": [
+    "#AlergiaAMedicamentos",
+    "#TemporadaDeAnginas",
+    "#DermatologiaPediatrica",
+    "#SalpullidoInfantil",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Le salió salpullido*\ncon el **antibiótico**",
+      "pregunta": "¿Es alergia o el virus?",
+      "foto": "/media/salpullido-despues-de-un-antibiotico-como-saber-si-el-nino-e/pexels-4473783.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ketut Subiyanto",
+        "url": "https://www.pexels.com/photo/caring-mother-adjusting-hair-of-ethnic-daughter-4473783/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **ese salpullido?**",
+      "bajada": "No todo salpullido con antibiótico es alergia.",
+      "cuerpo": "Al cuarto o quinto día del tratamiento aparecen manchitas rojas en el pecho y la espalda. Muchas veces es el virus que el niño ya traía, no el medicamento. La alergia de verdad al antibiótico existe, pero es bastante menos común de lo que parece.",
+      "visual": {
+        "clase": "icono",
+        "slug": "antibiotic-syrup-bottle",
+        "iconoSugerido": "antibiotic syrup bottle with dosing syringe"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Ronchas** *o manchitas planas.*",
+      "bajada": "Importa cómo se ve y cuándo salió.",
+      "cuerpo": "Fíjate en dos cosas. Las ronchas que salen y desaparecen de lugar, con hinchazón de labios o párpados, y que aparecen en las primeras horas de la dosis, piden valoración rápida. Las manchitas planas y parejas que salen al tercer o cuarto día suelen venir del virus.",
+      "visual": {
+        "clase": "icono",
+        "slug": "stopwatch",
+        "iconoSugerido": "stopwatch"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La etiqueta que*\n**se queda años**",
+      "bajada": "Un apunte sin comprobar lo acompaña mucho tiempo.",
+      "cuerpo": "Es temporada de anginas y otitis: se recetan más antibióticos y se ven más salpullidos. Si el niño queda anotado como alérgico a la penicilina sin comprobarlo, esa etiqueta lo sigue durante años y deja opciones de tratamiento menos convenientes. La mayoría de los etiquetados no son alérgicos.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/salpullido-despues-de-un-antibiotico-como-saber-si-el-nino-e/pexels-7169553.jpg",
+        "ideaImagen": "Niños abrigados jugando en el patio de la escuela en temporada de frío, cuando aumentan las infecciones respiratorias.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Eren Li",
+          "url": "https://www.pexels.com/photo/happy-multiracial-girls-playing-in-backyard-during-easter-holiday-7169553/"
+        }
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Qué hacer** *si aparece.*",
+      "puntos": [
+        "Toma fotos con luz de día: una de cerca y una de todo el cuerpo.",
+        "Anota el día del tratamiento y la hora en que salió.",
+        "Llama a quien recetó el antibiótico antes de suspenderlo.",
+        "Guarda la caja o la receta: el nombre exacto del medicamento importa."
+      ],
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo hay que **checarlo?**",
+      "bajada": "Hay señales que no esperan a la siguiente cita.",
+      "cuerpo": "Busca valoración el mismo día si hay ronchas que crecen rápido, hinchazón de labios, párpados o lengua, vómito, o si lo ves muy decaído. Si le cuesta respirar, es urgencia. Y si el salpullido fue leve, se puede estudiar después: la alergia a penicilina se confirma o se descarta con pruebas.",
+      "visual": {
+        "clase": "icono",
+        "slug": "calendar-with-appointment-check",
+        "iconoSugerido": "calendar with appointment check"
+      },
+      "fuente": "Mayo Clinic"
+    }
+  ]
+}
