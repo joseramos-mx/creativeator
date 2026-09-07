@@ -66,6 +66,37 @@
 const TOLERANCIA = 70;
 
 /**
+ * Cuánto puede cambiar el color entre dos píxeles vecinos del fondo.
+ *
+ * La inundación crece por **parecido local** y no solo por distancia al color
+ * del borde, y eso resuelve un caso que apareció en producción: Gemini no
+ * siempre devuelve un fondo liso. En `cold-compress-cloth` devolvió blanco en
+ * el centro y verde en las orillas, con un degradado entre los dos —medido:
+ * `(196,255,205)`, `(153,255,162)`, `(73,216,96)`—. Contra la mediana del borde,
+ * que salió blanca, ese verde está a 245 y no se inundaba nunca.
+ *
+ * Por parecido local sí: un degradado se recorre paso a paso. Y el borde de un
+ * objeto no, porque en estos renders 3D es un salto mucho mayor que esto.
+ */
+const PASO = 16;
+
+/**
+ * Lo cerca del fondo que tiene que estar un hueco encerrado para irse.
+ *
+ * La inundación entra por el borde, así que **no puede alcanzar el fondo que el
+ * objeto rodea**: el agujero de un aro, el hueco del asa de una taza. En
+ * `hoop-earring` eso dejó el verde dentro del aro, y en el carrusel se ve.
+ *
+ * Muy estrecho a propósito, y esa estrechez es la que protege lo que la
+ * conectividad protegía: un objeto verde de verdad está *renderizado*, con su
+ * sombreado y su brillo, así que sus píxeles se apartan del color plano del
+ * fondo mucho más que esto. El verde hoja del banco está a 146 del croma puro y
+ * a 56 del verde apagado de Gemini; el fondo que asoma por un agujero está a
+ * cero, porque es literalmente el mismo fondo.
+ */
+const INTERIOR = 30;
+
+/**
  * A partir de aquí el píxel es objeto entero: ni una gota de fondo mezclada.
  *
  * Es una aproximación y conviene saber por qué. Un píxel del borde es
@@ -109,8 +140,21 @@ const distancia = (
  */
 export function colorDelBorde({ datos, ancho, alto }: Mapa): [number, number, number] | null {
   const canales: number[][] = [[], [], []];
+  let mirados = 0;
+
+  /*
+   * Los píxeles ya transparentes no cuentan.
+   *
+   * Un render recién llegado de Gemini no tiene alfa y esto no cambia nada.
+   * Pero a esta misma función se le pasan íconos **ya recortados** —la
+   * reparación de scripts/recortar-iconos.mjs lo hace—, y ahí la orilla es
+   * transparente con RGB en negro. Contándola, la mediana salía negra y el
+   * recorte se comía las partes oscuras del objeto creyendo que eran fondo.
+   */
   const anotar = (p: number) => {
+    mirados++;
     const i = p * 4;
+    if (datos[i + 3] < 8) return;
     canales[0].push(datos[i]);
     canales[1].push(datos[i + 1]);
     canales[2].push(datos[i + 2]);
@@ -125,6 +169,10 @@ export function colorDelBorde({ datos, ancho, alto }: Mapa): [number, number, nu
     anotar(y * ancho + ancho - 1);
   }
 
+  // Si la orilla ya es casi toda transparente, a esta imagen ya le quitaron el
+  // fondo: no hay nada que medir y nada que recortar.
+  if (canales[0].length / mirados < BORDE_LIMPIO) return null;
+
   const mediana = (v: number[]) => {
     v.sort((a, b) => a - b);
     return v[Math.floor(v.length / 2)];
@@ -137,13 +185,12 @@ export function colorDelBorde({ datos, ancho, alto }: Mapa): [number, number, nu
 
   // Y ahora la comprobación que decide si esa mediana significa algo.
   let cerca = 0;
-  const total = canales[0].length;
-  for (let k = 0; k < total; k++) {
+  for (let k = 0; k < canales[0].length; k++) {
     const d = Math.hypot(canales[0][k] - color[0], canales[1][k] - color[1], canales[2][k] - color[2]);
     if (d <= TOLERANCIA) cerca++;
   }
 
-  return cerca / total >= BORDE_LIMPIO ? color : null;
+  return cerca / mirados >= BORDE_LIMPIO ? color : null;
 }
 
 /**
@@ -157,47 +204,105 @@ export function quitarCroma({ datos, ancho, alto }: Mapa): Uint8ClampedArray {
   const salida = new Uint8ClampedArray(n * 4);
   const fondo = colorDelBorde({ datos, ancho, alto });
 
-  // Sin un borde de un color no se recorta nada. Devolver el render entero y
-  // opaco es lo correcto: lo caza el aviso, y es preferible a agujerear el
-  // objeto por haber adivinado mal cuál era el fondo.
+  /*
+   * Sin un borde de un color no se recorta nada, y la imagen sale **como
+   * entró**, con el alfa que traía.
+   *
+   * Antes salía toda opaca, que era destructivo por partida doble: a un render
+   * sin fondo reconocible lo dejaba igual —bien— pero a un ícono ya recortado
+   * le borraba la transparencia que ya tenía. Es preferible devolverlo intacto:
+   * lo caza `orillaOpaca`, y adivinar cuál era el fondo agujerea el objeto.
+   */
   if (!fondo) {
     for (let p = 0; p < n; p++) {
       const i = p * 4;
       salida[i] = datos[i];
       salida[i + 1] = datos[i + 1];
       salida[i + 2] = datos[i + 2];
-      salida[i + 3] = 255;
+      salida[i + 3] = datos[i + 3];
     }
     return salida;
   }
 
-  // ── inundación desde el borde ──
-  // Pila explícita y no recursión: un render de 1024×1024 desborda la pila.
+  /*
+   * ── inundación desde el borde ──
+   *
+   * Crece por dos motivos y basta con uno: que el píxel se parezca al color del
+   * borde, o que se parezca **al vecino por el que se llegó**. Lo segundo es lo
+   * que recorre un fondo con degradado o con dos tonos, que es lo que Gemini
+   * devuelve a veces; lo primero es lo que le deja saltar el ruido de
+   * compresión sin quedarse atascado.
+   *
+   * El borde de un objeto para la inundación porque en un render 3D es un salto
+   * de color mucho mayor que `PASO`.
+   *
+   * Pila explícita y no recursión: un render de 1024×1024 desborda la pila.
+   */
   const esFondo = new Uint8Array(n);
   const pila: number[] = [];
-  const meter = (p: number) => {
-    if (esFondo[p] || distancia(datos, p * 4, fondo) > TOLERANCIA) return;
+
+  const meter = (p: number, desde: number | null) => {
+    if (esFondo[p]) return;
+    const i = p * 4;
+
+    /*
+     * La semilla y el avance no piden lo mismo, y la diferencia importa.
+     *
+     * **Sembrar** solo se hace donde el píxel se parece al color medido del
+     * borde. Sembrar la orilla entera parecía razonable —"el objeto va
+     * centrado, la orilla es fondo"— y se comía objetos: en un ícono que ya
+     * está recortado la orilla es el contorno del objeto, y el avance por
+     * parecido local entraba por ahí y lo vaciaba desde fuera.
+     *
+     * **Avanzar** sí se hace por parecido al vecino, y eso es lo que recorre un
+     * fondo con degradado o con dos tonos. El borde de un objeto lo para,
+     * porque en un render 3D es un salto mucho mayor que `PASO`.
+     */
+    const vale =
+      desde === null
+        ? distancia(datos, i, fondo) <= TOLERANCIA
+        : distancia(datos, i, fondo) <= TOLERANCIA ||
+          Math.hypot(
+            datos[i] - datos[desde * 4],
+            datos[i + 1] - datos[desde * 4 + 1],
+            datos[i + 2] - datos[desde * 4 + 2],
+          ) <= PASO;
+
+    if (!vale) return;
     esFondo[p] = 1;
     pila.push(p);
   };
 
   for (let x = 0; x < ancho; x++) {
-    meter(x);
-    meter((alto - 1) * ancho + x);
+    meter(x, null);
+    meter((alto - 1) * ancho + x, null);
   }
   for (let y = 0; y < alto; y++) {
-    meter(y * ancho);
-    meter(y * ancho + ancho - 1);
+    meter(y * ancho, null);
+    meter(y * ancho + ancho - 1, null);
   }
 
   while (pila.length) {
     const p = pila.pop()!;
     const x = p % ancho;
     const y = (p - x) / ancho;
-    if (x > 0) meter(p - 1);
-    if (x < ancho - 1) meter(p + 1);
-    if (y > 0) meter(p - ancho);
-    if (y < alto - 1) meter(p + ancho);
+    if (x > 0) meter(p - 1, p);
+    if (x < ancho - 1) meter(p + 1, p);
+    if (y > 0) meter(p - ancho, p);
+    if (y < alto - 1) meter(p + ancho, p);
+  }
+
+  /*
+   * ── el fondo que el objeto encierra ──
+   *
+   * Lo que la inundación no puede alcanzar por venir de fuera: el agujero de un
+   * aro, el hueco de un asa. Se acepta solo si es **casi exactamente** el color
+   * del fondo, que es lo que distingue "el mismo fondo asomando" de "una parte
+   * verde del objeto", porque la parte del objeto está renderizada con su
+   * sombreado y el fondo es plano. Ver `INTERIOR`.
+   */
+  for (let p = 0; p < n; p++) {
+    if (!esFondo[p] && distancia(datos, p * 4, fondo) <= INTERIOR) esFondo[p] = 1;
   }
 
   // ── alfa y desderrame ──

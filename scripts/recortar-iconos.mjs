@@ -22,6 +22,27 @@
  * dentro. Sin recortar ese margen, la inundación empieza en el transparente y
  * se para en el borde del rectángulo verde.
  *
+ * ── Cuando ya no queda rastro del fondo: `--fondo` ─────────────────────────
+ * El camino de arriba necesita que el croma toque el borde. Hay dos casos en
+ * los que no lo toca y hace falta decirle el color a mano:
+ *
+ *  · **El fondo que el objeto encierra.** La inundación entra por la orilla, así
+ *    que no alcanza el agujero de un aro ni el hueco de un asa. Al generar eso
+ *    ya está resuelto —`quitarCroma` hace una pasada más—, pero en un ícono ya
+ *    guardado el hueco quedó dentro y su orilla es transparente.
+ *  · **El fondo que no era croma.** En `cold-compress-cloth`, Gemini devolvió
+ *    blanco con verde en las esquinas.
+ *
+ * `--fondo <slug> <r,g,b>` **reconstruye el render**: vuelve a componer el
+ * ícono encima de ese color y lo pasa por el recorte de siempre, con su
+ * inundación, su pasada de huecos, su rampa de antialias y su desderrame. No
+ * hay lógica nueva que mantener.
+ *
+ * El color se pide y no se adivina, a propósito: de los treinta y cinco
+ * íconos, nueve tienen una zona de color exactamente plano y ocho de ellas son
+ * superficies legítimas —la cara de un calendario, el blanco de un plato—. Un
+ * detector automático las borraría.
+ *
  * Por defecto **no escribe nada**: dice qué haría. Con `--escribir` lo hace.
  */
 
@@ -32,6 +53,19 @@ import { orillaOpaca, quitarCroma } from '../lib/iconos/croma.ts';
 
 const ICONOS = join(process.cwd(), 'public', 'iconos');
 const escribir = process.argv.includes('--escribir');
+
+const iFondo = process.argv.indexOf('--fondo');
+const fondoDicho =
+  iFondo === -1
+    ? null
+    : {
+        slug: process.argv[iFondo + 1],
+        color: (process.argv[iFondo + 2] ?? '').split(',').map(Number),
+      };
+if (fondoDicho && (!fondoDicho.slug || fondoDicho.color.length !== 3 || fondoDicho.color.some(Number.isNaN))) {
+  console.error('\nALTO: va así — npm run iconos:recortar -- --fondo hoop-earring 9,209,22');
+  process.exit(1);
+}
 
 /** Lo mismo que hace la ingesta y la generación: 4 % de aire, 1024 de lado. */
 const TAM = 1024;
@@ -47,8 +81,69 @@ async function normalizar(conAlfa) {
     .toBuffer();
 }
 
+async function miniatura(png) {
+  return sharp(png)
+    .resize(160, 160, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png()
+    .toBuffer();
+}
+
 const manifiesto = JSON.parse(readFileSync(join(ICONOS, 'manifest.json'), 'utf8'));
 const generados = manifiesto.filter((i) => i.origen === 'generado');
+
+/* ── el hueco encerrado, con el color dicho a mano ────────────────────────── */
+
+if (fondoDicho) {
+  const ruta = join(ICONOS, `${fondoDicho.slug}.png`);
+  const [r, g, b] = fondoDicho.color;
+
+  /*
+   * Se reconstruye el render y se pasa por el camino de siempre.
+   *
+   * La primera versión de esto ponía el alfa a cero en los píxeles cercanos al
+   * color dicho, y dejaba un filo verde alrededor del agujero: el borde del
+   * objeto es una mezcla con el fondo, y cortarlo a cuchillo no deshace esa
+   * mezcla. Volver a componer el ícono **encima del croma** devuelve la imagen a
+   * como llegó de Gemini, y a partir de ahí `quitarCroma` hace todo lo que ya
+   * sabe hacer: la inundación, la pasada de huecos, la rampa de antialias y el
+   * desderrame. Nada de lógica nueva que mantener.
+   */
+  const png0 = readFileSync(ruta);
+  const meta = await sharp(png0).metadata();
+  const plano = await sharp({
+    create: { width: meta.width, height: meta.height, channels: 4, background: { r, g, b, alpha: 1 } },
+  })
+    .composite([{ input: png0 }])
+    .png()
+    .toBuffer();
+
+  const { data, info } = await sharp(plano).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const rgba = quitarCroma({ datos: data, ancho: info.width, alto: info.height });
+
+  let quitados = 0;
+  for (let i = 0; i < rgba.length; i += 4) {
+    if (data[i + 3] > 200 && rgba[i + 3] === 0) quitados++;
+  }
+  const pct = (100 * quitados) / (info.width * info.height);
+  const orilla = orillaOpaca({ datos: rgba, ancho: info.width, alto: info.height });
+
+  console.log(
+    `
+${fondoDicho.slug}: ${escribir ? 'quitado' : 'se quitaría'} el ${pct.toFixed(1)} % ` +
+      `de rgb(${fondoDicho.color.join(',')}) · orilla opaca ${(100 * orilla).toFixed(0)} %`,
+  );
+
+  if (escribir && quitados > 0) {
+    const png = await normalizar(
+      await sharp(Buffer.from(rgba), { raw: { width: info.width, height: info.height, channels: 4 } })
+        .png()
+        .toBuffer(),
+    );
+    writeFileSync(ruta, png);
+    writeFileSync(join(ICONOS, 'thumbs', `${fondoDicho.slug}.png`), await miniatura(png));
+  }
+  process.exit(0);
+}
 
 console.log(`\n${generados.length} ícono(s) generado(s) en la librería.\n`);
 
@@ -111,10 +206,7 @@ for (const icono of generados) {
     writeFileSync(ruta, png);
     // La miniatura sale del mismo archivo, así que hay que rehacerla o el
     // buscador del editor seguiría enseñando el rectángulo verde.
-    writeFileSync(
-      join(ICONOS, 'thumbs', `${icono.slug}.png`),
-      await sharp(png).resize(160, 160, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer(),
-    );
+    writeFileSync(join(ICONOS, 'thumbs', `${icono.slug}.png`), await miniatura(png));
     arreglados++;
   }
 }

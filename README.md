@@ -821,7 +821,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-mes` | Que la tanda no escriba dos veces el mismo carrusel | Un repetido cuesta una llamada larga y una revisión entera para tirarlo; tirar uno bueno deja el mes corto sin que nadie sepa por qué |
 | `npm run banco-calendario` | Que la hoja se lea como está escrita | Una fecha al revés se publica fuera de temporada y una fila que desaparece no se echa de menos hasta su día. Ninguna de las dos da error |
 | `npm run banco-variedad` | Que el reparto de color no pise una elección del modelo | Cambiar el turquesa de un carrusel de albercas no se ve en la cuadrícula: se ve leyendo, y para entonces está publicado |
-| `npm run iconos:recortar` | Busca íconos guardados con el fondo de croma puesto | No es una prueba, es una reparación. Sin `--escribir` solo dice cuáles están mal |
+| `npm run iconos:recortar` | Busca íconos guardados con el fondo de croma puesto | No es una prueba, es una reparación. Sin `--escribir` solo dice cuáles están mal; `--fondo <slug> <r,g,b>` para los que ya no tienen el croma en la orilla |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial

@@ -151,6 +151,46 @@ for (const [nombre, fondo] of [
   ok(pixel(r, 20, 10, 10)[3] === 255, `  y el objeto azul se queda entero`);
 }
 
+/* ── el fondo que el objeto encierra ─────────────────────────────────────── */
+console.log('\nEl agujero del aro');
+
+/*
+ * La inundación entra por el borde, así que no puede alcanzar el fondo que el
+ * objeto rodea. En `hoop-earring` eso dejó el verde dentro del aro y salió en
+ * el carrusel: el ícono estaba "bien recortado" por fuera y con un disco verde
+ * en medio.
+ *
+ * Un anillo es el caso mínimo que lo reproduce.
+ */
+const anillo = lienzo(21, (x, y) => {
+  const d = Math.hypot(x - 10, y - 10);
+  return d >= 5 && d <= 8 ? [230, 120, 110] : [0, 255, 0];
+});
+const sinAgujero = quitarCroma(anillo);
+
+ok(pixel(sinAgujero, 21, 1, 1)[3] === 0, 'el fondo de fuera se va, como siempre');
+ok(pixel(sinAgujero, 21, 10, 4)[3] === 255, 'el aro se queda entero');
+ok(pixel(sinAgujero, 21, 10, 10)[3] === 0, 'y el agujero de en medio también se va');
+
+/*
+ * Y lo que protege eso de comerse un objeto: el hueco vale porque es
+ * **exactamente** el color plano del fondo. Un objeto verde de verdad está
+ * renderizado, con su sombreado, y se aparta mucho más que `INTERIOR`.
+ */
+const anilloConDisco = lienzo(21, (x, y) => {
+  const d = Math.hypot(x - 10, y - 10);
+  if (d >= 5 && d <= 8) return [230, 120, 110];
+  // Un verde hoja sombreado dentro del aro: es objeto, no fondo.
+  if (d < 5) return [70, 140, 60];
+  return [0, 255, 0];
+});
+const conDisco = quitarCroma(anilloConDisco);
+ok(pixel(conDisco, 21, 1, 1)[3] === 0, 'con un disco verde dentro, el fondo de fuera sigue yéndose');
+ok(
+  pixel(conDisco, 21, 10, 10)[3] === 255,
+  'y el disco se queda: no es el color plano del fondo, es un verde de objeto',
+);
+
 /* ── la orilla, que es lo que faltaba comprobar ──────────────────────────── */
 console.log('\nLa orilla opaca: la barrera que faltaba');
 
