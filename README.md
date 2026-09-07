@@ -80,6 +80,34 @@ Si solo quieres el servidor, `npm run dev:solo`.
 | `R` | Encima la captura del post publicado, en modo diferencia. |
 | `[` `]` | Sube y baja la opacidad de esa captura (en el banco). |
 
+### Clonar en otra máquina
+
+```bash
+git clone <el repositorio>
+npm install
+cp .env.local.ejemplo .env.local     # y pon las tres llaves
+npm run dev
+```
+
+Dos cosas **no viajan con el repositorio**, y conviene saberlo antes y no al
+abrir el primer carrusel:
+
+- **`.env.local`.** Las tres llaves se copian a mano. Está ignorado a propósito:
+  una llave que entra en el historial de git no se borra cambiándola de sitio.
+- **Los dieciséis íconos de Thiings.** Su licencia prohíbe redistribuirlos, así
+  que el repositorio versiona el manifiesto y no los archivos. Tres de ellos
+  —`termometro`, `informacion` y `alerta`— los usan carruseles que ya están
+  escritos, así que en una copia limpia esos slides salen sin ícono. Se arregla
+  copiando `public/iconos/` de la máquina donde están, por USB o por nube. Los
+  generados con Gemini sí van en el repositorio: esa restricción no es nuestra.
+
+Lo demás sí viaja: las fuentes, las fotos de los carruseles, el calendario y los
+posts. Las carpetas `public/media/laboratorio-*` no, pero las recrea
+`npm run laboratorio` cuando corren las pruebas.
+
+Si al exportar se queja de que falta el navegador, `npx playwright install
+chromium`.
+
 ---
 
 ## Un carrusel es un archivo
