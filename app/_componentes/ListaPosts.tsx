@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import { AccionesPost } from '@/app/_componentes/AccionesPost';
 import { Miniatura } from '@/app/_componentes/Miniatura';
 import type { Marca, Post } from '@/template/tipos';
 
@@ -200,6 +201,10 @@ export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Marca }) {
                   </span>
                 </div>
               </Link>
+
+              {/* Fuera del <Link>: un <button> dentro de un <a> es HTML inválido
+                  y el clic navegaría en vez de actuar. Van encima, en la esquina. */}
+              <AccionesPost post={post} />
             </li>
           ))}
         </ul>

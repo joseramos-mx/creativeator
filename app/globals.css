@@ -1159,3 +1159,81 @@ select:focus {
   margin: 0;
   accent-color: var(--ui-acc);
 }
+
+/* ── los dos botones de cada tarjeta ── */
+
+.lista-posts li {
+  position: relative;
+}
+
+/* Sitio para los botones, para que no se echen encima de la última línea. */
+.lista-posts span:last-of-type {
+  padding-right: 66px;
+}
+
+.acciones {
+  position: absolute;
+  right: 9px;
+  bottom: 9px;
+  display: flex;
+  gap: 5px;
+}
+
+.cuadrado {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--ui-line);
+  border-radius: 7px;
+  background: #12161d;
+  color: var(--ui-dim);
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.cuadrado:hover:not(:disabled) {
+  border-color: var(--ui-acc);
+  color: var(--ui-txt);
+  background: #172234;
+}
+
+.cuadrado:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.cuadrado svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* El de estado se tiñe de lo que ya es, con los mismos colores de la lista. */
+.cuadrado[data-estado='aprobado'] { color: #7fb2ff; }
+.cuadrado[data-estado='publicado'] { color: #46c07a; }
+
+.cuadrado .gira {
+  animation: cuadrado-gira 0.9s linear infinite;
+}
+
+@keyframes cuadrado-gira {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cuadrado .gira { animation: none; }
+}
+
+.acciones__error {
+  margin: 0;
+  padding: 0 10px 8px 10px;
+  color: #e08a6a;
+  font-size: 10px;
+  line-height: 1.4;
+}

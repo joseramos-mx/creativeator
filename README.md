@@ -446,6 +446,13 @@ cuesta lo mismo que haberlo elegido antes.**
 - **El paso de edición entre redactar y exportar.** El borrador se abre en el
   editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
 
+Cada tarjeta de la lista lleva dos botones cuadrados, sin texto porque en una
+rejilla de cinco columnas una etiqueta la partiría: **avanzar el estado**
+(`borrador → aprobado → publicado`, apagado en publicado) y **exportar el ZIP**.
+El primero no es un atajo alrededor de nada: manda el post a `/api/post` y el
+servidor decide, así que si quedan afirmaciones sin revisar el estado no se
+mueve y la tarjeta dice por qué. La suite lo comprueba dando el clic.
+
 ## El calendario: escribir los que faltan
 
 El calendario editorial vive en **`content/calendario.tsv`**. Se sube de dos

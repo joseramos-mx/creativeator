@@ -635,6 +635,75 @@ const conTodo = await guardar(conLicencia);
 ok(conTodo.estado === 200, 'con la procedencia registrada sí se aprueba');
 ok(leer(EDICION).estado === 'aprobado', 'y el archivo lo refleja');
 
+/* ── los botones de cada tarjeta ─────────────────────────────────────────── */
+console.log('\nAcciones de la lista');
+
+/*
+ * Lo que se comprueba aquí es **que el botón no sea un atajo alrededor de la
+ * barrera**. Cambiar el estado desde la lista es cómodo, y esa comodidad es
+ * exactamente la que podría acabar aprobando un carrusel con once afirmaciones
+ * sin revisar si alguien un día decidiera "simplificar" el guardado. El botón
+ * manda el post y el servidor decide; si eso deja de ser cierto, esto falla.
+ */
+{
+  const pagina = await navegador.newPage({ viewport: { width: 1400, height: 1000 } });
+  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+  await pagina.waitForSelector('.lista-posts > li', { timeout: 20_000 });
+
+  const conAcciones = await pagina.locator('.lista-posts > li:first-child .cuadrado').count();
+  ok(conAcciones === 2, `cada tarjeta lleva dos botones (lleva ${conAcciones})`);
+
+  ok(
+    (await pagina.locator('.lista-posts .cuadrado').first().innerText()).trim() === '',
+    'sin texto: en una rejilla de cinco columnas una etiqueta partiría la tarjeta',
+  );
+  ok(
+    Boolean(await pagina.locator('.lista-posts .cuadrado').first().getAttribute('title')),
+    'pero con `title`, que el ratón dice y el lector de pantalla lee',
+  );
+
+  // El de publicado no tiene siguiente, así que se apaga en vez de dar la
+  // vuelta a borrador de un clic distraído.
+  const publicado = pagina.locator(".lista-posts > li:has(em[data-estado='publicado']) .cuadrado").first();
+  if (await publicado.count()) {
+    ok(await publicado.isDisabled(), 'el de un carrusel ya publicado está apagado');
+  } else {
+    console.log('  —    no hay ninguno publicado en la lista; esa parte se salta');
+  }
+
+  // Y el de verdad: aprobar un borrador con la cola llena tiene que fallar.
+  const conCola = pagina
+    .locator(".lista-posts > li:has(em[data-estado='borrador'])")
+    .filter({ hasNot: pagina.locator('[data-laboratorio]') })
+    .first();
+
+  if (await conCola.count()) {
+    const tema = (await conCola.locator('strong').innerText()).trim();
+    await conCola.locator('.cuadrado').first().click();
+    await esperarA(async () => (await conCola.locator('.acciones__error').count()) > 0, 25_000);
+
+    const fallo = conCola.locator('.acciones__error');
+    const hayError = (await fallo.count()) > 0;
+    const estadoAhora = (await conCola.locator('em[data-estado]').innerText()).trim();
+
+    if (hayError) {
+      const entero = (await fallo.getAttribute('title')) ?? '';
+      ok(/sin revisar|sin firmar|sin licencia|licencia/.test(entero), `la barrera lo paró: ${(await fallo.innerText()).trim()}`);
+      ok(estadoAhora === 'borrador', '  y el estado no se movió');
+      ok(
+        !/^No se pudo (leer|guardar)/.test((await fallo.innerText()).trim()),
+        '  y lo que se enseña es el motivo, no el envoltorio de la validación',
+      );
+    } else {
+      // Que pase también es correcto si ese carrusel no tenía nada pendiente:
+      // lo que no puede pasar es que quede aprobado con la cola llena.
+      ok(estadoAhora === 'aprobado', `«${tema.slice(0, 40)}» no tenía nada pendiente y pasó a aprobado`);
+    }
+  }
+
+  await pagina.close();
+}
+
 /* ── el panel del calendario ─────────────────────────────────────────────── */
 console.log('\nPanel del calendario');
 
