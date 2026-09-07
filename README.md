@@ -17,7 +17,7 @@ encendido, qué está apagado y por qué.
 | Plantilla y editor | Los cuatro tipos de slide, el ajuste automático, el empuje con flechas | — |
 | Exportación | PNG a 2160×2700, ZIP con `copy.txt` y `creditos.txt` | — |
 | Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
-| Paletas | Azul, naranja y verde por tema, elegidas por el redactor | — |
+| Paletas | Veinticinco tonos a la misma luminancia; diez las elige el redactor, el resto a mano | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
@@ -608,6 +608,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
 | `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
 | `npm run banco-iconos` | Que `iconoSugerido` case con el ícono correcto, o con ninguno | Un ícono equivocado ya puesto no lo revisa nadie: sale publicado |
+| `npm run banco-paletas` | Que las 25 estén a la misma luminancia | El contraste no se ve, se mide: con 25 tonos, revisar a ojo es revisar 25 veces |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial

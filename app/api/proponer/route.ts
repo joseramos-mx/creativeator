@@ -31,7 +31,10 @@ export async function POST() {
         .map((p) => p.tema),
       especialidad: marca.especialidad,
       ciudad: marca.ciudad,
-      paletas: Object.entries(paletas).map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
+      // Las mismas que ve el redactor: solo las que tienen regla.
+      paletas: Object.entries(paletas)
+        .filter(([, p]) => p.automatica)
+        .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
     };
 
     return Response.json({ contexto, propuestas: await proponer(contexto) });

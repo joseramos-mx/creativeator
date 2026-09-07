@@ -100,10 +100,37 @@ const tinta = {
  * Agregar una paleta es agregar una entrada aquí. Lo único que hay que
  * respetar es la luminancia del fondo; `/plantilla` pinta el mismo carrusel en
  * todas, una al lado de otra, para verlo antes de usarla.
+ *
+ * ── Las veinticinco ─────────────────────────────────────────────────────────
+ * `azul`, `naranja` y `verde` son las tres publicadas y sus valores están
+ * medidos de los carruseles reales; no se tocan. Las otras veintidós se
+ * derivaron del mismo objetivo: **luminancia relativa 0.348**, que es la que
+ * tienen las tres a tres decimales. El método se validó reproduciendo el
+ * `cuerpo`, la `bajada` y la `tintaPapel` de las tres a uno o dos hexadecimales
+ * de distancia antes de aplicarlo a las demás, y las veinticinco dan contraste
+ * 2,25–2,27 contra la crema del título: el mismo, con cualquier tono.
+ *
+ * `check` es la palomita, y se elige midiendo: donde la verde clara se fundiría
+ * con el fondo —lima y esmeralda— entra la oscura. Ninguna baja de ΔE 44.
+ *
+ * ── `automatica` ────────────────────────────────────────────────────────────
+ * Solo las que tienen una **regla semántica de verdad** se le ofrecen al
+ * redactor; el resto existen para elegirlas a mano. Con veinticinco reglas en
+ * el prompt, la mitad serían "sin asociación", y eso no le ayuda a decidir: le
+ * enseña que la elección da igual.
+ *
+ * ── Lo que hay que saber de los neutros ─────────────────────────────────────
+ * `piedra`, `gris`, `zinc`, `neutro`, `topo`, `malva`, `niebla` y `oliva` son
+ * usables, pero **la librería de íconos casi desaparece encima**: entre diez y
+ * catorce de los diecisiete se funden (ΔE < 40), porque los íconos 3D son
+ * objetos pastel de luminancia media y un fondo neutro de la misma luminancia
+ * está cerca de todos. El aviso del editor lo dice al elegir ícono; aquí queda
+ * dicho antes, para que no sorprenda. Sobre esos fondos conviene foto.
  */
 export const paletas = {
   azul: {
     nombre: 'Azul',
+    automatica: true,
     cuando: 'Lo que no tiene color obvio: impétigo, dermatitis. Es la respuesta por defecto.',
     fondo: '#51A2FF',
     cuerpo: '#DBEAFE',
@@ -123,6 +150,7 @@ export const paletas = {
 
   naranja: {
     nombre: 'Naranja',
+    automatica: true,
     cuando: 'Sol, calor, verano, quemaduras, sudor.',
     fondo: '#ED842F',
     cuerpo: '#FBEBDE',
@@ -137,6 +165,7 @@ export const paletas = {
 
   verde: {
     nombre: 'Verde',
+    automatica: true,
     cuando: 'Plantas, polen, alergia estacional, primavera.',
     fondo: '#48B45D',
     cuerpo: '#E5F4E8',
@@ -146,6 +175,336 @@ export const paletas = {
     check: '#0C4B19',
     velo:
       'linear-gradient(180deg, rgba(39,69,45,.10) 0%, rgba(69,136,82,.42) 46%, rgba(72,180,93,.92) 78%, #48B45D 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  rojo: {
+    nombre: 'Rojo',
+    cuando: 'Nada. Es el color de la alarma y esta cuenta no alarma: no la elijas sola.',
+    automatica: false,
+    fondo: '#FF7373',
+    cuerpo: '#FFE8E8',
+    bajada: '#FFF4F4',
+    tintaPapel: '#552727',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(102,46,46,.10) 0%, rgba(224,101,101,.42) 46%, rgba(255,115,115,.92) 78%, #FF7373 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  ambar: {
+    nombre: 'Ámbar',
+    cuando: 'Sol de invierno, piel seca, resequedad, calefacción.',
+    automatica: true,
+    fondo: '#DD8E09',
+    cuerpo: '#F9ECD5',
+    bajada: '#FCF6EC',
+    tintaPapel: '#4A2F03',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(88,56,4,.10) 0%, rgba(194,125,8,.42) 46%, rgba(221,142,9,.92) 78%, #DD8E09 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  amarillo: {
+    nombre: 'Amarillo',
+    cuando: 'Picaduras de abeja o avispa, veneno, alerta alimentaria.',
+    automatica: true,
+    fondo: '#C89806',
+    cuerpo: '#F5EDD2',
+    bajada: '#FBF7EB',
+    tintaPapel: '#423302',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(80,61,2,.10) 0%, rgba(176,134,5,.42) 46%, rgba(200,152,6,.92) 78%, #C89806 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  lima: {
+    nombre: 'Lima',
+    cuando: 'Higiene, lavado, limpieza, desinfección.',
+    automatica: true,
+    fondo: '#72B011',
+    cuerpo: '#E6F1D5',
+    bajada: '#F4F9EC',
+    tintaPapel: '#263B06',
+    check: '#0C4B19',
+    velo:
+      'linear-gradient(180deg, rgba(46,71,7,.10) 0%, rgba(100,155,15,.42) 46%, rgba(114,176,17,.92) 78%, #72B011 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  esmeralda: {
+    nombre: 'Esmeralda',
+    cuando: 'Plantas de interior, hongos, humedad.',
+    automatica: true,
+    fondo: '#0FB57E',
+    cuerpo: '#D7F3EA',
+    bajada: '#EDFAF6',
+    tintaPapel: '#053C2A',
+    check: '#0C4B19',
+    velo:
+      'linear-gradient(180deg, rgba(6,73,50,.10) 0%, rgba(13,159,111,.42) 46%, rgba(15,181,126,.92) 78%, #0FB57E 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  turquesa: {
+    nombre: 'Turquesa',
+    cuando: 'Agua, alberca, mar, cloro, natación.',
+    automatica: true,
+    fondo: '#13B3A1',
+    cuerpo: '#D8F3F0',
+    bajada: '#EEF9F8',
+    tintaPapel: '#063B36',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(8,72,64,.10) 0%, rgba(17,158,142,.42) 46%, rgba(19,179,161,.92) 78%, #13B3A1 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  cian: {
+    nombre: 'Cian',
+    cuando: 'Frío, aire acondicionado, invierno, urticaria por frío.',
+    automatica: true,
+    fondo: '#05AECB',
+    cuerpo: '#D6F2F7',
+    bajada: '#EEFAFB',
+    tintaPapel: '#023B44',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(2,70,81,.10) 0%, rgba(4,153,179,.42) 46%, rgba(5,174,203,.92) 78%, #05AECB 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  cielo: {
+    nombre: 'Cielo',
+    cuando: 'Aire, polvo, ácaros, ambiente cerrado.',
+    automatica: true,
+    fondo: '#0FA9EF',
+    cuerpo: '#D7F1FC',
+    bajada: '#EEF9FE',
+    tintaPapel: '#053950',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(6,68,96,.10) 0%, rgba(13,149,210,.42) 46%, rgba(15,169,239,.92) 78%, #0FA9EF 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  indigo: {
+    nombre: 'Índigo',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#9395FD',
+    cuerpo: '#EBECFF',
+    bajada: '#F6F6FF',
+    tintaPapel: '#313254',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(59,60,101,.10) 0%, rgba(129,131,223,.42) 46%, rgba(147,149,253,.92) 78%, #9395FD 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  violeta: {
+    nombre: 'Violeta',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#AA8DFE',
+    cuerpo: '#F0EAFF',
+    bajada: '#F8F5FF',
+    tintaPapel: '#382E54',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(68,56,101,.10) 0%, rgba(150,124,223,.42) 46%, rgba(170,141,254,.92) 78%, #AA8DFE 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  purpura: {
+    nombre: 'Púrpura',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#BC86FD',
+    cuerpo: '#F3E9FF',
+    bajada: '#FAF6FF',
+    tintaPapel: '#3E2D54',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(75,53,101,.10) 0%, rgba(165,118,223,.42) 46%, rgba(188,134,253,.92) 78%, #BC86FD 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  fucsia: {
+    nombre: 'Fucsia',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#E96AFE',
+    cuerpo: '#FBE6FF',
+    bajada: '#FDF4FF',
+    tintaPapel: '#4E2355',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(93,42,102,.10) 0%, rgba(205,93,224,.42) 46%, rgba(233,106,254,.92) 78%, #E96AFE 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  rosa: {
+    nombre: 'Rosa',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#FD6DAE',
+    cuerpo: '#FFE7F1',
+    bajada: '#FFF4F9',
+    tintaPapel: '#55253A',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(101,44,70,.10) 0%, rgba(223,96,153,.42) 46%, rgba(253,109,174,.92) 78%, #FD6DAE 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  carmin: {
+    nombre: 'Carmín',
+    cuando: 'Nada. Ver rojo.',
+    automatica: false,
+    fondo: '#FF7283',
+    cuerpo: '#FFE8EA',
+    bajada: '#FFF5F6',
+    tintaPapel: '#55262C',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(102,46,52,.10) 0%, rgba(224,100,115,.42) 46%, rgba(255,114,131,.92) 78%, #FF7283 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  piedra: {
+    nombre: 'Piedra',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#A79E97',
+    cuerpo: '#EEEDEB',
+    bajada: '#F7F7F6',
+    tintaPapel: '#373532',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(66,63,60,.10) 0%, rgba(147,139,133,.42) 46%, rgba(167,158,151,.92) 78%, #A79E97 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  gris: {
+    nombre: 'Gris',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#96A0B3',
+    cuerpo: '#EBECF0',
+    bajada: '#F6F7F9',
+    tintaPapel: '#31343B',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(60,63,71,.10) 0%, rgba(132,141,157,.42) 46%, rgba(150,160,179,.92) 78%, #96A0B3 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  zinc: {
+    nombre: 'Zinc',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#9E9EAB',
+    cuerpo: '#EDEDEF',
+    bajada: '#F6F6F8',
+    tintaPapel: '#353539',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(63,63,68,.10) 0%, rgba(139,139,150,.42) 46%, rgba(158,158,171,.92) 78%, #9E9EAB 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  neutro: {
+    nombre: 'Neutro',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#9F9F9F',
+    cuerpo: '#ECECEC',
+    bajada: '#F7F7F7',
+    tintaPapel: '#353535',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(64,64,64,.10) 0%, rgba(140,140,140,.42) 46%, rgba(159,159,159,.92) 78%, #9F9F9F 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  topo: {
+    nombre: 'Topo',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#B29B8C',
+    cuerpo: '#F1ECE9',
+    bajada: '#F8F7F5',
+    tintaPapel: '#3B332F',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(71,61,56,.10) 0%, rgba(157,136,123,.42) 46%, rgba(178,155,140,.92) 78%, #B29B8C 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  malva: {
+    nombre: 'Malva',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#B097B8',
+    cuerpo: '#F0EBF2',
+    bajada: '#F9F6F9',
+    tintaPapel: '#3A313C',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(70,60,73,.10) 0%, rgba(155,133,162,.42) 46%, rgba(176,151,184,.92) 78%, #B097B8 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  niebla: {
+    nombre: 'Niebla',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#8BA1C0',
+    cuerpo: '#E9EEF3',
+    bajada: '#F5F7FA',
+    tintaPapel: '#2E3540',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(55,64,76,.10) 0%, rgba(122,142,169,.42) 46%, rgba(139,161,192,.92) 78%, #8BA1C0 100%)',
+    sombraIcono: SOMBRA_ICONO,
+    ...tinta,
+  },
+
+  oliva: {
+    nombre: 'Oliva',
+    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    automatica: false,
+    fondo: '#A3A364',
+    cuerpo: '#EDEDE2',
+    bajada: '#F7F7F2',
+    tintaPapel: '#363621',
+    check: '#22B04B',
+    velo:
+      'linear-gradient(180deg, rgba(65,65,40,.10) 0%, rgba(143,143,88,.42) 46%, rgba(163,163,100,.92) 78%, #A3A364 100%)',
     sombraIcono: SOMBRA_ICONO,
     ...tinta,
   },

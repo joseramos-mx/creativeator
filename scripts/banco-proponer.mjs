@@ -33,7 +33,9 @@ const CONTEXTO = {
   publicados: ['Impétigo en el regreso a clases', 'Dermatitis atópica en invierno'],
   especialidad: 'Especialista en alergología y dermatología',
   ciudad: 'Durango',
-  paletas: Object.entries(paletas).map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
+  paletas: Object.entries(paletas)
+    .filter(([, p]) => p.automatica)
+    .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
 };
 
 const prompt = instrucciones(CONTEXTO);
@@ -64,9 +66,17 @@ for (const fuera of ['estética', 'láser', 'melanoma']) {
 }
 
 ok(/no lo repitas/i.test(prompt), 'se pide no repetir lo publicado');
-for (const [nombre, p] of Object.entries(paletas)) {
+// Solo las que tienen regla semántica: las de elección manual no se le
+// ofrecen, porque quince "sin asociación" le enseñarían que da igual cuál.
+const automaticas = Object.entries(paletas).filter(([, p]) => p.automatica);
+const manuales = Object.entries(paletas).filter(([, p]) => !p.automatica);
+ok(automaticas.length > 0 && manuales.length > 0, `${automaticas.length} automáticas, ${manuales.length} manuales`);
+for (const [nombre, p] of automaticas) {
   ok(prompt.includes(nombre), `la paleta ${nombre} está entre las opciones`);
   ok(prompt.includes(p.cuando), `  con su regla de tokens.ts, no una inventada`);
+}
+for (const [nombre] of manuales) {
+  ok(!new RegExp(`· ${nombre}:`).test(prompt), `y ${nombre}, que se elige a mano, no`);
 }
 ok(/porQueAhora/.test(prompt), 'y se pide la línea de por qué ahora');
 
