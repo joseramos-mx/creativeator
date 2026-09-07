@@ -182,18 +182,22 @@ export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Marca }) {
         <ul className="lista-posts">
           {visibles.map((post) => (
             <li key={post.slug} data-laboratorio={esLab(post) ? '' : undefined}>
-              <Link href={`/post/${post.slug}`}>
-                <Miniatura post={post} marca={marca} />
+              {/* El `title` porque el tema se recorta a tres líneas: en una
+                  rejilla de cinco columnas no cabe entero y perderlo del todo
+                  sería peor que tener que pasar el ratón por encima. */}
+              <Link href={`/post/${post.slug}`} title={post.tema}>
+                <Miniatura post={post} marca={marca} ancho={84} />
                 <div>
                   <strong>
                     {post.tema}
                     {esLab(post) ? <em className="chip-lab">laboratorio</em> : null}
                   </strong>
                   <span>
-                    <em data-estado={post.estado}>{post.estado}</em> · {post.slides.length} slides ·{' '}
-                    {post.creado}
+                    <em data-estado={post.estado}>{post.estado}</em> · {post.creado}
                   </span>
-                  <span>{post.copy ? 'con copy' : 'sin copy'}</span>
+                  <span>
+                    {post.slides.length} slides · {post.copy ? 'con copy' : 'sin copy'}
+                  </span>
                 </div>
               </Link>
             </li>
