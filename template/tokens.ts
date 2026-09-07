@@ -119,6 +119,20 @@ const tinta = {
  * el prompt, la mitad serían "sin asociación", y eso no le ayuda a decidir: le
  * enseña que la elección da igual.
  *
+ * ── `variedad` ──────────────────────────────────────────────────────────────
+ * Cuando el tema **no pide color** —impétigo, dermatitis atópica— el modelo
+ * contesta `azul`, y eso es correcto: es la respuesta, no un relleno. Pero doce
+ * carruseles de un mes con doce temas sin color son doce fondos azules, y la
+ * cuadrícula del perfil se ve de un vistazo.
+ *
+ * Así que en ese caso —y solo en ése— la paleta se reparte entre las que llevan
+ * `automatica` o `variedad`. Las cinco de aquí son las de color que no tienen
+ * regla propia: entran al reparto y no le quitan el sitio a ninguna asociación.
+ *
+ * Fuera del reparto quedan dos grupos, por motivos distintos: `rojo` y `carmin`
+ * son el color de la alarma y esta cuenta no alarma; los ocho neutros se comen
+ * la librería de íconos, como dice el párrafo de abajo. Ver `lib/variedad.ts`.
+ *
  * ── Lo que hay que saber de los neutros ─────────────────────────────────────
  * `piedra`, `gris`, `zinc`, `neutro`, `topo`, `malva`, `niebla` y `oliva` son
  * usables, pero **la librería de íconos casi desaparece encima**: entre diez y
@@ -131,6 +145,7 @@ export const paletas = {
   azul: {
     nombre: 'Azul',
     automatica: true,
+    variedad: true,
     cuando: 'Lo que no tiene color obvio: impétigo, dermatitis. Es la respuesta por defecto.',
     fondo: '#51A2FF',
     cuerpo: '#DBEAFE',
@@ -151,6 +166,7 @@ export const paletas = {
   naranja: {
     nombre: 'Naranja',
     automatica: true,
+    variedad: true,
     cuando: 'Sol, calor, verano, quemaduras, sudor.',
     fondo: '#ED842F',
     cuerpo: '#FBEBDE',
@@ -166,6 +182,7 @@ export const paletas = {
   verde: {
     nombre: 'Verde',
     automatica: true,
+    variedad: true,
     cuando: 'Plantas, polen, alergia estacional, primavera.',
     fondo: '#48B45D',
     cuerpo: '#E5F4E8',
@@ -183,6 +200,7 @@ export const paletas = {
     nombre: 'Rojo',
     cuando: 'Nada. Es el color de la alarma y esta cuenta no alarma: no la elijas sola.',
     automatica: false,
+    variedad: false,
     fondo: '#FF7373',
     cuerpo: '#FFE8E8',
     bajada: '#FFF4F4',
@@ -198,6 +216,7 @@ export const paletas = {
     nombre: 'Ámbar',
     cuando: 'Sol de invierno, piel seca, resequedad, calefacción.',
     automatica: true,
+    variedad: true,
     fondo: '#DD8E09',
     cuerpo: '#F9ECD5',
     bajada: '#FCF6EC',
@@ -213,6 +232,7 @@ export const paletas = {
     nombre: 'Amarillo',
     cuando: 'Picaduras de abeja o avispa, veneno, alerta alimentaria.',
     automatica: true,
+    variedad: true,
     fondo: '#C89806',
     cuerpo: '#F5EDD2',
     bajada: '#FBF7EB',
@@ -228,6 +248,7 @@ export const paletas = {
     nombre: 'Lima',
     cuando: 'Higiene, lavado, limpieza, desinfección.',
     automatica: true,
+    variedad: true,
     fondo: '#72B011',
     cuerpo: '#E6F1D5',
     bajada: '#F4F9EC',
@@ -243,6 +264,7 @@ export const paletas = {
     nombre: 'Esmeralda',
     cuando: 'Plantas de interior, hongos, humedad.',
     automatica: true,
+    variedad: true,
     fondo: '#0FB57E',
     cuerpo: '#D7F3EA',
     bajada: '#EDFAF6',
@@ -258,6 +280,7 @@ export const paletas = {
     nombre: 'Turquesa',
     cuando: 'Agua, alberca, mar, cloro, natación.',
     automatica: true,
+    variedad: true,
     fondo: '#13B3A1',
     cuerpo: '#D8F3F0',
     bajada: '#EEF9F8',
@@ -273,6 +296,7 @@ export const paletas = {
     nombre: 'Cian',
     cuando: 'Frío, aire acondicionado, invierno, urticaria por frío.',
     automatica: true,
+    variedad: true,
     fondo: '#05AECB',
     cuerpo: '#D6F2F7',
     bajada: '#EEFAFB',
@@ -288,6 +312,7 @@ export const paletas = {
     nombre: 'Cielo',
     cuando: 'Aire, polvo, ácaros, ambiente cerrado.',
     automatica: true,
+    variedad: true,
     fondo: '#0FA9EF',
     cuerpo: '#D7F1FC',
     bajada: '#EEF9FE',
@@ -301,8 +326,9 @@ export const paletas = {
 
   indigo: {
     nombre: 'Índigo',
-    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    cuando: 'Sin asociación de tema: entra en el reparto cuando el tema no pide color.',
     automatica: false,
+    variedad: true,
     fondo: '#9395FD',
     cuerpo: '#EBECFF',
     bajada: '#F6F6FF',
@@ -316,8 +342,9 @@ export const paletas = {
 
   violeta: {
     nombre: 'Violeta',
-    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    cuando: 'Sin asociación de tema: entra en el reparto cuando el tema no pide color.',
     automatica: false,
+    variedad: true,
     fondo: '#AA8DFE',
     cuerpo: '#F0EAFF',
     bajada: '#F8F5FF',
@@ -331,8 +358,9 @@ export const paletas = {
 
   purpura: {
     nombre: 'Púrpura',
-    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    cuando: 'Sin asociación de tema: entra en el reparto cuando el tema no pide color.',
     automatica: false,
+    variedad: true,
     fondo: '#BC86FD',
     cuerpo: '#F3E9FF',
     bajada: '#FAF6FF',
@@ -346,8 +374,9 @@ export const paletas = {
 
   fucsia: {
     nombre: 'Fucsia',
-    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    cuando: 'Sin asociación de tema: entra en el reparto cuando el tema no pide color.',
     automatica: false,
+    variedad: true,
     fondo: '#E96AFE',
     cuerpo: '#FBE6FF',
     bajada: '#FDF4FF',
@@ -361,8 +390,9 @@ export const paletas = {
 
   rosa: {
     nombre: 'Rosa',
-    cuando: 'Sin asociación de tema: se elige a mano en el editor.',
+    cuando: 'Sin asociación de tema: entra en el reparto cuando el tema no pide color.',
     automatica: false,
+    variedad: true,
     fondo: '#FD6DAE',
     cuerpo: '#FFE7F1',
     bajada: '#FFF4F9',
@@ -378,6 +408,7 @@ export const paletas = {
     nombre: 'Carmín',
     cuando: 'Nada. Ver rojo.',
     automatica: false,
+    variedad: false,
     fondo: '#FF7283',
     cuerpo: '#FFE8EA',
     bajada: '#FFF5F6',
@@ -393,6 +424,7 @@ export const paletas = {
     nombre: 'Piedra',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#A79E97',
     cuerpo: '#EEEDEB',
     bajada: '#F7F7F6',
@@ -408,6 +440,7 @@ export const paletas = {
     nombre: 'Gris',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#96A0B3',
     cuerpo: '#EBECF0',
     bajada: '#F6F7F9',
@@ -423,6 +456,7 @@ export const paletas = {
     nombre: 'Zinc',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#9E9EAB',
     cuerpo: '#EDEDEF',
     bajada: '#F6F6F8',
@@ -438,6 +472,7 @@ export const paletas = {
     nombre: 'Neutro',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#9F9F9F',
     cuerpo: '#ECECEC',
     bajada: '#F7F7F7',
@@ -453,6 +488,7 @@ export const paletas = {
     nombre: 'Topo',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#B29B8C',
     cuerpo: '#F1ECE9',
     bajada: '#F8F7F5',
@@ -468,6 +504,7 @@ export const paletas = {
     nombre: 'Malva',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#B097B8',
     cuerpo: '#F0EBF2',
     bajada: '#F9F6F9',
@@ -483,6 +520,7 @@ export const paletas = {
     nombre: 'Niebla',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#8BA1C0',
     cuerpo: '#E9EEF3',
     bajada: '#F5F7FA',
@@ -498,6 +536,7 @@ export const paletas = {
     nombre: 'Oliva',
     cuando: 'Sin asociación de tema: se elige a mano en el editor.',
     automatica: false,
+    variedad: false,
     fondo: '#A3A364',
     cuerpo: '#EDEDE2',
     bajada: '#F7F7F2',

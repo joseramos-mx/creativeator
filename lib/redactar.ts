@@ -7,6 +7,8 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
 import { afirmacionesDe } from './afirmaciones';
+import { MODELO_REDACCION } from './modelo';
+import { repartir } from './variedad';
 import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
 import { descargarFoto } from './bancos/descargar';
 import { SEPARACION_MINIMA, mejorCoincidencia, separacion, type Icono } from './iconos';
@@ -14,7 +16,7 @@ import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemin
 import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
-import { leerMarca } from './posts';
+import { leerMarca, listarPosts } from './posts';
 import type { TMarca, TPost, TSlide } from './schema';
 
 /**
@@ -30,7 +32,6 @@ import type { TMarca, TPost, TSlide } from './schema';
  * salta: entre generar y exportar hay una persona, siempre.
  */
 
-const MODELO = 'claude-opus-5';
 
 /**
  * La forma que se le pide al modelo.
@@ -151,7 +152,7 @@ export async function redactar(
     // `parsed_output`, así que aquí abajo no cambia nada.
     respuesta = await cliente.messages
       .stream({
-        model: MODELO,
+        model: MODELO_REDACCION,
         max_tokens: 16000,
         thinking: { type: 'adaptive' },
         system: voz,
@@ -175,6 +176,26 @@ export async function redactar(
 
   const redaccion = respuesta.parsed_output;
   if (!redaccion) throw new Error('El modelo no devolvió la estructura esperada.');
+
+  /*
+   * El reparto de color, solo donde no había razón.
+   *
+   * Si el modelo eligió turquesa porque el carrusel va de albercas, se queda
+   * turquesa. Lo que cambia es el caso en que contestó `azul` porque el tema no
+   * tiene color —que es la mayoría de los temas de esta cuenta—: ahí, en vez de
+   * azul siempre, se mira qué se ha usado últimamente. Ver lib/variedad.ts.
+   */
+  let porQuePaleta = redaccion.porQuePaleta;
+  const reparto = repartir(
+    redaccion.paleta,
+    PALETA_POR_DEFECTO,
+    await paletasRecientes(),
+    NOMBRES_PALETA.filter((n) => paletas[n].variedad),
+  );
+  if (reparto.paleta !== redaccion.paleta) {
+    redaccion.paleta = reparto.paleta as typeof redaccion.paleta;
+    porQuePaleta = `${reparto.porque}. Cámbiala en el editor si no encaja.`;
+  }
 
   const post = aPost(redaccion, slug, await leerManifiesto());
 
@@ -211,7 +232,7 @@ export async function redactar(
   ]);
   return {
     post,
-    porQuePaleta: redaccion.porQuePaleta,
+    porQuePaleta,
     avisos,
     uso: {
       entrada: respuesta.usage?.input_tokens ?? 0,
@@ -387,6 +408,18 @@ async function rellenarFotos(
       }
     }),
   );
+}
+
+/**
+ * Las paletas ya usadas, de la más nueva a la más vieja.
+ *
+ * Los de laboratorio quedan fuera: `laboratorio-paletas` existe justo para
+ * enseñar las veinticinco a la vez, así que contarlo diría que todo se acaba de
+ * usar y el reparto se quedaría sin candidatas frescas.
+ */
+async function paletasRecientes(): Promise<string[]> {
+  const posts = await listarPosts().catch(() => []);
+  return posts.filter((p) => !p.slug.startsWith('laboratorio-')).map((p) => p.paleta);
 }
 
 /** El error de la API, dicho en el idioma del editor y no en el del SDK. */

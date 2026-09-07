@@ -1085,3 +1085,60 @@ select:focus {
 .calendario .avisos {
   margin-left: 26px;
 }
+
+/* ── filtros de la lista ── */
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+.filtros__estados {
+  display: flex;
+  gap: 4px;
+}
+
+/* La cuenta va a la vista para no tener que filtrar solo para contar. */
+.filtros__estados b {
+  margin-left: 2px;
+  color: var(--ui-dim);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.filtros__estados .boton[aria-pressed='true'] b {
+  color: inherit;
+}
+
+.filtros__busca {
+  width: 200px;
+  margin: 0;
+}
+
+.filtros__orden {
+  width: auto;
+  margin: 0;
+}
+
+.filtros__lab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  color: var(--ui-dim);
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.filtros__lab input {
+  width: auto;
+  margin: 0;
+  accent-color: var(--ui-acc);
+}

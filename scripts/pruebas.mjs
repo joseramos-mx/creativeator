@@ -677,20 +677,41 @@ console.log('\nPanel del calendario');
       'los que faltan sí, todos: el camino de cero clics es "escríbelos todos"',
     );
 
-    const boton = (await pagina.locator('details[data-calendario] .boton').first().innerText()).trim();
-    ok(
-      boton === `Escribir ${hoja.filas.length - hechos}`,
-      `el botón dice cuántos va a escribir → "${boton}"`,
-    );
+    /*
+     * Cuántas filas queden pendientes depende de lo que haya escrito la cuenta,
+     * y eso cambia entre corridas. La prueba se adapta a los tres estados en vez
+     * de exigir uno: pedirle al contenido que esté de cierta forma es cómo una
+     * prueba acaba fallando por trabajo terminado.
+     */
+    const pendientes = hoja.filas.length - hechos;
+    const boton = pagina.locator('details[data-calendario] .boton').first();
 
-    // Desmarcar uno tiene que bajar la cuenta del botón: si no, lo que dice el
-    // botón y lo que va a hacer son dos cosas distintas.
-    await pagina.locator('.calendario > li:not([data-hecho]) input').first().uncheck();
-    const menos = (await pagina.locator('details[data-calendario] .boton').first().innerText()).trim();
-    ok(
-      menos === `Escribir ${hoja.filas.length - hechos - 1}`,
-      `y baja al desmarcar uno → "${menos}"`,
-    );
+    if (pendientes === 0) {
+      ok((await boton.count()) === 0, 'sin nada pendiente no hay botón de escribir');
+      ok(
+        (await pagina.locator('details[data-calendario] .pista').last().innerText()).includes(
+          'No falta ninguno',
+        ),
+        'y se dice que el calendario está al día',
+      );
+    } else {
+      const texto = (await boton.innerText()).trim();
+      ok(texto === `Escribir ${pendientes}`, `el botón dice cuántos va a escribir → "${texto}"`);
+
+      // Desmarcar tiene que bajar la cuenta: si no, lo que dice el botón y lo
+      // que va a hacer son dos cosas distintas.
+      await pagina.locator('.calendario > li:not([data-hecho]) input').first().uncheck();
+      const menos = (await boton.innerText()).trim();
+
+      if (pendientes > 1) {
+        ok(menos === `Escribir ${pendientes - 1}`, `y baja al desmarcar uno → "${menos}"`);
+      } else {
+        // El estado de cero marcados también cuenta: ahí el botón cambia de
+        // texto y se apaga, que es lo que impide pedir una tanda vacía.
+        ok(menos === 'Marca al menos uno', `sin ninguno marcado lo dice → "${menos}"`);
+        ok(await boton.isDisabled(), 'y se apaga');
+      }
+    }
   }
 
   await pagina.close();

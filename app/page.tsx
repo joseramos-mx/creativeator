@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Calendario } from '@/app/_componentes/Calendario';
-import { Miniatura } from '@/app/_componentes/Miniatura';
+import { ListaPosts } from '@/app/_componentes/ListaPosts';
 import { Redactar } from '@/app/_componentes/Redactar';
 import { leerMarca, listarPosts } from '@/lib/posts';
 
@@ -34,35 +34,8 @@ export default async function Inicio() {
         <Redactar />
         <Calendario />
 
-        {posts.length === 0 ? (
-          <p>
-            Todavía no hay carruseles. Un post es un archivo JSON en{' '}
-            <code>content/posts/</code>.
-          </p>
-        ) : (
-          <ul className="lista-posts">
-            {posts.map((post) => (
-              <li key={post.slug} data-laboratorio={post.slug.startsWith('laboratorio-') ? '' : undefined}>
-                <Link href={`/post/${post.slug}`}>
-                  <Miniatura post={post} marca={marca} />
-                  <div>
-                    <strong>
-                      {post.tema}
-                      {post.slug.startsWith('laboratorio-') ? (
-                        <em className="chip-lab">laboratorio</em>
-                      ) : null}
-                    </strong>
-                    <span>
-                      <em data-estado={post.estado}>{post.estado}</em> · {post.slides.length} slides ·{' '}
-                      {post.creado}
-                    </span>
-                    <span>{post.copy ? 'con copy' : 'sin copy'}</span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        <ListaPosts posts={posts} marca={marca} />
+
       </main>
     </>
   );

@@ -165,6 +165,35 @@ Cosas que conviene saber del formato:
 - **`frase`** sí se pinta: es la línea grande del slide de cierre, y acepta el
   marcado de la plantilla. Es lo único que ese slide no toma de la marca.
 
+### Qué modelo escribe cada cosa
+
+Las tres constantes están en `lib/modelo.ts` y dos son configurables desde
+`.env.local`, así que probar otro no es tocar código:
+
+| | Por defecto | Variable |
+|---|---|---|
+| Redactar el carrusel | Opus 5 | `CLAUDE_MODELO` |
+| Proponer temas | Sonnet 5 | `CLAUDE_MODELO_AUXILIAR` |
+| Criterios de búsqueda de foto | Sonnet 5 | `CLAUDE_MODELO_AUXILIAR` |
+
+**Sobre bajarlo para gastar menos**, que es la pregunta que siempre aparece:
+cambiar de *versión* dentro de Opus no cambia de precio —4.7 sigue siendo
+Opus—; lo que baja el costo es cambiar de *nivel*, Opus → Sonnet. Proponer temas
+y sacar criterios de búsqueda ya van en Sonnet: eligen entre reglas que están
+escritas en el prompt, no inventan contenido.
+
+Bajar el de redactar es otra cosa, y **el riesgo no está donde parece**. La
+barrera de afirmaciones no deja publicar una cifra sin revisar venga del modelo
+que venga, así que no se arriesga una mentira publicada: se arriesga que salgan
+*más afirmaciones que revisar*, y revisar ya es el cuello de botella —once por
+carrusel, cinco de ellas para el médico—. Un modelo que escriba dos cifras de
+más por carrusel se paga solo en tiempo de revisión.
+
+Así que la forma de saber si salió a cuenta no es leer el carrusel: es mirar
+**cuántas afirmaciones dejó en la cola**, que sale en el resumen de `npm run
+mes` y en el panel del calendario. Un carrusel son unos 7.400 tokens de entrada
+y 7.800 de salida, medidos.
+
 El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
 archivo, al guardar desde el editor y al validar lo que devuelva el modelo al
 redactar (fase 6). Es el mismo en los tres a propósito.
@@ -395,6 +424,16 @@ cuesta lo mismo que haberlo elegido antes.**
 - **El ícono sugerido** se pone si la librería lo tiene, y **si no lo tiene se
   genera**. Nunca se pone uno parecido: o es el concepto que se pidió, o se
   fabrica ese concepto.
+- **El color se reparte cuando el tema no pide ninguno.** El redactor elige la
+  paleta por el tema y hace bien, pero la mayoría de los temas de esta cuenta
+  no tienen color: impétigo no es de ningún color, dermatitis atópica tampoco.
+  Ahí la respuesta correcta es azul y así está escrito en el prompt — con el
+  resultado medido de que **siete de quince carruseles salieron azules**. Ahora,
+  y solo en ese caso, se elige la que hace más que no se usa, entre las quince
+  del reparto. Si el modelo eligió turquesa porque el carrusel va de albercas,
+  se queda turquesa. No es al azar: doce tiradas sobre quince colores repiten
+  una de cada cinco veces, y una repetición seguida se ve tanto como el mes
+  azul. Ver `lib/variedad.ts`.
 
 **Lo que sigue preguntando no es preferencia y no va a dejar de preguntar:**
 
@@ -781,6 +820,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-paletas` | Que las 25 estén a la misma luminancia | El contraste no se ve, se mide: con 25 tonos, revisar a ojo es revisar 25 veces |
 | `npm run banco-mes` | Que la tanda no escriba dos veces el mismo carrusel | Un repetido cuesta una llamada larga y una revisión entera para tirarlo; tirar uno bueno deja el mes corto sin que nadie sepa por qué |
 | `npm run banco-calendario` | Que la hoja se lea como está escrita | Una fecha al revés se publica fuera de temporada y una fila que desaparece no se echa de menos hasta su día. Ninguna de las dos da error |
+| `npm run banco-variedad` | Que el reparto de color no pise una elección del modelo | Cambiar el turquesa de un carrusel de albercas no se ve en la cuadrícula: se ve leyendo, y para entonces está publicado |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial

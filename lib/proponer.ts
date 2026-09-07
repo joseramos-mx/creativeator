@@ -3,6 +3,7 @@ import 'server-only';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
+import { MODELO_PROPUESTA } from './modelo';
 import { NOMBRES_PALETA } from '@/template/tokens';
 import { instrucciones, type ContextoDeTemas } from './temas';
 
@@ -30,7 +31,6 @@ import { instrucciones, type ContextoDeTemas } from './temas';
  * llegara vacía, el modelo propondría un tema repetido y nadie sabría por qué.
  */
 
-const MODELO = 'claude-opus-5';
 
 const Propuesta = z.object({
   tema: z.string(),
@@ -71,7 +71,7 @@ export async function proponer(
 
   const respuesta = await cliente.messages
     .stream({
-      model: MODELO,
+      model: MODELO_PROPUESTA,
       // Escala con lo que se pide. Con el techo fijo en 4000, una tanda de doce
       // se cortaba a la mitad y el error salía como "no devolvió la estructura".
       max_tokens: Math.max(4000, cuantos * 1200),

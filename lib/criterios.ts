@@ -3,6 +3,7 @@ import 'server-only';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
+import { MODELO_CRITERIOS } from './modelo';
 
 /**
  * lib/criterios.ts — del slide a los criterios de búsqueda.
@@ -19,7 +20,6 @@ import { z } from 'zod';
  * porque un gimnasio tiene niños juntos.
  */
 
-const MODELO = 'claude-opus-5';
 
 const Criterios = z.object({
   /** En inglés: los bancos indexan en inglés y la búsqueda en español no da. */
@@ -45,7 +45,7 @@ export async function criteriosDe(slide: SlideParaBuscar): Promise<TCriterios> {
 
   const respuesta = await cliente.messages
     .stream({
-      model: MODELO,
+      model: MODELO_CRITERIOS,
       max_tokens: 2000,
       thinking: { type: 'adaptive' },
       messages: [{ role: 'user', content: instrucciones(slide) }],
