@@ -25,7 +25,8 @@
     "consentimiento": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/consentimiento.mjs",
     "iconos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs",
     "iconos:vigilar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs --vigilar",
-    "iconos:reetiquetar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs --reetiquetar"
+    "iconos:reetiquetar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs --reetiquetar",
+    "iconos:recortar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/recortar-iconos.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.124.0",

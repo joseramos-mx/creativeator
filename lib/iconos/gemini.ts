@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { esSignoClinico } from './clinico';
-import { proporcionDeFondo, quitarCroma } from './croma';
+import { orillaOpaca, proporcionDeFondo, quitarCroma } from './croma';
 
 /**
  * lib/iconos/gemini.ts — generar un ícono con Gemini.
@@ -35,6 +35,14 @@ export type IconoGenerado = {
   fondo: number;
   aviso?: string;
 };
+
+/**
+ * Cuánta orilla opaca se tolera antes de tirar el render.
+ *
+ * Ver `orillaOpaca`. Un ícono bien recortado da cero; se deja margen para el
+ * píxel suelto de antialias y nada más.
+ */
+const ORILLA_MAXIMA = 0.02;
 
 /** El estilo congelado, que se antepone a cada concepto. Ver content/estilo-iconos.md. */
 export async function leerEstilo(): Promise<string> {
@@ -139,14 +147,36 @@ export async function recortar(crudo: Buffer): Promise<IconoGenerado> {
     .png({ compressionLevel: 9 })
     .toBuffer();
 
-  // Los dos extremos que hay que cazar antes de guardar nada: un cuadrado
-  // opaco porque el modelo ignoró el fondo verde, o un lienzo vacío.
+  /*
+   * Y aquí se decide si esto se guarda, que antes solo se avisaba.
+   *
+   * Avisar no alcanzaba: el aviso salía en el resumen de la tanda, el ícono se
+   * guardaba igual, y a partir de ese momento estaba **en la librería**. El
+   * siguiente carrusel que pidiera el mismo concepto lo encontraba y lo
+   * reutilizaba sin generar nada ni avisar de nada. Así se colaron ocho íconos
+   * con el rectángulo de croma encima, en ocho carruseles.
+   *
+   * Un ícono que no sirve tiene que costar una excepción: el slide se queda sin
+   * ícono, el editor lo marca y se resuelve con un clic. Eso se ve. Un
+   * rectángulo verde en un carrusel publicado, no.
+   */
+  // Se mide sobre el render ya recortado y **antes** de normalizar. Después del
+  // trim y el reencuadre la orilla es siempre transparente —el 4 % de aire lo
+  // garantiza—, así que medirla ahí no diría nada de nada.
+  const orilla = orillaOpaca({ datos: rgba, ancho: info.width, alto: info.height });
+  if (orilla > ORILLA_MAXIMA) {
+    throw new Error(
+      `el recorte dejó ${Math.round(orilla * 100)} % de la orilla opaca: ` +
+        'el fondo no se quitó o el objeto sale cortado del encuadre',
+    );
+  }
+  if (fondo > 0.98) throw new Error('el render salió vacío: no dibujó nada');
+
+  // Lo que sí es aviso y no barrera: entra en el rango pero por poco.
   const aviso =
-    fondo < 0.05
-      ? 'El render casi no tiene fondo verde: puede haber salido un cuadrado opaco.'
-      : fondo > 0.95
-        ? 'El render es casi todo fondo: puede que no haya dibujado nada.'
-        : undefined;
+    fondo < 0.15
+      ? 'Queda poco fondo transparente: mira que el objeto no salga apretado en el cuadro.'
+      : undefined;
 
   return { png, fondo, ...(aviso ? { aviso } : {}) };
 }

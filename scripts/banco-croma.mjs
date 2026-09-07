@@ -13,7 +13,7 @@
  * que el borde no arrastre derrame.
  */
 
-import { quitarCroma, proporcionDeFondo } from '../lib/iconos/croma.ts';
+import { quitarCroma, proporcionDeFondo, orillaOpaca, colorDelBorde } from '../lib/iconos/croma.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -60,8 +60,12 @@ ok(
 );
 
 // Un render que ignoró la instrucción y salió sobre blanco: todo opaco.
+// Un lienzo de un solo color es un render en el que el modelo no dibujó nada.
+// Antes esto no recortaba y el aviso decía "puede haber salido un cuadrado
+// opaco"; ahora se inunda entero y el aviso dice "no dibujó nada", que es lo
+// que de verdad pasó. Lo que importa es que los dos caminos lo cacen.
 const sinCroma = lienzo(20, () => [250, 250, 250]);
-ok(proporcionDeFondo(quitarCroma(sinCroma)) === 0, 'un render sin fondo verde no recorta nada');
+ok(proporcionDeFondo(quitarCroma(sinCroma)) === 1, 'un lienzo de un solo color se caza como vacío');
 // Y uno donde no dibujó nada.
 ok(proporcionDeFondo(quitarCroma(lienzo(20, () => VERDE))) === 1, 'y uno vacío recorta todo');
 
@@ -121,6 +125,87 @@ for (const gris of [[255, 255, 255], [200, 200, 200], [90, 90, 90], [20, 20, 20]
     `el gris ${gris[0]} se conserva entero`,
   );
 }
+
+/* ── el verde que devuelve Gemini de verdad ──────────────────────────────── */
+console.log('\nEl croma que llega, no el que se pide');
+
+/*
+ * Los ocho íconos que se guardaron con un rectángulo verde encima.
+ *
+ * Se le pide `#00FF00` y devuelve un verde apagado. La versión anterior
+ * arrancaba la inundación solo si el verde dominaba a los otros canales por más
+ * de 140; estos se quedan en 119 y 94, así que no arrancaba y el fondo entero
+ * sobrevivía. Son los valores medidos de los archivos guardados.
+ */
+const AZUL = [110, 140, 220];
+
+for (const [nombre, fondo] of [
+  ['el de moisturizer-tube', [76, 195, 70]],
+  ['el de stopwatch', [82, 177, 83]],
+  ['uno todavía más apagado', [95, 160, 95]],
+  ['el croma puro, que sigue funcionando', [0, 255, 0]],
+]) {
+  const conTubo = lienzo(20, (x, y) => (x >= 7 && x < 13 && y >= 5 && y < 15 ? AZUL : fondo));
+  const r = quitarCroma(conTubo);
+  ok(pixel(r, 20, 1, 1)[3] === 0, `${nombre}: el fondo se va`);
+  ok(pixel(r, 20, 10, 10)[3] === 255, `  y el objeto azul se queda entero`);
+}
+
+/* ── la orilla, que es lo que faltaba comprobar ──────────────────────────── */
+console.log('\nLa orilla opaca: la barrera que faltaba');
+
+/*
+ * `proporcionDeFondo` no cazaba el fallo, y por eso los ocho llegaron a la
+ * librería: el render venía en 16:9 dentro de un cuadrado, así que las bandas
+ * transparentes de arriba y abajo daban una proporción razonable aunque no se
+ * hubiera quitado nada. Lo que sí los distingue es si lo que queda **llega
+ * hasta el borde**.
+ */
+const bienRecortado = quitarCroma(
+  lienzo(20, (x, y) => (x >= 7 && x < 13 && y >= 5 && y < 15 ? AZUL : [0, 255, 0])),
+);
+ok(
+  orillaOpaca({ datos: bienRecortado, ancho: 20, alto: 20 }) === 0,
+  'un ícono bien recortado no toca la orilla por ningún lado',
+);
+
+// El caso de verdad: el fondo no se quitó, así que hay opaco hasta el borde.
+ok(
+  orillaOpaca({ datos: lienzo(20, () => [76, 195, 70]).datos, ancho: 20, alto: 20 }) === 1,
+  'y un render con el fondo puesto la ocupa entera',
+);
+
+// El otro caso que hay que rechazar: el objeto sale cortado por el encuadre.
+const cortado = quitarCroma(lienzo(20, (x) => (x >= 7 ? AZUL : [0, 255, 0])));
+ok(
+  orillaOpaca({ datos: cortado, ancho: 20, alto: 20 }) > 0.02,
+  'un objeto que se sale del cuadro también se caza',
+);
+
+/* ── de dónde sale el color del fondo ────────────────────────────────────── */
+console.log('\nEl color del fondo se mide, no se supone');
+
+ok(
+  colorDelBorde(lienzo(20, () => [76, 195, 70]))?.join() === '76,195,70',
+  'un borde de un color se reconoce tal cual',
+);
+
+// Un trozo de objeto en la orilla no puede mover la medida: por eso es la
+// mediana y no el promedio.
+const conMordisco = lienzo(20, (x, y) => (y === 0 && x < 5 ? [220, 60, 40] : [76, 195, 70]));
+ok(
+  colorDelBorde(conMordisco)?.join() === '76,195,70',
+  'y un mordisco del objeto en la orilla no la mueve',
+);
+
+// Si el borde no es de un color, no se recorta nada: es preferible un ícono con
+// fondo —que la orilla caza— a uno agujereado, que parece correcto.
+const bordeSucio = lienzo(20, (x, y) => ((x + y) % 2 ? [220, 60, 40] : [76, 195, 70]));
+ok(colorDelBorde(bordeSucio) === null, 'un borde de dos colores no se da por bueno');
+ok(
+  proporcionDeFondo(quitarCroma(bordeSucio)) === 0,
+  '  y entonces no se recorta nada, en vez de adivinar',
+);
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
 if (fallos > 0) process.exitCode = 1;
