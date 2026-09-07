@@ -27,10 +27,13 @@
       "tipo": "portada",
       "titulo": "*Carrusel de*\n**laboratorio**",
       "pregunta": "¿Sobre qué corren las pruebas?",
-      "foto": "/media/laboratorio-edicion/portada.jpg",
+      "foto": "/media/laboratorio-edicion/pexels-8088232.jpg",
       "fotoCredito": {
-        "fuente": "Banco de prueba",
-        "licencia": "de prueba"
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Artem Podrez",
+        "url": "https://www.pexels.com/photo/a-woman-with-a-group-of-kids-8088232/"
       }
     },
     {

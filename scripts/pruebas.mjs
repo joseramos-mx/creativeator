@@ -436,6 +436,28 @@ ok(
   'y la banda del lienzo ya no avisa: nadie llenó el crédito a mano',
 );
 
+/* ── la portada también busca en el banco ────────────────────────────────── */
+console.log('\nLa foto de la portada');
+
+// Era el único slide sin buscador: su foto había que arrastrarla a mano, y es
+// la que más se ve del carrusel.
+const tarjetaPortada = await abrirTarjeta(page, 0);
+const bancoPortada = tarjetaPortada.locator('.banco');
+ok((await bancoPortada.count()) === 1, 'la portada tiene el buscador de banco');
+
+const fotoAntes = leer(EDICION).slides[0].foto;
+await bancoPortada.locator('button:has-text("Buscar foto en el banco")').click();
+await esperarA(() => leer(EDICION).slides[0].fotoCredito !== undefined);
+
+const portada = leer(EDICION).slides[0];
+ok(portada.foto !== fotoAntes, `la foto de portada cambió a ${portada.foto?.split('/').pop()}`);
+ok(portada.fotoCredito?.fuente === 'Pexels', 'con su fuente');
+ok(Boolean(portada.fotoCredito?.autor), `y su autor: ${portada.fotoCredito?.autor}`);
+ok(
+  portada.foto?.startsWith('/media/laboratorio-edicion/'),
+  'guardada en la carpeta del post, no enlazada',
+);
+
 /* ── el archivo clínico ──────────────────────────────────────────────────── */
 console.log('\nArchivo clínico');
 

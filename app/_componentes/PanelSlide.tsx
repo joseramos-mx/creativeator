@@ -124,6 +124,18 @@ export function PanelSlide({
             <label>Pregunta del papel rasgado</label>
             <input value={slide.pregunta} onChange={(e) => cambiar({ pregunta: e.target.value } as Partial<Slide>)} />
             <Imagen ruta={slide.foto} />
+
+            {/* La portada es la que más se ve y era la única sin buscador: su
+                foto había que arrastrarla a mano. El crédito se escribe en el
+                mismo movimiento, igual que en los slides de contenido. */}
+            <BuscadorFotos
+              slug={slug}
+              indice={indice}
+              onElegir={(ruta, credito) =>
+                cambiar({ foto: ruta, fotoCredito: credito } as Partial<Slide>)
+              }
+            />
+
             {slide.foto ? (
               <CamposCredito
                 credito={slide.fotoCredito}

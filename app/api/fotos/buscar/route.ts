@@ -26,7 +26,10 @@ export async function POST(req: Request) {
 
     const post = await leerPost(slug);
     const slide = post.slides[indice];
-    if (!slide || slide.tipo !== 'contenido') {
+    // La portada también lleva foto —a sangre, en su propio campo— y también
+    // se puede buscar. Antes solo se aceptaba contenido, así que la portada era
+    // el único slide donde había que arrastrar el archivo a mano.
+    if (!slide || (slide.tipo !== 'contenido' && slide.tipo !== 'portada')) {
       return Response.json({ error: 'Ese slide no lleva foto de banco.' }, { status: 400 });
     }
 
@@ -51,9 +54,13 @@ export async function POST(req: Request) {
           : await criteriosDe({
               tema: post.tema,
               titulo: slide.titulo,
-              bajada: slide.bajada,
-              cuerpo: slide.cuerpo,
-              ideaImagen: slide.visual.clase === 'foto' ? slide.visual.ideaImagen : undefined,
+              // La portada no tiene cuerpo: lo que la describe es su pregunta.
+              bajada: slide.tipo === 'contenido' ? slide.bajada : undefined,
+              cuerpo: slide.tipo === 'contenido' ? slide.cuerpo : slide.pregunta,
+              ideaImagen:
+                slide.tipo === 'contenido' && slide.visual.clase === 'foto'
+                  ? slide.visual.ideaImagen
+                  : undefined,
             });
 
     const candidatos = await banco.buscar(criterios.query, CUANTAS);
