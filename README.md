@@ -20,7 +20,7 @@ encendido, qué está apagado y por qué.
 | Paletas | Veinticinco tonos a la misma luminancia; diez las elige el redactor, el resto a mano | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
-| El mes de una | `npm run mes`: propone la tanda, la escribe entera y la deja en borradores | las mismas tres |
+| El calendario | `npm run mes`: lee `content/calendario.tsv` y escribe los que faltan | las mismas tres |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
@@ -379,44 +379,88 @@ cuesta lo mismo que haberlo elegido antes.**
 - **El paso de edición entre redactar y exportar.** El borrador se abre en el
   editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
 
-## El mes de una
+## El calendario: escribir los que faltan
 
 ```
-npm run dev                      # en otra terminal, y anota el puerto
-npm run mes -- 8 3001            # ocho borradores, unos veinte minutos
-npm run mes -- 8 3001 --temas    # solo los temas, sin escribir nada
+npm run dev                              # en otra terminal, y anota el puerto
+npm run mes -- 3001 --plan               # qué falta, sin escribir ni gastar nada
+npm run mes -- 3001                      # escribe todos los que faltan
+npm run mes -- 3001 --desde colageno     # de esa fila en adelante
+npm run mes -- 3001 --desde 4            # lo mismo, por el número de la hoja
 ```
 
-Propone la tanda del mes, tira lo repetido, escribe los carruseles uno a uno y
-los deja en `content/posts/` como borradores. Se puede dejar sola.
+El calendario editorial vive en **`content/calendario.tsv`**: se copia la tabla
+desde la hoja de cálculo y se pega ahí. Con eso, `npm run mes` compara la hoja
+contra lo que ya está escrito y redacta lo que falta.
 
-Sin argumentos son **ocho** —dos por semana, el ritmo de la cuenta— en el
-puerto 3000. El techo es veinte y lo hace cumplir el servidor: un número de más
-tecleado por error se para antes de la primera llamada y no cuarenta minutos
-después.
+| No. | Fecha | Día | Tipo | Pilar | Tema | Objetivo | Nota estratégica |
+|---|---|---|---|---|---|---|---|
+| 1 | 24/08/2026 | Lunes | Carrusel | Ciencia que entiendes | Psoriasis: no es contagiosa… | Compartir | Mes de la Psoriasis |
+| | 25/08/2026 | Martes | Reel | — | Por definir | — | — |
 
-**Qué cambia respecto a redactar de uno en uno: nada del carrusel.** La tanda
-habla por HTTP con el servidor de desarrollo y llama a `/api/redactar`, la
-misma ruta que el botón del panel. Mismo prompt, mismas fotos, mismos íconos.
-No es una segunda implementación que se va separando sola: si el panel mejora,
-la tanda mejora.
+**Las columnas se buscan por su nombre**, así que el orden da igual y las
+columnas de más sobran. Se leen tabulaciones —que es lo que sale de copiar y
+pegar— y también comas con comillas, por si se exporta como CSV. Los reels y
+las filas sin tema se saltan y se cuentan; cualquier otra que se caiga se dice
+con su línea y su motivo, porque una fila que desaparece en silencio es un
+carrusel que nadie echa de menos hasta su día.
 
-Lo que sí añade son cuatro cosas que solo tienen sentido en tanda:
+**Sin `content/calendario.tsv`, el modelo propone la tanda** como antes:
+`npm run mes -- 8 3001`, ocho por defecto —dos por semana— con techo de veinte.
 
-- **Pide los temas de golpe, no de tres en tres.** Viéndolos juntos, el modelo
-  puede repartirlos por semanas del mes y no gastar el mes entero en una
-  condición. Se le dice además que se van a ver como cuadrícula en el perfil,
-  así que si dos temas admiten honestamente colores distintos, que se los dé —
-  sin forzar el color, que la regla de la paleta sigue mandando.
-- **Los repetidos se tiran antes de pagarlos.** Dos temas gemelos son dos
-  llamadas largas y dos revisiones enteras para publicar uno. Se miden en
-  `lib/mes.ts`, gratis, antes del bucle caro.
-- **Ninguna foto se usa dos veces.** Ocho carruseles sobre temas vecinos le
+### Lo que el calendario le quita de encima al modelo
+
+Sin hoja, el redactor **inventa** el pilar, el objetivo y la nota de cada
+carrusel. Con hoja los recibe, y no es un detalle de comodidad: el objetivo
+decide a cuál de los cierres del copy se le carga la mano, así que un carrusel
+que la hoja marca `agendar` y el modelo escribe para `guardar` sale con el
+cierre equivocado — y eso no se nota leyéndolo suelto. El pilar es peor todavía:
+dos posts que en la hoja son del mismo eje salían con dos pilares distintos, y
+eso solo se ve mirando el mes entero.
+
+Se le dicen en el prompt **y se le imponen encima de lo que devuelva**. Si el
+modelo propone otra cosa, gana la hoja y sale un aviso diciendo qué propuso.
+La fecha de la hoja va a `creado`.
+
+### Cómo sabe cuáles faltan
+
+Por el **tema**, no solo por el nombre de archivo. La hoja dice «Impétigo: la
+infección del regreso a clases» y el archivo que ya existe se llama
+`impetigo-regreso-a-clases`: los slugs no coinciden, así que comparar nombres lo
+daría por no escrito y lo redactaría otra vez — una llamada larga para acabar
+con dos carruseles del mismo tema. Los textos sí coinciden al 100 % con la
+medida de `lib/mes.ts`, que es la misma que detecta repetidos.
+
+### Lo demás que hace la tanda
+
+- **Habla por HTTP con el servidor de desarrollo** y llama a `/api/redactar`, la
+  misma ruta que el botón del panel. Mismo prompt, mismas fotos, mismos íconos.
+  No es una segunda implementación que se va separando sola.
+- **Ninguna foto se usa dos veces.** Nueve carruseles sobre temas vecinos le
   piden al banco escenas parecidas, y la mejor foto de aula suele ser la misma.
   Cada llamada devuelve las que gastó y la siguiente las recibe apartadas.
-- **Nunca sobrescribe.** Si el slug ya existe, lo salta y lo dice. Por eso
-  **volver a correrlo después de un fallo continúe donde iba**, y por eso una
-  tanda no puede pisar un borrador que alguien estaba revisando.
+- **Nunca sobrescribe.** Por eso **volver a correrlo después de un fallo
+  continúa donde iba**, y por eso no puede pisar un borrador en revisión.
+- **Un carrusel que falla no se lleva la tanda.** El siguiente sigue; el que
+  falló se dice al final con su motivo y se recupera volviendo a correr.
+- **`--desde` que no casa no arranca nada.** Si "colageno" no encuentra su fila,
+  se para: escribir la hoja entera porque no se reconoció el argumento serían
+  doce carruseles que nadie pidió.
+
+### La fecha es lo que más caro sale leer mal
+
+`24/08/2026` es 24 de agosto. La misma hoja abierta en una configuración en
+inglés escribe `08/24/2026`, y **las dos se leen sin error dando meses
+distintos**: el carrusel no falla, se publica fuera de temporada. Se comprueba
+de dos formas que se reparten el trabajo, porque ninguna sola alcanza:
+
+- un "mes" 24 es imposible y se caza por la forma;
+- `08/09/2026` es válido leído de las dos maneras, y ahí lo único que decide es
+  **la columna del día de la semana**: si el 8 de septiembre no cae en miércoles,
+  la fila se aparta.
+
+Por eso conviene dejar la columna `Día` en la hoja aunque parezca redundante: es
+lo que convierte una suposición en una comprobación.
 
 ### El costo de verdad no son los tokens
 
@@ -688,6 +732,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-iconos` | Que `iconoSugerido` case con el ícono correcto, o con ninguno | Un ícono equivocado ya puesto no lo revisa nadie: sale publicado |
 | `npm run banco-paletas` | Que las 25 estén a la misma luminancia | El contraste no se ve, se mide: con 25 tonos, revisar a ojo es revisar 25 veces |
 | `npm run banco-mes` | Que la tanda no escriba dos veces el mismo carrusel | Un repetido cuesta una llamada larga y una revisión entera para tirarlo; tirar uno bueno deja el mes corto sin que nadie sepa por qué |
+| `npm run banco-calendario` | Que la hoja se lea como está escrita | Una fecha al revés se publica fuera de temporada y una fila que desaparece no se echa de menos hasta su día. Ninguna de las dos da error |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
@@ -890,14 +935,20 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 | + generación | ✅ Íconos con Gemini, croma y la misma puerta que los descargados. |
 
 **Las seis fases están completas.** El último hueco era el mes completo, que
-`references/ia.md` describía como `/api/mes`. Acabó siendo `npm run mes` y no
-una ruta: veinte minutos de trabajo no caben en una petición que se corta a los
-cinco, y lo que uno quiere cuando falla el séptimo es que los seis anteriores
-sigan en disco. Un script que escribe archivo por archivo hace eso sin
-inventar nada; una ruta habría necesitado una cola de trabajos para lo mismo.
-El paso de tachar temas a mano tampoco se construyó: los repetidos se miden y
-se tiran solos, y el resto es preferencia. `npm run mes -- 8 3001 --temas`
-enseña la tanda sin escribirla, para quien quiera verla antes.
+`references/ia.md` describía como `/api/mes`: proponer los temas, dejar que se
+tachen los que no sirven y redactarlos uno a uno.
+
+Acabó siendo otra cosa, y por dos motivos. **No es una ruta**: media hora de
+trabajo no cabe en una petición que se corta a los cinco minutos, y lo que uno
+quiere cuando falla el séptimo es que los seis anteriores sigan en disco. Un
+script que escribe archivo por archivo hace eso sin inventar nada; una ruta
+habría necesitado una cola de trabajos para lo mismo.
+
+Y **no propone**, porque hay un calendario editorial de verdad. Proponer temas
+era resolver un problema que la hoja ya tenía resuelto; el trabajo estaba en
+leerla bien y en saber cuáles ya se escribieron. El paso de tachar a mano
+tampoco hizo falta: `--plan` enseña la tanda sin escribirla y `--desde` recorta
+por dónde empezar.
 
 ---
 

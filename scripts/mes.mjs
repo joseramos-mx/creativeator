@@ -1,65 +1,75 @@
 /**
- * scripts/mes.mjs — `npm run mes [cuantos] [puerto] [--temas]`
+ * scripts/mes.mjs — `npm run mes -- [opciones]`
  *
- * El mes entero de una, en borradores.
+ * Los carruseles que faltan, escritos de una tanda.
+ *
+ * ── Dos modos, y el del calendario es el bueno ──────────────────────────────
+ * Si hay `content/calendario.tsv`, los temas salen de ahí: ya están decididos,
+ * con su fecha, su pilar, su objetivo y su nota. Si no lo hay, el modelo
+ * propone la tanda del mes, que es lo que servía antes de tener calendario.
+ *
+ * La diferencia no es de comodidad. Con calendario, el pilar y el objetivo
+ * **los pusiste tú**, y el redactor los recibe en vez de inventárselos: el
+ * objetivo decide a cuál de los cierres del copy se le carga la mano, así que
+ * un carrusel que la hoja marca "agendar" y el modelo escribe para "guardar"
+ * sale con el cierre equivocado y nadie lo nota leyéndolo suelto.
  *
  * ── Por qué es un script y no un botón ──────────────────────────────────────
- * Ocho carruseles son unos veinte minutos. Eso no cabe en una petición del
- * navegador —la ruta se corta a los cinco— ni en una pestaña que hay que dejar
- * abierta, y sobre todo no debe caber: si a la mitad falla el séptimo, lo que
- * uno quiere es que los seis anteriores estén en disco y volver a correrlo, no
- * empezar de nuevo. Un script que escribe archivo por archivo es exactamente
- * eso, y le sale gratis: **volver a correrlo salta lo que ya existe**.
+ * Nueve carruseles son casi media hora. Eso no cabe en una petición del
+ * navegador —la ruta se corta a los cinco minutos— y sobre todo no debe caber:
+ * si a la mitad falla el séptimo, lo que uno quiere es que los seis anteriores
+ * estén en disco y volver a correrlo. Un script que escribe archivo por archivo
+ * es eso, y le sale gratis: **volver a correrlo salta lo que ya existe**.
  *
  * ── Por qué habla por HTTP con el servidor de dev ───────────────────────────
  * En vez de importar `lib/redactar.ts`. Así la tanda corre *literalmente* el
- * mismo camino que el botón del panel —la misma ruta, el mismo prompt, la
- * misma descarga de fotos, la misma generación de íconos— y no una copia que
- * se va separando sola. Si el panel mejora, la tanda mejora.
+ * mismo camino que el botón del panel y no una copia que se va separando sola.
  *
  * ── Lo que esto NO hace ─────────────────────────────────────────────────────
  * No afloja ninguna barrera y no ahorra ni una revisión. Todo sale en
  * `borrador`, la cola de afirmaciones queda entera y las fotos clínicas siguen
  * sin poder entrar por aquí. Lo único que se hace en tanda es **escribir**, que
- * es la parte lenta y la que no decide nada. Revisar sigue siendo de uno en
- * uno, y al final se dice cuántas afirmaciones acaban de entrar a la cola —
- * que es el costo de verdad de generar un mes de golpe.
+ * es la parte lenta y la que no decide nada.
  */
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { afirmacionesDe } from '../lib/afirmaciones.ts';
+import { desde, leerCalendario } from '../lib/calendario.ts';
+import { IDENTICOS, parecido, revisarTanda } from '../lib/mes.ts';
 import { aSlug } from '../lib/slug.ts';
-import { revisarTanda } from '../lib/mes.ts';
 
-const POSTS = join(process.cwd(), 'content', 'posts');
+const CONTENIDO = join(process.cwd(), 'content');
+const POSTS = join(CONTENIDO, 'posts');
 
 /* ── los argumentos ──────────────────────────────────────────────────────── */
 
 const args = process.argv.slice(2);
-const soloTemas = args.includes('--temas');
-const numeros = args.filter((a) => /^\d+$/.test(a)).map(Number);
+const soloPlan = args.includes('--temas') || args.includes('--plan');
+const iDesde = args.findIndex((a) => a === '--desde');
+const marcaDesde = iDesde !== -1 ? (args[iDesde + 1] ?? '') : '';
+// El `iDesde !== -1` no sobra: sin `--desde`, `iDesde + 1` es 0 y el filtro se
+// comía el primer argumento — `npm run mes -- 3001` acababa buscando el
+// servidor en el 3000. El valor de `--desde` puede ser un número (`--desde 4`)
+// y por eso hay que excluirlo, pero solo cuando la bandera está.
+const numeros = args
+  .filter((a, i) => /^\d+$/.test(a) && !(iDesde !== -1 && i === iDesde + 1))
+  .map(Number);
 
 /**
- * Ocho por defecto: dos por semana, que es el ritmo de la cuenta.
- *
- * Es un número para empezar, no un dogma — `npm run mes -- 12` y ya. El techo
- * de veinte está en `lib/proponer.ts` y lo hace cumplir el servidor.
- *
- * Los dos argumentos se distinguen por el tamaño, que es cómodo y por eso mismo
+ * Los dos números se distinguen por el tamaño, que es cómodo y por eso mismo
  * puede engañar: un `25` es una cantidad imposible, no un puerto, y tomarlo
  * como "ocho, que es el defecto" sería escribir ocho carruseles cuando alguien
- * pidió veinticinco y no enterarse. Se para aquí.
+ * pidió veinticinco y no enterarse.
  */
 const sueltos = numeros.filter((n) => (n > 20 && n < 1000) || n === 0);
 if (sueltos.length) {
-  console.error(
-    `\nALTO: ${sueltos[0]} no es una cantidad (van de 1 a 20) ni un puerto.`,
-  );
-  console.error('Van así: npm run mes -- [cuantos] [puerto]   ·   npm run mes -- 8 3001');
+  console.error(`\nALTO: ${sueltos[0]} no es una cantidad (van de 1 a 20) ni un puerto.`);
+  console.error('Van así: npm run mes -- [cuantos] [puerto] [--desde X] [--plan]');
   process.exit(1);
 }
 
+/** Solo se usa sin calendario: ocho es el ritmo de dos por semana. */
 const cuantos = numeros.find((n) => n <= 20) ?? 8;
 const puerto = numeros.find((n) => n >= 1000) ?? 3000;
 const base = `http://localhost:${puerto}`;
@@ -84,10 +94,10 @@ async function pedir(ruta, cuerpo) {
  * Que en el puerto esté este editor y no otra cosa.
  *
  * La misma precaución que en `scripts/pruebas.mjs` y por lo mismo: apuntar al
- * puerto equivocado no falla de forma legible. Aquí se hace preguntándole a la
- * ruta de redactar con un cuerpo vacío, que responde 400 con su propio texto
- * y **no gasta una llamada al modelo**. Con reintentos, porque en desarrollo
- * la primera petición a una ruta la compila.
+ * puerto equivocado no falla de forma legible. Se le pregunta a la ruta de
+ * redactar con un cuerpo vacío, que responde 400 con su propio texto y **no
+ * gasta una llamada al modelo**. Con reintentos, porque en desarrollo la
+ * primera petición a una ruta la compila.
  */
 async function comprobarServidor() {
   const hasta = Date.now() + 90_000;
@@ -102,9 +112,9 @@ async function comprobarServidor() {
       const cuerpo = await r.json().catch(() => ({}));
       ultimo = cuerpo.error ?? '';
       if (r.status === 400 && /tema del carrusel/.test(ultimo)) return;
-      // 500 con la llave ausente es un servidor correcto mal configurado: se
+      // Un 500 por la llave ausente es un servidor correcto mal configurado: se
       // dice tal cual, que es más útil que "no es este editor".
-      if (r.status === 500 && /ANTHROPIC_API_KEY/.test(ultimo)) {
+      if (r.status === 500 && /API_KEY/.test(ultimo)) {
         console.error(`\nALTO: ${ultimo}`);
         process.exit(1);
       }
@@ -119,11 +129,11 @@ async function comprobarServidor() {
       ? `\nALTO: lo que responde en ${base} no es el editor de este proyecto.`
       : `\nALTO: no hay servidor en ${base}. Arranca "npm run dev".`,
   );
-  console.error('El puerto va como argumento: npm run mes 8 3001');
+  console.error('El puerto va como argumento: npm run mes -- 3001');
   process.exit(1);
 }
 
-/* ── lo que ya hay ───────────────────────────────────────────────────────── */
+/* ── lo que ya está escrito ──────────────────────────────────────────────── */
 
 function loQueYaHay() {
   const archivos = readdirSync(POSTS).filter((f) => f.endsWith('.json'));
@@ -135,59 +145,137 @@ function loQueYaHay() {
   };
 }
 
-/* ── la tanda ────────────────────────────────────────────────────────────── */
-
-await comprobarServidor();
-
-const yaHay = loQueYaHay();
-console.log(`\nHay ${yaHay.temas.length} carrusel(es) de la cuenta. Pidiendo ${cuantos} temas…`);
-
-const arranque = Date.now();
-const { contexto, propuestas } = await pedir('/api/proponer', { cuantos });
-console.log(`Temas de ${contexto.mes}, en ${reloj((Date.now() - arranque) / 1000)}:\n`);
-
 /**
- * Los repetidos se miran **antes** del bucle caro, no después.
+ * Si este tema ya está escrito, devuelve con cuál. Si no, `null`.
  *
- * Es lo único que se puede saber gratis y lo que más caro sale saber tarde: dos
- * temas gemelos son dos llamadas largas, dos carpetas de fotos y dos revisiones
- * enteras para publicar uno.
- *
- * Solo se tira lo que es el mismo título reordenado. Lo que se parece pero
- * podría ser otro carrusel se escribe y se dice contra qué, porque cuál de los
- * dos sobra es criterio editorial y no de un umbral. Ver lib/mes.ts.
+ * **Por el tema y no solo por el slug**, y esto no es un adorno: la hoja dice
+ * "Impétigo: la infección del regreso a clases" y el archivo que ya existe se
+ * llama `impetigo-regreso-a-clases`. Los slugs no coinciden, así que comparar
+ * nombres de archivo lo daría por no escrito y lo volvería a redactar — una
+ * llamada larga para acabar con dos carruseles del mismo tema. Los textos sí
+ * coinciden al 100 % con la medida de `lib/mes.ts`.
  */
-const choques = revisarTanda(
-  propuestas.map((p) => p.tema),
-  yaHay.temas,
-);
-const tirados = new Set(choques.filter((c) => c.accion === 'tirar').map((c) => c.indice));
-
-for (const [i, p] of propuestas.entries()) {
-  const choque = choques.find((c) => c.indice === i);
-  const cuanto = choque ? `${choque.donde}, ${Math.round(choque.parecido * 100)} %` : '';
-  if (choque?.accion === 'tirar') {
-    console.log(`  ✗  ${p.tema}\n      repite «${choque.contra}» (${cuanto})`);
-  } else {
-    console.log(`  ${String(i + 1).padStart(2)}. ${p.tema}\n      ${p.paleta} · ${p.porQueAhora}`);
-    if (choque) console.log(`      ⚠ se parece a «${choque.contra}» (${cuanto}) — míralo al revisar`);
-  }
+function yaEscrito(tema, slug, yaHay) {
+  if (yaHay.slugs.has(slug) || existsSync(join(POSTS, `${slug}.json`))) return slug;
+  return yaHay.temas.find((t) => parecido(tema, t) >= IDENTICOS) ?? null;
 }
 
-const cola = propuestas.filter((_, i) => !tirados.has(i));
-const dudosos = choques.filter((c) => c.accion === 'avisar');
-if (tirados.size) console.log(`\n${tirados.size} tirado(s) por repetido. Quedan ${cola.length}.`);
-if (dudosos.length) console.log(`${dudosos.length} se escriben pero se parecen a algo. Van marcados arriba.`);
+/* ── de dónde salen los temas ────────────────────────────────────────────── */
 
-if (soloTemas) {
-  console.log('\n--temas: hasta aquí. Quita la bandera para escribirlos.');
+await comprobarServidor();
+const yaHay = loQueYaHay();
+const arranque = Date.now();
+
+const calendario = ['calendario.tsv', 'calendario.csv']
+  .map((f) => join(CONTENIDO, f))
+  .find(existsSync);
+
+/** Cada entrada: `{ tema, editorial?, linea2 }`. `linea2` es lo que se enseña debajo. */
+let cola = [];
+
+if (calendario) {
+  console.log(`\nCalendario: ${calendario.replace(process.cwd(), '.')}`);
+
+  const { filas, saltadas } = leerCalendario(readFileSync(calendario, 'utf8'));
+
+  // Lo que la hoja tiene y no se va a escribir se dice siempre. Una fila que
+  // desaparece en silencio es un carrusel que nadie echa de menos hasta que
+  // llega su fecha. Los reels se resumen; los problemas se listan.
+  const reels = saltadas.filter((s) => /reel|sin tema/.test(s.porque));
+  const rotas = saltadas.filter((s) => !reels.includes(s));
+  console.log(
+    `${filas.length} carrusel(es) en la hoja` +
+      (reels.length ? `, ${reels.length} fila(s) que no lo son` : ''),
+  );
+  for (const s of rotas) console.log(`  ⚠ línea ${s.linea} «${s.tema}»: ${s.porque}`);
+
+  let candidatas = filas;
+  if (marcaDesde) {
+    // Si no se reconoce, se para. Arrancar la hoja entera porque el `--desde`
+    // no casó sería escribir doce carruseles que nadie pidió.
+    const recorte = desde(filas, marcaDesde);
+    if (!recorte) {
+      console.error(`\nALTO: no hay ninguna fila que sea "${marcaDesde}".`);
+      console.error('Va el número de la hoja o un trozo del tema: --desde 4  ·  --desde colageno');
+      process.exit(1);
+    }
+    candidatas = recorte;
+    console.log(`Desde «${candidatas[0].tema}»: ${candidatas.length} en adelante.`);
+  }
+
+  for (const f of candidatas) {
+    const slug = aSlug(f.tema);
+    const hecho = yaEscrito(f.tema, slug, yaHay);
+    if (hecho) {
+      console.log(`  ✓ ${f.fecha}  ${f.tema}\n      ya está escrito (${hecho})`);
+      continue;
+    }
+    cola.push({
+      tema: f.tema,
+      editorial: { pilar: f.pilar, objetivo: f.objetivo ?? undefined, nota: f.nota, fecha: f.fecha },
+      linea2: `${f.fecha} · ${f.pilar || 'sin pilar'} · ${f.objetivo ?? 'sin objetivo'}${f.nota ? ` · ${f.nota}` : ''}`,
+    });
+  }
+
+  console.log(`\nFaltan ${cola.length}:`);
+  for (const [i, c] of cola.entries()) {
+    console.log(`  ${String(i + 1).padStart(2)}. ${c.tema}\n      ${c.linea2}`);
+  }
+
+  // La hoja es la autoridad, así que aquí no se tira nada: si dos filas dicen
+  // casi lo mismo se avisa y ya. Suele ser un copiar y pegar en la hoja.
+  for (const ch of revisarTanda(cola.map((c) => c.tema), [])) {
+    if (ch.accion === 'tirar') {
+      console.log(`\n  ⚠ «${ch.tema}» y «${ch.contra}» son el mismo carrusel en la hoja.`);
+    }
+  }
+} else {
+  console.log(`\nSin content/calendario.tsv, así que el modelo propone.`);
+  console.log(`Hay ${yaHay.temas.length} carrusel(es) de la cuenta. Pidiendo ${cuantos} temas…`);
+
+  const { contexto, propuestas } = await pedir('/api/proponer', { cuantos });
+  console.log(`Temas de ${contexto.mes}, en ${reloj((Date.now() - arranque) / 1000)}:\n`);
+
+  /*
+   * Sin calendario, los repetidos se miran antes del bucle caro: es lo único
+   * que se puede saber gratis y lo que más caro sale saber tarde. Solo se tira
+   * el mismo título reordenado; lo que se parece pero podría ser otro carrusel
+   * se escribe y se dice contra qué. Ver lib/mes.ts.
+   */
+  const choques = revisarTanda(propuestas.map((p) => p.tema), yaHay.temas);
+  const tirados = new Set(choques.filter((c) => c.accion === 'tirar').map((c) => c.indice));
+
+  for (const [i, p] of propuestas.entries()) {
+    const ch = choques.find((c) => c.indice === i);
+    const cuanto = ch ? `${ch.donde}, ${Math.round(ch.parecido * 100)} %` : '';
+    if (ch?.accion === 'tirar') {
+      console.log(`  ✗  ${p.tema}\n      repite «${ch.contra}» (${cuanto})`);
+      continue;
+    }
+    console.log(`  ${String(i + 1).padStart(2)}. ${p.tema}\n      ${p.paleta} · ${p.porQueAhora}`);
+    if (ch) console.log(`      ⚠ se parece a «${ch.contra}» (${cuanto}) — míralo al revisar`);
+    cola.push({ tema: p.tema, linea2: `${p.paleta} · ${p.porQueAhora}` });
+  }
+
+  if (tirados.size) console.log(`\n${tirados.size} tirado(s) por repetido. Quedan ${cola.length}.`);
+}
+
+if (cola.length === 0) {
+  console.log('\nNo falta ninguno. Nada que escribir.');
+  process.exit(0);
+}
+
+if (soloPlan) {
+  console.log('\n--plan: hasta aquí. Quita la bandera para escribirlos.');
   process.exit(0);
 }
 
 console.log(
-  `\nEscribiendo ${cola.length} carrusel(es). Unos dos minutos y medio cada uno, ` +
-    `así que calcula ${reloj(cola.length * 155)}. Se puede dejar solo.\n`,
+  `\nEscribiendo ${cola.length}. Unos dos minutos y medio cada uno, así que calcula ` +
+    `${reloj(cola.length * 155)}. Se puede dejar solo — Ctrl-C ahora si no es esto.\n`,
 );
+
+/* ── la tanda ────────────────────────────────────────────────────────────── */
 
 /**
  * Uno a uno, y a propósito.
@@ -200,77 +288,71 @@ console.log(
 const usadas = [];
 const hechos = [];
 const fallidos = [];
-let saltados = 0;
 
-for (const [i, propuesta] of cola.entries()) {
+for (const [i, item] of cola.entries()) {
   const n = `[${i + 1}/${cola.length}]`;
-  const slug = aSlug(propuesta.tema);
+  const slug = aSlug(item.tema);
+  const desdeYa = Date.now();
 
-  // Nunca se sobrescribe. Es lo que hace que volver a correr el script después
-  // de un fallo continúe en vez de empezar de cero, y lo que impide que una
-  // tanda pise un borrador que alguien ya estaba revisando.
-  if (yaHay.slugs.has(slug) || existsSync(join(POSTS, `${slug}.json`))) {
-    console.log(`${n} ya existe "${slug}", se salta.`);
-    saltados++;
-    continue;
-  }
-
-  const desde = Date.now();
   try {
-    const r = await pedir('/api/redactar', { tema: propuesta.tema, slug, usadas });
-    // `?? []` y no a secas: si el servidor lleva levantado desde antes de que
-    // la ruta devolviera este campo, lo que se pierde es el reparto de fotos,
-    // que no vale tirar el carrusel entero por él.
+    const r = await pedir('/api/redactar', {
+      tema: item.tema,
+      slug,
+      usadas,
+      ...(item.editorial ? { editorial: item.editorial } : {}),
+    });
+    // `?? usadas` y no a secas: si el servidor lleva levantado desde antes de
+    // que la ruta devolviera este campo, lo que se pierde es el reparto de
+    // fotos, y no vale tirar el carrusel entero por eso.
     usadas.splice(0, usadas.length, ...(r.usadas ?? usadas));
 
     // El estado no se toca: sale `borrador` de la ruta y así se guarda. Entre
     // lo que escribe el modelo y un PNG hay una persona, también en tanda.
     await pedir('/api/post', { post: r.post });
     yaHay.slugs.add(slug);
+    yaHay.temas.push(r.post.tema);
 
     const afirmaciones = afirmacionesDe(r.post);
     const seguridad = afirmaciones.filter((a) => a.disparadores.includes('seguridad'));
-    hechos.push({ slug, post: r.post, afirmaciones, seguridad, uso: r.uso, avisos: r.avisos });
+    hechos.push({ slug, post: r.post, afirmaciones, seguridad, uso: r.uso });
 
     console.log(
       `${n} ${slug}\n` +
         `      ${r.post.paleta} · ${afirmaciones.length} afirmación(es) por revisar` +
         `${seguridad.length ? `, ${seguridad.length} de seguridad` : ''}` +
-        ` · ${reloj((Date.now() - desde) / 1000)}`,
+        ` · ${reloj((Date.now() - desdeYa) / 1000)}`,
     );
     for (const aviso of r.avisos) console.log(`      · ${aviso}`);
   } catch (e) {
     // Un carrusel que falla no se lleva la tanda: el siguiente sigue, y el que
     // falló se recupera volviendo a correr el script.
-    fallidos.push({ tema: propuesta.tema, porque: e.message });
-    console.log(`${n} FALLÓ "${propuesta.tema}"\n      ${e.message}`);
+    fallidos.push({ tema: item.tema, porque: e.message });
+    console.log(`${n} FALLÓ "${item.tema}"\n      ${e.message}`);
   }
 }
 
 /* ── lo que quedó ────────────────────────────────────────────────────────── */
 
-const minutos = reloj((Date.now() - arranque) / 1000);
-console.log(`\n${'─'.repeat(60)}\n${hechos.length} borrador(es) en ${minutos}.`);
-if (saltados) console.log(`${saltados} saltado(s) porque ya existían.`);
+console.log(
+  `\n${'─'.repeat(60)}\n${hechos.length} borrador(es) en ${reloj((Date.now() - arranque) / 1000)}.`,
+);
+
 if (fallidos.length) {
   console.log(`\n${fallidos.length} sin escribir — vuelve a correr el script y lo reintenta:`);
   for (const f of fallidos) console.log(`  · ${f.tema}\n    ${f.porque}`);
-  // Sale con error aunque haya escrito algunos. Una tanda a medias que devuelve
-  // cero se ve igual que una completa desde fuera, y esto se va a correr desde
-  // la terminal a las once de la noche mirando otra cosa.
+  // Sale con error aunque haya escrito algunos. Una tanda a medias se ve igual
+  // que una completa desde fuera, y esto se corre mirando otra cosa.
   process.exitCode = 1;
 }
 
 if (hechos.length) {
-  // La cuadrícula del perfil se ve de un vistazo, así que la repartición de
-  // paletas es información y no un adorno. No se corrige sola: la regla del
-  // color manda, y si el mes salió muy azul eso se arregla en el editor.
+  // La cuadrícula del perfil se ve de un vistazo, así que el reparto de paletas
+  // es información. No se corrige solo: la regla del color manda, y si el mes
+  // salió muy azul eso se arregla en el editor.
   const porPaleta = {};
   for (const h of hechos) porPaleta[h.post.paleta] = (porPaleta[h.post.paleta] ?? 0) + 1;
   const reparto = Object.entries(porPaleta).sort((a, b) => b[1] - a[1]);
-  console.log(`\nPaletas: ${reparto.map(([p, n]) => `${p} ×${n}`).join(', ')}`);
-  // Desde tres. Con uno o dos, "más de la mitad" no dice nada de cómo se va a
-  // ver la cuadrícula y el aviso sale siempre.
+  console.log(`\nPaletas: ${reparto.map(([p, c]) => `${p} ×${c}`).join(', ')}`);
   if (hechos.length >= 3 && reparto[0][1] > hechos.length / 2) {
     console.log(`  El mes va a verse muy ${reparto[0][0]}. Se cambia en el editor, post por post.`);
   }
@@ -279,7 +361,7 @@ if (hechos.length) {
   const salida = hechos.reduce((s, h) => s + (h.uso?.salida ?? 0), 0);
   console.log(`Tokens: ${entrada.toLocaleString('es')} de entrada, ${salida.toLocaleString('es')} de salida.`);
 
-  // El costo de verdad de generar un mes de golpe no es el dinero, es esto.
+  // El costo de verdad de escribir un mes de golpe no es el dinero, es esto.
   const total = hechos.reduce((s, h) => s + h.afirmaciones.length, 0);
   const seguridad = hechos.reduce((s, h) => s + h.seguridad.length, 0);
   console.log(

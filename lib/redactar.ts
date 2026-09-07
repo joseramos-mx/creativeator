@@ -114,6 +114,22 @@ export type OpcionesRedaccion = {
    * dentro de un mismo carrusel, donde dos slides podían caer en la misma foto.
    */
   usadas?: Set<string>;
+  /**
+   * La fila del calendario, cuando la hay.
+   *
+   * Sin esto el modelo **inventa** el pilar, el objetivo y la nota en cada
+   * carrusel, y salen tres pilares distintos para lo que en la hoja es uno
+   * solo. Cuando vienen dados se le dicen —para que escriba hacia ese objetivo,
+   * que es lo que decide el cierre del copy— y además se le imponen encima de
+   * lo que devuelva: lo que está en la hoja lo decidió una persona.
+   */
+  editorial?: {
+    pilar?: string;
+    objetivo?: 'guardar' | 'compartir' | 'comentar' | 'agendar';
+    nota?: string;
+    /** La fecha de publicación de la hoja. Va a `creado`. */
+    fecha?: string;
+  };
 };
 
 export async function redactar(
@@ -139,7 +155,7 @@ export async function redactar(
         max_tokens: 16000,
         thinking: { type: 'adaptive' },
         system: voz,
-        messages: [{ role: 'user', content: instrucciones(tema, marca) }],
+        messages: [{ role: 'user', content: instrucciones(tema, marca, opciones.editorial) }],
         output_config: { format: zodOutputFormat(Redaccion) },
       })
       .finalMessage();
@@ -161,7 +177,33 @@ export async function redactar(
   if (!redaccion) throw new Error('El modelo no devolvió la estructura esperada.');
 
   const post = aPost(redaccion, slug, await leerManifiesto());
+
+  /*
+   * Lo de la hoja gana, siempre.
+   *
+   * Al modelo ya se le dijo en el prompt y suele devolverlo igual, pero "suele"
+   * no sirve aquí: si un día decide que el pilar es otro, el post entra en la
+   * cuadrícula del mes con un eje que no es el que se planeó, y eso no lo caza
+   * nadie leyendo el carrusel — solo se ve al mirar el mes entero. La
+   * instrucción orienta, la asignación decide.
+   */
+  const ed = opciones.editorial;
+  if (ed?.pilar) post.pilar = ed.pilar;
+  if (ed?.objetivo) post.objetivo = ed.objetivo;
+  if (ed?.nota) post.nota = ed.nota;
+  // La fecha de la hoja es cuándo se publica; sin hoja, `creado` es hoy.
+  if (ed?.fecha) post.creado = ed.fecha;
+
   const avisos = revisar(redaccion, post);
+  if (ed?.pilar && redaccion.pilar && redaccion.pilar !== ed.pilar) {
+    avisos.push(`El modelo propuso el pilar "${redaccion.pilar}"; se dejó el del calendario.`);
+  }
+  if (ed?.objetivo && redaccion.objetivo && redaccion.objetivo !== ed.objetivo) {
+    avisos.push(
+      `El modelo escribió para "${redaccion.objetivo}" y el calendario pide ` +
+        `"${ed.objetivo}". El campo se corrigió, pero **revisa el cierre del copy**.`,
+    );
+  }
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
     rellenarFotos(post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
@@ -366,7 +408,7 @@ function explicar(e: unknown): string {
 
 /* ── el prompt ────────────────────────────────────────────────────────────── */
 
-function instrucciones(tema: string, marca: TMarca) {
+function instrucciones(tema: string, marca: TMarca, editorial?: OpcionesRedaccion['editorial']) {
   const opciones = Object.entries(paletas)
     .map(([nombre, p]) => `  · ${nombre}: ${p.cuando}`)
     .join('\n');
@@ -496,7 +538,20 @@ cazar, porque llega con aspecto de verificado. Por eso:
 Instituciones válidas: Mayo Clinic, Cleveland Clinic, AAP, AAD, KidsHealth,
 StatPearls.
 
-## Los tres campos que no se pintan en ningún slide
+${
+    editorial?.pilar || editorial?.objetivo || editorial?.nota
+      ? `## Esto ya está decidido en el calendario editorial
+
+No lo propongas: escribe **hacia** esto. Va a ir en el post tal cual, y si
+devuelves otra cosa se sobrescribe.
+${editorial.pilar ? `\n  · pilar — ${editorial.pilar}. Es la línea editorial del post: el ángulo\n    del carrusel tiene que caer dentro de ella.` : ''}${
+          editorial.objetivo
+            ? `\n  · objetivo — **${editorial.objetivo}**. Es lo que se busca del lector, y\n    decide a cuál de los cierres del copy se le carga la mano. Escribe el copy\n    para que eso sea lo que pase.`
+            : ''
+        }${editorial.nota ? `\n  · nota — ${editorial.nota}. Es lo que hace que este tema toque ahora;\n    que se note en la portada y en el gancho del copy.` : ''}
+
+Devuélvelos igual en su campo, con estos valores.`
+      : `## Los tres campos que no se pintan en ningún slide
 
   · pilar — la línea editorial del post, en tres o cuatro palabras: "Cuidado
     diario de la piel", "Lo que no es alergia". Sirve para no repetir eje dos
@@ -504,7 +559,8 @@ StatPearls.
   · objetivo — qué se busca del lector: guardar, compartir, comentar o agendar.
     Decide a cuál de los cierres del copy se le carga la mano.
   · nota — el gancho de calendario, corto: "Primeros calores", "Semana de
-    frío". Qué hace que este tema toque publicarse ahora.
+    frío". Qué hace que este tema toque publicarse ahora.`
+  }
 
 ## El copy
 
