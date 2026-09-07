@@ -1,0 +1,97 @@
+{
+  "slug": "psoriasis-no-es-contagiosa-ni-es-piel-sucia",
+  "tema": "Psoriasis en niños: no es contagiosa ni es piel sucia",
+  "creado": "2026-08-24",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "No se contagia. No es piel sucia. 🩵\n\nSi tu hijo tiene placas rojas con escamas en codos, rodillas o cuero cabelludo, y llevan semanas ahí, es muy probable que sea psoriasis. Octubre es el Mes de la Psoriasis, y es el mes para decirlo fuerte: no se pega, no viene de la falta de baño, y ningún niño tiene que quedarse fuera del salón, de la fiesta ni de la alberca por esto.\n\n🔬 Qué es: una enfermedad crónica en la que el sistema de defensa del cuerpo trabaja de más y hace que la piel se renueve demasiado rápido; las células se amontonan y forman las placas. Va y viene por temporadas (Mayo Clinic).\n\n🔍 Cómo se reconoce: placas rojas o rosadas con escamas blanquecinas, que suelen picar. En niños son más pequeñas y delgadas que en adultos, y salen sobre todo en codos, rodillas, cuero cabelludo y ombligo; en bebés, a veces solo en la zona del pañal (AAD, KidsHealth).\n\n⚠️ Cómo NO se contagia: por tocar, por abrazar, por compartir toalla, por meterse a la misma alberca o por sentarse en la misma banca. La psoriasis no se transmite de una persona a otra (AAD).\n\n✅ Qué sí ayuda en casa: humectar todos los días con la piel aún húmeda al salir del baño, baños cortos con agua tibia, uñas cortas y ropa de algodón. Rascar o lastimar la piel puede levantar placas nuevas justo en ese punto (AAD, Cleveland Clinic, StatPearls).\n\n⚡ Ojo, con qué se confunde: con la caspa, con la tiña (un hongo) del cuero cabelludo y con el eccema. La psoriasis hace placas de bordes bien marcados y escama gruesa; la tiña deja parches con pelo roto o caída y esa sí se contagia; el eccema pica más y se acomoda en los pliegues. Se parecen de lejos y se distinguen de cerca: por eso se valora.\n\n💬 ¿A tu hijo alguna vez le dijeron que \"se pega\"? Cuéntame dónde pasó: escuela, alberca, familia.\n\n🔖 Comparte este post con la maestra, con la mamá que no deja que su hijo se junte y con quien en tu familia sigue diciendo que es falta de baño: una frase repetida es lo que hace que un niño se quede solo en el recreo, y una explicación corta es lo que lo arregla. Guárdalo también para tenerlo a la mano el día que tengas que explicarlo en la escuela.\n\n📲 ¿Tu hijo lleva semanas con placas que no ceden o con el cuero cabelludo escamoso? Te valoro en consulta. Agenda en Doctoralia, el enlace está en la biografía.\n\n#Psoriasis #MesDeLaPsoriasis #DermatologiaPediatrica #PielSana #DermatologoDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Mes de la Psoriasis",
+  "hashtags": [
+    "#Psoriasis",
+    "#MesDeLaPsoriasis",
+    "#DermatologiaPediatrica",
+    "#PielSana",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*No se contagia.*\nNo es **piel sucia.**",
+      "pregunta": "¿Qué es la psoriasis?",
+      "foto": "/media/psoriasis-no-es-contagiosa-ni-es-piel-sucia/pexels-4130917.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Isaac Quesada",
+        "url": "https://www.pexels.com/photo/cute-little-girl-looking-through-the-glass-window-4130917/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **la psoriasis?**",
+      "bajada": "El problema está en las defensas, no en la higiene.",
+      "cuerpo": "La psoriasis es una enfermedad de la piel en la que el sistema de defensa del cuerpo trabaja de más. La piel se renueva demasiado rápido, las células se amontonan y forman placas. Es crónica: va y viene por temporadas. No la causa la falta de baño.",
+      "visual": {
+        "clase": "icono",
+        "slug": "skin-layers-cross-section",
+        "iconoSugerido": "skin layers cross section"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo se ve* **en un niño?**",
+      "bajada": "En el cuero cabelludo se confunde con caspa.",
+      "cuerpo": "Son placas rojas o rosadas cubiertas de escamas blanquecinas, que muchas veces pican. En niños suelen ser más pequeñas y delgadas que en adultos. Salen sobre todo en codos, rodillas, cuero cabelludo y ombligo. En bebés, a veces solo en la zona del pañal.",
+      "visual": {
+        "clase": "icono",
+        "slug": "hairbrush",
+        "iconoSugerido": "hairbrush"
+      },
+      "fuente": "AAD, KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No se pega* **por tocar.**",
+      "bajada": "Ni en la alberca, ni compartiendo toalla.",
+      "cuerpo": "No se pega. Ni por tocar, ni por compartir toalla, ni en la alberca, ni con un abrazo. Tampoco sale por estar sucio. Octubre es el Mes de la Psoriasis y este es el dato que hay que repetir: al niño lo aparta el mito, no la enfermedad.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/psoriasis-no-es-contagiosa-ni-es-piel-sucia/pexels-5275383.jpg",
+        "ideaImagen": "Dos niños jugando juntos en el patio de la escuela a la hora del recreo, plano medio, ambiente cotidiano y con aire alrededor.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Antonius Ferret",
+          "url": "https://www.pexels.com/photo/little-girls-playing-with-chalk-5275383/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Lo que sí* **ayuda en casa.**",
+      "puntos": [
+        "Crema humectante todos los días, sobre la piel todavía húmeda al salir del baño.",
+        "Baños cortos y con agua tibia: la muy caliente reseca y hace que pique más.",
+        "Uñas cortas y ropa de algodón; rascarse puede levantar placas nuevas en ese mismo sitio.",
+        "Avisa en la escuela que no se contagia, con el nombre de la enfermedad. Eso le quita la mitad del peso."
+      ],
+      "fuente": "AAD, Cleveland Clinic, StatPearls"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo* **verlo en consulta.**",
+      "bajada": "Hay tratamiento: la psoriasis se controla.",
+      "cuerpo": "Agenda valoración si las placas crecen o no ceden, si el cuero cabelludo escama y no mejora, si las uñas tienen hoyitos o se despegan, o si le duelen o se le hinchan las articulaciones. También si aparecen muchas placas chiquitas después de una infección de garganta.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "AAP, Mayo Clinic, AAD"
+    }
+  ]
+}

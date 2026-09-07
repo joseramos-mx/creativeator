@@ -1,0 +1,99 @@
+{
+  "slug": "alergias-de-otono-por-que-el-cambio-de-clima-te-congestiona",
+  "tema": "Alergias de otoño: por qué el cambio de clima congestiona a los niños",
+  "creado": "2026-09-16",
+  "estado": "borrador",
+  "paleta": "ambar",
+  "copy": "No es gripa. Es otoño. 🍂\n\nSi tu hijo lleva tres semanas estornudando, con la nariz tapada y sin nada de fiebre, seguramente es rinitis alérgica estacional: la alergia de otoño. Y no es casualidad que empiece justo con el cambio de estación. El polen de las malezas sube a finales del verano y sigue en el aire estos meses, las hojas húmedas del suelo sueltan esporas de hongos, y dentro de casa cerramos ventanas y prendemos la calefacción, así que el polvo con ácaros se queda encerrado con nosotros.\n\n🔍 Cómo reconocerlo: moco claro y aguado, estornudos en serie, ojos llorosos y comezón en nariz, ojos y garganta. Sin fiebre, y por semanas, no por días (Mayo Clinic).\n\n⚠️ Por qué justo ahora: el polen de malezas y los hongos de las hojas húmedas son los disparadores típicos de esta temporada, y al cerrar la casa los ácaros del polvo se concentran adentro (Mayo Clinic, Cleveland Clinic).\n\n✅ Qué sí ayuda en casa: baño y cambio de ropa al llegar de la calle, ventanas cerradas los días de viento, lejos de los montones de hojas, y ropa de cama lavada con agua caliente cada semana (Mayo Clinic).\n\n⚡ Ojo, con esto se confunde: con el resfriado común, que dura de tres a siete días y puede dar fiebre. La alergia no da fiebre y no se va sola en una semana. Y hay una tercera cosa: el aire frío y seco irrita la nariz de cualquiera, aunque no haya alergia. Esa molestia se calma en cuanto entras en calor; la alergia no.\n\n💬 ¿En tu casa también amanecen todos congestionados en cuanto cambia el clima? Cuéntame en los comentarios en qué mes les empieza.\n\n🔖 Mándaselo a esa mamá o ese papá que lleva un mes diciendo que a su hijo \"no se le quita la gripa\": es la confusión más repetida de esta temporada y le va a ahorrar semanas de duda. Guárdalo también tú: estos síntomas regresan cada año en las mismas fechas, y el próximo otoño vas a querer volver a leerlo.\n\n📲 ¿Tu hijo lleva semanas así y no está durmiendo bien? Eso ya merece una valoración. Agenda tu cita en Doctoralia, el enlace está en la biografía.\n\n#RinitisAlergica #AlergiasDeOtoño #AlergologiaPediatrica #SaludInfantil #AlergologoDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Cambio de estación",
+  "hashtags": [
+    "#RinitisAlergica",
+    "#AlergiasDeOtoño",
+    "#AlergologiaPediatrica",
+    "#SaludInfantil",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*No es gripa.*\n**Es otoño.**",
+      "pregunta": "¿Lleva semanas congestionado?",
+      "foto": "/media/alergias-de-otono-por-que-el-cambio-de-clima-te-congestiona/pexels-2742684.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Mitch Kesler",
+        "url": "https://www.pexels.com/photo/photo-of-girl-standing-while-smiling-2742684/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **exactamente?**",
+      "bajada": "No es infección: es la nariz reaccionando de más.",
+      "cuerpo": "La alergia de otoño es rinitis alérgica: la nariz reacciona a algo que flota en el aire. En estos meses casi siempre es polen de malezas y esporas de hongos. No es una infección y nadie se la contagió. Es el sistema de defensa respondiendo de más a algo inofensivo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "ragweed-weed-plant-branch",
+        "iconoSugerido": "ragweed weed plant branch"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Gripa* **o alergia?**",
+      "bajada": "La comezón es la pista que casi no falla.",
+      "cuerpo": "El resfriado dura de tres a siete días y a veces trae fiebre. La alergia dura semanas y no da fiebre. El moco es claro y aguado, y los estornudos vienen en serie. Además hay comezón: en ojos, en nariz, en garganta. Eso los virus no lo hacen igual.",
+      "visual": {
+        "clase": "icono",
+        "slug": "tissue-box",
+        "iconoSugerido": "tissue box"
+      },
+      "fuente": "Mayo Clinic, KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se pone peor**\n*con el cambio.*",
+      "bajada": "Afuera hay más polen; adentro, más polvo.",
+      "cuerpo": "El polen de malezas sube a finales del verano y se mantiene en otoño. A eso se suman los hongos que crecen en las hojas húmedas del suelo. Y adentro pasa lo contrario: cierras ventanas, prendes la calefacción y el polvo con ácaros se queda encerrado. Por eso esta temporada pega doble.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/alergias-de-otono-por-que-el-cambio-de-clima-te-congestiona/pexels-1774722.jpg",
+        "ideaImagen": "Montón de hojas secas y húmedas amontonadas en el suelo de un patio o jardín, en luz de tarde, sin personas cerca.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Diana ✨",
+          "url": "https://www.pexels.com/photo/dried-leaves-1774722/"
+        }
+      },
+      "fuente": "Mayo Clinic, Cleveland Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Cuatro cosas** *que sí ayudan.*",
+      "puntos": [
+        "Baño y cambio de ropa al llegar de la calle: el polen se queda en el pelo.",
+        "Ventanas cerradas los días de viento, sobre todo por la tarde.",
+        "Nada de jugar encima de los montones de hojas secas o húmedas.",
+        "Sábanas y fundas de almohada lavadas con agua caliente cada semana."
+      ],
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **ir a consulta?**",
+      "bajada": "Cuando ya no lo deja dormir ni ir a la escuela.",
+      "cuerpo": "Pide valoración si los síntomas llevan más de dos semanas, si no lo dejan dormir o si por eso falta a la escuela. También si aparece tos por las noches, silbidos al respirar o dolores de oído que se repiten. Ahí ya no es solo la nariz y conviene revisarlo con calma.",
+      "visual": {
+        "clase": "icono",
+        "slug": "bed-with-pillow-at-night",
+        "iconoSugerido": "bed with pillow at night"
+      },
+      "fuente": "Mayo Clinic, AAP"
+    }
+  ]
+}

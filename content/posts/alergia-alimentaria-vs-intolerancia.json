@@ -1,0 +1,99 @@
+{
+  "slug": "alergia-alimentaria-vs-intolerancia",
+  "tema": "Alergia alimentaria vs intolerancia alimentaria en niños",
+  "creado": "2026-09-09",
+  "estado": "borrador",
+  "paleta": "amarillo",
+  "copy": "No es lo mismo alergia que intolerancia 🥛\n\nSi a tu hijo le salen ronchas minutos después de comer, hablamos de una alergia alimentaria: el sistema de defensa reacciona contra ese alimento. Si le dan gases y cólicos un rato después, casi siempre es una intolerancia, y eso ocurre en la digestión. Hoy todo se etiqueta igual en redes —\"sin lactosa\", \"sin gluten\", pruebas caseras que prometen decirte a qué es alérgico— y por eso llegan tantos niños al consultorio con media alacena prohibida sin que nadie los haya valorado.\n\n🔍 Cómo reconocer cada una: la alergia aparece rápido, entre minutos y un par de horas, con ronchas, comezón, labios hinchados, vómito o tos; la intolerancia tarda más, se queda en la panza y depende de la cantidad que comió (Mayo Clinic, Cleveland Clinic).\n\n⚠️ Lo que sí tiene riesgo: las dietas de eliminación largas y sin supervisión pueden dejar huecos en la nutrición de un niño en crecimiento, sobre todo cuando se quitan leche, trigo o huevo completos (AAP).\n\n✅ Qué hacer antes de la cita: anota qué comió, cuánto y cuántos minutos pasaron; toma foto de las ronchas porque rara vez duran hasta la consulta; observa si pasa cada vez con ese alimento o solo a veces; y no elimines grupos completos por tu cuenta (AAP, KidsHealth).\n\n⚡ Ojo, aquí es donde se confunden: la intolerancia a la lactosa y la alergia a la proteína de la leche se disparan con el mismo vaso, pero la primera da síntomas de panza y tolera porciones chicas, y la segunda puede dar ronchas o vómito aunque haya sido poquito. Lo mismo pasa con un alimento muy condimentado o muy ácido, que irrita la boca y deja la piel roja alrededor sin ser alergia.\n\n💬 ¿Qué alimento le tienes en la mira a tu hijo y todavía no sabes si es alergia o intolerancia? Escríbelo en un renglón.\n\n🔖 Mándaselo a quien ya le quitó la leche \"por si acaso\": esa es la persona a la que este carrusel le sirve hoy, antes de que pasen otros seis meses de dieta a ciegas. Compártelo también en el grupo de la escuela, donde las loncheras se intercambian todos los días y conviene que las mamás y los papás sepan la diferencia. Y guárdalo para tenerlo a la mano el día que necesites explicar en un cumpleaños por qué tu hijo sí puede o no puede comer algo.\n\n📲 ¿Tu hijo reacciona con algún alimento y no saben cuál es? Se puede estudiar y ponerle nombre. Agenda valoración en Doctoralia, con el enlace en la biografía.\n\n#AlergiaAlimentaria #Loncheras #AlergologiaPediatrica #SaludInfantil #AlergologoDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Trending + alergología",
+  "hashtags": [
+    "#AlergiaAlimentaria",
+    "#Loncheras",
+    "#AlergologiaPediatrica",
+    "#SaludInfantil",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*No es lo mismo*\n**alergia que intolerancia**",
+      "pregunta": "¿Cómo saber cuál es?",
+      "foto": "/media/alergia-alimentaria-vs-intolerancia/pexels-8668968.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ron Lach",
+        "url": "https://www.pexels.com/photo/boy-in-white-sweater-eating-cereals-in-white-bowl-8668968/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La diferencia está*\nen **las defensas**",
+      "bajada": "Una es del sistema inmune. La otra, de la digestión.",
+      "cuerpo": "La alergia alimentaria es una reacción del sistema de defensa: el cuerpo confunde un alimento con una amenaza y responde. La intolerancia ocurre en la digestión: al intestino le cuesta procesar algo, como la lactosa. Se parecen en el nombre y en casi nada más.",
+      "visual": {
+        "clase": "icono",
+        "slug": "glass-of-milk-next-to-a-peanut",
+        "iconoSugerido": "glass of milk next to a peanut"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo* **se ve cada una?**",
+      "bajada": "El reloj te da la primera pista.",
+      "cuerpo": "La alergia suele aparecer rápido, entre minutos y un par de horas después de comer: ronchas, comezón, labios hinchados, vómito, tos. La intolerancia tarda más y se queda en la panza: gases, cólicos, diarrea. Y depende de la cantidad; una porción chica a veces no le hace nada.",
+      "visual": {
+        "clase": "icono",
+        "slug": "dinner-plate-with-a-clock",
+        "iconoSugerido": "dinner plate with a clock"
+      },
+      "fuente": "Mayo Clinic y Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Sin lactosa** *está de moda.*",
+      "bajada": "Quitar alimentos por meses no es inofensivo.",
+      "cuerpo": "En redes, \"sin lactosa\" y \"sin gluten\" suenan a lo mismo que alergia, y no lo son. El problema viene después: quitarle leche, trigo o huevo durante meses sin que nadie lo revise. Las dietas de eliminación sin supervisión pueden dejar huecos en la nutrición de un niño que está creciendo.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/alergia-alimentaria-vs-intolerancia/pexels-7451964.jpg",
+        "ideaImagen": "Un carrito de súper frente al refrigerador de lácteos, con envases de leche y etiquetas visibles.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Nothing Ahead",
+          "url": "https://www.pexels.com/photo/cart-park-in-modern-supermarket-7451964/"
+        }
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Qué llevar** *a la consulta*",
+      "puntos": [
+        "Anota qué comió, cuánto y cuántos minutos pasaron antes de la reacción.",
+        "Toma foto de las ronchas: casi nunca duran hasta el día de la cita.",
+        "Fíjate si pasa cada vez con ese alimento o solo algunas veces.",
+        "No elimines grupos completos de alimentos por tu cuenta antes de la valoración."
+      ],
+      "fuente": "AAP y KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo **llevarlo** *al alergólogo?*",
+      "bajada": "Estos son motivos claros de valoración.",
+      "cuerpo": "Agenda si le salen ronchas o se le hinchan los labios después de comer, si vomita cada vez que prueba cierto alimento, o si ya le quitaste algo y no sabes cuándo regresarlo. Si alguna vez le costó respirar o se le hinchó la lengua, eso se atiende de inmediato.",
+      "visual": {
+        "clase": "icono",
+        "slug": "calendar-with-fork-and-knife",
+        "iconoSugerido": "calendar with fork and knife"
+      },
+      "fuente": "Mayo Clinic y AAP"
+    }
+  ]
+}

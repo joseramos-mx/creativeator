@@ -1,0 +1,106 @@
+{
+  "slug": "colageno-en-polvo-de-verdad-sirve",
+  "tema": "Colágeno en polvo: ¿de verdad sirve?",
+  "creado": "2026-08-31",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "El colágeno en polvo, ¿sirve de algo? 🥄\n\nEs enero y el colágeno hidrolizado en polvo está en todos los videos, en todos los anaqueles y en el bote que alguien de tu familia ya compró. Antes de que se vuelva gasto fijo del año, vale la pena saber qué se sabe y qué no.\n\n🔍 Qué es y qué no es: el colágeno es la proteína más abundante del cuerpo y sostiene piel, huesos y articulaciones. El polvo viene de res, pescado o pollo, y tu digestión lo desarma en aminoácidos como a cualquier otra proteína. No viaja entero hasta la cara (Cleveland Clinic).\n\n⚠️ Lo que dice la evidencia: hay estudios pequeños que reportan piel algo más hidratada y elástica tras varias semanas, pero son cortos y muchos los financia quien vende el producto. No es \"no sirve\": es que todavía no alcanza para prometer lo que promete la etiqueta (Cleveland Clinic).\n\n✅ Antes de comprarlo: revisa de qué está hecho si hay alergia a pescado, mariscos o huevo en casa; desconfía del antes y después impreso en el bote; ponte protector solar diario, que para la piel sí tiene evidencia sólida; y no se lo des a un menor sin consultarlo antes (AAD, AAP).\n\n⚡ Ojo, aquí es donde se revuelve todo: no es lo mismo el colágeno que tomas, la crema que dice \"con colágeno\" —la molécula es demasiado grande para atravesar la piel— y lo que sí estimula tu propio colágeno, que es cuidarte del sol y lo que tu dermatólogo indique. Tres cosas distintas vendidas con la misma palabra.\n\n💬 ¿Alguien de tu casa lo está tomando? Cuéntame por qué lo empezó: por la piel, por las rodillas o porque lo vio en un video.\n\n🔖 Este es de los que se mandan. Si tienes ese chat familiar donde cada enero circula el bote de moda, este post contesta la pregunta antes de que se gaste el dinero. Compártelo con quien ya lo compró y con quien está a punto. Y guárdalo para la próxima vez que te lo recomienden en una fiesta.\n\n📲 ¿Lo empezaste por una piel que se irrita, se descama o pica desde hace semanas? Eso no lo resuelve un suplemento y sí conviene revisarlo. Agenda conmigo en Doctoralia, el enlace está en la biografía.\n\n#ColagenoEnPolvo #ColagenoHidrolizado #DermatologiaParaFamilias #CuidadoDeLaPiel #DermatologoDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Trending",
+  "hashtags": [
+    "#ColagenoEnPolvo",
+    "#ColagenoHidrolizado",
+    "#DermatologiaParaFamilias",
+    "#CuidadoDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El colágeno en polvo,*\n¿**sirve de algo?**",
+      "pregunta": "¿Sirve o es moda?",
+      "foto": "/media/colageno-en-polvo-de-verdad-sirve/pexels-6331126.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Anete Lusina",
+        "url": "https://www.pexels.com/photo/faceless-woman-pouring-juice-in-glass-in-kitchen-on-table-6331126/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Qué es* **y qué no es.**",
+      "bajada": "No viaja entero hasta tu cara.",
+      "cuerpo": "El colágeno es la proteína más abundante de tu cuerpo: sostiene piel, huesos y articulaciones. El polvo es colágeno de res, pescado o pollo, cortado en pedacitos. Cuando lo tomas, tu digestión lo desarma en aminoácidos, igual que a cualquier proteína de tu comida.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/colageno-en-polvo-de-verdad-sirve/pexels-12625114.jpg",
+        "ideaImagen": "Cuchara medidora con polvo color beige sobre la barra de una cocina, junto a un vaso de agua",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Towfiqu barbhuiya",
+          "url": "https://www.pexels.com/photo/photo-of-a-white-powder-and-a-scoop-lying-on-the-blue-background-12625114/"
+        }
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Lo que dice** *la evidencia.*",
+      "bajada": "Ni milagro ni estafa: todavía no alcanza.",
+      "cuerpo": "Hay estudios pequeños que reportan piel un poco más hidratada y elástica después de varias semanas. Casi todos son cortos y muchos los financia quien vende el producto. Eso no significa que no sirva. Significa que la prueba todavía no da para prometer lo que promete la etiqueta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "stack-of-research-papers",
+        "iconoSugerido": "stack of research papers"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Por qué* **está en todos lados.**",
+      "bajada": "La etiqueta promete y nadie la comprueba.",
+      "cuerpo": "Tu producción de colágeno empieza a bajar desde los veintitantos, y eso lo sabe muy bien quien te lo vende en cada video de enero. Los suplementos no pasan por la misma revisión que un medicamento antes de llegar al anaquel. Nadie verifica el antes y después.",
+      "visual": {
+        "clase": "foto",
+        "src": "/media/colageno-en-polvo-de-verdad-sirve/pexels-7359154.jpg",
+        "ideaImagen": "Repisa de baño de casa con varios botes de suplementos y un celular apoyado al lado",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Erik Mclean",
+          "url": "https://www.pexels.com/photo/bottles-of-cologne-and-perfume-on-shelf-in-bathroom-7359154/"
+        }
+      },
+      "fuente": "Cleveland Clinic, Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Antes de comprarlo:** *cuatro cosas.*",
+      "puntos": [
+        "Revisa de qué está hecho: si viene de pescado, mariscos o huevo y hay alergia en casa, no.",
+        "Desconfía del antes y después en la etiqueta: ningún suplemento puede prometer eso.",
+        "Ponte protector solar todos los días. Para la piel, eso sí tiene evidencia sólida.",
+        "No se lo des a tus hijos ni a tu adolescente sin preguntarlo antes en su consulta."
+      ],
+      "fuente": "AAD, AAP, Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo sí* **hay que revisarlo.**",
+      "bajada": "El polvo no arregla una piel que lleva semanas mal.",
+      "cuerpo": "Si después de tomarlo aparecen ronchas, comezón o hinchazón en labios o párpados, suspéndelo y acude a valoración: puede ser la fuente animal del producto. Y si lo empezaste porque tu piel se irrita, se descama o pica desde hace semanas, eso merece una revisión, no un suplemento.",
+      "visual": {
+        "clase": "icono",
+        "slug": "collagen-powder-tub-set-aside",
+        "iconoSugerido": "collagen powder tub set aside"
+      },
+      "fuente": "Cleveland Clinic"
+    }
+  ]
+}
