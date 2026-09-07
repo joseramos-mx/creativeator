@@ -20,6 +20,7 @@ encendido, qué está apagado y por qué.
 | Paletas | Veinticinco tonos a la misma luminancia; diez las elige el redactor, el resto a mano | — |
 | Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
+| El mes de una | `npm run mes`: propone la tanda, la escribe entera y la deja en borradores | las mismas tres |
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
@@ -45,8 +46,11 @@ encendido, qué está apagado y por qué.
 - **El doble render de íconos.** Sobre un fondo de color plano una lente
   transparente se lee como un agujero, así que el vidrio va opaco por diseño y
   el croma basta. Espera a un concepto que de verdad necesite translucidez.
-- **`/api/mes`**, la generación del mes completo. Es lo único de la fase 6 que
-  no está.
+- **La tanda en paralelo.** `npm run mes` escribe uno a uno. En paralelo sería
+  cuatro veces más rápido y se comería la librería de íconos: dos carruseles a
+  la vez que pidan el mismo concepto lo generarían dos veces y una escritura
+  del manifiesto pisaría a la otra. La tanda se deja corriendo sola, así que el
+  tiempo no es el problema que hay que resolver.
 
 ---
 
@@ -347,6 +351,10 @@ cuesta lo mismo que haberlo elegido antes.**
   proponiendo tres —ordenar lo mejor primero le sale mejor que pedirle una sola
   respuesta— pero cuál se escribe no se pregunta. Se enseña cuál tomó y por qué
   toca este mes, que es información, no una pregunta.
+- **Con un tema escrito, se escribe ese**, tal cual, sin pasar por la propuesta.
+  Ojo con una asimetría: el filtro de especialidad —lo que descarta estética,
+  láser, rellenos, melanoma y cirugía— vive en el prompt de la propuesta y solo
+  ahí. Un tema tecleado a mano no pasa por él.
 - **Las fotos de ambiente ya vienen puestas.** El carrusel redactado sale con
   sus imágenes descargadas y acreditadas, no con el hueco: el propio redactor
   devuelve la consulta al banco y los términos de descarte de cada slide en la
@@ -370,6 +378,76 @@ cuesta lo mismo que haberlo elegido antes.**
   `content/marca.json`.
 - **El paso de edición entre redactar y exportar.** El borrador se abre en el
   editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
+
+## El mes de una
+
+```
+npm run dev                      # en otra terminal, y anota el puerto
+npm run mes -- 8 3001            # ocho borradores, unos veinte minutos
+npm run mes -- 8 3001 --temas    # solo los temas, sin escribir nada
+```
+
+Propone la tanda del mes, tira lo repetido, escribe los carruseles uno a uno y
+los deja en `content/posts/` como borradores. Se puede dejar sola.
+
+Sin argumentos son **ocho** —dos por semana, el ritmo de la cuenta— en el
+puerto 3000. El techo es veinte y lo hace cumplir el servidor: un número de más
+tecleado por error se para antes de la primera llamada y no cuarenta minutos
+después.
+
+**Qué cambia respecto a redactar de uno en uno: nada del carrusel.** La tanda
+habla por HTTP con el servidor de desarrollo y llama a `/api/redactar`, la
+misma ruta que el botón del panel. Mismo prompt, mismas fotos, mismos íconos.
+No es una segunda implementación que se va separando sola: si el panel mejora,
+la tanda mejora.
+
+Lo que sí añade son cuatro cosas que solo tienen sentido en tanda:
+
+- **Pide los temas de golpe, no de tres en tres.** Viéndolos juntos, el modelo
+  puede repartirlos por semanas del mes y no gastar el mes entero en una
+  condición. Se le dice además que se van a ver como cuadrícula en el perfil,
+  así que si dos temas admiten honestamente colores distintos, que se los dé —
+  sin forzar el color, que la regla de la paleta sigue mandando.
+- **Los repetidos se tiran antes de pagarlos.** Dos temas gemelos son dos
+  llamadas largas y dos revisiones enteras para publicar uno. Se miden en
+  `lib/mes.ts`, gratis, antes del bucle caro.
+- **Ninguna foto se usa dos veces.** Ocho carruseles sobre temas vecinos le
+  piden al banco escenas parecidas, y la mejor foto de aula suele ser la misma.
+  Cada llamada devuelve las que gastó y la siguiente las recibe apartadas.
+- **Nunca sobrescribe.** Si el slug ya existe, lo salta y lo dice. Por eso
+  **volver a correrlo después de un fallo continúe donde iba**, y por eso una
+  tanda no puede pisar un borrador que alguien estaba revisando.
+
+### El costo de verdad no son los tokens
+
+Al terminar dice cuántas afirmaciones acaban de entrar a la cola y cuántas de
+ésas son indicaciones de seguridad. Medido sobre un carrusel real de la tanda:
+**once afirmaciones, cinco de seguridad.** Ocho carruseles son del orden de
+noventa por revisar y cuarenta que firma el doctor, no tú. Escribir el mes toma
+veinte minutos; revisarlo, no.
+
+**La tanda no afloja nada.** Todo sale en `borrador`, la cola de afirmaciones
+queda entera, las fotos clínicas siguen sin poder entrar por aquí y ninguno se
+puede pasar de estado hasta que esté revisado. Lo único que se hace en tanda es
+**escribir**, que es la parte lenta y la que no decide nada. Revisar sigue
+siendo de uno en uno, y ahí no hay atajo.
+
+### Los dos umbrales del repetido
+
+`lib/mes.ts` compara los temas por las palabras que dicen de qué van, sin la
+gramática. De 85 % para arriba **se tira**: es el mismo título reordenado.
+Entre 60 y 85 **se escribe y se avisa**, y esa franja existe porque el banco
+encontró que contar palabras no puede resolverla:
+
+| | |
+|---|---|
+| «Protector solar en niños» vs «Protector solar y dermatitis» | 67 % — **dos** carruseles |
+| «Alergia al polen en primavera» vs «Alergia al polen en marzo» | 67 % — **uno** |
+
+Miden igual porque tienen la misma forma: dos palabras compartidas y una
+distinta. Lo que los separa es si la palabra distinta cambia lo que se aprende,
+y eso no lo dice contar. Así que en esa franja se escribe y se dice contra qué
+se parece: cuál de los dos sobra es criterio editorial y no de un umbral.
 
 ## Exportar
 
@@ -609,6 +687,7 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
 | `npm run banco-iconos` | Que `iconoSugerido` case con el ícono correcto, o con ninguno | Un ícono equivocado ya puesto no lo revisa nadie: sale publicado |
 | `npm run banco-paletas` | Que las 25 estén a la misma luminancia | El contraste no se ve, se mide: con 25 tonos, revisar a ojo es revisar 25 veces |
+| `npm run banco-mes` | Que la tanda no escriba dos veces el mismo carrusel | Un repetido cuesta una llamada larga y una revisión entera para tirarlo; tirar uno bueno deja el mes corto sin que nadie sepa por qué |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
@@ -806,13 +885,19 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 | 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy y los créditos. |
 | 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | ✅ La librería alojada aquí, con ingesta, manifiesto y buscador. |
-| 6 · redacción | ✅ `/api/redactar` y la cola de afirmaciones. Falta `/api/mes`. |
+| 6 · redacción | ✅ `/api/redactar`, la cola de afirmaciones y el mes entero. |
 | + imágenes | ✅ Pexels para contexto, Wikimedia Commons para clínicas, con registro de licencia. |
 | + generación | ✅ Íconos con Gemini, croma y la misma puerta que los descargados. |
 
-**Lo único pendiente es `/api/mes`**: proponer los temas del mes, dejar que se
-tachen los que no sirven, y redactar uno por uno guardando cada borrador en
-cuanto llega. Está descrito en `references/ia.md` de la skill.
+**Las seis fases están completas.** El último hueco era el mes completo, que
+`references/ia.md` describía como `/api/mes`. Acabó siendo `npm run mes` y no
+una ruta: veinte minutos de trabajo no caben en una petición que se corta a los
+cinco, y lo que uno quiere cuando falla el séptimo es que los seis anteriores
+sigan en disco. Un script que escribe archivo por archivo hace eso sin
+inventar nada; una ruta habría necesitado una cola de trabajos para lo mismo.
+El paso de tachar temas a mano tampoco se construyó: los repetidos se miden y
+se tiran solos, y el resto es preferencia. `npm run mes -- 8 3001 --temas`
+enseña la tanda sin escribirla, para quien quiera verla antes.
 
 ---
 

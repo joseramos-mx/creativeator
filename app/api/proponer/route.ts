@@ -3,7 +3,7 @@ import { mesDe, proponer } from '@/lib/proponer';
 import { paletas } from '@/template/tokens';
 
 /**
- * POST /api/proponer — sin cuerpo → tres temas para elegir.
+ * POST /api/proponer — `{ cuantos? }` → temas para elegir. Tres por defecto.
  *
  * El contexto sale de aquí y no del navegador: el mes lo pone el servidor y los
  * temas ya publicados se leen de content/posts/. Si el editor los mandara,
@@ -17,10 +17,14 @@ import { paletas } from '@/template/tokens';
 
 export const maxDuration = 120;
 
-export async function POST() {
+export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json({ error: 'Falta ANTHROPIC_API_KEY en .env.local.' }, { status: 500 });
   }
+
+  // El panel no manda cuerpo; la tanda del mes manda cuántos quiere.
+  const cuerpo = await req.json().catch(() => ({}));
+  const cuantos = typeof cuerpo?.cuantos === 'number' ? cuerpo.cuantos : 3;
 
   try {
     const [marca, posts] = await Promise.all([leerMarca(), listarPosts()]);
@@ -37,7 +41,7 @@ export async function POST() {
         .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
     };
 
-    return Response.json({ contexto, propuestas: await proponer(contexto) });
+    return Response.json({ contexto, propuestas: await proponer(contexto, cuantos) });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudieron proponer temas.';
     return Response.json({ error }, { status: 502 });

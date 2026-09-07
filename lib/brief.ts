@@ -1,6 +1,11 @@
 import { PALETA_POR_DEFECTO } from '@/template/tokens';
 import type { Post, Slide } from '@/template/tipos';
 import { FOTO_PENDIENTE } from './edicion';
+// El slug vive aparte para que la tanda del mes pueda calcularlo sin cargar
+// este archivo, que importa con el alias `@/`. Ver lib/slug.ts.
+import { aSlug, sinAcentos } from './slug';
+
+export { aSlug };
 
 /**
  * lib/brief.ts — de un brief pegado a mano al JSON del carrusel.
@@ -346,18 +351,3 @@ export function desescapar(s: string) {
   return s.replace(/\\n/g, '\n');
 }
 
-function sinAcentos(s: string) {
-  return s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
-
-export function aSlug(s: string) {
-  return (
-    sinAcentos(s)
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '')
-      .slice(0, 60) || 'carrusel'
-  );
-}

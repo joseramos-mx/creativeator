@@ -40,28 +40,52 @@ const Propuesta = z.object({
   porQuePaleta: z.string(),
 });
 
-const Propuestas = z.object({
-  propuestas: z.array(Propuesta).min(3).max(3),
-});
-
 export type TPropuesta = z.infer<typeof Propuesta>;
 export { mesDe, type ContextoDeTemas } from './temas';
 
-export async function proponer(contexto: ContextoDeTemas): Promise<TPropuesta[]> {
+/**
+ * Más de esto no se propone de una.
+ *
+ * No es un límite del modelo, es del mes: veinte carruseles no caben en cuatro
+ * semanas de una cuenta que publica dos por semana, y cada uno que se escribe
+ * de más cuesta una llamada larga y una revisión entera. Un número de más
+ * tecleado por error se para aquí y no cuarenta minutos después.
+ */
+export const MAXIMO = 20;
+
+export async function proponer(
+  contexto: ContextoDeTemas,
+  cuantos = 3,
+): Promise<TPropuesta[]> {
+  if (!Number.isInteger(cuantos) || cuantos < 1 || cuantos > MAXIMO) {
+    throw new Error(`Se proponen entre 1 y ${MAXIMO} temas de una vez, no ${cuantos}.`);
+  }
+
+  // El esquema se arma con la cantidad pedida: pedir ocho y aceptar tres es
+  // aceptar una tanda a medias sin que nadie se entere.
+  const Propuestas = z.object({
+    propuestas: z.array(Propuesta).min(cuantos).max(cuantos),
+  });
+
   const cliente = new Anthropic();
 
   const respuesta = await cliente.messages
     .stream({
       model: MODELO,
-      max_tokens: 4000,
+      // Escala con lo que se pide. Con el techo fijo en 4000, una tanda de doce
+      // se cortaba a la mitad y el error salía como "no devolvió la estructura".
+      max_tokens: Math.max(4000, cuantos * 1200),
       thinking: { type: 'adaptive' },
-      messages: [{ role: 'user', content: instrucciones(contexto) }],
+      messages: [{ role: 'user', content: instrucciones(contexto, cuantos) }],
       output_config: { format: zodOutputFormat(Propuestas) },
     })
     .finalMessage();
 
   if (respuesta.stop_reason === 'refusal') {
     throw new Error('El modelo declinó proponer temas.');
+  }
+  if (respuesta.stop_reason === 'max_tokens') {
+    throw new Error(`La lista se cortó a la mitad. Pide menos de ${cuantos} temas.`);
   }
   const salida = respuesta.parsed_output;
   if (!salida) throw new Error('El modelo no devolvió la estructura esperada.');

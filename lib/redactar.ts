@@ -96,9 +96,31 @@ export type ResultadoRedaccion = {
   post: TPost;
   porQuePaleta: string;
   avisos: string[];
+  /** Lo que costó la llamada. Sirve para sumar una tanda entera. */
+  uso: { entrada: number; salida: number };
 };
 
-export async function redactar(tema: string, slug: string): Promise<ResultadoRedaccion> {
+export type OpcionesRedaccion = {
+  /**
+   * Las fotos que no se pueden volver a usar, como `"proveedor:id"`.
+   *
+   * Existe para la tanda del mes. Cada carrusel por su cuenta elige el mejor
+   * candidato del banco, y eso está bien; pero ocho carruseles seguidos sobre
+   * temas vecinos —el regreso a clases, el uniforme, el recreo— le piden al
+   * banco escenas parecidas y la mejor foto de aula suele ser la misma. En el
+   * perfil eso se ve de inmediato: la cuadrícula repite imagen.
+   *
+   * **Se muta al elegir**, así que quien la pasa la ve crecer. Y sirve también
+   * dentro de un mismo carrusel, donde dos slides podían caer en la misma foto.
+   */
+  usadas?: Set<string>;
+};
+
+export async function redactar(
+  tema: string,
+  slug: string,
+  opciones: OpcionesRedaccion = {},
+): Promise<ResultadoRedaccion> {
   const voz = await readFile(join(process.cwd(), 'content', 'voz.md'), 'utf8');
   // La cuenta no está en voz.md, y el copy la necesita: el bloque 📲 nombra la
   // plataforma y el último hashtag lleva la ciudad.
@@ -142,10 +164,18 @@ export async function redactar(tema: string, slug: string): Promise<ResultadoRed
   const avisos = revisar(redaccion, post);
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
-    rellenarFotos(post, redaccion, slug, avisos),
+    rellenarFotos(post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
     rellenarIconos(post, avisos),
   ]);
-  return { post, porQuePaleta: redaccion.porQuePaleta, avisos };
+  return {
+    post,
+    porQuePaleta: redaccion.porQuePaleta,
+    avisos,
+    uso: {
+      entrada: respuesta.usage?.input_tokens ?? 0,
+      salida: respuesta.usage?.output_tokens ?? 0,
+    },
+  };
 }
 
 /**
@@ -242,6 +272,7 @@ async function rellenarFotos(
   r: TRedaccion,
   slug: string,
   avisos: string[],
+  usadas: Set<string>,
 ): Promise<void> {
   const banco = bancoDe(slug);
   if (!banco.disponible()) {
@@ -275,16 +306,28 @@ async function rellenarFotos(
         const candidatos = await banco.buscar(consulta, 24, orientacion);
         const { pasan, apartados } = cribar(candidatos, pedido?.descartar ?? []);
         const { encajan, recortadas } = porEncuadre(pasan, caja);
-        const mejor = encajan[0];
+
+        // Las que ya están puestas en otro slide o en otro carrusel de la misma
+        // tanda quedan fuera. Ver `OpcionesRedaccion.usadas`.
+        const libres = encajan.filter((c) => !usadas.has(`${c.proveedor}:${c.id}`));
+        const repetidas = encajan.length - libres.length;
+
+        const mejor = libres[0];
         if (!mejor?.credito) {
           avisos.push(
             `Sin foto para ${donde}: el banco no devolvió nada usable ` +
               `para "${consulta}"` +
               `${apartados.length ? `, ${apartados.length} apartada(s) por el descarte` : ''}` +
-              `${recortadas.length ? `, ${recortadas.length} descartada(s) porque el recorte se las comía` : ''}.`,
+              `${recortadas.length ? `, ${recortadas.length} descartada(s) porque el recorte se las comía` : ''}` +
+              `${repetidas ? `, ${repetidas} ya usada(s) en esta tanda` : ''}.`,
           );
           return;
         }
+
+        // Se aparta **antes** de bajarla, no después. Los slides van en
+        // paralelo, y entre elegir y terminar la descarga hay tiempo de sobra
+        // para que otro slide elija la misma. Apuntarla aquí es atómico.
+        usadas.add(`${mejor.proveedor}:${mejor.id}`);
 
         const ruta = await descargarFoto(banco, mejor, slug);
         if (slide.tipo === 'portada') {

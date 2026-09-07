@@ -35,14 +35,32 @@ export function mesDe(fecha: Date): string {
   return MESES[fecha.getMonth()];
 }
 
-export function instrucciones(contexto: ContextoDeTemas): string {
+/** Para escribir la cantidad en el prompt como se escribe en el resto. */
+const NUMEROS = [
+  'cero', 'un', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho',
+  'nueve', 'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis',
+  'diecisiete', 'dieciocho', 'diecinueve', 'veinte',
+];
+const enPalabras = (n: number) => NUMEROS[n] ?? String(n);
+
+/**
+ * El prompt de la propuesta.
+ *
+ * `cuantos` cambia más que un número. Con tres, el modelo propone los tres
+ * temas más obvios del mes y está bien: alguien los va a leer. Con la tanda
+ * entera de un mes hay que pedirle además dos cosas que con tres no hacían
+ * falta —repartir el calendario dentro del mes y no gastar el mes entero en una
+ * sola condición—, porque nadie va a comparar doce títulos entre sí.
+ */
+export function instrucciones(contexto: ContextoDeTemas, cuantos = 3): string {
   const opciones = contexto.paletas.map((p) => `  · ${p.nombre}: ${p.cuando}`).join('\n');
+  const tanda = cuantos > 3;
 
   const yaHechos = contexto.publicados.length
     ? contexto.publicados.map((t) => `  · ${t}`).join('\n')
     : '  (todavía ninguno)';
 
-  return `Propón tres temas para los próximos carruseles de esta cuenta.
+  return `Propón ${enPalabras(cuantos)} tema${cuantos === 1 ? '' : 's'} para los próximos carruseles de esta cuenta.
 
 ## Estamos en ${contexto.mes}
 
@@ -74,7 +92,39 @@ Sí puedes proponer un ángulo distinto de la misma condición si el ángulo cam
 lo que se aprende: "cómo se contagia" y "cómo distinguirlo de un fuego" son dos
 carruseles, "qué es el impétigo" y "todo sobre el impétigo" son uno.
 
-## La paleta
+${tanda ? `## Son ${enPalabras(cuantos)} para el mismo mes
+
+No son ${enPalabras(cuantos)} temas sueltos: es el mes entero de la cuenta, y se
+va a ver como una cuadrícula.
+
+  · **Repártelos dentro del mes.** Unos que toquen la primera semana y otros la
+    última. El "porQueAhora" de cada uno debería poder decir *cuándo* de
+    ${contexto.mes}, no solo que es de ${contexto.mes}.
+  · **No gastes el mes en una sola condición.** Dos ángulos de la dermatitis
+    atópica caben; ${enPalabras(cuantos)} carruseles de dermatitis atópica son un
+    mes desperdiciado. Cubre cosas distintas de lo que esta cuenta atiende.
+  · **Que las paletas no salgan todas iguales.** No fuerces el color: la regla
+    manda y azul sigue siendo la respuesta cuando el tema no tiene color. Pero
+    si dos temas admiten honestamente colores distintos, dales distintos — la
+    cuadrícula del perfil se ve de un vistazo.
+
+` : ''}${tanda ? `## Son ${enPalabras(cuantos)} para el mismo mes
+
+No son ${enPalabras(cuantos)} temas sueltos: es el mes entero de la cuenta, y se
+va a ver como una cuadrícula.
+
+  · **Repártelos dentro del mes.** Unos que toquen la primera semana y otros la
+    última. El "porQueAhora" de cada uno debería poder decir *cuándo* de
+    ${contexto.mes}, no solo que es de ${contexto.mes}.
+  · **No gastes el mes en una sola condición.** Dos ángulos de la dermatitis
+    atópica caben; ${enPalabras(cuantos)} carruseles de dermatitis atópica son un
+    mes desperdiciado. Cubre cosas distintas de lo que esta cuenta atiende.
+  · **Que las paletas no salgan todas iguales.** No fuerces el color: la regla
+    manda y azul sigue siendo la respuesta cuando el tema no tiene uno. Pero si
+    dos temas admiten honestamente colores distintos, dales distintos — la
+    cuadrícula del perfil se ve de un vistazo.
+
+` : ''}## La paleta
 
 A cada propuesta le toca una:
 
@@ -92,5 +142,5 @@ un relleno.
     información para decidir, no un argumento de venta.
   · paleta y porQuePaleta — la que le toca y por qué, en una línea.
 
-Tres propuestas distintas entre sí. No tres ángulos del mismo tema.`;
+${enPalabras(cuantos)} propuestas distintas entre sí, no ${enPalabras(cuantos)} ángulos del mismo tema.`;
 }

@@ -5,7 +5,7 @@ import { redactar } from '@/lib/redactar';
 import { Post, validar } from '@/lib/schema';
 
 /**
- * POST /api/redactar — `{ tema, slug? }` → el borrador del carrusel, con fotos.
+ * POST /api/redactar — `{ tema, slug?, usadas? }` → el borrador, con fotos.
  *
  * **No guarda nada**, igual que /api/importar y por la misma razón: lo que
  * devuelve el modelo se enseña antes de reemplazar el contenido del editor.
@@ -29,6 +29,9 @@ export async function POST(req: Request) {
 
   let tema: string;
   let slug: string;
+  // Las fotos ya gastadas por la tanda del mes, para no repetir imagen entre
+  // carruseles. El panel no la manda y entonces va vacía. Ver lib/redactar.ts.
+  let usadas: Set<string>;
   try {
     const cuerpo = await req.json();
     tema = typeof cuerpo.tema === 'string' ? cuerpo.tema.trim() : '';
@@ -36,12 +39,13 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Escribe el tema del carrusel.' }, { status: 400 });
     }
     slug = typeof cuerpo.slug === 'string' && cuerpo.slug ? aSlug(cuerpo.slug) : aSlug(tema);
+    usadas = new Set(Array.isArray(cuerpo.usadas) ? cuerpo.usadas.filter(esTexto) : []);
   } catch {
     return Response.json({ error: 'No se entendió la petición.' }, { status: 400 });
   }
 
   try {
-    const { post, porQuePaleta, avisos } = await redactar(tema, slug);
+    const { post, porQuePaleta, avisos, uso } = await redactar(tema, slug, { usadas });
     // Se valida con el esquema de lectura, no con el del guardado: esto es un
     // borrador y todavía no ha pasado por la cola, así que exigirle la barrera
     // aquí sería rechazar exactamente lo que se acaba de pedir.
@@ -54,13 +58,17 @@ export async function POST(req: Request) {
       todos.push(`Ya hay un carrusel con el slug "${limpio.slug}". Cámbialo antes de guardar.`);
     }
 
-    return Response.json({ post: limpio, porQuePaleta, avisos: todos });
+    // `usadas` sale con las que acaba de gastar: quien encadena carruseles se
+    // la vuelve a pasar en la siguiente petición y así la tanda no repite foto.
+    return Response.json({ post: limpio, porQuePaleta, avisos: todos, uso, usadas: [...usadas] });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudo redactar.';
     // 502 y no 400: lo que falló fue la llamada al modelo, no lo que se pidió.
     return Response.json({ error }, { status: 502 });
   }
 }
+
+const esTexto = (v: unknown): v is string => typeof v === 'string';
 
 async function existe(slug: string) {
   try {
