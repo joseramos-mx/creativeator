@@ -50,6 +50,23 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "antibiotic-syrup-bottle",
+  "nombre": "antibiotic syrup bottle",
+  "etiquetas": [
+   "antibiotic",
+   "syrup",
+   "bottle"
+  ],
+  "color": "#41B94F",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 509952,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "antibiotic syrup bottle",
+  "fecha": "2026-09-07"
+ },
+ {
   "slug": "correr",
   "nombre": "correr",
   "etiquetas": [
@@ -115,6 +132,45 @@
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "fork with clock",
+  "fecha": "2026-09-07"
+ },
+ {
+  "slug": "grouped-raised-bumps-on-arm-skin",
+  "nombre": "grouped raised bumps on arm skin",
+  "etiquetas": [
+   "grouped",
+   "raised",
+   "bumps",
+   "on",
+   "arm",
+   "skin",
+   "piel",
+   "cutis",
+   "dermis"
+  ],
+  "color": "#EFB58F",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 824296,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "grouped raised bumps on arm skin",
+  "fecha": "2026-09-07"
+ },
+ {
+  "slug": "hives-welts",
+  "nombre": "hives welts",
+  "etiquetas": [
+   "hives",
+   "welts"
+  ],
+  "color": "#F3AA99",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 776127,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "hives welts",
   "fecha": "2026-09-07"
  },
  {
@@ -187,6 +243,24 @@
   "fecha": "2026-09-06"
  },
  {
+  "slug": "mosquito",
+  "nombre": "mosquito",
+  "etiquetas": [
+   "mosquito",
+   "mosco",
+   "piquete",
+   "picadura"
+  ],
+  "color": "#91B3B7",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 588774,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "mosquito",
+  "fecha": "2026-09-07"
+ },
+ {
   "slug": "palomita-verde",
   "nombre": "palomita-verde",
   "etiquetas": [
@@ -243,6 +317,22 @@
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "snowflake",
+  "fecha": "2026-09-07"
+ },
+ {
+  "slug": "swollen-lips",
+  "nombre": "swollen lips",
+  "etiquetas": [
+   "swollen",
+   "lips"
+  ],
+  "color": "#EC7178",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 895256,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "swollen lips",
   "fecha": "2026-09-07"
  },
  {
