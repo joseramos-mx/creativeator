@@ -77,6 +77,25 @@
   "bytes": 1463796
  },
  {
+  "slug": "ice-cube",
+  "nombre": "ice cube",
+  "etiquetas": [
+   "ice",
+   "cube",
+   "hielo",
+   "frio",
+   "compresa"
+  ],
+  "color": "#AAD2D8",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 920393,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "ice cube",
+  "fecha": "2026-09-07"
+ },
+ {
   "slug": "informacion",
   "nombre": "informacion",
   "etiquetas": [
@@ -169,6 +188,21 @@
   "w": 1024,
   "h": 1024,
   "bytes": 1277758
+ },
+ {
+  "slug": "snowflake",
+  "nombre": "snowflake",
+  "etiquetas": [
+   "snowflake"
+  ],
+  "color": "#AAD0E6",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 889014,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "snowflake",
+  "fecha": "2026-09-07"
  },
  {
   "slug": "termometro",

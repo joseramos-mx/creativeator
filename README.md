@@ -23,7 +23,7 @@ encendido, qué está apagado y por qué.
 | Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
 | Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
-| Íconos generados | Gemini, croma, la misma puerta que los descargados | `GEMINI_API_KEY` con facturación |
+| Íconos generados | Se genera lo que la librería no tiene, al redactar | `GEMINI_API_KEY` con facturación |
 
 **Apagado, y el porqué de cada uno.**
 
@@ -260,25 +260,32 @@ comercial: la vía gratuita no aplica ni ícono por ícono.
 
 ---
 
-### Generar un ícono: la tubería está lista y apagada
+### Generar sustituye a Thiings, no la complementa
 
-Cuando la librería no tiene el concepto —el caso concreto es la lupa del slide
-02, ver arriba— se puede generar uno. **Falta una sola cosa para encenderlo:
-facturación en el proyecto de Google detrás de `GEMINI_API_KEY`.**
+La colección de Thiings es de pago, y mientras no esté la librería local es
+pequeña. Con doce íconos no resuelve casi nada: de tres carruseles seguidos, los
+conceptos que pidió el redactor —"water drop", "wind", "stethoscope"— no estaba
+ninguno, y esos slides salían sin ícono.
 
-No es que la cuota esté agotada. Los tres modelos de imagen de Gemini tienen
-límite **cero** en el tramo gratuito:
+Por eso, al redactar, **lo que la librería no tiene se genera**. Una variante y
+no tres: el flujo de tres es para cuando alguien elige, y aquí no elige nadie.
 
-```
-Quota exceeded for metric: generate_content_free_tier_requests,
-limit: 0, model: gemini-3.1-flash-image
-```
+Y cada ícono generado entra en la librería por la misma puerta que los
+descargados, así que **la librería se llena sola con lo que la cuenta usa de
+verdad**. El segundo carrusel que pida "stethoscope" ya lo encuentra y no vuelve
+a generar nada. `npm run banco-iconos` fija esa propiedad: si el slug o las
+etiquetas que escribe el guardado no fueran encontrables por el mismo buscador
+que preguntó, se generaría el mismo ícono una vez por carrusel para siempre.
 
-La llave en sí está bien: con `gemini-3.6-flash` (texto) responde a la primera.
-Esperar no sirve, porque no es un límite por minuto ni por día. Hay que activar
-cobros en Google AI Studio para ese proyecto.
+El día que se compre Thiings, esto no estorba: los diez mil íconos entran por la
+ingesta, `mejorCoincidencia` los encuentra primero y la generación deja de
+dispararse sola. Lo generado se queda, marcado con `origen: "generado"` y su
+prompt.
 
-Con eso hecho, lo demás ya está:
+### Generar un ícono a mano
+
+Además del relleno automático, se puede generar a mano y elegir entre tres
+variantes — para cuando el concepto importa y quieres verlo antes:
 
 ```bash
 curl -X POST localhost:3001/api/icono   -H 'Content-Type: application/json'   -d '{"concepto":"Una lupa clásica, con mango y aro metálico","n":3}'
@@ -349,8 +356,9 @@ cuesta lo mismo que haberlo elegido antes.**
 - **La foto de banco, a mano**, también se busca, se criba y se pone en un solo
   clic. Las otras quedan a un botón de distancia y las apartadas también, con
   su motivo.
-- **El ícono sugerido** se pone si la librería lo tiene. Si no lo tiene, el
-  slide queda marcado como "falta ícono", que es mejor que poner uno parecido.
+- **El ícono sugerido** se pone si la librería lo tiene, y **si no lo tiene se
+  genera**. Nunca se pone uno parecido: o es el concepto que se pidió, o se
+  fabrica ese concepto.
 
 **Lo que sigue preguntando no es preferencia y no va a dejar de preguntar:**
 

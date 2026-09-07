@@ -10,6 +10,8 @@ import { afirmacionesDe } from './afirmaciones';
 import { bancoDe, cribar } from './bancos';
 import { descargarFoto } from './bancos/descargar';
 import { mejorCoincidencia, type Icono } from './iconos';
+import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemini';
+import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
 import { leerMarca } from './posts';
@@ -138,8 +140,66 @@ export async function redactar(tema: string, slug: string): Promise<ResultadoRed
 
   const post = aPost(redaccion, slug, await leerManifiesto());
   const avisos = revisar(redaccion, post);
-  await rellenarFotos(post, redaccion, slug, avisos);
+  // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
+  await Promise.all([
+    rellenarFotos(post, redaccion, slug, avisos),
+    rellenarIconos(post, avisos),
+  ]);
   return { post, porQuePaleta: redaccion.porQuePaleta, avisos };
+}
+
+/**
+ * Los íconos que la librería no tiene, generados.
+ *
+ * La librería local resuelve la mayoría de los slides **cuando la librería es
+ * grande**. Con doce íconos no resuelve casi nada: de tres carruseles seguidos,
+ * los conceptos que pidió el redactor —"water drop", "wind", "stethoscope"— no
+ * estaba ninguno, y los slides salían sin ícono.
+ *
+ * Así que aquí se genera lo que falte. No es un complemento de la colección de
+ * pago: es lo que la sustituye mientras no esté. Cada ícono generado se guarda
+ * en la librería por la misma puerta que los descargados, así que el segundo
+ * carrusel que pida "stethoscope" ya lo encuentra y no vuelve a generar nada:
+ * la librería se llena sola con lo que la cuenta usa de verdad.
+ *
+ * Una variante y no tres. El flujo de tres es para cuando alguien elige; aquí
+ * no elige nadie, así que pedir tres sería pagar por dos que se tiran.
+ *
+ * Y como con las fotos, ningún fallo interrumpe la redacción: el slide se queda
+ * sin ícono, el editor lo marca, y se resuelve con un clic.
+ */
+async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
+  if (!process.env.GEMINI_API_KEY) return;
+
+  // En serie: cada ícono nuevo entra en el manifiesto, y el siguiente slide
+  // podría estar pidiendo el mismo concepto. En paralelo se generaría dos veces
+  // y una de las dos se sobrescribiría.
+  for (const [i, slide] of post.slides.entries()) {
+    if (slide.tipo !== 'contenido' || slide.visual.clase !== 'icono') continue;
+    if (slide.visual.slug || !slide.visual.iconoSugerido) continue;
+
+    const concepto = slide.visual.iconoSugerido;
+    try {
+      // Se vuelve a mirar la librería: puede haberlo puesto el slide anterior.
+      const yaEsta = mejorCoincidencia(await leerManifiesto(), concepto);
+      if (yaEsta) {
+        slide.visual.slug = yaEsta.slug;
+        continue;
+      }
+
+      const [variante] = await generarIcono(concepto, 1);
+      if (!variante) throw new Error('el modelo no devolvió imagen');
+      if (variante.aviso) avisos.push(`Ícono "${concepto}": ${variante.aviso}`);
+
+      const { slug: puesto } = await guardarIcono(variante.png, concepto, concepto, MODELO_ICONOS);
+      slide.visual.slug = puesto;
+    } catch (e) {
+      avisos.push(
+        `Sin ícono para el slide ${String(i).padStart(2, '0')} ("${concepto}"): ` +
+          `${e instanceof Error ? e.message : 'no se pudo generar'}.`,
+      );
+    }
+  }
 }
 
 /**

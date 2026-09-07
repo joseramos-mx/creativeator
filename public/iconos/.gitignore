@@ -5,7 +5,11 @@
 # ellos, no nuestra. La lista sale del campo `origen` del manifiesto, así
 # que el siguiente generado aparece aquí solo.
 !.gitignore
+!ice-cube.png
 !lupa.png
+!snowflake.png
 !thumbs/
 thumbs/*
+!thumbs/ice-cube.png
 !thumbs/lupa.png
+!thumbs/snowflake.png

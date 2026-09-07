@@ -19,6 +19,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { mejorCoincidencia } from '../lib/iconos.ts';
+import { etiquetar, slugificar } from '../lib/iconos/etiquetas.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -80,6 +81,54 @@ console.log('\nSin manifiesto');
 ok(
   mejorCoincidencia([], 'magnifying glass') === null,
   'con la librería vacía no revienta: devuelve ninguno',
+);
+
+/* ── que no se genere dos veces lo mismo ─────────────────────────────────── */
+console.log('\nLa librería se llena sola y no repite');
+
+const sinonimos = JSON.parse(
+  readFileSync(join(process.cwd(), 'content', 'sinonimos.json'), 'utf8'),
+);
+
+/** La entrada tal como la escribe `guardarIcono` cuando genera un concepto. */
+function comoSeGuarda(concepto) {
+  const slug = slugificar(concepto);
+  return {
+    slug,
+    nombre: concepto,
+    etiquetas: etiquetar(slug, concepto, sinonimos),
+    color: '#8899AA',
+    w: 1024,
+    h: 1024,
+    origen: 'generado',
+  };
+}
+
+// Lo que sostiene que generar salga barato: el segundo carrusel que pida el
+// mismo concepto lo encuentra y no vuelve a pagar. Si el slug o las etiquetas
+// que escribe el guardado no fueran encontrables por el mismo buscador que
+// preguntó, se generaría el mismo ícono una vez por carrusel para siempre.
+for (const concepto of [
+  'stethoscope',
+  'water drop',
+  'wind',
+  'tissue box',
+  'pollen grain',
+  'inhaler',
+]) {
+  const libreria = [...manifiesto, comoSeGuarda(concepto)];
+  const encontrado = mejorCoincidencia(libreria, concepto)?.slug ?? null;
+  ok(
+    encontrado === slugificar(concepto),
+    `tras generarlo, "${concepto}" ya se encuentra → ${encontrado ?? '(ninguno)'}`,
+  );
+}
+
+// Y sigue sin encontrar lo que no está, aunque la librería haya crecido.
+const conUnoNuevo = [...manifiesto, comoSeGuarda('stethoscope')];
+ok(
+  mejorCoincidencia(conUnoNuevo, 'birthday cake') === null,
+  'y lo que no está sigue sin casar',
 );
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
