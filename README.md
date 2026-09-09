@@ -1065,3 +1065,72 @@ por dónde empezar.
   `public/marca/retrato.jpg` y apunta ahí `retrato` en `content/marca.json`.
   Mientras tanto ese slide sale con el fondo café y el degradado, sin foto.
 - **`salidas/` no se versiona.** Se regenera cada vez que exportas.
+
+
+## Subirlo a Vercel
+
+El despliegue sirve para **dos cosas y ninguna más**: ver los carruseles desde
+donde sea y bajar los slides al teléfono para publicarlos. No edita.
+
+### Por qué no edita
+
+No es una decisión de diseño, es lo que hay. En Vercel el disco del proyecto es
+de solo lectura y cada petición corre en un contenedor que se destruye al
+terminar, así que las siete rutas que guardan archivos —el carrusel, las fotos,
+el calendario, los íconos, la exportación— no pueden funcionar allá. Escribirían
+en un `/tmp` que se evapora, y parecería que guardaron.
+
+`lib/soloLectura.ts` las apaga cuando detecta que está en Vercel y contesta
+diciendo qué pasa. Sin eso, dar a guardar desde el teléfono devuelve un error de
+permisos de Node en crudo.
+
+Y la exportación además abre un Chromium de verdad, que allá no existe. Por eso
+se exporta aquí y el despliegue solo sirve el resultado.
+
+### Que solo entres tú
+
+Vercel lo trae de fábrica y no hay que programar nada:
+
+> Proyecto → **Settings → Deployment Protection → Vercel Authentication →
+> Standard Protection**
+
+Con eso, abrir la URL exige iniciar sesión con una cuenta de Vercel de tu equipo.
+Es mejor que cualquier login escrito a mano: no hay contraseñas que guardar, ni
+sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso.
+
+### Los pasos
+
+1. **Importar.** En vercel.com → Add New → Project → el repositorio. Next.js lo
+   detecta solo; no hay que tocar la configuración de build.
+2. **Las llaves.** Settings → Environment Variables, las mismas tres de
+   `.env.local` (ver `.env.local.ejemplo`). Sin ellas la app arranca, pero
+   redactar y buscar fotos no funcionan — que allá tampoco funcionarían.
+3. **La protección**, arriba.
+4. **Push.** Cada `git push` a `main` despliega.
+
+### Bajar los slides al teléfono
+
+En la computadora, con el servidor corriendo:
+
+```bash
+npm run celular                      # lista qué hay y qué está exportado
+npm run celular <slug>               # lo exporta a public/descargas/
+git add public/descargas && git commit && git push
+```
+
+Y en el teléfono, `/descargas`: cada slide es una imagen; se mantiene pulsada y
+**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram.
+
+Se exporta de uno en uno a propósito. Son archivos derivados que **caducan**: en
+cuanto edites un slide, el PNG guardado deja de ser el carrusel. Exportar los
+diecisiete "por si acaso" llenaría el repositorio de imágenes viejas —a escala 2
+serían 120 MB, más de lo que pesa el proyecto entero—. Y para lo que caduque de
+todos modos, cada exportación guarda la huella del post: si después lo editas, la
+página lo dice en vez de darte callado un slide pasado. La suite lo comprueba.
+
+| | |
+|---|---|
+| `npm run celular` | Sin argumentos: qué hay, qué está exportado y qué cambió después |
+| `npm run celular <slug>` | Lo exporta a `public/descargas/<slug>/` a 1080 × 1350 |
+| `npm run celular <slug> --quitar` | Lo borra de las descargas |
+| `--puerto 3001` | Si el servidor no está en el 3000 |

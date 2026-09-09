@@ -25,6 +25,9 @@ export default async function Inicio() {
         <h1>Carruseles · {marca.usuario}</h1>
         <p>{posts.length === 1 ? '1 carrusel' : `${posts.length} carruseles`} en content/posts/</p>
         <span className="sep" />
+        <Link className="boton" href="/descargas">
+          Descargas →
+        </Link>
         <Link className="boton" href="/plantilla">
           Banco de pruebas →
         </Link>

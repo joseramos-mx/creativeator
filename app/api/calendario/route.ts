@@ -4,6 +4,7 @@ import { aSlug } from '@/lib/brief';
 import { leerCalendario, type Fila } from '@/lib/calendario';
 import { yaEscrito } from '@/lib/mes';
 import { listarPosts } from '@/lib/posts';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * /api/calendario — la hoja editorial, leída y contrastada con lo ya escrito.
@@ -47,6 +48,8 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   let texto: string;
   try {
     const cuerpo = await req.json();

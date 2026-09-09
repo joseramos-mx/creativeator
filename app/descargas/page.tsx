@@ -1,0 +1,107 @@
+import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { join } from 'node:path';
+import Link from 'next/link';
+
+/**
+ * /descargas — bajar los slides uno por uno desde el teléfono.
+ *
+ * ── Para qué existe ─────────────────────────────────────────────────────────
+ * Para publicar en Instagram desde el celular. El editor y la exportación se
+ * quedan en la máquina —en Vercel el disco es de solo lectura y no hay un
+ * Chromium que abrir—, así que el despliegue no genera nada: sirve los PNG que
+ * `npm run celular <slug>` dejó en public/descargas/.
+ *
+ * ── Por qué cada slide es un enlace y no un botón ───────────────────────────
+ * Porque en el teléfono el gesto que funciona en todos lados es mantener
+ * pulsada una imagen y darle a «Guardar en Fotos». `<a download>` es
+ * irregular en Safari de iOS, y un botón con JavaScript lo es más. Un enlace a
+ * un PNG de verdad, en cambio, se abre y se guarda igual en Android y en
+ * iPhone. El `download` va puesto para los navegadores que lo respetan, pero
+ * nada depende de él.
+ *
+ * ── La advertencia de caducado ──────────────────────────────────────────────
+ * Un PNG exportado es una copia, y en cuanto se edita el carrusel deja de
+ * corresponder. Entregar callado un slide viejo es la clase de error que no se
+ * ve hasta que está publicado, así que cada exportación guarda la huella del
+ * post y aquí se compara con la de ahora. Si no coinciden, se dice.
+ */
+
+export const dynamic = 'force-dynamic';
+
+type Entrada = {
+  slug: string;
+  tema: string;
+  estado: string;
+  exportado: string;
+  huella: string;
+  slides: string[];
+};
+
+async function huellaActual(slug: string) {
+  const crudo = await readFile(join(process.cwd(), 'content', 'posts', `${slug}.json`), 'utf8').catch(() => null);
+  return crudo === null ? null : createHash('sha1').update(crudo).digest('hex').slice(0, 12);
+}
+
+export default async function Descargas() {
+  const crudo = await readFile(join(process.cwd(), 'public', 'descargas', 'indice.json'), 'utf8').catch(() => '[]');
+  const entradas: Entrada[] = JSON.parse(crudo);
+
+  const conEstado = await Promise.all(
+    entradas.map(async (e) => ({ ...e, alDia: (await huellaActual(e.slug)) === e.huella })),
+  );
+
+  return (
+    <main className="descargas">
+      <header>
+        <h1>Descargas</h1>
+        <p>
+          Mantén pulsada una imagen y dale a <strong>Guardar en Fotos</strong>. Están a 1080 × 1350, el
+          tamaño nativo de Instagram.
+        </p>
+      </header>
+
+      {conEstado.length === 0 ? (
+        <p className="descargas__vacio">
+          Todavía no hay ninguno. En la computadora: <code>npm run celular &lt;slug&gt;</code>, commit de{' '}
+          <code>public/descargas/</code> y push.
+        </p>
+      ) : null}
+
+      {conEstado.map((e) => (
+        <section key={e.slug}>
+          <h2>{e.tema}</h2>
+          <p className="descargas__meta">
+            <em data-estado={e.estado}>{e.estado}</em> · {e.slides.length} slides · exportado{' '}
+            {new Date(e.exportado).toLocaleDateString('es-MX', { day: 'numeric', month: 'long' })}
+          </p>
+
+          {/* Lo importante de esta pantalla: si el carrusel cambió después de
+              exportarse, lo que hay abajo ya no es el carrusel. */}
+          {!e.alDia ? (
+            <p className="descargas__viejo">
+              Este carrusel se editó después de exportarse. Vuelve a correr{' '}
+              <code>npm run celular {e.slug}</code> antes de publicarlo.
+            </p>
+          ) : null}
+
+          <ol className="descargas__slides">
+            {e.slides.map((nombre, i) => (
+              <li key={nombre}>
+                <a href={`/descargas/${e.slug}/${nombre}`} download={`${e.slug}-${nombre}`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`/descargas/${e.slug}/${nombre}`} alt={`Slide ${i + 1} de ${e.tema}`} loading="lazy" />
+                  <span>{i + 1}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+
+      <p className="descargas__volver">
+        <Link href="/">← todos los carruseles</Link>
+      </p>
+    </main>
+  );
+}

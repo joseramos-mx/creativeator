@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { Marca, validar } from '@/lib/schema';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * POST /api/recientes — `{ slug }` apunta un ícono como recién usado.
@@ -12,6 +13,8 @@ import { Marca, validar } from '@/lib/schema';
 const CUANTOS = 12;
 
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   try {
     const { slug } = await req.json();
     if (typeof slug !== 'string' || !slug) {

@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { clinicasDe, faltaClinico } from '@/lib/clinicas';
 import { huellaDeImagen } from '@/lib/huella-imagen';
 import { PostGuardable, validar } from '@/lib/schema';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * POST /api/post — guarda el JSON del carrusel.
@@ -15,6 +16,8 @@ import { PostGuardable, validar } from '@/lib/schema';
  * del disco, y una validación de Zod no lee archivos.
  */
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   try {
     const { post } = await req.json();
 

@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * POST /api/subir — recibe una imagen y devuelve su ruta pública.
@@ -16,6 +17,8 @@ import sharp from 'sharp';
 const ANCHO_MAX = 1600;
 
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   try {
     const form = await req.formData();
     const archivo = form.get('archivo');

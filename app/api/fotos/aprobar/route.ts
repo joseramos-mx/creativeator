@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { archivoDe } from '@/lib/bancos';
 import { leerMarca } from '@/lib/posts';
 import { Aprobacion, Credito, validar } from '@/lib/schema';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * POST /api/fotos/aprobar — `{ slug, candidato, aprobadaPor, nota? }`
@@ -26,6 +27,8 @@ import { Aprobacion, Credito, validar } from '@/lib/schema';
 const ANCHO_MAX = 1600;
 
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   try {
     const { slug, candidato, aprobadaPor, nota } = await req.json();
 

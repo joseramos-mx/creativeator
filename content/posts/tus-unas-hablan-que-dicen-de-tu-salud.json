@@ -66,9 +66,15 @@
       "bajada": "El rastro llega semanas más tarde.",
       "cuerpo": "Venimos de temporada de fiebres, gripes y mano-pie-boca. Semanas después, algunos niños amanecen con surcos en las uñas o con una uña que se despega desde la base. Asusta, pero suele ser el rastro de aquella infección, no algo nuevo. La uña de repuesto ya viene creciendo detrás.",
       "visual": {
-        "clase": "icono",
-        "slug": "termometro",
-        "iconoSugerido": "thermometer"
+        "clase": "foto",
+        "src": "/media/tus-unas-hablan-que-dicen-de-tu-salud/pexels-5275383.jpg",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Antonius Ferret",
+          "url": "https://www.pexels.com/photo/little-girls-playing-with-chalk-5275383/"
+        }
       },
       "fuente": "StatPearls"
     },

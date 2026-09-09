@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { exportarSlides, guardarEnDisco } from '@/lib/exportar';
 import { leerPost } from '@/lib/posts';
 import { validar, type TPost } from '@/lib/schema';
+import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
  * POST /api/exportar
@@ -26,6 +27,8 @@ const Peticion = z.object({
 });
 
 export async function POST(req: Request) {
+  if (soloLectura) return avisoDeSoloLectura();
+
   try {
     const cuerpo = validar(Peticion, await req.json(), 'la petición de exportación');
     const post = await leerPost(cuerpo.slug);
