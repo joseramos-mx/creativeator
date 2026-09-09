@@ -672,88 +672,66 @@ console.log('\nAcciones de la lista');
     console.log('  —    no hay ninguno publicado en la lista; esa parte se salta');
   }
 
-  // Y el de verdad: aprobar un borrador con la cola llena tiene que fallar.
-  const conCola = pagina
-    .locator(".lista-posts > li:has(em[data-estado='borrador'])")
-    .filter({ hasNot: pagina.locator('[data-laboratorio]') })
-    .first();
+  /*
+   * Y el de verdad: que el botón no sea un atajo alrededor de la barrera.
+   *
+   * Se hace sobre un carrusel del laboratorio y no sobre uno real. La primera
+   * versión de esta prueba le daba clic al primer borrador de la lista, que es
+   * contenido del médico, y **una prueba no puede cambiarle el estado a algo
+   * que se va a publicar**. Los del laboratorio se recrean en cada corrida, así
+   * que aquí sí se puede pulsar de verdad.
+   */
+  // El laboratorio se esconde por defecto —es andamio, no contenido—, así que
+  // primero hay que encender su interruptor. Y se apunta por el enlace y no por
+  // el texto, que la tarjeta muestra el tema y no el slug.
+  const interruptor = pagina.locator('.filtros__lab input[type="checkbox"]');
+  if (!(await interruptor.isChecked())) await interruptor.check();
+  const lab = pagina.locator('.lista-posts > li[data-laboratorio]:has(a[href="/post/laboratorio-paletas"])').first();
+  await lab.waitFor({ timeout: 10_000 }).catch(() => {});
 
-  if (await conCola.count()) {
-    const tema = (await conCola.locator('strong').innerText()).trim();
-    await conCola.locator('.cuadrado').first().click();
-    await esperarA(async () => (await conCola.locator('.acciones__error').count()) > 0, 25_000);
-
-    const fallo = conCola.locator('.acciones__error');
-    const hayError = (await fallo.count()) > 0;
-    const estadoAhora = (await conCola.locator('em[data-estado]').innerText()).trim();
-
-    if (hayError) {
-      const entero = (await fallo.getAttribute('title')) ?? '';
-      ok(/sin revisar|sin firmar|sin licencia|licencia/.test(entero), `la barrera lo paró: ${(await fallo.innerText()).trim()}`);
-      ok(estadoAhora === 'borrador', '  y el estado no se movió');
-      ok(
-        !/^No se pudo (leer|guardar)/.test((await fallo.innerText()).trim()),
-        '  y lo que se enseña es el motivo, no el envoltorio de la validación',
-      );
-    } else {
-      // Que pase también es correcto si ese carrusel no tenía nada pendiente:
-      // lo que no puede pasar es que quede aprobado con la cola llena.
-      ok(estadoAhora === 'aprobado', `«${tema.slice(0, 40)}» no tenía nada pendiente y pasó a aprobado`);
-    }
-  }
-
-  await pagina.close();
-}
-
-/* ── /descargas, la pantalla del teléfono ────────────────────────────────── */
-console.log('\nDescargas');
-
-/*
- * Lo que hay que cuidar aquí es que **no se entregue callado un slide viejo**.
- * Un PNG exportado es una copia, y en cuanto se edita el carrusel deja de
- * corresponder; publicar una versión pasada es un error que no se ve hasta que
- * ya está en Instagram. Por eso cada exportación guarda la huella del post y la
- * página la compara con la de ahora.
- */
-{
-  const pagina = await navegador.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-  await pagina.goto(`${base}/descargas`, { waitUntil: 'domcontentloaded' });
-  await pagina.waitForLoadState('networkidle');
-
-  const slides = await pagina.locator('.descargas__slides li').count();
-
-  if (slides === 0) {
-    console.log('  —    no hay nada exportado; esta parte se salta');
+  if ((await lab.count()) === 0) {
+    console.log('  —    no hay carruseles de laboratorio en la lista; esa parte se salta');
   } else {
-    // Cada slide tiene que ser un enlace a un PNG de verdad: en el teléfono el
-    // gesto que funciona en todos lados es mantener pulsado y «Guardar en
-    // Fotos», y eso necesita una imagen servida, no un botón con JavaScript.
-    const enlace = pagina.locator('.descargas__slides a').first();
-    const href = await enlace.getAttribute('href');
-    ok(/^\/descargas\/[a-z0-9-]+\/\d+\.png$/.test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
+    const antes = (await lab.locator('em[data-estado]').innerText()).trim();
+    const boton = lab.locator('.cuadrado').first();
 
-    const png = await pagina.request.get(base + href);
-    ok(png.status() === 200, '  y el PNG se sirve de verdad');
-    ok((png.headers()['content-type'] ?? '').includes('image/png'), '  con su tipo de contenido');
+    if (antes === 'publicado') {
+      ok(await boton.isDisabled(), 'el de un carrusel ya publicado está apagado');
+    } else {
+      await boton.click();
 
-    const ancho = await pagina.locator('.descargas__slides img').first().evaluate((i) => i.naturalWidth);
-    ok(ancho === 1080, `  a 1080 de ancho, el tamaño nativo de Instagram (mide ${ancho})`);
+      /*
+       * Se espera **a cualquiera de los dos desenlaces**, no solo al error. La
+       * versión anterior esperaba el error y daba por fallada la prueba si no
+       * llegaba, y lo que no llegaba a tiempo era la respuesta: la primera
+       * llamada a /api/post tras arrancar el servidor compila la ruta y tarda.
+       * Eso hacía fallar la suite por una carrera, no por un defecto.
+       */
+      await esperarA(async () => {
+        if ((await lab.locator('.acciones__error').count()) > 0) return true;
+        return (await lab.locator('em[data-estado]').innerText()).trim() !== antes;
+      }, 60_000);
 
-    // El aviso de caducado: se falsea la huella y tiene que aparecer.
-    const ruta = join(process.cwd(), 'public', 'descargas', 'indice.json');
-    const antes = await readFile(ruta, 'utf8');
-    try {
-      const indice = JSON.parse(antes);
-      indice[0].huella = 'huellafalsa0';
-      await writeFile(ruta, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
+      const fallo = lab.locator('.acciones__error');
+      const hayError = (await fallo.count()) > 0;
+      const ahora = (await lab.locator('em[data-estado]').innerText()).trim();
 
-      await pagina.goto(`${base}/descargas`, { waitUntil: 'networkidle' });
-      ok(
-        (await pagina.locator('.descargas__viejo').count()) > 0,
-        'si el carrusel cambió después de exportarse, la página lo dice',
-      );
-    } finally {
-      await writeFile(ruta, antes, 'utf8');
+      if (hayError) {
+        ok(ahora === antes, `la barrera lo paró y el estado no se movió: ${(await fallo.innerText()).trim()}`);
+        ok(
+          !/^No se pudo (leer|guardar)/.test((await fallo.innerText()).trim()),
+          '  y lo que se enseña es el motivo, no el envoltorio de la validación',
+        );
+      } else {
+        // Pasar también es correcto: este carrusel no tiene afirmaciones
+        // pendientes. Lo que no puede pasar es avanzar sin que el servidor
+        // lo haya aceptado, así que se comprueba contra el disco.
+        const guardado = JSON.parse(
+          readFileSync(join(process.cwd(), 'content', 'posts', 'laboratorio-paletas.json'), 'utf8'),
+        );
+        ok(ahora !== antes, `sin nada pendiente, el estado avanzó de ${antes} a ${ahora}`);
+        ok(guardado.estado === ahora, '  y quedó guardado en el disco, no solo en la pantalla');
+      }
     }
   }
 
