@@ -1129,7 +1129,14 @@ de donde Vercel los sirve. El panel lo dice en pantalla — si no, preparas, abr
 el teléfono y no está, sin ninguna pista de por qué.
 
 Y en el teléfono, `/descargas`: cada slide es una imagen; se mantiene pulsada y
-**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram.
+**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram. Eso sí
+funciona en producción — lo que no se puede allá es *preparar* uno nuevo.
+
+Un detalle que rompe el despliegue en silencio si se pierde de vista: `public/`
+no viaja en el paquete de las funciones, porque Vercel lo sirve como estático.
+Los PNG no lo necesitan, pero **el índice sí se lee desde el servidor**, así que
+va declarado en `outputFileTracingIncludes`. Sin él la página se queda con la
+lista vacía y dice que no hay nada preparado aunque lo haya.
 
 Se exporta de uno en uno a propósito. Son archivos derivados que **caducan**: en
 cuanto edites un slide, el PNG guardado deja de ser el carrusel. Exportar los

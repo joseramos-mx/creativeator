@@ -86,10 +86,25 @@ export default async function Descargas() {
 
       {filas.length > 0 ? <PrepararCelular filas={filas} /> : null}
 
+      {/*
+        El mensaje cambia según dónde se lea, porque el consejo no sirve igual.
+        En el teléfono, «corre npm run celular» no se puede seguir: lo que hay
+        que decir es dónde se hace y que después falta un push.
+      */}
       {conEstado.length === 0 ? (
         <p className="descargas__vacio">
-          Todavía no hay ninguno. En la computadora: <code>npm run celular &lt;slug&gt;</code>, commit de{' '}
-          <code>public/descargas/</code> y push.
+          {soloLectura ? (
+            <>
+              Todavía no hay ninguno preparado. Los slides se exportan desde la computadora —en{' '}
+              <strong>/descargas</strong>, con el botón de cada carrusel— y aparecen aquí después del{' '}
+              <code>git push</code>.
+            </>
+          ) : (
+            <>
+              Todavía no hay ninguno. Ábrelo en <strong>Mandar un carrusel al teléfono</strong>, aquí
+              arriba, o corre <code>npm run celular &lt;slug&gt;</code>.
+            </>
+          )}
         </p>
       ) : null}
 

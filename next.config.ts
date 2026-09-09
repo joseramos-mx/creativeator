@@ -17,6 +17,22 @@ const config: NextConfig = {
    * paquete de Node, no de bundle. Empaquetarlo rompe la ruta de exportación.
    */
   serverExternalPackages: ['playwright'],
+
+  /**
+   * `public/` no viaja en el paquete de las funciones: Vercel lo sirve como
+   * estático, así que Next lo deja fuera a propósito. Los PNG de /descargas no
+   * lo necesitan —se sirven así—, pero **el índice sí se lee desde el
+   * servidor**, y sin él la página se queda con la lista vacía y dice que no
+   * hay nada preparado aunque lo haya.
+   *
+   * Hoy el rastreador lo encuentra solo porque la ruta está escrita literal.
+   * Esto lo hace explícito: si mañana esa ruta se arma de otra forma, el
+   * despliegue no se rompe en silencio. Solo el JSON, no la carpeta: las
+   * imágenes pesan y no hacen falta ahí.
+   */
+  outputFileTracingIncludes: {
+    '/descargas': ['./public/descargas/indice.json'],
+  },
 };
 
 export default config;

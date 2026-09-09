@@ -166,7 +166,9 @@ body {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* `min(300px, 100%)` y no `300px` a secas: con el mínimo fijo, una pantalla
+     más angosta que eso no puede encoger la columna y la tarjeta se sale. */
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
   gap: 10px;
 }
 
@@ -1447,4 +1449,53 @@ select:focus {
   color: var(--ui-dim);
   font-size: 11.5px;
   line-height: 1.5;
+}
+
+/* ── pantallas angostas ─────────────────────────────────────────────────────
+ *
+ * El editor está pensado para una pantalla de escritorio: formulario fijo a la
+ * izquierda, carrusel a la derecha, cada uno con su scroll. En un teléfono eso
+ * no cabe —el panel mide 430 px— y lo que pasaba era lo peor de los dos mundos:
+ * los campos se cortaban por la derecha y `overflow: hidden` impedía llegar a
+ * ellos. Aquí se apila: el panel arriba a lo ancho, el carrusel debajo, y el
+ * scroll vuelve a ser el de la página.
+ *
+ * No es que el editor se use en el teléfono; es que si se abre por error, se
+ * pueda leer y salir.
+ */
+@media (max-width: 860px) {
+  .editor {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  .panel {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    overflow-y: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--ui-line);
+  }
+
+  /* El lienzo se escala con `transform`, que no encoge su caja: sin esto el
+     carrusel empuja la página a lo ancho aunque se vea pequeño. */
+  .marco,
+  .marco__lienzo {
+    max-width: 100%;
+  }
+}
+
+/* En el teléfono los dos botones de cada tarjeta quedan al alcance del pulgar y
+   la última línea ya no necesita hacerles hueco a la derecha. */
+@media (max-width: 520px) {
+  .lista-posts span:last-of-type {
+    padding-right: 0;
+  }
+
+  .acciones {
+    position: static;
+    margin: 8px 0 0;
+  }
 }
