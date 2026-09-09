@@ -1110,13 +1110,23 @@ sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso.
 
 ### Bajar los slides al teléfono
 
-En la computadora, con el servidor corriendo:
+Desde la app, que es lo cómodo: en **/descargas → «Mandar un carrusel al
+teléfono»** sale la lista entera y cada uno tiene su botón. Ese panel solo
+aparece en tu máquina; en Vercel no, porque allá exportar es imposible y
+enseñar botones que no funcionan es peor que no enseñarlos.
+
+Por consola hace lo mismo:
 
 ```bash
-npm run celular                      # lista qué hay y qué está exportado
-npm run celular <slug>               # lo exporta a public/descargas/
+npm run celular                      # lista qué hay, qué está al día y qué cambió
+npm run celular <slug>               # lo prepara
+npm run celular --todos              # todos (avisa del peso antes)
 git add public/descargas && git commit && git push
 ```
+
+Y en los dos casos falta el `git push`: los PNG viven en el repositorio, que es
+de donde Vercel los sirve. El panel lo dice en pantalla — si no, preparas, abres
+el teléfono y no está, sin ninguna pista de por qué.
 
 Y en el teléfono, `/descargas`: cada slide es una imagen; se mantiene pulsada y
 **Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram.

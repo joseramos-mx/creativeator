@@ -17,12 +17,16 @@
  * pueda servirlos, así que el peso es lo que decide si esto es viable: los
  * diecisiete a escala 2 serían 120 MB, más de lo que pesa el proyecto entero.
  *
- * ── Por qué se exporta uno y no todos ───────────────────────────────────────
+ * ── Por qué de uno en uno ───────────────────────────────────────────────────
  * Porque son archivos derivados y **caducan**: en cuanto edites un slide, el
- * PNG guardado deja de corresponder al carrusel. Exportar los diecisiete
- * "por si acaso" llena el repositorio de imágenes viejas. El camino de todos
- * los días es el otro: acabas un carrusel, lo exportas, lo subes, lo publicas
- * desde el teléfono.
+ * PNG guardado deja de corresponder al carrusel. Exportar los diecisiete "por
+ * si acaso" son 42 MB en un repositorio que pesa 48, y la mayoría sería peso
+ * muerto desde el primer día. El camino de todos los días es el otro: acabas un
+ * carrusel, lo exportas, lo subes, lo publicas desde el teléfono.
+ *
+ * `--todos` está para cuando de verdad los quieras todos, y avisa de lo que va
+ * a pesar antes de empezar. Desde la app se hace lo mismo en /descargas, que
+ * es donde se acaba estando.
  *
  * Y para lo que caduque igual, cada exportación guarda la **huella** del post
  * tal como estaba. Si después lo editas, la página de descargas lo dice en vez
@@ -47,7 +51,7 @@ const args = process.argv.slice(2);
 const iPuerto = args.indexOf('--puerto');
 const puerto = iPuerto === -1 ? '3000' : args[iPuerto + 1];
 const base = `http://localhost:${puerto}`;
-const slugs = args.filter((a, i) => !a.startsWith('--') && i !== iPuerto + 1);
+let slugs = args.filter((a, i) => !a.startsWith('--') && i !== iPuerto + 1);
 
 const CARPETA_POSTS = join(process.cwd(), 'content', 'posts');
 
@@ -65,17 +69,30 @@ async function leerIndice() {
   return JSON.parse(await readFile(INDICE, 'utf8').catch(() => '[]'));
 }
 
+async function todosLosSlugs() {
+  const archivos = (await readdir(CARPETA_POSTS)).filter((a) => a.endsWith('.json'));
+  return archivos.map((a) => a.replace(/\.json$/, '')).filter((s) => !s.startsWith('laboratorio-'));
+}
+
+if (args.includes('--todos')) {
+  slugs = await todosLosSlugs();
+  console.log(`\nLos ${slugs.length}, a unos 2,5 MB cada uno: ~${Math.round(slugs.length * 2.5)} MB al repositorio.`);
+  console.log('Son archivos derivados y caducan al editar un slide. Ctrl-C si no era eso.\n');
+}
+
 if (slugs.length === 0) {
   const archivos = (await readdir(CARPETA_POSTS)).filter((a) => a.endsWith('.json'));
   const posts = await Promise.all(archivos.map(async (a) => await leerPostCrudo(a.replace(/\.json$/, ''))));
   const indice = await leerIndice();
   console.log('\nVa así:  npm run celular <slug> [--puerto 3000]\n');
   console.log('Carruseles que hay:\n');
-  for (const p of posts.filter(Boolean).sort((a, b) => b.fecha.localeCompare(a.fecha))) {
+  const enLista = posts.filter((p) => p && !p.slug.startsWith('laboratorio-'));
+  for (const p of enLista.sort((a, b) => String(b.fecha ?? '').localeCompare(String(a.fecha ?? '')))) {
     const ya = indice.find((e) => e.slug === p.slug);
     const marca = !ya ? '' : (await huellaDe(p.slug)) === ya.huella ? '  ← ya exportado' : '  ← exportado, pero cambió después';
     console.log(`  ${p.estado.padEnd(10)} ${p.slug}${marca}`);
   }
+  console.log('\n  --todos           prepara todos (mira el peso antes)');
   console.log('\n  --quitar <slug>   lo borra de las descargas\n');
   process.exit(0);
 }

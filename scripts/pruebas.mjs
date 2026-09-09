@@ -738,6 +738,97 @@ console.log('\nAcciones de la lista');
   await pagina.close();
 }
 
+/* ── /descargas, la pantalla del teléfono ────────────────────────────────── */
+console.log('\nDescargas');
+
+/*
+ * Lo que hay que cuidar aquí es que **no se entregue callado un slide viejo**.
+ * Un PNG exportado es una copia, y en cuanto se edita el carrusel deja de
+ * corresponder; publicar una versión pasada es un error que no se ve hasta que
+ * ya está en Instagram. Por eso cada exportación guarda la huella del post y la
+ * página la compara con la de ahora.
+ */
+{
+  const pagina = await navegador.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await pagina.goto(`${base}/descargas`, { waitUntil: 'domcontentloaded' });
+  await pagina.waitForLoadState('networkidle');
+
+  const slides = await pagina.locator('.descargas__slides li').count();
+
+  if (slides === 0) {
+    console.log('  —    no hay nada exportado; esta parte se salta');
+  } else {
+    // Cada slide tiene que ser un enlace a un PNG de verdad: en el teléfono el
+    // gesto que funciona en todos lados es mantener pulsado y «Guardar en
+    // Fotos», y eso necesita una imagen servida, no un botón con JavaScript.
+    const enlace = pagina.locator('.descargas__slides a').first();
+    const href = await enlace.getAttribute('href');
+    ok(/^\/descargas\/[a-z0-9-]+\/\d+\.png$/.test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
+
+    const png = await pagina.request.get(base + href);
+    ok(png.status() === 200, '  y el PNG se sirve de verdad');
+    ok((png.headers()['content-type'] ?? '').includes('image/png'), '  con su tipo de contenido');
+
+    const ancho = await pagina.locator('.descargas__slides img').first().evaluate((i) => i.naturalWidth);
+    ok(ancho === 1080, `  a 1080 de ancho, el tamaño nativo de Instagram (mide ${ancho})`);
+
+    // El aviso de caducado: se falsea la huella y tiene que aparecer.
+    const ruta = join(process.cwd(), 'public', 'descargas', 'indice.json');
+    const antes = await readFile(ruta, 'utf8');
+    try {
+      const indice = JSON.parse(antes);
+      indice[0].huella = 'huellafalsa0';
+      await writeFile(ruta, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
+
+      await pagina.goto(`${base}/descargas`, { waitUntil: 'networkidle' });
+      ok(
+        (await pagina.locator('.descargas__viejo').count()) > 0,
+        'si el carrusel cambió después de exportarse, la página lo dice',
+      );
+    } finally {
+      await writeFile(ruta, antes, 'utf8');
+    }
+  }
+
+
+  /*
+   * El panel para mandar cualquier otro carrusel al teléfono.
+   *
+   * La ruta se prueba con uno de **laboratorio** y no con uno real: preparar
+   * escribe PNG en el repositorio, y una prueba no puede dejar dos megas de
+   * imágenes cada vez que corre. Se prepara, se comprueba y se quita.
+   */
+  await pagina.locator('.preparar__abrir').click();
+  const enPanel = await pagina.locator('.preparar__lista li').count();
+  ok(enPanel > 0, `el panel lista los carruseles que se pueden mandar (${enPanel})`);
+  ok(
+    (await pagina.locator('.preparar__lista li').filter({ hasText: 'laboratorio' }).count()) === 0,
+    '  y deja fuera los de laboratorio, que son andamio y no contenido',
+  );
+  ok(
+    /git push/.test(await pagina.locator('.preparar__nota').innerText()),
+    '  y avisa de que hace falta un push, que es lo que no se adivina',
+  );
+
+  const puesto = await pagina.request.post(`${base}/api/celular`, { data: { slug: 'laboratorio-paletas' } });
+  ok(puesto.ok(), `la ruta prepara un carrusel (${puesto.status()})`);
+  if (puesto.ok()) {
+    const c = await puesto.json();
+    ok(c.slides > 0, `  con sus ${c.slides} slides, ${c.pesoMB} MB`);
+    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 200,
+      '  y el PNG queda servido');
+
+    const fuera = await pagina.request.post(`${base}/api/celular`, {
+      data: { slug: 'laboratorio-paletas', quitar: true },
+    });
+    ok(fuera.ok(), '  y se puede quitar');
+    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 404,
+      '  y entonces ya no está');
+  }
+
+  await pagina.close();
+}
+
 /* ── el panel del calendario ─────────────────────────────────────────────── */
 console.log('\nPanel del calendario');
 

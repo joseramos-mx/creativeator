@@ -2,6 +2,9 @@ import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import Link from 'next/link';
+import { PrepararCelular } from '@/app/_componentes/PrepararCelular';
+import { listarPosts } from '@/lib/posts';
+import { soloLectura } from '@/lib/soloLectura';
 
 /**
  * /descargas — bajar los slides uno por uno desde el teléfono.
@@ -51,6 +54,26 @@ export default async function Descargas() {
     entradas.map(async (e) => ({ ...e, alDia: (await huellaActual(e.slug)) === e.huella })),
   );
 
+  /*
+   * El panel para mandar otro carrusel solo se arma en tu máquina. En Vercel
+   * exportar es imposible —no hay Chromium y el disco es de solo lectura—, y
+   * pintar botones que no pueden funcionar es peor que no pintarlos.
+   */
+  const filas = soloLectura
+    ? []
+    : (await listarPosts())
+        .filter((p) => !p.slug.startsWith('laboratorio-'))
+        .map((p) => {
+          const ya = conEstado.find((e) => e.slug === p.slug);
+          return {
+            slug: p.slug,
+            tema: p.tema,
+            estado: p.estado,
+            preparado: Boolean(ya),
+            alDia: Boolean(ya?.alDia),
+          };
+        });
+
   return (
     <main className="descargas">
       <header>
@@ -60,6 +83,8 @@ export default async function Descargas() {
           tamaño nativo de Instagram.
         </p>
       </header>
+
+      {filas.length > 0 ? <PrepararCelular filas={filas} /> : null}
 
       {conEstado.length === 0 ? (
         <p className="descargas__vacio">
