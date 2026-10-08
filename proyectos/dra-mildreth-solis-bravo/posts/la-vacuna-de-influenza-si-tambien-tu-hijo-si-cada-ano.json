@@ -36,6 +36,7 @@
       "cuerpo": "El año pasado hiciste fila con él en brazos. Este año pasó octubre, no se enfermó, y la vacuna se quedó en la lista de pendientes. Nos ha pasado a todas. No es descuido: es que nadie te explicó por qué esta vacuna se repite cada temporada.",
       "visual": {
         "clase": "icono",
+        "slug": "appointment-calendar",
         "iconoSugerido": "wall calendar october page"
       }
     },
