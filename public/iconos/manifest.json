@@ -223,6 +223,26 @@
   "bytes": 857648
  },
  {
+  "slug": "cough-syrup-bottle-with-measuring-spoon",
+  "nombre": "cough syrup bottle with measuring spoon",
+  "etiquetas": [
+   "cough",
+   "syrup",
+   "bottle",
+   "with",
+   "measuring",
+   "spoon"
+  ],
+  "color": "#A691D1",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 221225,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "cough syrup bottle with measuring spoon",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "cuidado-de-piel",
   "nombre": "cuidado-de-piel",
   "etiquetas": [
