@@ -109,12 +109,22 @@ function Marco({
   children: ReactNode;
 }) {
   const d = disenoDe(marca);
+  // Un logo que no carga —la ruta de proyecto.json sin archivo todavía— se
+  // vería como un ícono roto en el PNG: mejor el nombre.
+  const [sinLogo, setSinLogo] = useState<string | null>(null);
+  const logo = marca.logo && sinLogo !== marca.logo ? marca.logo : '';
+  const img = useRef<HTMLImageElement>(null);
+  // Si falló antes de hidratar, onError ya no llega: se mira al montar.
+  useLayoutEffect(() => {
+    const el = img.current;
+    if (el && el.complete && el.naturalWidth === 0) setSinLogo(logo);
+  }, [logo]);
   return (
     <div id={id} className={`plana plana--${clase}`} style={variables(marca, paleta)}>
       <Fuentes familias={[d.tituloFuente, d.textoFuente, d.numeroFuente]} />
-      {marca.logo ? (
+      {logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="plana__logo" src={marca.logo} alt={marca.nombre} />
+        <img ref={img} className="plana__logo" src={logo} alt={marca.nombre} onError={() => setSinLogo(logo)} />
       ) : (
         <span className="plana__logo plana__logo--texto">{marca.nombre}</span>
       )}
