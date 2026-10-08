@@ -1,0 +1,99 @@
+{
+  "slug": "halloween-sin-sustos-reales-dulces-disfraces-y-alergias",
+  "tema": "Halloween sin sustos reales: dulces, disfraces y alergias",
+  "creado": "2026-10-26",
+  "estado": "borrador",
+  "paleta": "amarillo",
+  "copy": "Halloween sin sustos reales 🎃\n\nVas a salir el 31 con un niño emocionado, un disfraz que ya le queda un poco chico y una bolsa que va a pesar más que él. Nadie te está pidiendo que canceles la noche ni que le quites los dulces. Lo que cambia la historia es saber qué se atora: antes de los 4 años el atragantamiento con dulces duros es un riesgo real, y el cacahuate escondido en los chocolates también. Diez minutos de revisión en casa y la noche sigue igual de divertida.\n\n🥑 Lo que de verdad preocupa al pediatra: antes de los 4 años la vía aérea es angosta y los molares no muelen bien; paletas, dulces duros, gomitas, palomitas y cacahuates están entre los alimentos que más se atoran (AAP, KidsHealth).\n\n✔️ \"Es que ya mastica bien\": masticar y tragar seguro no son lo mismo. Sentado, quieto y acompañado vale más que contar dientes.\n\n🥑 Dónde se esconde el cacahuate: los dulces mini vienen sin lista de ingredientes y muchos chocolates se producen en líneas donde también pasan cacahuate, nuez o leche. Las reacciones pueden empezar minutos después de la primera mordida (KidsHealth).\n\n✔️ Cómo salir sin sustos reales: cenar antes, revisar la bolsa tú en casa, cambiar lo duro por algo suave en menores de 4, disfraz al ras del tobillo, pintura en vez de máscara y cinta reflejante.\n\n🔖 Guarda este post hoy, no el 31. La última lámina está hecha para recortarse y pegarse en el refri: así quien se quede cuidando esa noche —la abuela, la tía, la vecina que reparte dulces— lee la regla sin que tú tengas que explicarla a media calle. Y mándaselo a esa mamá que ya compró el disfraz y todavía no ha pensado en la bolsa.\n\n💙 Si el año pasado cenaron dulces y ya, no pasó nada y no eres mala mamá. Todos hemos cedido en una noche así. Esto no es para que vigiles más, es para que te preocupes menos.\n\n💬 ¿De qué se va a disfrazar este año? Cuéntame abajo, es mi parte favorita de octubre.\n\n📲 ¿Tu hijo tiene alergia conocida a algún alimento, o se atraganta seguido y no sabes qué hacer en casa? Eso se revisa con calma en consulta. Agenda en Doctoralia, el enlace está en mi biografía, o escríbeme por WhatsApp. Consulta en Durango.",
+  "pilar": "prevención",
+  "objetivo": "guardar",
+  "nota": "7 láminas. Publicar antes del 31. Atragantamiento en menores de 4, cacahuate escondido, disfraces seguros, cenar antes de salir. Última lámina imprimible.",
+  "hashtags": [
+    "#Atragantamiento",
+    "#HalloweenSeguro",
+    "#AlergiaAlimentaria",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Halloween* **sin sustos reales**",
+      "pregunta": "Dulces, disfraces, alergias",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/halloween-sin-sustos-reales-dulces-disfraces-y-alergias/pexels-5859702.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Charles Parker",
+        "url": "https://www.pexels.com/photo/anonymous-children-in-specter-costumes-during-halloween-holiday-5859702/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Ya nada más* **uno\"**",
+      "bajada": "La bolsa termina pesando más que el niño.",
+      "cuerpo": "Son las ocho, llevan tres cuadras y tú llevas media hora diciendo \"ya nada más uno\". Al final fueron seis y la cena se canceló sola. Pasa en todas las casas. No es falta de autoridad: es que esa noche está diseñada exactamente para que pase.",
+      "visual": {
+        "clase": "icono",
+        "slug": "candy-bucket-full-of-wrapped-candy",
+        "iconoSugerido": "candy bucket full of wrapped candy"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Lo que de verdad* **preocupa al pediatra**",
+      "bajada": "Antes de los 4 años la vía aérea es estrecha.",
+      "cuerpo": "Antes de los 4 años la vía aérea es angosta y los molares todavía no muelen bien. Por eso las paletas, los dulces duros, las gomitas, las palomitas y los cacahuates están entre los alimentos que más se atoran. No es que sean malos: es que esa boca todavía no puede con ellos.",
+      "visual": {
+        "clase": "icono",
+        "slug": "lollipop-and-gummy-candies",
+        "iconoSugerido": "lollipop and gummy candies"
+      },
+      "fuente": "AAP y KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Es que ya* **mastica bien\"**",
+      "bajada": "Masticar y tragar seguro no son lo mismo.",
+      "cuerpo": "Un niño de 3 años mastica, sí. Pero también corre, se ríe y habla con el dulce en la boca, y ahí es donde se va por donde no debe. La regla no es cuántos dientes tiene: es comer sentado, quieto y con alguien enfrente.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "small kids chair with plate on table"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Dónde se esconde* **el cacahuate**",
+      "bajada": "Los dulces mini casi nunca traen etiqueta.",
+      "cuerpo": "Los dulces de bolsa llegan sin lista de ingredientes a la vista, y muchos chocolates se hacen en líneas donde también pasan cacahuate, nuez o leche. Si tu hijo tiene alergia, un dulce suelto es una incógnita. Las reacciones pueden empezar minutos después de la primera mordida.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "peanut next to candy wrapper with ingredient label"
+      },
+      "fuente": "KidsHealth (AAP)"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo salir **sin sustos reales**",
+      "puntos": [
+        "→ **Cenen antes de salir**: un niño que sale cenado come menos dulce en la banqueta y negocia mucho mejor.",
+        "→ **La bolsa se revisa en casa**: con luz, tú primero, y lo que venga sin empaque se va.",
+        "→ **Menores de 4, nada duro ni redondo**: paletas, gomitas, palomitas y cacahuates se cambian por algo suave.",
+        "→ **Disfraz que no estorbe**: al ras del tobillo, zapatos de siempre y maquillaje probado un día antes en el antebrazo.",
+        "→ **Mejor pintura que máscara**: la máscara le tapa la vista; agrega cinta reflejante y una luz en la mano."
+      ]
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Recorta esto* **y pégalo en el refri**",
+      "bajada": "La regla de la noche, en tres líneas.",
+      "cuerpo": "Menores de 4: nada duro, nada redondo, nada pegajoso. Siempre sentados, siempre acompañados. La bolsa se queda fuera de su alcance y la repartes tú. Si después de un dulce aparecen ronchas, vómito, tos que no cede o la voz le cambia, es motivo de valoración ese mismo día.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "fridge with magnet holding a note"
+      },
+      "fuente": "AAP y KidsHealth"
+    }
+  ]
+}
