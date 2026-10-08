@@ -703,6 +703,25 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "open-medicine-drawer-with-boxes",
+  "nombre": "open medicine drawer with boxes",
+  "etiquetas": [
+   "open",
+   "medicine",
+   "drawer",
+   "with",
+   "boxes"
+  ],
+  "color": "#95B5DA",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 849592,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "open medicine drawer with boxes",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "palomita-verde",
   "nombre": "palomita-verde",
   "etiquetas": [
