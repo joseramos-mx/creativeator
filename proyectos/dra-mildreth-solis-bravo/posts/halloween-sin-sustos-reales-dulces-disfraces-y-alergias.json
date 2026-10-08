@@ -93,6 +93,7 @@
       "cuerpo": "Menores de 4: nada duro, nada redondo, nada pegajoso. Siempre sentados, siempre acompañados. La bolsa se queda fuera de su alcance y la repartes tú. Si después de un dulce aparecen ronchas, vómito, tos que no cede o la voz le cambia, es motivo de valoración ese mismo día.",
       "visual": {
         "clase": "icono",
+        "slug": "fridge-with-magnet-holding-a-note",
         "iconoSugerido": "fridge with magnet holding a note"
       },
       "fuente": "AAP y KidsHealth"
