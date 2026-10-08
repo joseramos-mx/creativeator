@@ -887,6 +887,27 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "small-kids-chair-with-plate-on-table",
+  "nombre": "small kids chair with plate on table",
+  "etiquetas": [
+   "small",
+   "kids",
+   "chair",
+   "with",
+   "plate",
+   "on",
+   "table"
+  ],
+  "color": "#D6B767",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 855678,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small kids chair with plate on table",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "small-knitted-baby-bootie",
   "nombre": "small knitted baby bootie",
   "etiquetas": [
