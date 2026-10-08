@@ -47,6 +47,7 @@
       "cuerpo": "Al menos 1 de cada 10 embarazos confirmados termina en una pérdida temprana. La causa más frecuente son alteraciones cromosómicas que ocurren al azar desde el inicio. Trabajar, cargar, hacer ejercicio o un susto no provocan una pérdida. No se previene con reposo ni cuidándote más.",
       "visual": {
         "clase": "icono",
+        "slug": "small-knitted-baby-bootie",
         "iconoSugerido": "small knitted baby bootie"
       },
       "fuente": "Mayo Clinic"
