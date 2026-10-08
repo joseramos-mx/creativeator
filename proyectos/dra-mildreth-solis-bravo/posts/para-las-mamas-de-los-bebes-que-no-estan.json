@@ -1,0 +1,86 @@
+{
+  "slug": "para-las-mamas-de-los-bebes-que-no-estan",
+  "tema": "Para las mamás de los bebés que no están · Día de la Pérdida Gestacional y Neonatal (15 de octubre, Ola de Luz)",
+  "creado": "2026-10-15",
+  "estado": "borrador",
+  "paleta": "indigo",
+  "copy": "También eres su mamá 🤍\n\nHoy es 15 de octubre, Día Mundial de la Pérdida Gestacional y Neonatal. Si estás leyendo esto, a lo mejor tú tienes un bebé que no está: uno que esperaste, que nombraste, que te cambió el cuerpo y la cabeza, y por el que casi nadie te pregunta. No vengo a explicarte tu duelo ni a ponerle etapas. Vengo a dejar escrito, desde la neonatología, lo que en la calle casi nunca se dice: ese embarazo contó, ese bebé existió y tú eres su mamá.\n\n💭 \"¿Cuántos hijos tienes?\": la pregunta más común del mundo se vuelve la más difícil. Si dices uno, sientes que lo dejas fuera. Si dices dos, tienes que explicar enfrente de alguien que no te conoce. No hay respuesta correcta y no le debes cuentas a nadie en la fila del súper.\n\n✔️ Lo que la ciencia sí sabe: al menos 1 de cada 10 embarazos confirmados termina en una pérdida temprana, y la causa más frecuente son alteraciones cromosómicas que ocurren al azar desde el inicio. Trabajar, cargar, hacer ejercicio o un susto no la provocan, y no se previene con reposo ni cuidándote más (Mayo Clinic).\n\n🤝 Qué sí sirve decirle: di su nombre, pregunta por él, no le pongas plazo al duelo y ofrece algo concreto en lugar de \"avísame si necesitas algo\". El duelo perinatal es un duelo real y no tiene calendario (Cleveland Clinic).\n\n🕯️ Hoy a las 7 de la noche: se enciende una vela durante una hora. Como cada zona horaria la prende a su hora, la luz no se apaga en todo el día. Es la Ola de Luz.\n\n💙 Nada de esto fue tu culpa. No fue el café, ni el coraje, ni haber tardado en darte cuenta. Tu cuerpo no te falló y tu amor no llegó tarde. Y si hoy te duele igual que el primer día, o si hoy no te duele y eso también te confunde, las dos cosas caben. No estás sola.\n\n💬 Si quieres, escribe aquí el nombre de tu bebé. Solo el nombre, o lo que tengas ganas de contar de él. Hoy leo y contesto todos los comentarios, uno por uno, sin prisa. Y si prefieres no escribirlo en público, también está bien: puedes dejar solo un 🤍.\n\n🔖 Guarda este post para esta noche, para acordarte de la hora. Y mándaselo a quien no sabe qué decirle a su hermana, a su amiga o a su hija: la lámina de \"qué sí sirve decirle\" está hecha para eso, para que alguien deje de quedarse callado por miedo a equivocarse.\n\n🤍 Hoy no hay nada que agendar ni nada que ofrecerte. Solo esto: si tu bebé estuvo en una incubadora, si alcanzaste a oírlo o si nunca alcanzaste a oírlo, para mí sigue siendo un paciente y tú sigues siendo su mamá. Te leo abajo.",
+  "pilar": "conexión emocional",
+  "objetivo": "comentar",
+  "nota": "5 láminas sobrias. Día de la Pérdida Gestacional y Neonatal, Ola de Luz 7 p.m. Voz de neonatóloga. SIN CTA comercial, sin boost, sin hashtags de venta. Responder cada comentario.",
+  "hashtags": [
+    "#DueloPerinatal",
+    "#15DeOctubre",
+    "#OlaDeLuz",
+    "#MaternidadSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*También eres* **su mamá**",
+      "pregunta": "Hoy, 15 de octubre",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/para-las-mamas-de-los-bebes-que-no-estan/pexels-6037381.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "cottonbro studio",
+        "url": "https://www.pexels.com/photo/lighted-candles-on-table-near-curtains-6037381/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"¿Cuántos hijos* **tienes?\"**",
+      "bajada": "Y te quedas un segundo en silencio.",
+      "cuerpo": "Lo preguntan en la fila del súper, en una fiesta, en la consulta. Y tú haces la cuenta rápida: si digo dos, me van a preguntar por el otro. Si digo uno, siento que lo dejo fuera. No hay respuesta correcta. Nadie te avisó que esa pregunta iba a doler tanto.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "empty picture frame"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Lo que la ciencia* **sí sabe**",
+      "bajada": "No fue algo que hiciste ni dejaste de hacer.",
+      "cuerpo": "Al menos 1 de cada 10 embarazos confirmados termina en una pérdida temprana. La causa más frecuente son alteraciones cromosómicas que ocurren al azar desde el inicio. Trabajar, cargar, hacer ejercicio o un susto no provocan una pérdida. No se previene con reposo ni cuidándote más.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "small knitted baby bootie"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Al menos* **no lo conociste\"**",
+      "bajada": "Sí lo conociste. Nueve semanas o nueve meses.",
+      "cuerpo": "Lo dicen para consolar y aterriza como una resta. Pasa igual con \"eres joven, vas a tener otro\" y con \"todo pasa por algo\". Un hijo no se reemplaza con el siguiente. El duelo por una pérdida gestacional o neonatal es un duelo real y no tiene calendario.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "speech bubble"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Qué sí sirve **decirle**",
+      "puntos": [
+        "→ **Di su nombre.** Si lo nombraron, úsalo. Escucharlo no la lastima: la acompaña.",
+        "→ **Pregunta por él.** \"¿Cómo se llamaba?\" abre más puertas que cualquier consuelo.",
+        "→ **No le pongas plazo.** Nada de \"ya pasó un año\". El duelo no se vence a tiempo.",
+        "→ **Ofrece algo concreto.** Comida, un recado, una tarde. \"Avísame si necesitas algo\" casi nunca se usa.",
+        "→ **Acuérdate de las fechas.** El cumpleaños que no fue también duele. Escríbele ese día."
+      ]
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Hoy a las 7:* **enciende una luz**",
+      "bajada": "15 de octubre. Ola de Luz.",
+      "cuerpo": "Hoy, a las 7 de la noche, se enciende una vela durante una hora. Como cada zona horaria la prende a su hora, la luz no se apaga en todo el día. No arregla nada. Solo deja claro, en voz alta, que ese bebé existió y que su mamá no está sola.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "lit candle on windowsill"
+      }
+    }
+  ]
+}
