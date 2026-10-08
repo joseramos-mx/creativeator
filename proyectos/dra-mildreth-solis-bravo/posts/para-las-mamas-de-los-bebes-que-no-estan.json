@@ -36,6 +36,7 @@
       "cuerpo": "Lo preguntan en la fila del súper, en una fiesta, en la consulta. Y tú haces la cuenta rápida: si digo dos, me van a preguntar por el otro. Si digo uno, siento que lo dejo fuera. No hay respuesta correcta. Nadie te avisó que esa pregunta iba a doler tanto.",
       "visual": {
         "clase": "icono",
+        "slug": "empty-picture-frame",
         "iconoSugerido": "empty picture frame"
       }
     },
