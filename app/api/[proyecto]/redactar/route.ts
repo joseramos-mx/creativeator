@@ -11,8 +11,7 @@ import { Post, validar } from '@/lib/schema';
  * **No guarda nada**, igual que /api/importar y por la misma razón: lo que
  * devuelve el modelo se enseña antes de reemplazar el contenido del editor.
  * Aquí pesa más todavía, porque una llamada cuesta y porque el paso de edición
- * entre redactar y exportar no es opcional: sale como `borrador` y la cola de
- * afirmaciones decide si algún día puede ser otra cosa.
+ * entre redactar y exportar no es opcional: sale como `borrador`.
  *
  * Lo único que sí toca el disco es la descarga de las fotos de ambiente, que se
  * ponen solas en `public/proyectos/<id>/media/<slug>/`. Son archivos nuevos en una carpeta
@@ -54,8 +53,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
   try {
     const { post, porQuePaleta, avisos, uso } = await redactar(proyecto, tema, slug, { usadas, editorial });
     // Se valida con el esquema de lectura, no con el del guardado: esto es un
-    // borrador y todavía no ha pasado por la cola, así que exigirle la barrera
-    // aquí sería rechazar exactamente lo que se acaba de pedir.
+    // borrador, y la barrera de licencias es para cuando pase a aprobado.
     const limpio = validar(Post, post, 'lo que redactó el modelo');
 
     // Avisar, no bloquear: el slug ya ocupado se resuelve cambiándolo en el

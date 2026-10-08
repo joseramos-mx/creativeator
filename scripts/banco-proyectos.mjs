@@ -24,10 +24,12 @@ import { instruccionesDeCriterios, instruccionesDeRedaccion } from '../lib/instr
 import {
   esIdValido,
   listarProyectos,
+  PROYECTO_DE_PRUEBAS,
   proyectoDeArgumentos,
   rutasDe,
   sinProyecto,
 } from '../lib/proyecto.ts';
+import { darDeAlta, POR_ESCRIBIR } from '../lib/alta.ts';
 import { instrucciones as instruccionesDeTemas } from '../lib/temas.ts';
 import { NOMBRES_PLANTILLA } from '../plantillas/nombres.ts';
 import { paletas, PALETA_POR_DEFECTO } from '../plantillas/clinica/tokens.ts';
@@ -41,6 +43,15 @@ const lanza = (f) => {
   try {
     f();
     return null;
+  } catch (e) {
+    return e.message;
+  }
+};
+
+const lanzaAsync = async (f) => {
+  try {
+    await f();
+    return '';
   } catch (e) {
     return e.message;
   }
@@ -87,10 +98,10 @@ const dentro = (ruta, carpeta) => !relative(carpeta, ruta).startsWith('..');
 const carpetaPrivada = join(process.cwd(), 'proyectos', 'una-cuenta');
 const carpetaPublica = join(process.cwd(), 'public', 'proyectos', 'una-cuenta');
 ok(
-  [r.config, r.voz, r.prompt('alcance'), r.calendario, r.posts, r.post('un-slug')].every((x) =>
+  [r.config, r.voz, r.identidad, r.cuestionario, r.materiales, r.prompt('alcance'), r.calendario, r.posts, r.post('un-slug')].every((x) =>
     dentro(x, carpetaPrivada),
   ),
-  'configuración, voz, prompts, calendario y posts, en proyectos/<id>/',
+  'configuración, voz, identidad, materiales, prompts, calendario y posts, en proyectos/<id>/',
 );
 ok(
   [r.media('un-slug'), r.descargas, r.indiceDescargas, r.marca].every((x) => dentro(x, carpetaPublica)),
@@ -98,7 +109,7 @@ ok(
 );
 ok(r.urlMedia('un-slug', 'a.jpg') === '/proyectos/una-cuenta/media/un-slug/a.jpg', 'y la URL de una foto lleva el proyecto');
 
-for (const malo of ['api', 'plantilla', 'iconos', '../dr-edwin', 'Dra-Mildreth', 'con espacio', '', '-x']) {
+for (const malo of ['api', 'plantilla', 'iconos', 'nuevo', '../dr-edwin', 'Dra-Mildreth', 'con espacio', '', '-x']) {
   ok(!esIdValido(malo), `"${malo}" no es un id de proyecto`);
 }
 ok(lanza(() => rutasDe('../otro')) !== null, 'y pedir sus rutas lanza, no devuelve una ruta fuera');
@@ -160,6 +171,31 @@ try {
   ok(!/cuenta-b/.test(a.redaccion), 'sin una sola mención de B');
   ok(a.criterios.includes('el giro de cuenta-a') && a.criterios.includes('fotos-banco de cuenta-a'), 'y el giro y las fotos de banco de A en sus criterios');
   ok(!/cuenta-b/.test(a.criterios), 'tampoco ahí');
+
+  /* ── el alta ─────────────────────────────────────────────────────────── */
+  console.log('\nEl alta de una cuenta');
+
+  // Hace falta una cuenta de donde copiar los ejemplos: la de pruebas.
+  const ejemplo = rutasDe(PROYECTO_DE_PRUEBAS, temporal);
+  mkdirSync(join(ejemplo.carpeta, 'prompts'), { recursive: true });
+  writeFileSync(ejemplo.config, JSON.stringify({ cierre: { lugar: 'L', invitacion: 'I' }, plantilla: 'clinica', fuentes: ['F'] }));
+  writeFileSync(ejemplo.voz, 'La voz de ejemplo.\n');
+  for (const n of ['alcance', 'estructura', 'iconos', 'fotos', 'fotos-banco']) writeFileSync(ejemplo.prompt(n), `${n}\n`);
+
+  await darDeAlta({ id: 'dra-nueva', nombre: 'Dra. Nueva' }, temporal);
+  const nueva = rutasDe('dra-nueva', temporal);
+  const config = JSON.parse(readFileSync(nueva.config, 'utf8'));
+  ok(config.nombre === 'Dra. Nueva', 'el nombre que se dio queda escrito');
+  ok(config.ciudad === POR_ESCRIBIR && config.giro === POR_ESCRIBIR, `lo que no se sabe dice ${POR_ESCRIBIR}`);
+  ok(config.logo === '/proyectos/dra-nueva/marca/logo-blanco.png', 'el logo apunta a su carpeta, no a la de la otra cuenta');
+  ok(
+    [nueva.voz, nueva.prompt('alcance'), nueva.prompt('fotos-banco')].every((f) => readFileSync(f, 'utf8').startsWith(`<!-- ${POR_ESCRIBIR}`)),
+    'los textos de ejemplo llegan marcados, para que no se redacte con ellos',
+  );
+  ok(existsSync(nueva.materiales) && existsSync(nueva.posts), 'con carpeta de materiales y de posts');
+  ok(!existsSync(nueva.identidad), 'y sin identidad: esa no se copia de otra cuenta');
+  ok(/ya existe/.test(await lanzaAsync(() => darDeAlta({ id: 'dra-nueva' }, temporal))), 'dar de alta dos veces la misma no pisa nada');
+  ok(/no sirve como id/.test(await lanzaAsync(() => darDeAlta({ id: 'nuevo' }, temporal))), 'y un id que es ruta de la app no pasa');
 } finally {
   rmSync(temporal, { recursive: true, force: true });
 }

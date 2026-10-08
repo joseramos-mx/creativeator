@@ -56,6 +56,8 @@ export const MAXIMO = 20;
 export async function proponer(
   contexto: ContextoDeTemas,
   cuantos = 3,
+  /** identidad.md de la cuenta, si tiene: de qué hablan y a quién. */
+  identidad?: string,
 ): Promise<TPropuesta[]> {
   if (!Number.isInteger(cuantos) || cuantos < 1 || cuantos > MAXIMO) {
     throw new Error(`Se proponen entre 1 y ${MAXIMO} temas de una vez, no ${cuantos}.`);
@@ -76,6 +78,7 @@ export async function proponer(
       // se cortaba a la mitad y el error salía como "no devolvió la estructura".
       max_tokens: Math.max(4000, cuantos * 1200),
       thinking: { type: 'adaptive' },
+      ...(identidad ? { system: `# La identidad de la cuenta\n\n${identidad}` } : {}),
       messages: [{ role: 'user', content: instrucciones(contexto, cuantos) }],
       output_config: { format: zodOutputFormat(Propuestas) },
     })

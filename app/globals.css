@@ -604,56 +604,12 @@ select:focus {
   vertical-align: middle;
 }
 
-/* ── cola de revisión de afirmaciones ── */
-
-.afirmacion {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border: 1px solid var(--ui-line);
-  border-left: 3px solid #e5a94b;
-  border-radius: 10px;
-  background: #12161d;
-}
-
-.afirmacion[data-revisada] {
-  border-left-color: #46c07a;
-  opacity: 0.72;
-}
-
-.afirmacion__cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 8px;
-}
-
-.afirmacion__cabecera .chip[data-disparador='cifra'] {
-  border-color: #7a4a4a;
-  color: #ffa8a8;
-}
-
-.afirmacion__cabecera .chip[data-disparador='seguridad'] {
-  border-color: #6b5220;
-  color: #e5a94b;
-}
-
-.afirmacion__texto {
+.clinico__texto {
   margin: 0;
   font-size: 12px;
   line-height: 1.65;
   color: var(--ui-txt);
   white-space: pre-wrap;
-}
-
-.afirmacion mark {
-  background: #4a3413;
-  color: #ffd79a;
-  padding: 0 2px;
-  border-radius: 3px;
-}
-
-.afirmacion a {
-  color: var(--ui-acc);
 }
 
 /* ── redactar ── */
@@ -813,7 +769,7 @@ select:focus {
   color: #e79ab8;
 }
 
-.clinico__firma {
+.clinico__elegida {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1560,4 +1516,105 @@ select:focus {
 
 .proyectos__vacio {
   color: var(--ui-dim);
+}
+
+/* ── subir una imagen propia al slide ── */
+
+.subir-propia {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+
+.subir-propia .pista {
+  margin: 0;
+}
+
+/* ── identidad de la cuenta ── */
+
+.identidad {
+  max-width: 860px;
+}
+
+.identidad__intro {
+  margin: 0 0 14px;
+  line-height: 1.6;
+  color: var(--ui-txt);
+}
+
+.identidad__seccion {
+  margin: 14px 0 0;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+}
+
+.identidad__seccion legend {
+  padding: 0 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.identidad__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.identidad__materiales {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.identidad__materiales li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+.identidad__materiales li > span:first-child {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.identidad__md {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.identidad__pieza {
+  margin-top: 10px;
+}
+
+.identidad__pieza > summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.identidad__preguntas {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 1px solid #6b5220;
+  border-radius: 10px;
+}
+
+.identidad__preguntas ol {
+  margin: 8px 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.chip--aviso {
+  border-color: #6b5220;
+  color: #e5a94b;
+}
+
+.pista--ok {
+  color: #46c07a;
 }

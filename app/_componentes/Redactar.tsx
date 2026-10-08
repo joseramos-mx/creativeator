@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { afirmacionesDe } from '@/lib/afirmaciones';
 import type { Post } from '@/plantillas/clinica/tipos';
 import { useApi, useProyecto } from './proyecto';
 
@@ -14,7 +13,7 @@ import { useApi, useProyecto } from './proyecto';
  * · **No exporta.** Guarda como borrador y abre el editor. Entre lo que escribe
  *   el modelo y un PNG hay una persona, siempre.
  * · **Enseña antes de escribir a disco.** Una llamada cuesta y tarda; ver qué
- *   salió —con qué paleta, con cuántas afirmaciones por revisar— antes de
+ *   salió —con qué paleta, con qué slides— antes de
  *   crear el archivo es lo que evita acumular borradores que nadie quiso.
  *
  * Y si el tema se deja vacío, el modelo propone y arranca con el primero. No
@@ -179,10 +178,6 @@ export function Redactar() {
     }
   }
 
-  // Se cuentan aquí con el mismo extractor del editor: lo que se enseña es lo
-  // que va a pedir la cola, no una estimación aparte que pueda desviarse.
-  const porRevisar = salida ? afirmacionesDe(salida.post).length : 0;
-
   return (
     <details className="tarjeta" data-redactar>
       <summary>
@@ -253,12 +248,6 @@ export function Redactar() {
                 </li>
               ))}
             </ol>
-
-            <p className="pista">
-              {porRevisar === 0
-                ? 'Ninguna afirmación entra en la cola: nada con cifra, fuente ni indicación de seguridad.'
-                : `${porRevisar} ${porRevisar === 1 ? 'afirmación' : 'afirmaciones'} para revisar antes de poder aprobarlo.`}
-            </p>
 
             {salida.avisos.length ? (
               <ul className="avisos">

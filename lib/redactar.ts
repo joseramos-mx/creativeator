@@ -6,7 +6,6 @@ import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/plantillas/clinica/tokens';
-import { afirmacionesDe } from './afirmaciones';
 import { MODELO_REDACCION } from './modelo';
 import { repartir } from './variedad';
 import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
@@ -17,6 +16,7 @@ import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
 import { instruccionesDeRedaccion } from './instrucciones';
+import { leerIdentidad } from './identidad';
 import { asegurarEscrito, leerPieza, leerVoz } from './piezas';
 import { leerProyecto, listarPosts } from './posts';
 import type { TPost, TSlide } from './schema';
@@ -29,9 +29,8 @@ import type { TPost, TSlide } from './schema';
  * plantillas/clinica/tokens.ts. Lo único parecido a diseño que sí elige es la paleta, y
  * la elige por el tema, con las mismas reglas que están escritas en el token.
  *
- * Lo que sale de aquí es siempre un **borrador**. La cola de revisión de
- * lib/afirmaciones.ts es lo que decide si puede llegar a aprobado, y no se
- * salta: entre generar y exportar hay una persona, siempre.
+ * Lo que sale de aquí es siempre un **borrador**: entre generar y publicar
+ * hay una persona, que lo revisa en el editor y se lo manda a la cuenta.
  */
 
 
@@ -82,15 +81,6 @@ const Redaccion = z.object({
   slides: z.array(SlideRedactado).min(4).max(8),
   copy: z.string(),
   hashtags: z.array(z.string()),
-  /**
-   * Lo que el modelo dice haber afirmado.
-   *
-   * No se usa para construir la cola —la cola sale de leer el texto, porque un
-   * modelo que inventa una cifra también puede omitirla de su lista— sino para
-   * cruzarla: lo que el extractor encuentra y esto no declara es más
-   * sospechoso, no menos.
-   */
-  afirmaciones: z.array(z.object({ texto: z.string(), fuente: z.string() })),
 });
 
 export type TRedaccion = z.infer<typeof Redaccion>;
@@ -141,7 +131,13 @@ export async function redactar(
   slug: string,
   opciones: OpcionesRedaccion = {},
 ): Promise<ResultadoRedaccion> {
-  const voz = await leerVoz(proyecto);
+  // La identidad va detrás de la voz, en el mismo system prompt: la voz dice
+  // cómo escribir, la identidad quién es la cuenta. Sin identidad.md el prompt
+  // queda como estaba.
+  const identidad = await leerIdentidad(proyecto);
+  const voz = identidad
+    ? `${await leerVoz(proyecto)}\n\n# La identidad de la cuenta\n\n${identidad}\n`
+    : await leerVoz(proyecto);
   // La cuenta no está en voz.md, y el copy la necesita: el bloque 📲 nombra la
   // plataforma y el último hashtag lleva la ciudad.
   const marca = await leerProyecto(proyecto);
@@ -341,8 +337,8 @@ async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
  * banda del lienzo lo dice: es preferible un hueco señalado que un carrusel a
  * medio redactar, porque el texto es lo caro y la foto se pone en un clic.
  *
- * Solo el banco de ambiente. Lo clínico no pasa por aquí ni puede: va por la
- * cola que firma el médico.
+ * Solo el banco de ambiente. Lo clínico no se pone solo: se busca en el
+ * archivo clínico desde el editor, o se sube la imagen que mande la cuenta.
  */
 async function rellenarFotos(
   proyecto: string,
@@ -552,28 +548,5 @@ function revisar(r: TRedaccion, post: TPost): string[] {
     avisos.push('Escribió un slide de cierre; ese no se genera, quítalo.');
   }
 
-  // El cruce: lo que se lee en el texto contra lo que el modelo dice haber
-  // afirmado. Las que aparecen aquí y no en su lista no son un descuido menor.
-  const declaradas = r.afirmaciones.map((a) => normalizar(a.texto));
-  const noDeclaradas = afirmacionesDe(post).filter(
-    (a) =>
-      a.disparadores.includes('cifra') &&
-      !declaradas.some((d) => d.includes(normalizar(a.texto).slice(0, 40)) || normalizar(a.texto).includes(d.slice(0, 40))),
-  );
-  for (const a of noDeclaradas) {
-    avisos.push(`Afirma una cifra en ${a.donde} que no declaró: «${a.marcas.join(', ')}». Revísala con cuidado.`);
-  }
-
-  const sinFuente = afirmacionesDe(post).filter(
-    (a) => a.disparadores.includes('cifra') && !a.fuente,
-  );
-  for (const a of sinFuente) {
-    avisos.push(`Cifra sin fuente en ${a.donde}: «${a.marcas.join(', ')}». Quítala o atribúyela.`);
-  }
-
   return avisos;
-}
-
-function normalizar(s: string) {
-  return s.toLowerCase().replace(/\s+/g, ' ').trim();
 }

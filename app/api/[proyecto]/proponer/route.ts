@@ -1,4 +1,5 @@
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
+import { leerIdentidad } from '@/lib/identidad';
 import { asegurarEscrito, leerPieza } from '@/lib/piezas';
 import { leerProyecto, listarPosts } from '@/lib/posts';
 import { mesDe, proponer } from '@/lib/proponer';
@@ -51,7 +52,10 @@ export async function POST(req: Request, ctx: ConProyecto) {
         .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
     };
 
-    return Response.json({ contexto, propuestas: await proponer(contexto, cuantos) });
+    return Response.json({
+      contexto,
+      propuestas: await proponer(contexto, cuantos, await leerIdentidad(proyecto)),
+    });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudieron proponer temas.';
     return Response.json({ error }, { status: 502 });

@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BotonExportar } from './BotonExportar';
-import { Afirmaciones } from './Afirmaciones';
 import { ImportarBrief } from './ImportarBrief';
 import { PanelSlide, type Seleccion } from './PanelSlide';
 import {
@@ -15,8 +14,6 @@ import {
 } from '@/lib/edicion';
 import { plantillaDe } from '@/plantillas';
 import { ProveedorDeAvisos } from '@/plantillas/clinica/avisos';
-import { pendientes } from '@/lib/afirmaciones';
-import { faltaClinico } from '@/lib/clinicas';
 import { fotosSinCredito } from '@/lib/fotos';
 import { bloque, lienzo, paletas, tipo } from '@/plantillas/clinica/tokens';
 import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
@@ -221,7 +218,6 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Pro
         </div>
 
         <Ficha post={post} setPost={setPost} />
-        <Afirmaciones post={post} medico={marca.nombre} setPost={setPost} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
 
         {post.slides.map((slide, i) => (
@@ -229,8 +225,9 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Pro
             key={i}
             slide={slide}
             slug={post.slug}
-            medico={marca.nombre}
             recientes={recientes}
+            onSubir={(archivo) => void subirImagen(i, archivo)}
+            subiendo={subiendo === i}
             paleta={post.paleta}
             onUsarIcono={usarIcono}
             indice={i}
@@ -392,13 +389,11 @@ function esFoto(slide: Post['slides'][number]) {
 /** Los datos del carrusel que no se pintan en ningún slide. */
 function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) => void }) {
   const [copiado, setCopiado] = useState(false);
-  // Un carrusel no se declara aprobado con afirmaciones sin mirar ni con fotos
-  // de las que no se sabe de dónde salieron. El esquema lo rechaza al guardar;
-  // aquí se apaga la opción para no chocar contra ello.
-  const sinRevisar = pendientes(post, post.revisiones).length;
+  // Un carrusel no se declara aprobado con fotos de las que no se sabe de
+  // dónde salieron. El esquema lo rechaza al guardar; aquí se apaga la opción
+  // para no chocar contra ello.
   const sinLicencia = fotosSinCredito(post).length;
-  const sinFirmar = faltaClinico(post).length;
-  const trabado = sinRevisar > 0 || sinLicencia > 0 || sinFirmar > 0;
+  const trabado = sinLicencia > 0;
 
   return (
     <details className="tarjeta" data-ficha open>
@@ -447,21 +442,6 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             />
           </div>
         </div>
-
-        {sinRevisar > 0 ? (
-          <p className="pista pista--aviso">
-            Quedan {sinRevisar} {sinRevisar === 1 ? 'afirmación' : 'afirmaciones'} sin revisar: hasta
-            entonces el carrusel se queda en borrador.
-          </p>
-        ) : null}
-
-        {sinFirmar > 0 ? (
-          <p className="pista pista--clinico">
-            {sinFirmar === 1 ? 'Hay una imagen clínica' : `Hay ${sinFirmar} imágenes clínicas`} sin
-            la firma del médico, o con la firma caída porque el archivo cambió. Se aprueban desde el
-            archivo clínico de su slide.
-          </p>
-        ) : null}
 
         {sinLicencia > 0 ? (
           <p className="pista pista--aviso">

@@ -11,7 +11,6 @@
  *
  *   npm run consentimiento                 → todo lo que lleva consentimiento
  *   npm run consentimiento "expediente 218" → solo ese
- *   npm run consentimiento --clinicas       → todas las fotos clínicas
  *
  * Busca en todos los proyectos; `-- --proyecto <id>` lo limita a uno.
  *
@@ -21,7 +20,6 @@
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { clinicasDe } from '../lib/clinicas.ts';
 import { existeProyecto, listarProyectos, rutasDe, sinProyecto } from '../lib/proyecto.ts';
 
 /*
@@ -38,8 +36,7 @@ if (pedido && !existeProyecto(pedido)) {
 const proyectos = pedido ? [pedido] : listarProyectos();
 
 const argumento = sinProyecto(process.argv.slice(2))[0] ?? '';
-const todasLasClinicas = argumento === '--clinicas';
-const buscado = todasLasClinicas ? '' : argumento.toLowerCase();
+const buscado = argumento.toLowerCase();
 
 const hallazgos = [];
 
@@ -52,25 +49,18 @@ for (const proyecto of proyectos) {
       // La portada lleva su foto suelta; los de contenido, dentro del visual.
       const fotos = [
         slide.tipo === 'portada' && slide.foto
-          ? { src: slide.foto, credito: slide.fotoCredito, clinica: false, aprobacion: undefined }
+          ? { src: slide.foto, credito: slide.fotoCredito }
           : null,
         slide.visual?.clase === 'foto'
-          ? {
-              src: slide.visual.src,
-              credito: slide.visual.credito,
-              clinica: Boolean(slide.visual.clinica),
-              aprobacion: slide.visual.aprobacion,
-            }
+          ? { src: slide.visual.src, credito: slide.visual.credito }
           : null,
       ].filter(Boolean);
 
       for (const foto of fotos) {
         const referencia = foto.credito?.consentimiento?.referencia;
-        const interesa = todasLasClinicas
-          ? foto.clinica
-          : buscado
-            ? (referencia ?? '').toLowerCase().includes(buscado)
-            : Boolean(referencia);
+        const interesa = buscado
+          ? (referencia ?? '').toLowerCase().includes(buscado)
+          : Boolean(referencia);
         if (!interesa) continue;
 
         hallazgos.push({
@@ -82,8 +72,6 @@ for (const proyecto of proyectos) {
           referencia,
           fecha: foto.credito?.consentimiento?.fecha,
           fuente: foto.credito?.fuente,
-          clinica: foto.clinica,
-          aprobacion: foto.aprobacion,
         });
       }
     });
@@ -92,20 +80,16 @@ for (const proyecto of proyectos) {
 
 if (hallazgos.length === 0) {
   console.log(
-    todasLasClinicas
-      ? 'No hay ninguna foto clínica en ningún proyecto.'
-      : buscado
-        ? `Ninguna foto lleva el consentimiento "${argumento}".`
-        : 'Ninguna foto tiene referencia de consentimiento registrada.',
+    buscado
+      ? `Ninguna foto lleva el consentimiento "${argumento}".`
+      : 'Ninguna foto tiene referencia de consentimiento registrada.',
   );
   process.exit(0);
 }
 
-const titulo = todasLasClinicas
-  ? 'Fotos clínicas'
-  : buscado
-    ? `Fotos con el consentimiento "${argumento}"`
-    : 'Fotos con consentimiento registrado';
+const titulo = buscado
+  ? `Fotos con el consentimiento "${argumento}"`
+  : 'Fotos con consentimiento registrado';
 console.log(`\n${titulo}: ${hallazgos.length}\n`);
 
 for (const h of hallazgos) {
@@ -114,11 +98,6 @@ for (const h of hallazgos) {
   if (h.fuente) console.log(`    fuente:   ${h.fuente}`);
   if (h.referencia) {
     console.log(`    consent.: ${h.referencia}${h.fecha ? ` (${h.fecha})` : ''}`);
-  } else if (h.clinica) {
-    console.log('    consent.: sin referencia');
-  }
-  if (h.aprobacion) {
-    console.log(`    aprobó:   ${h.aprobacion.aprobadaPor} el ${h.aprobacion.fecha}`);
   }
   console.log();
 }

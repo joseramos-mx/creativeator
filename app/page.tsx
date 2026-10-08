@@ -11,7 +11,8 @@ import { listarPosts, listarProyectosConMarca } from '@/lib/posts';
  * que se abre desde aquí —la lista, el editor, las descargas— sabe de qué
  * cuenta es sin tener que recordarlo.
  *
- * Con uno solo esta pantalla no aporta nada y se salta.
+ * Con uno solo esta pantalla no aporta nada y se salta; el alta de otro está
+ * también en la cabecera de cada proyecto.
  */
 export const dynamic = 'force-dynamic';
 
@@ -31,13 +32,16 @@ export default async function Proyectos() {
       <header className="cromo">
         <h1>Carruseles</h1>
         <p>{proyectos.length} proyectos en proyectos/</p>
+        <span className="sep" />
+        <Link className="boton" href="/nuevo">
+          Nuevo proyecto
+        </Link>
       </header>
 
       <main className="banco">
         {proyectos.length === 0 ? (
           <p className="proyectos__vacio">
-            Todavía no hay ningún proyecto. Un proyecto es una carpeta en <code>proyectos/</code> con su{' '}
-            <code>proyecto.json</code>; el README dice cómo dar de alta uno.
+            Todavía no hay ningún proyecto. <Link href="/nuevo">Da de alta el primero</Link>.
           </p>
         ) : (
           <ul className="proyectos">

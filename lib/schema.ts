@@ -14,8 +14,6 @@
 import { z } from 'zod';
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/plantillas/clinica/tokens';
 import { NOMBRES_PLANTILLA } from '@/plantillas/nombres';
-import { pendientes } from './afirmaciones';
-import { faltaClinico } from './clinicas';
 import { fotosSinCredito } from './fotos';
 
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
@@ -86,23 +84,6 @@ export const Credito = z.object({
     .optional(),
 });
 
-/**
- * La firma del médico sobre una imagen clínica.
- *
- * `huella` es del archivo, no de la ruta: si la imagen cambia, la aprobación
- * deja de valer. Es la misma idea que sostiene la cola de afirmaciones —editar
- * el texto devuelve la afirmación a la cola— aplicada a los bytes de una foto.
- *
- * Y como allí, esto no dice que el sistema haya comprobado nada. Dice que una
- * persona con cédula miró esa imagen concreta un día concreto.
- */
-export const Aprobacion = z.object({
-  aprobadaPor: z.string().min(1),
-  fecha: z.string(),
-  huella: z.string().min(1),
-  nota: z.string().optional(),
-});
-
 export const Visual = z.discriminatedUnion('clase', [
   z.object({ clase: z.literal('ninguno') }),
   z.object({
@@ -112,16 +93,6 @@ export const Visual = z.discriminatedUnion('clase', [
     /** Qué buscar en el banco de fotos. Lo llena la IA; no se dibuja. */
     ideaImagen: z.string().optional(),
     credito: Credito.optional(),
-    /**
-     * Foto de lesión: piel enferma, no ambiente.
-     *
-     * Va por una cola distinta de la contextual y la firma el médico, porque
-     * lo que hay que juzgar es distinto. En una foto de aula lo único que se
-     * revisa es de dónde salió; en una de piel, además, si esa imagen
-     * corresponde a lo que el texto dice que es.
-     */
-    clinica: z.literal(true).optional(),
-    aprobacion: Aprobacion.optional(),
   }),
   z.object({
     clase: z.literal('icono'),
@@ -184,25 +155,6 @@ const Cierre = z.object({
 
 export const Slide = z.discriminatedUnion('tipo', [Portada, Contenido, Lista, Cierre]);
 
-/**
- * Una afirmación que alguien miró.
- *
- * No hay campo de estado a propósito. Que exista la entrada quiere decir que
- * una persona la leyó, y nada más: el sistema no comprueba nada, así que no
- * puede haber un "verificada" escrito por una máquina que dentro de seis meses
- * alguien lea como si lo fuera. Y no hace falta un estado de "rechazada":
- * corregir el texto cambia su huella, y la afirmación vuelve sola a la cola.
- */
-export const Revision = z.object({
-  revisadaPor: z.string(),
-  fecha: z.string(),
-  /** Obligatorio en las que llevan cifra. Ver `pendientes()`. */
-  enlace: z.string().optional(),
-  /** El texto tal como se revisó, para poder leerlo sin descifrar la huella. */
-  texto: z.string(),
-  nota: z.string().optional(),
-});
-
 export const Post = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/, 'solo minúsculas, números y guiones'),
   tema: z.string(),
@@ -238,14 +190,11 @@ export const Post = z.object({
 
   hashtags: z.array(z.string()).optional(),
 
-  /** Las afirmaciones ya revisadas, por huella. Ver lib/afirmaciones.ts. */
-  revisiones: z.record(z.string(), Revision).optional(),
-
   slides: z.array(Slide).min(2),
 });
 
 /**
- * El mismo post, con la barrera de las afirmaciones.
+ * El mismo post, con la barrera de las licencias.
  *
  * Va aparte de `Post` a propósito: **la barrera es del guardado, no de la
  * lectura**. Si la validación de lectura la exigiera, un carrusel publicado
@@ -259,41 +208,10 @@ export const Post = z.object({
 export const PostGuardable = Post.superRefine((post, ctx) => {
   if (post.estado === 'borrador') return;
 
-  const faltan = pendientes(post, post.revisiones);
-  if (faltan.length > 0) {
-    ctx.addIssue({
-      code: 'custom',
-      path: ['estado'],
-      message:
-        `no se puede guardar como "${post.estado}" con ${faltan.length} ` +
-        `${faltan.length === 1 ? 'afirmación sin revisar' : 'afirmaciones sin revisar'}:\n` +
-        faltan
-          .map((a) => {
-            const falta = post.revisiones?.[a.huella] ? 'le falta el enlace' : 'sin revisar';
-            return `      · ${a.donde} (${a.disparadores.join('+')}, ${falta})`;
-          })
-          .join('\n'),
-    });
-  }
-
-  // La tercera barrera: las fotos de lesión las firma el médico. La huella del
-  // archivo se comprueba en la ruta de guardado, que sí puede leer el disco;
-  // aquí se caza lo que se ve sin leerlo, que es lo que ni siquiera tiene firma.
-  const clinicas = faltaClinico(post);
-  if (clinicas.length > 0) {
-    ctx.addIssue({
-      code: 'custom',
-      path: ['estado'],
-      message:
-        `no se puede guardar como "${post.estado}" con ${clinicas.length} ` +
-        `${clinicas.length === 1 ? 'foto clínica pendiente' : 'fotos clínicas pendientes'}:\n` +
-        clinicas.map((f) => `      · ${f.donde}: ${f.que}`).join('\n'),
-    });
-  }
-
-  // La segunda barrera, del mismo tipo y por la misma razón: lo que no se puede
-  // decir de dónde salió no se declara aprobado. "Desconocida" no la pasa a
-  // propósito; si no se sabe, el carrusel se queda en borrador.
+  // Lo que no se puede decir de dónde salió no se declara aprobado. Las fotos
+  // subidas a mano llevan su crédito puesto solas (ver CREDITO_PROPIO en
+  // lib/edicion.ts), así que esto solo detiene a una foto que nadie sabe de
+  // dónde vino.
   const sinCredito = fotosSinCredito(post);
   if (sinCredito.length > 0) {
     ctx.addIssue({
@@ -355,7 +273,6 @@ export const Proyecto = Marca.extend({
 });
 
 export type TCredito = z.infer<typeof Credito>;
-export type TAprobacion = z.infer<typeof Aprobacion>;
 export type TOverrides = z.infer<typeof Overrides>;
 export type TVisual = z.infer<typeof Visual>;
 export type TEmblema = z.infer<typeof Emblema>;

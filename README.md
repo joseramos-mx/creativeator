@@ -26,9 +26,10 @@ encendido, qué está apagado y por qué.
 | Redacción con IA | `/api/<proyecto>/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
 | Propuesta de temas | `/api/<proyecto>/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
 | El calendario | Panel en la portada o `npm run mes`: lee la hoja y escribe los que faltan | las mismas tres |
-| Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
+| Subir imagen propia | Botón en cada slide; la imagen queda con el crédito de la cuenta | — |
+| Identidad de la cuenta | Cuestionario + manual, posts y documentos → `identidad.md`, voz y prompts | `ANTHROPIC_API_KEY` |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
-| Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
+| Archivo clínico | Wikimedia Commons, solo licencias de uso comercial | — |
 | Íconos generados | Se genera lo que la librería no tiene, al redactar | `GEMINI_API_KEY` con facturación |
 
 **Apagado, y el porqué de cada uno.**
@@ -77,6 +78,8 @@ Si solo quieres el servidor, `npm run dev:solo`.
 | `/` | Elegir proyecto. Con uno solo se salta y lleva directo a él. |
 | `/<proyecto>` | La lista de carruseles de esa cuenta, con la portada de cada uno. |
 | `/<proyecto>/descargas` | Los slides listos para bajarlos al teléfono. |
+| `/<proyecto>/identidad` | Quién es la cuenta: cuestionario, materiales y los textos con los que escribe la IA. |
+| `/nuevo` | Dar de alta una cuenta. |
 | `/<proyecto>/post/<slug>` | El editor: formulario a la izquierda, carrusel a la derecha. |
 | `/plantilla` | El banco de pruebas: aquí se prueba un cambio de diseño sin tocar contenido. |
 | `/<proyecto>/render/<slug>/<n>` | Un slide solo, sin nada alrededor. No es para ti: es la que captura Playwright. |
@@ -124,6 +127,9 @@ Todo lo que es de una cuenta vive en dos carpetas con su id, y nada más:
 ```
 proyectos/<id>/                 lo que se edita
   proyecto.json                 marca y configuración (ver abajo)
+  identidad.md                  quién es la cuenta: historia, público, tono, visual
+  cuestionario.json             lo que se contestó para escribir la identidad
+  materiales/                   manual de identidad, posts pasados, documentos
   voz.md                        el system prompt de la redacción
   prompts/                      lo demás que la IA tiene que saber de la cuenta
     alcance.md                  qué temas son suyos y cuáles no
@@ -203,22 +209,37 @@ carpeta y se inserta en su sitio:
 Al separarlos, los prompts del Dr. Edwin quedaron **idénticos letra por letra** a
 los de antes: se comprobó armándolos con el código viejo y con el nuevo.
 
-### Dar de alta una cuenta
+### Dar de alta una cuenta: primero conocerla
 
-```bash
-npm run proyecto:nuevo -- dra-mildreth
-```
+**Nuevo proyecto** (en `/` o en la cabecera de cualquier cuenta) pide el nombre y
+lleva a **`/<id>/identidad`**, que hace lo que hace Claude antes de empezar un
+proyecto: preguntar lo que debería saber.
 
-Crea las dos carpetas con los textos del Dr. Edwin **como ejemplo**, porque
-adaptar un prompt que ya funciona es más fácil que escribirlo en blanco. Cada
-texto lleva arriba la línea `POR ESCRIBIR`, igual que los campos de
-`proyecto.json`, y **mientras siga ahí la app no redacta con él**: dice qué
-archivo falta. Es la barrera contra el error que no avisa, una pediatra
-escribiendo con el alcance de un dermatólogo.
+1. **El cuestionario.** A qué se dedican, cómo llegaron ahí, qué los hace
+   distintos, a quién le hablan, cómo suenan, de qué temas sí y de cuáles no,
+   cómo es un buen carrusel suyo. Nada es obligatorio.
+2. **Los materiales.** El manual de identidad, posts publicados, el Canva de una
+   plantilla, el documento del negocio: PDF, imágenes o texto (un Word o un
+   Canva se exportan a PDF). Los posts publicados son lo que más enseña del
+   tono.
+3. **Escribir la identidad con Claude.** Lee todo y propone `identidad.md`, la
+   voz, las cinco piezas de los prompts y los datos de la marca —nombre, ciudad,
+   cierre, fuentes—, más **las preguntas que le faltan** en vez de inventar las
+   respuestas. Se lee, se corrige y se guarda; **hasta que se guarda no cambia
+   nada**, así que pedirla en una cuenta con la voz afinada a mano no la pisa.
 
-Después: llenar `proyecto.json`, poner el logo en `public/proyectos/<id>/marca/`,
-reescribir los seis textos empezando por `voz.md` y, si hay, subir el calendario
-desde el panel. Con `--desde <id>` copia los ejemplos de otra cuenta.
+Desde ahí, la redacción y la propuesta de temas leen `identidad.md` junto con la
+voz. Se puede volver a esa pantalla cuando cambie algo —un servicio nuevo, otro
+tono— y pedir la identidad otra vez: parte de la que ya hay.
+
+Al darla de alta, la cuenta nace con los textos del Dr. Edwin **como ejemplo**,
+marcados `POR ESCRIBIR`, igual que los campos de `proyecto.json`. **Mientras la
+marca siga, la app no redacta con ellos** y dice qué falta: es la barrera contra
+el error que no avisa, una pediatra escribiendo con el alcance de un
+dermatólogo. Guardar la identidad los reemplaza.
+
+Falta a mano solo el logo en blanco: `public/proyectos/<id>/marca/logo-blanco.png`.
+Desde la terminal hace lo mismo `npm run proyecto:nuevo -- dra-mildreth`.
 
 ### Con más de un proyecto
 
@@ -298,8 +319,8 @@ Cosas que conviene saber del formato:
 - **Las rutas de imagen son locales**, siempre dentro de `public/`. Una URL
   externa es un error de validación a propósito: los enlaces caducan y el PNG
   sale con un hueco meses después.
-- **`estado`** es `borrador`, `aprobado` o `publicado`. Sirve para saber qué
-  falta revisar del mes.
+- **`estado`** es `borrador`, `aprobado` o `publicado`. `aprobado` es que la
+  cuenta ya dio el visto bueno; sirve para saber qué falta del mes.
 - **`overrides`** es la excepción de un slide: `offsetY`, `tituloPx`, `cuerpoPx`,
   `mediaAncho`, `mediaAlto`. Vive en el contenido, nunca en los tokens. Si un
   slide junta muchos, la señal es que el token está mal.
@@ -328,17 +349,11 @@ Opus—; lo que baja el costo es cambiar de *nivel*, Opus → Sonnet. Proponer t
 y sacar criterios de búsqueda ya van en Sonnet: eligen entre reglas que están
 escritas en el prompt, no inventan contenido.
 
-Bajar el de redactar es otra cosa, y **el riesgo no está donde parece**. La
-barrera de afirmaciones no deja publicar una cifra sin revisar venga del modelo
-que venga, así que no se arriesga una mentira publicada: se arriesga que salgan
-*más afirmaciones que revisar*, y revisar ya es el cuello de botella —once por
-carrusel, cinco de ellas para el médico—. Un modelo que escriba dos cifras de
-más por carrusel se paga solo en tiempo de revisión.
-
-Así que la forma de saber si salió a cuenta no es leer el carrusel: es mirar
-**cuántas afirmaciones dejó en la cola**, que sale en el resumen de `npm run
-mes` y en el panel del calendario. Un carrusel son unos 7.400 tokens de entrada
-y 7.800 de salida, medidos.
+Bajar el de redactar es otra cosa: el texto es lo que la cuenta lee cuando se le
+manda el carrusel, y un modelo más barato escribe más cifras flojas y frases más
+genéricas, que son justo los cambios que la cuenta pide de vuelta. Lo que se
+ahorra en tokens se paga en vueltas por WhatsApp. Un carrusel son unos 7.400
+tokens de entrada y 7.800 de salida, medidos.
 
 El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
 archivo, al guardar desde el editor y al validar lo que devuelva el modelo al
@@ -357,11 +372,14 @@ publicaron y la sección de cierre describe una plantilla anterior.
 Formulario a la izquierda, carrusel a la derecha. Cuatro cosas son las que se
 notan al usarlo todos los días:
 
-**La imagen se suelta sobre el slide, no sobre un campo.** Arrastra la foto y
-suéltala encima del slide de la derecha. El slide se ilumina cuando la va a
-aceptar; el de cierre y el de lista no la aceptan y no se iluminan. La imagen se
-guarda en `public/proyectos/<id>/media/<slug>/`, con el nombre normalizado y bajada a 1600 px
-de ancho.
+**Tu imagen, con un botón o soltándola sobre el slide.** En la tarjeta de cada
+slide con imagen está **Subir mi imagen**; también se puede arrastrar la foto
+encima del slide de la derecha, que se ilumina cuando la va a aceptar (el de
+cierre y el de lista no la aceptan). La imagen se guarda en
+`public/proyectos/<id>/media/<slug>/`, con el nombre normalizado y bajada a
+1600 px, y queda con el crédito de la cuenta puesto, así que no hay que llenar
+nada para poder aprobar el carrusel. Es para las que manda la cuenta: una foto
+que tomó el doctor, una de un libro o un estudio que puede usar.
 
 **No hay botón de guardar.** Se guarda solo, 600 ms después de la última tecla,
 y el indicador de arriba dice en qué va. Si el guardado falla —porque el
@@ -583,12 +601,6 @@ cuesta lo mismo que haberlo elegido antes.**
 
 **Lo que sigue preguntando no es preferencia y no va a dejar de preguntar:**
 
-- **La cola de afirmaciones.** Una cifra plausible con una institución al lado
-  es el error más difícil de cazar. Se revisa de una en una y no hay botón de
-  aprobar todo.
-- **La aprobación de imágenes clínicas.** Que esa piel sea lo que el texto dice
-  que es lo firma un médico, y el servidor lo comprueba contra
-  `proyectos/<id>/proyecto.json`.
 - **El paso de edición entre redactar y exportar.** El borrador se abre en el
   editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
 
@@ -596,8 +608,8 @@ Cada tarjeta de la lista lleva dos botones cuadrados, sin texto porque en una
 rejilla de cinco columnas una etiqueta la partiría: **avanzar el estado**
 (`borrador → aprobado → publicado`, apagado en publicado) y **exportar el ZIP**.
 El primero no es un atajo alrededor de nada: manda el post a `/api/<proyecto>/post` y el
-servidor decide, así que si quedan afirmaciones sin revisar el estado no se
-mueve y la tarjeta dice por qué. La suite lo comprueba dando el clic.
+servidor decide, así que si queda una foto sin fuente ni licencia el estado no
+se mueve y la tarjeta dice por qué. La suite lo comprueba dando el clic.
 
 ## El calendario: escribir los que faltan
 
@@ -705,17 +717,10 @@ lo que convierte una suposición en una comprobación.
 
 ### El costo de verdad no son los tokens
 
-Al terminar dice cuántas afirmaciones acaban de entrar a la cola y cuántas de
-ésas son indicaciones de seguridad. Medido sobre un carrusel real de la tanda:
-**once afirmaciones, cinco de seguridad.** Ocho carruseles son del orden de
-noventa por revisar y cuarenta que firma el doctor, no tú. Escribir el mes toma
-veinte minutos; revisarlo, no.
-
-**La tanda no afloja nada.** Todo sale en `borrador`, la cola de afirmaciones
-queda entera, las fotos clínicas siguen sin poder entrar por aquí y ninguno se
-puede pasar de estado hasta que esté revisado. Lo único que se hace en tanda es
-**escribir**, que es la parte lenta y la que no decide nada. Revisar sigue
-siendo de uno en uno, y ahí no hay atajo.
+Escribir el mes toma veinte minutos; lo caro es lo que viene después: leer cada
+carrusel, mandárselo a la cuenta y aplicar lo que pida. Por eso la tanda **no
+aprueba nada**: todo sale en `borrador`. Lo único que se hace en tanda es
+**escribir**, que es la parte lenta y la que no decide nada.
 
 ### Los dos umbrales del repetido
 
@@ -765,38 +770,17 @@ el flujo de una persona eso no es una limitación, es una simplificación.
 
 ---
 
-## La cola de revisión
+## La revisión es con la cuenta, no en la app
 
-Un modelo puede escribir una cifra plausible con una institución real al lado
-—"cerca del 10% de las consultas de piel en niños (StatPearls)"— y eso es más
-difícil de cazar que un error obvio, porque llega ya vestido de verificado.
+La validación pasa por fuera: se le mandan las imágenes a la cuenta —al doctor,
+al cliente— por WhatsApp y dice si algo cambia. A veces pide cambiar una imagen
+por otra que tomó o que vio en un libro o un estudio que tiene libertad de usar;
+para eso está **Subir mi imagen** en cada slide.
 
-Por eso el editor extrae del carrusel las afirmaciones que hay que mirar y no
-deja marcarlo como aprobado hasta que estén revisadas una por una. El post de
-impétigo, por ejemplo, tiene nueve.
-
-Entran por cuatro disparadores, que se acumulan:
-
-| | qué lo dispara |
-|---|---|
-| `cifra` | un porcentaje, "N de cada N", una cantidad con unidad |
-| `fuente` | una institución nombrada, en el slide o dentro del copy |
-| `seguridad` | un modal junto a tratamiento, contagio, vuelta a clases o consulta: "necesita antibiótico", "puede volver a clases" |
-| cifra sin fuente | no es para revisar, es una regla rota |
-
-**Las que llevan cifra exigen el enlace a la fuente.** Pegar la URL obliga a
-haber abierto la fuente; con el campo opcional, "la verifiqué" se vuelve trámite.
-En las demás el enlace es opcional.
-
-Cada revisión se guarda por una **huella** del texto: si cambias una coma, la
-afirmación vuelve sola a la cola. No se puede aprobar una frase y luego cambiarla.
-
-**Lo que esto no hace.** El sistema no comprueba nada: no abre la fuente, no
-valida el enlace, no contrasta la atribución. Una entrada en `revisiones`
-significa una sola cosa, que **una persona la miró un día**. Por eso el JSON
-guarda `revisadaPor` y `fecha`, y no un `"verificada"` que dentro de seis meses
-alguien leería como si el sistema hubiera comprobado algo. Está explicado largo
-en `references/ia.md` de la skill.
+La app no pide firmas ni revisiones a nadie: hacerlo sería molestar a la cuenta
+dos veces por lo mismo. Lo que sí sigue cuidando es lo que es de quien edita:
+que el texto lleve sus fuentes (el prompt lo pide) y que cada foto diga de dónde
+salió.
 
 ## Las fotos: de dónde salen y bajo qué licencia
 
@@ -812,10 +796,14 @@ Cada foto del carrusel guarda en el JSON de dónde salió y bajo qué términos:
 }
 ```
 
-**Sin eso el carrusel no se puede marcar como aprobado.** Es la misma barrera
-que la de las afirmaciones: va en el estado y no en la exportación, y del
-guardado y no de la lectura, para que un carrusel de antes del mecanismo siga
-abriéndose. Y `"desconocida"` no la pasa, a propósito: si no se sabe de dónde
+**Sin eso el carrusel no se puede marcar como aprobado.** La barrera va en el
+estado y no en la exportación, y del guardado y no de la lectura, para que un
+carrusel de antes del mecanismo siga abriéndose.
+
+**Las imágenes que se suben a mano ya lo llevan**: quedan con fuente
+"Proporcionada por la cuenta" y licencia "Uso autorizado por la cuenta", que es
+lo que se sabe de una foto que mandó el doctor. Si se sabe más —el libro, el
+estudio, quién la tomó—, se escribe en la tarjeta del slide. Y `"desconocida"` no la pasa, a propósito: si no se sabe de dónde
 salió la foto, el crédito se queda vacío y el post se queda en borrador.
 Rellenar el campo satisfaría la validación sin registrar nada.
 
@@ -845,7 +833,7 @@ por un caso concreto: el slide del contagio en la escuela se publicó con la fot
 de un gimnasio, porque encajaba con "niños juntos".
 
 Solo fotos **de contexto**: un aula, mochilas, el recreo. Nada clínico. Las
-fotos de lesiones son otro flujo, con aprobación del médico, y no pasan por aquí.
+fotos de lesiones salen del archivo clínico o las sube la cuenta.
 
 ### Por qué Unsplash no está en el buscador
 
@@ -872,38 +860,22 @@ llene sola.
 `PEXELS_API_KEY` en `.env.local`. El límite gratuito es de 200 peticiones por
 hora y 20 000 al mes, de sobra para un mes de carruseles.
 
-### Las fotos clínicas van por otra cola
+### Subir mi imagen
 
-Una foto de aula y una foto de piel enferma se eligen con el mismo gesto y no
-son la misma decisión. En la de aula lo único que se revisa es de dónde salió;
-en la de piel, además, **si esa imagen es lo que el texto dice que es**, y eso
-lo firma un médico. Por eso el archivo clínico es un panel aparte, se ve
-distinto, y lo que sale de él no se puede insertar sin firma.
+En la tarjeta de cada slide con imagen —portada y contenido— está **Subir mi
+imagen**, o se arrastra la foto encima del slide. Funciona aunque el slide lleve
+ícono o nada: subir una imagen la pone como foto. La imagen se guarda en
+`public/proyectos/<id>/media/<slug>/`, bajada a 1600 px.
+
+Lo que sugirió el algoritmo no estorba: los buscadores siguen debajo, para volver
+a una foto de banco cuando se quiera.
+
+### El archivo clínico
 
 En la tarjeta de un slide con foto: **Archivo clínico — imágenes de lesión**.
-El sistema propone; el médico inserta. El botón no se activa hasta que se
-escribe su nombre, y el servidor lo vuelve a comprobar: lo que queda en el JSON
-es una firma, y un botón desactivado en el navegador no basta para eso.
-
-Lo que se guarda al aprobar:
-
-```json
-"clinica": true,
-"aprobacion": {
-  "aprobadaPor": "Dr. Edwin Maldonado",
-  "fecha": "2026-09-06",
-  "huella": "9f2c…"
-}
-```
-
-**La huella es de los bytes de la imagen, no de su ruta.** Si el archivo cambia
-—alguien lo sustituye por otro con el mismo nombre—, la firma deja de valer y el
-carrusel vuelve a borrador. Es la misma idea que sostiene la cola de
-afirmaciones: allí editar el texto devuelve la afirmación a la cola, aquí
-cambiar la imagen devuelve la aprobación al médico.
-
-Y como allí, esto no dice que el sistema haya comprobado nada. Dice que una
-persona con cédula miró esa imagen concreta un día concreto.
+Busca en Wikimedia Commons por el nombre de la condición y solo ofrece las que
+tienen una licencia de uso comercial. Se elige una, **Poner en el slide**, y
+queda con su crédito escrito, igual que una de Pexels.
 
 ### El consentimiento es una referencia, no un sí
 
@@ -918,7 +890,6 @@ que esté publicado.** Un sí no se puede buscar.
 ```bash
 npm run consentimiento                      # todo lo que lleva consentimiento
 npm run consentimiento "expediente 218"     # solo ese
-npm run consentimiento -- --clinicas        # todas las fotos clínicas
 ```
 
 Devuelve el carrusel, el slide, la ruta del archivo y si está publicado. No
@@ -964,9 +935,8 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 
 | Banco | Qué mide | Por qué no se puede mirar a ojo |
 |---|---|---|
-| `npm run banco` | El disparador de seguridad, contra quince frases | "Necesita antibiótico" y "suele picar de noche" tienen las dos un verbo, y solo una manda hacer algo |
 | `npm run banco-fotos` | El adaptador de Pexels y el descarte | Aparta el gimnasio del slide del contagio, y prueba lo que pasa cuando la respuesta viene rota |
-| `npm run banco-clinicas` | El archivo clínico y la barrera de aprobación | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
+| `npm run banco-clinicas` | Las licencias del archivo clínico | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
 | `npm run banco-croma` | El recorte del fondo verde | El halo verde no se ve sobre el blanco del editor y sí sobre el azul del slide |
 | `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
 | `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
@@ -1175,7 +1145,7 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 | 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy y los créditos. |
 | 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | ✅ La librería alojada aquí, con ingesta, manifiesto y buscador. |
-| 6 · redacción | ✅ `/api/<proyecto>/redactar`, la cola de afirmaciones y el mes entero. |
+| 6 · redacción | ✅ `/api/<proyecto>/redactar` y el mes entero. |
 | + imágenes | ✅ Pexels para contexto, Wikimedia Commons para clínicas, con registro de licencia. |
 | + generación | ✅ Íconos con Gemini, croma y la misma puerta que los descargados. |
 
@@ -1201,13 +1171,14 @@ por dónde empezar.
 |---|---|
 | 1 · una carpeta por cuenta | ✅ `proyectos/<id>/`, rutas en `lib/proyecto.ts`, URLs y API con el id, scripts con `--proyecto`. |
 | 2 · lo de la cuenta fuera del código | ✅ Alcance, estructura, reglas de imagen, fuentes, giro y cierre en la carpeta de cada cuenta; plantilla elegida por proyecto. |
-| 3 · los módulos médicos, opcionales | La cola de afirmaciones firmada "por el médico", el archivo clínico de Commons y el disparador de seguridad (`lib/afirmaciones.ts`) son de una consulta. Una cuenta como Adimex los tiene que poder apagar en `proyecto.json`. |
-| 4 · la Dra. Mildreth | La primera cuenta de verdad que no es el Dr. Edwin: misma plantilla, otra voz. Es la prueba de que las fases 1 y 2 alcanzan. |
-| 5 · una cuenta que no es médica | Adimex. Pide la fase 3 y, si su diseño es otro, la plantilla propia con su CSS separado (ver «Una plantilla nueva»). |
+| 3 · sin revisión en la app | ✅ Fuera la cola de afirmaciones y la firma de fotos clínicas: la validación es con la cuenta, por fuera. Botón para subir la imagen propia en cada slide. |
+| 4 · la identidad de cada cuenta | ✅ Cuestionario, materiales e `identidad.md` escrito por Claude, que la redacción lee con la voz. |
+| 5 · la Dra. Mildreth | La primera cuenta de verdad que no es el Dr. Edwin: alta, identidad, y un mes de carruseles. |
+| 6 · una cuenta que no es médica | Adimex. El panel del archivo clínico tendría que poder apagarse en `proyecto.json` y, si su diseño es otro, la plantilla propia con su CSS separado (ver «Una plantilla nueva»). |
 
 Lo que queda de dermatología en los prompts compartidos son **ejemplos** —"en un
 carrusel de alergia alimentaria van cacahuates"—, no reglas. A otra consulta le
-sirven igual; a Adimex le conviene revisarlos en la fase 5.
+sirven igual; a Adimex le conviene revisarlos en la fase 6.
 
 ---
 

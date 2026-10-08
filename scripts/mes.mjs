@@ -29,15 +29,13 @@
  * mismo camino que el botón del panel y no una copia que se va separando sola.
  *
  * ── Lo que esto NO hace ─────────────────────────────────────────────────────
- * No afloja ninguna barrera y no ahorra ni una revisión. Todo sale en
- * `borrador`, la cola de afirmaciones queda entera y las fotos clínicas siguen
- * sin poder entrar por aquí. Lo único que se hace en tanda es **escribir**, que
- * es la parte lenta y la que no decide nada.
+ * No aprueba nada. Todo sale en `borrador`, para revisarlo en el editor y
+ * mandárselo a la cuenta. Lo único que se hace en tanda es **escribir**, que es
+ * la parte lenta y la que no decide nada.
  */
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { afirmacionesDe } from '../lib/afirmaciones.ts';
 import { desde, leerCalendario } from '../lib/calendario.ts';
 import { revisarTanda, yaEscrito } from '../lib/mes.ts';
 import { proyectoDeArgumentos, rutasDe, sinProyecto } from '../lib/proyecto.ts';
@@ -325,16 +323,9 @@ for (const [i, item] of cola.entries()) {
     yaHay.temas.push(r.post.tema);
     yaHay.escritos.push({ slug, tema: r.post.tema });
 
-    const afirmaciones = afirmacionesDe(r.post);
-    const seguridad = afirmaciones.filter((a) => a.disparadores.includes('seguridad'));
-    hechos.push({ slug, post: r.post, afirmaciones, seguridad, uso: r.uso });
+    hechos.push({ slug, post: r.post, uso: r.uso });
 
-    console.log(
-      `${n} ${slug}\n` +
-        `      ${r.post.paleta} · ${afirmaciones.length} afirmación(es) por revisar` +
-        `${seguridad.length ? `, ${seguridad.length} de seguridad` : ''}` +
-        ` · ${reloj((Date.now() - desdeYa) / 1000)}`,
-    );
+    console.log(`${n} ${slug}\n      ${r.post.paleta} · ${reloj((Date.now() - desdeYa) / 1000)}`);
     for (const aviso of r.avisos) console.log(`      · ${aviso}`);
   } catch (e) {
     // Un carrusel que falla no se lleva la tanda: el siguiente sigue, y el que
@@ -374,15 +365,6 @@ if (hechos.length) {
   const salida = hechos.reduce((s, h) => s + (h.uso?.salida ?? 0), 0);
   console.log(`Tokens: ${entrada.toLocaleString('es')} de entrada, ${salida.toLocaleString('es')} de salida.`);
 
-  // El costo de verdad de escribir un mes de golpe no es el dinero, es esto.
-  const total = hechos.reduce((s, h) => s + h.afirmaciones.length, 0);
-  const seguridad = hechos.reduce((s, h) => s + h.seguridad.length, 0);
-  console.log(
-    `\nLa cola quedó con ${total} afirmación(es) por revisar en ${hechos.length} carrusel(es).` +
-      (seguridad
-        ? `\n${seguridad} son indicaciones de seguridad: esas las firma el doctor, no tú.`
-        : ''),
-  );
-  console.log('Ninguno se puede pasar de borrador hasta que estén revisadas.');
+  console.log(`\n${hechos.length} carrusel(es) en borrador, listos para revisar y mandar a la cuenta.`);
   console.log(`\nA revisar: ${base}/${proyecto}`);
 }

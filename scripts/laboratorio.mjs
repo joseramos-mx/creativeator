@@ -60,9 +60,6 @@ const edicion = {
     {
       tipo: 'contenido',
       titulo: '*Un slide* **con ícono**',
-      // La segunda frase está para disparar el tercer disparador de la cola: un
-      // modal junto a una palabra de tratamiento. Es la única afirmación de
-      // laboratorio que solo puede firmar el médico.
       cuerpo:
         'Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica.',
       visual: { clase: 'icono', slug: 'informacion', tam: 280, iconoSugerido: 'magnifying glass' },

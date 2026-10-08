@@ -11,8 +11,8 @@ import { leerPost } from '@/lib/posts';
  * lee el slide existe en la búsqueda contextual porque ahí hay que traducir
  * "cómo se contagia en la escuela" a un ambiente, y eso sí necesita criterio.
  *
- * **Esto propone, nunca inserta.** Elegir una imagen es otra petición, y esa
- * lleva la firma del médico.
+ * **Esto propone, nunca inserta.** Elegir una imagen es otra petición:
+ * /api/<proyecto>/fotos/elegir con `archivo: true`.
  */
 export async function POST(req: Request, ctx: ConProyecto) {
   const proyecto = await proyectoDe(ctx);
@@ -30,7 +30,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
 
     const candidatos = await banco.buscar(busqueda, 24);
     // Aquí no hay criba por descarte: lo que descalifica una foto clínica no es
-    // una palabra en su descripción, es el ojo del médico.
+    // una palabra en su descripción, es mirarla.
     const usables = candidatos.filter((c) => c.credito);
 
     return Response.json({

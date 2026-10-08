@@ -46,6 +46,8 @@ const RESERVADOS = new Set([
   'descargas',
   'render',
   'post',
+  'nuevo',
+  'identidad',
 ]);
 
 export function esIdValido(id: string): boolean {
@@ -84,6 +86,16 @@ export function rutasDe(id: string, raiz = process.cwd()) {
     config: join(carpeta, 'proyecto.json'),
     /** El system prompt de la redacción. */
     voz: join(carpeta, 'voz.md'),
+    /**
+     * Quién es la cuenta: a qué se dedica, cómo llegó ahí, a quién le habla,
+     * cómo suena. Lo escribe Claude a partir del cuestionario y los materiales,
+     * y la redacción lo lee junto con la voz. Ver lib/identidad.ts.
+     */
+    identidad: join(carpeta, 'identidad.md'),
+    /** Las respuestas al cuestionario de identidad. */
+    cuestionario: join(carpeta, 'cuestionario.json'),
+    /** Manual de identidad, posts pasados, documentos del negocio. */
+    materiales: join(carpeta, 'materiales'),
     /** Las piezas de los prompts que son de la cuenta y no de la app. */
     prompt: (nombre: string) => join(carpeta, 'prompts', `${nombre}.md`),
     calendario: join(carpeta, 'calendario.tsv'),

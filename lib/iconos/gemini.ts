@@ -68,7 +68,7 @@ export async function generar(
   if (clinico) {
     throw new Error(
       `"${concepto}" no se genera: ${clinico}. Las imágenes de lesiones salen ` +
-        'del archivo clínico y las aprueba el médico.',
+        'del archivo clínico o se suben a mano.',
     );
   }
 

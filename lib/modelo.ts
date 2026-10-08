@@ -17,17 +17,10 @@
  *  · **Los criterios de búsqueda** convierten un slide en términos para el
  *    banco de fotos. Si se equivoca, sale otra foto de aula.
  *
- * Bajar de nivel las dos últimas no se nota. Bajar la primera sí, y **no por
- * donde parece**: la barrera de afirmaciones no deja publicar una cifra sin
- * revisar, venga del modelo que venga, así que lo que se arriesga no es que
- * salga una mentira publicada. Lo que se arriesga es que salgan **más
- * afirmaciones que revisar**, y revisar ya es el cuello de botella de todo esto
- * —once por carrusel, cinco de ellas para el médico—. Un modelo más barato que
- * escriba dos cifras de más por carrusel se paga solo en tiempo de revisión.
- *
- * Así que si se cambia el de redactar, la forma de saber si salió a cuenta no
- * es leer el carrusel: es mirar cuántas afirmaciones dejó en la cola. Está en
- * el resumen de `npm run mes` y en el panel del calendario.
+ * Bajar de nivel las dos últimas no se nota. Bajar la primera sí: el texto es
+ * lo que la cuenta lee cuando se le manda el carrusel, y un modelo más barato
+ * escribe más cifras flojas y frases más genéricas, que son justo los cambios
+ * que la cuenta pide de vuelta. Lo que se ahorra en tokens se paga en vueltas.
  *
  * ── Sobre "uno más barato" ──────────────────────────────────────────────────
  * Cambiar de **versión** dentro de Opus no cambia de precio: Opus es el nivel

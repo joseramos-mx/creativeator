@@ -17,12 +17,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { aCandidato } from '../lib/bancos/commons.ts';
-import {
-  clinicasDe,
-  consultaDeArchivo,
-  faltaClinico,
-  FUENTE_CONSULTORIO,
-} from '../lib/clinicas.ts';
+import { consultaDeArchivo } from '../lib/clinicas.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -130,72 +125,6 @@ const sinArchivo = structuredClone(paginas[0]);
 delete sinArchivo.imageinfo[0].url;
 ok(aCandidato(sinArchivo).credito === null, 'sin archivo del que bajar, tampoco');
 ok(aCandidato({}).credito === null, 'una página vacía no revienta y no acredita');
-
-/* ── la barrera clínica ──────────────────────────────────────────────────── */
-console.log('\nLa barrera clínica');
-
-const conFoto = (visual) => ({ slides: [{ tipo: 'contenido', visual }] });
-const base = {
-  clase: 'foto',
-  src: '/media/x/clinica-1.jpg',
-  clinica: true,
-  credito: { fuente: 'Wikimedia Commons', licencia: 'CC0' },
-};
-const firmada = {
-  ...base,
-  aprobacion: { aprobadaPor: 'Dr. Edwin Maldonado', fecha: '2026-09-06', huella: 'abc123' },
-};
-
-ok(clinicasDe(conFoto(base)).length === 1, 'una foto marcada como clínica se detecta');
-ok(
-  clinicasDe(conFoto({ ...base, clinica: undefined })).length === 0,
-  'y una de ambiente no entra en esta cola',
-);
-ok(faltaClinico(conFoto(base)).length === 1, 'sin firma no se puede aprobar el carrusel');
-ok(
-  /sin aprobar/.test(faltaClinico(conFoto(base))[0].que),
-  'diciendo que le falta la firma',
-);
-ok(faltaClinico(conFoto(firmada)).length === 0, 'con firma sí');
-
-// Lo que sostiene la firma: va pegada a los bytes.
-const cambiada = faltaClinico(conFoto(firmada), { '/media/x/clinica-1.jpg': 'otra-huella' });
-ok(cambiada.length === 1, 'si la imagen cambia, la aprobación se cae');
-ok(/cambió después/.test(cambiada[0].que), `y lo dice: "${cambiada[0].que}"`);
-ok(
-  faltaClinico(conFoto(firmada), { '/media/x/clinica-1.jpg': 'abc123' }).length === 0,
-  'con la misma huella, sigue en pie',
-);
-ok(
-  /no está en disco/.test(
-    faltaClinico(conFoto(firmada), { '/media/x/clinica-1.jpg': null })[0]?.que ?? '',
-  ),
-  'y si el archivo desapareció, también lo dice',
-);
-
-// El consentimiento solo se exige a lo que se fotografió en la consulta: las de
-// archivo vienen con el suyo resuelto en la institución que las cedió.
-const deConsulta = {
-  ...firmada,
-  credito: { fuente: FUENTE_CONSULTORIO, licencia: 'propia' },
-};
-ok(
-  faltaClinico(conFoto(deConsulta)).some((f) => /consentimiento/.test(f.que)),
-  'una foto del consultorio sin referencia de consentimiento no pasa',
-);
-ok(
-  faltaClinico(
-    conFoto({
-      ...deConsulta,
-      credito: { ...deConsulta.credito, consentimiento: { referencia: 'expediente 218' } },
-    }),
-  ).length === 0,
-  'con la referencia del documento, sí',
-);
-ok(
-  faltaClinico(conFoto(firmada)).length === 0,
-  'y a una de archivo no se le pide consentimiento',
-);
 
 /* ── la consulta por defecto ─────────────────────────────────────────────── */
 console.log('\nLa consulta que sale del tema');

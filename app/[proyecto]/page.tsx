@@ -39,6 +39,12 @@ export default async function Inicio({ params }: { params: Promise<{ proyecto: s
             Cambiar de proyecto
           </Link>
         ) : null}
+        <Link className="boton" href="/nuevo">
+          Nuevo proyecto
+        </Link>
+        <Link className="boton" href={`/${proyecto}/identidad`}>
+          Identidad →
+        </Link>
         <Link className="boton" href={`/${proyecto}/descargas`}>
           Descargas →
         </Link>

@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { afirmacionesDe } from '@/lib/afirmaciones';
 import { useApi, useProyecto } from './proyecto';
 
 /**
@@ -23,9 +22,9 @@ import { useApi, useProyecto } from './proyecto';
  * dejar que se descubra solo.
  *
  * ── Lo que este panel no hace ───────────────────────────────────────────────
- * No exporta y no aprueba. Todo entra como `borrador`, la cola de afirmaciones
- * queda entera y al final se dice cuántas acaban de entrar — que es el costo
- * real de escribir doce de golpe, y el que no se ve mientras se mira la barra.
+ * No exporta y no aprueba. Todo entra como `borrador`: escribir doce de golpe
+ * es rápido, revisarlos y mandárselos a la cuenta sigue siendo cosa de una
+ * persona.
  */
 
 type Fila = {
@@ -47,7 +46,7 @@ type Saltada = { linea: number; tema: string; porque: string };
 type Estado =
   | { fase: 'espera' }
   | { fase: 'escribiendo'; desde: number }
-  | { fase: 'hecho'; afirmaciones: number; seguridad: number; paleta: string; avisos: string[] }
+  | { fase: 'hecho'; paleta: string; avisos: string[] }
   | { fase: 'fallo'; porque: string };
 
 /** Cuánto tarda un carrusel en una corrida normal, en segundos. Medido. */
@@ -226,13 +225,10 @@ export function Calendario() {
         const guardado = await g.json();
         if (!g.ok) throw new Error(guardado.error);
 
-        const afirmaciones = afirmacionesDe(c.post);
         setEstados((e) => ({
           ...e,
           [fila.linea]: {
             fase: 'hecho',
-            afirmaciones: afirmaciones.length,
-            seguridad: afirmaciones.filter((a) => a.disparadores.includes('seguridad')).length,
             paleta: c.post.paleta,
             avisos: c.avisos ?? [],
           },
@@ -259,8 +255,6 @@ export function Calendario() {
 
   const hechos = Object.values(estados).filter((e) => e.fase === 'hecho');
   const fallos = Object.values(estados).filter((e) => e.fase === 'fallo');
-  const totalAfirmaciones = hechos.reduce((s, e) => s + (e.fase === 'hecho' ? e.afirmaciones : 0), 0);
-  const totalSeguridad = hechos.reduce((s, e) => s + (e.fase === 'hecho' ? e.seguridad : 0), 0);
   const rotas = saltadas.filter((s) => !/reel|sin tema/.test(s.porque));
   const noCarrusel = saltadas.length - rotas.length;
 
@@ -377,8 +371,7 @@ export function Calendario() {
                     </span>
                   ) : estado?.fase === 'hecho' ? (
                     <span className="calendario__estado">
-                      {estado.paleta} · {estado.afirmaciones} por revisar
-                      {estado.seguridad ? `, ${estado.seguridad} de seguridad` : ''}
+                      escrito · {estado.paleta}
                     </span>
                   ) : estado?.fase === 'fallo' ? (
                     <span className="calendario__estado" data-fallo>
@@ -440,15 +433,8 @@ export function Calendario() {
         {!trabajando && hechos.length > 0 ? (
           <p className="pista">
             <strong>{hechos.length}</strong> escrito(s)
-            {fallos.length ? `, ${fallos.length} sin escribir` : ''}. La cola quedó con{' '}
-            <strong>{totalAfirmaciones}</strong> afirmación(es) por revisar
-            {totalSeguridad ? (
-              <>
-                , de las cuales <strong>{totalSeguridad}</strong> son indicaciones de seguridad: esas
-                las firma el doctor
-              </>
-            ) : null}
-            . Ninguno se puede pasar de borrador hasta que estén revisadas.
+            {fallos.length ? `, ${fallos.length} sin escribir` : ''}. Todos quedan en borrador, listos
+            para revisarlos en el editor y mandarlos a la cuenta.
           </p>
         ) : null}
       </div>

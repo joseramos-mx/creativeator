@@ -186,8 +186,6 @@ cazar, porque llega con aspecto de verificado. Por eso:
     sin respaldo no debe existir.
   · Nunca atribuyas lo que no puedes atribuir. Si no sabes qué institución
     respalda un dato, quita el dato; no le pongas una institución plausible.
-  · Declara en "afirmaciones" todo lo que afirmes como dato, con su fuente. Un
-    médico va a revisar esa lista una por una antes de publicar.
 
 ${envolver(`Instituciones válidas: ${marca.fuentes.join(', ')}.`)}
 

@@ -1,10 +1,10 @@
-import { bancoDe } from '@/lib/bancos';
+import { archivoDe, bancoDe } from '@/lib/bancos';
 import { descargarFoto } from '@/lib/bancos/descargar';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
 import { Credito, validar } from '@/lib/schema';
 
 /**
- * POST /api/<proyecto>/fotos/elegir — `{ slug, candidato }` → la foto en disco y su crédito.
+ * POST /api/<proyecto>/fotos/elegir — `{ slug, candidato, archivo? }` → la foto en disco y su crédito.
  *
  * **La descarga y el crédito son un solo movimiento.** Es lo que hace que esta
  * fase valga la pena: hoy el crédito se llena a mano y por eso está vacío en
@@ -21,7 +21,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
   const proyecto = await proyectoDe(ctx);
   if (!proyecto) return proyectoInexistente();
   try {
-    const { slug, candidato } = await req.json();
+    const { slug, candidato, archivo } = await req.json();
 
     if (typeof slug !== 'string' || !/^[a-z0-9-]+$/.test(slug)) {
       return Response.json({ error: 'Slug inválido.' }, { status: 400 });
@@ -40,7 +40,13 @@ export async function POST(req: Request, ctx: ConProyecto) {
     }
     const credito = validar(Credito, candidato.credito, 'el crédito del banco');
 
-    const ruta = await descargarFoto(proyecto, bancoDe(slug), candidato, slug);
+    const ruta = await descargarFoto(
+      proyecto,
+      // `archivo` es el archivo clínico (Commons); sin él, el banco de ambiente.
+      archivo === true ? archivoDe(slug) : bancoDe(slug),
+      candidato,
+      slug,
+    );
     return Response.json({ ruta, credito });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudo traer la foto.';
