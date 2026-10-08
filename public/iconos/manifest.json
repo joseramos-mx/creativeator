@@ -659,6 +659,24 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "lit-candle-on-windowsill",
+  "nombre": "lit candle on windowsill",
+  "etiquetas": [
+   "lit",
+   "candle",
+   "on",
+   "windowsill"
+  ],
+  "color": "#EFCF6E",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 574722,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "lit candle on windowsill",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
