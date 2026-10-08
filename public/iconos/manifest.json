@@ -615,6 +615,33 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "leftover-pill-bottle-with-child-proof-cap",
+  "nombre": "leftover pill bottle with child-proof cap",
+  "etiquetas": [
+   "leftover",
+   "pill",
+   "bottle",
+   "with",
+   "child",
+   "proof",
+   "cap",
+   "pastilla",
+   "medicamento",
+   "antibiotico",
+   "nino",
+   "peque",
+   "hijo"
+  ],
+  "color": "#A45C18",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 839589,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "leftover pill bottle with child-proof cap",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
