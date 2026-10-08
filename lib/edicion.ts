@@ -1,4 +1,4 @@
-import type { Aprobacion, Credito, Overrides, Post, Slide } from '@/template/tipos';
+import type { Aprobacion, Credito, Overrides, Post, Slide } from '@/plantillas/clinica/tipos';
 
 /**
  * lib/edicion.ts — las operaciones del editor, sin React.

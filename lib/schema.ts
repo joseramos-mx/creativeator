@@ -3,7 +3,7 @@
  *
  * La forma del contenido, en Zod. Se usa en tres momentos:
  *
- *  · al leer un JSON de content/posts/, para que un archivo editado a mano no
+ *  · al leer un JSON de proyectos/<id>/posts/, para que un archivo editado a mano no
  *    reviente la app en silencio (falla al leerlo, con el campo y el motivo);
  *  · al guardar desde el editor (fase 4);
  *  · al validar lo que devuelve el modelo al redactar (fase 6).
@@ -12,7 +12,8 @@
  * el editor no podría guardar, queremos enterarnos antes de escribirlo a disco.
  */
 import { z } from 'zod';
-import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/template/tokens';
+import { NOMBRES_PALETA, PALETA_POR_DEFECTO } from '@/plantillas/clinica/tokens';
+import { NOMBRES_PLANTILLA } from '@/plantillas/nombres';
 import { pendientes } from './afirmaciones';
 import { faltaClinico } from './clinicas';
 import { fotosSinCredito } from './fotos';
@@ -173,7 +174,7 @@ const Lista = z.object({
 });
 
 /**
- * El cierre toma de content/marca.json todo menos una cosa: la línea grande,
+ * El cierre toma de proyecto.json todo menos una cosa: la línea grande,
  * que sí es de este carrusel. Acepta el marcado de la plantilla.
  */
 const Cierre = z.object({
@@ -210,14 +211,14 @@ export const Post = z.object({
   estado: z.enum(['borrador', 'aprobado', 'publicado']).default('borrador'),
   /**
    * La paleta del carrusel. Se valida contra las llaves que existen de verdad
-   * en template/tokens.ts, así que "naraja" falla al leer el archivo y no
+   * en plantillas/clinica/tokens.ts, así que "naraja" falla al leer el archivo y no
    * cuatro pasos después, mirando el PNG ya exportado.
    *
    * Azul cuando el tema no tiene color obvio. Es la respuesta, no un relleno.
    */
   paleta: z.enum(NOMBRES_PALETA).default(PALETA_POR_DEFECTO),
 
-  /** El texto que va debajo del carrusel en Instagram. Ver content/voz.md. */
+  /** El texto que va debajo del carrusel en Instagram. Ver proyectos/<id>/voz.md. */
   copy: z.string().optional(),
 
   /**
@@ -318,6 +319,39 @@ export const Marca = z.object({
   /** Puede ir vacío mientras no exista la foto del cierre. */
   retrato: z.string(),
   iconosRecientes: z.array(z.string()).default([]),
+  /**
+   * Las dos líneas de la llamada a la acción del cierre, encima del logo de la
+   * plataforma. Aceptan el marcado de la plantilla, y `{ciudad}` y
+   * `{plataforma}` se sustituyen por los de arriba: así cambiar de ciudad sigue
+   * siendo cambiar un solo campo.
+   */
+  cierre: z.object({
+    lugar: TextoMarcado,
+    invitacion: TextoMarcado,
+  }),
+});
+
+/**
+ * proyectos/<id>/proyecto.json — la marca y lo que la app necesita saber de
+ * la cuenta para escribir por ella.
+ *
+ * Lo que es de la marca y se pinta va en `Marca`, que es lo que recibe la
+ * plantilla. Lo de aquí abajo solo lo leen la redacción y la búsqueda de fotos.
+ */
+export const Proyecto = Marca.extend({
+  /** Qué diseño usa. Ver plantillas/nombres.ts. */
+  plantilla: z.enum(NOMBRES_PLANTILLA),
+  /**
+   * Quién es la cuenta, dicho como lo diría un tercero: "un dermatólogo",
+   * "una pediatra", "una distribuidora de acero". Entra en las frases de los
+   * prompts que lo necesitan ("un carrusel de Instagram de …").
+   */
+  giro: z.string().min(3),
+  /**
+   * Las fuentes que el redactor puede citar. Fuera de esta lista, una cifra
+   * no lleva respaldo, y el prompt se lo dice así.
+   */
+  fuentes: z.array(z.string().min(1)).min(1),
 });
 
 export type TCredito = z.infer<typeof Credito>;
@@ -334,6 +368,7 @@ export type TSlideCierre = Extract<TSlide, { tipo: 'cierre' }>;
 
 export type TPost = z.infer<typeof Post>;
 export type TMarca = z.infer<typeof Marca>;
+export type TProyecto = z.infer<typeof Proyecto>;
 
 /**
  * Valida y explica. Zod solo dice "invalid"; esto dice en qué post, en qué

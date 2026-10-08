@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Aprobacion, Credito } from '@/template/tipos';
+import type { Aprobacion, Credito } from '@/plantillas/clinica/tipos';
+import { useApi } from './proyecto';
 
 /**
  * El archivo clínico: fotos de lesión, no de ambiente.
@@ -38,10 +39,11 @@ export function BuscadorClinicas({
 }: {
   slug: string;
   indice: number;
-  /** El nombre de content/marca.json. Es el único que puede firmar. */
+  /** El nombre de proyecto.json. Es el único que puede firmar. */
   medico: string;
   onAprobar: (ruta: string, credito: Credito, aprobacion: Aprobacion) => void;
 }) {
+  const api = useApi();
   const [abierto, setAbierto] = useState(false);
   const [query, setQuery] = useState('');
   const [candidatos, setCandidatos] = useState<Candidato[] | null>(null);
@@ -63,7 +65,7 @@ export function BuscadorClinicas({
     setTrabajando(true);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/clinicas', {
+      const r = await fetch(api('/fotos/clinicas'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, ...(propia ? { query: propia } : {}) }),
@@ -85,7 +87,7 @@ export function BuscadorClinicas({
     setTrabajando(true);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/aprobar', {
+      const r = await fetch(api('/fotos/aprobar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, candidato: elegido, aprobadaPor: firma.trim(), nota }),

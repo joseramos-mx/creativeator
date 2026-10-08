@@ -16,7 +16,7 @@
  * Corre sin red, sin navegador y sin servidor.
  */
 
-import { paletas } from '../template/tokens.ts';
+import { paletas } from '../plantillas/clinica/tokens.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {

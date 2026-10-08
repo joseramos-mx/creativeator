@@ -16,11 +16,15 @@ import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
-import { PREFIJO, reiniciarLaboratorio } from './laboratorio.mjs';
+import { PREFIJO, PROYECTO, reiniciarLaboratorio } from './laboratorio.mjs';
+import { rutasDe } from '../lib/proyecto.ts';
 import { afirmacionesDe } from '../lib/afirmaciones.ts';
 
 const puerto = process.argv[2] ?? '3000';
 const base = `http://localhost:${puerto}`;
+
+/** Las pruebas corren en el proyecto del laboratorio y en ningún otro. */
+const RUTAS = rutasDe(PROYECTO);
 
 const EDICION = 'laboratorio-edicion';
 const PALETAS = 'laboratorio-paletas';
@@ -73,7 +77,7 @@ const dormirSync = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4))
  * prueba, porque parece un fallo del editor y no lo es.
  */
 const leer = (slug) => {
-  const ruta = join(process.cwd(), 'content', 'posts', `${slug}.json`);
+  const ruta = RUTAS.post(slug);
   for (let intento = 0; ; intento++) {
     try {
       return JSON.parse(readFileSync(ruta, 'utf8'));
@@ -86,12 +90,12 @@ const leer = (slug) => {
 
 /** El nombre del médico: el único que puede firmar una indicación clínica. */
 const medico = JSON.parse(
-  readFileSync(join(process.cwd(), 'content', 'marca.json'), 'utf8'),
+  readFileSync(RUTAS.config, 'utf8'),
 ).nombre;
 
 async function abrir(page, slug) {
   soloLaboratorio(slug);
-  await page.goto(`${base}/post/${slug}`, { waitUntil: 'networkidle', timeout: 120_000 });
+  await page.goto(`${base}/${PROYECTO}/post/${slug}`, { waitUntil: 'networkidle', timeout: 120_000 });
   await page.evaluate(() => document.fonts.ready);
   await espera(1500);
 }
@@ -118,7 +122,7 @@ async function comprobarServidor() {
   let ultimo = '';
   const responde = async () => {
     try {
-      ultimo = await (await fetch(`${base}/post/${EDICION}`)).text();
+      ultimo = await (await fetch(`${base}/${PROYECTO}/post/${EDICION}`)).text();
       return ultimo.includes('data-ficha');
     } catch {
       ultimo = '';
@@ -164,12 +168,13 @@ ok((await page.locator('.estado').innerText()).includes('guardado'), 'y el estad
 /* ── arrastrar la imagen sobre el slide ──────────────────────────────────── */
 console.log('\nArrastrar la imagen sobre el slide');
 const srcAntes = leer(EDICION).slides[1].visual.src;
-const dt = await page.evaluateHandle(async () => {
+// Corre en el navegador: la ruta va como argumento, que ahí no hay PROYECTO.
+const dt = await page.evaluateHandle(async (ruta) => {
   const dt = new DataTransfer();
-  const blob = await (await fetch('/media/laboratorio-edicion/portada.jpg')).blob();
+  const blob = await (await fetch(ruta)).blob();
   dt.items.add(new File([blob], 'Foto Arrastrada Ñandú.jpg', { type: 'image/jpeg' }));
   return dt;
-});
+}, `/proyectos/${PROYECTO}/media/laboratorio-edicion/portada.jpg`);
 const slide01 = page.locator('.marco--soltable').nth(1);
 await slide01.dispatchEvent('dragover', { dataTransfer: dt });
 ok((await slide01.getAttribute('data-soltando')) !== null, 'el slide se marca al pasar la imagen');
@@ -446,7 +451,7 @@ ok(
 );
 
 const dePexels = leer(EDICION).slides[1].visual;
-ok(dePexels.src.includes('/media/laboratorio-edicion/pexels-'), `se descargó a ${dePexels.src}`);
+ok(dePexels.src.includes(`/proyectos/${PROYECTO}/media/laboratorio-edicion/pexels-`), `se descargó a ${dePexels.src}`);
 ok(dePexels.credito?.fuente === 'Pexels', 'con la fuente escrita');
 ok(dePexels.credito?.licencia === 'Pexels License', 'y la licencia');
 ok(
@@ -484,7 +489,7 @@ ok(portada.foto !== fotoAntes, `la foto de portada cambió a ${portada.foto?.spl
 ok(portada.fotoCredito?.fuente === 'Pexels', 'con su fuente');
 ok(Boolean(portada.fotoCredito?.autor), `y su autor: ${portada.fotoCredito?.autor}`);
 ok(
-  portada.foto?.startsWith('/media/laboratorio-edicion/'),
+  portada.foto?.startsWith(`/proyectos/${PROYECTO}/media/laboratorio-edicion/`),
   'guardada en la carpeta del post, no enlazada',
 );
 
@@ -520,7 +525,7 @@ ok(
 // Y el servidor lo comprueba también, no solo el botón: lo que se escribe en el
 // JSON es la firma de alguien con cédula.
 const conOtroNombre = await (
-  await fetch(`${base}/api/fotos/aprobar`, {
+  await fetch(`${base}/api/${PROYECTO}/fotos/aprobar`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -592,7 +597,7 @@ function conTodoRevisado(estado) {
 // va antes en el archivo, y una función declarada se iza.
 async function guardar(post) {
   soloLaboratorio(post.slug);
-  const r = await fetch(`${base}/api/post`, {
+  const r = await fetch(`${base}/api/${PROYECTO}/post`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ post }),
@@ -648,7 +653,7 @@ console.log('\nAcciones de la lista');
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 1400, height: 1000 } });
-  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}`, { waitUntil: 'domcontentloaded' });
   await pagina.waitForSelector('.lista-posts > li', { timeout: 20_000 });
 
   const conAcciones = await pagina.locator('.lista-posts > li:first-child .cuadrado').count();
@@ -686,7 +691,7 @@ console.log('\nAcciones de la lista');
   // el texto, que la tarjeta muestra el tema y no el slug.
   const interruptor = pagina.locator('.filtros__lab input[type="checkbox"]');
   if (!(await interruptor.isChecked())) await interruptor.check();
-  const lab = pagina.locator('.lista-posts > li[data-laboratorio]:has(a[href="/post/laboratorio-paletas"])').first();
+  const lab = pagina.locator(`.lista-posts > li[data-laboratorio]:has(a[href="/${PROYECTO}/post/laboratorio-paletas"])`).first();
   await lab.waitFor({ timeout: 10_000 }).catch(() => {});
 
   if ((await lab.count()) === 0) {
@@ -727,7 +732,7 @@ console.log('\nAcciones de la lista');
         // pendientes. Lo que no puede pasar es avanzar sin que el servidor
         // lo haya aceptado, así que se comprueba contra el disco.
         const guardado = JSON.parse(
-          readFileSync(join(process.cwd(), 'content', 'posts', 'laboratorio-paletas.json'), 'utf8'),
+          readFileSync(RUTAS.post('laboratorio-paletas'), 'utf8'),
         );
         ok(ahora !== antes, `sin nada pendiente, el estado avanzó de ${antes} a ${ahora}`);
         ok(guardado.estado === ahora, '  y quedó guardado en el disco, no solo en la pantalla');
@@ -750,7 +755,7 @@ console.log('\nDescargas');
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-  await pagina.goto(`${base}/descargas`, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}/descargas`, { waitUntil: 'domcontentloaded' });
   await pagina.waitForLoadState('networkidle');
 
   const slides = await pagina.locator('.descargas__slides li').count();
@@ -763,7 +768,7 @@ console.log('\nDescargas');
     // Fotos», y eso necesita una imagen servida, no un botón con JavaScript.
     const enlace = pagina.locator('.descargas__slides a').first();
     const href = await enlace.getAttribute('href');
-    ok(/^\/descargas\/[a-z0-9-]+\/\d+\.png$/.test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
+    ok(new RegExp(`^/proyectos/${PROYECTO}/descargas/[a-z0-9-]+/\\d+\\.png$`).test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
 
     const png = await pagina.request.get(base + href);
     ok(png.status() === 200, '  y el PNG se sirve de verdad');
@@ -773,14 +778,14 @@ console.log('\nDescargas');
     ok(ancho === 1080, `  a 1080 de ancho, el tamaño nativo de Instagram (mide ${ancho})`);
 
     // El aviso de caducado: se falsea la huella y tiene que aparecer.
-    const ruta = join(process.cwd(), 'public', 'descargas', 'indice.json');
+    const ruta = RUTAS.indiceDescargas;
     const antes = await readFile(ruta, 'utf8');
     try {
       const indice = JSON.parse(antes);
       indice[0].huella = 'huellafalsa0';
       await writeFile(ruta, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
 
-      await pagina.goto(`${base}/descargas`, { waitUntil: 'networkidle' });
+      await pagina.goto(`${base}/${PROYECTO}/descargas`, { waitUntil: 'networkidle' });
       ok(
         (await pagina.locator('.descargas__viejo').count()) > 0,
         'si el carrusel cambió después de exportarse, la página lo dice',
@@ -810,19 +815,19 @@ console.log('\nDescargas');
     '  y avisa de que hace falta un push, que es lo que no se adivina',
   );
 
-  const puesto = await pagina.request.post(`${base}/api/celular`, { data: { slug: 'laboratorio-paletas' } });
+  const puesto = await pagina.request.post(`${base}/api/${PROYECTO}/celular`, { data: { slug: 'laboratorio-paletas' } });
   ok(puesto.ok(), `la ruta prepara un carrusel (${puesto.status()})`);
   if (puesto.ok()) {
     const c = await puesto.json();
     ok(c.slides > 0, `  con sus ${c.slides} slides, ${c.pesoMB} MB`);
-    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 200,
+    ok((await pagina.request.get(`${base}/proyectos/${PROYECTO}/descargas/laboratorio-paletas/01.png`)).status() === 200,
       '  y el PNG queda servido');
 
-    const fuera = await pagina.request.post(`${base}/api/celular`, {
+    const fuera = await pagina.request.post(`${base}/api/${PROYECTO}/celular`, {
       data: { slug: 'laboratorio-paletas', quitar: true },
     });
     ok(fuera.ok(), '  y se puede quitar');
-    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 404,
+    ok((await pagina.request.get(`${base}/proyectos/${PROYECTO}/descargas/laboratorio-paletas/01.png`)).status() === 404,
       '  y entonces ya no está');
   }
 
@@ -834,22 +839,22 @@ console.log('\nPanel del calendario');
 
 /*
  * Solo lectura: **no se sube nada**. `POST /api/calendario` reemplaza
- * content/calendario.tsv, y una prueba que pise el calendario editorial de
+ * proyectos/<id>/calendario.tsv, y una prueba que pise el calendario editorial de
  * verdad haría más daño que el fallo que busca. Lo que se comprueba aquí es lo
  * que la ruta ya devuelve y cómo se pinta.
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 1200, height: 1400 } });
-  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}`, { waitUntil: 'domcontentloaded' });
 
   const panel = pagina.locator('details[data-calendario]');
   ok((await panel.count()) === 1, 'el panel está en la portada');
   await panel.locator('summary').click();
 
-  const hoja = await (await fetch(`${base}/api/calendario`)).json();
+  const hoja = await (await fetch(`${base}/api/${PROYECTO}/calendario`)).json();
 
   if (!hoja.hay || !hoja.filas?.length) {
-    console.log('  —    no hay content/calendario.tsv, así que esta parte se salta');
+    console.log('  —    no hay proyectos/<id>/calendario.tsv, así que esta parte se salta');
   } else {
     await pagina.waitForSelector('.calendario > li', { timeout: 20_000 });
     const filas = await pagina.locator('.calendario > li').count();

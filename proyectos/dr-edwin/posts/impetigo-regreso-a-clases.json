@@ -1,0 +1,93 @@
+{
+  "slug": "impetigo-regreso-a-clases",
+  "tema": "Impétigo en el regreso a clases",
+  "creado": "2026-09-01",
+  "estado": "publicado",
+  "paleta": "azul",
+  "copy": "Costras color miel en la cara de tu hijo: ojo, es contagioso 🧒\n\nSi a tu peque le salieron llaguitas con costra amarilla alrededor de la nariz y la boca, seguramente es impétigo: una infección bacteriana muy común en niños y muy contagiosa. Y el regreso a clases es cuando más se dispara.\n\n🔍 Cómo reconocerlo: empieza como granitos o ampollas rojas que se rompen y forman una costra amarillenta, como si la piel tuviera miel encima. Suele picar. Es de las infecciones de piel más frecuentes en la infancia (StatPearls).\n\n⚠️ Por qué se riega tan rápido: se contagia al tocar las llagas y al compartir toallas, ropa o cobijas. El calor y los salones llenos de niños lo disparan. Sin tratamiento, puede seguir contagiando por semanas (Mayo Clinic).\n\n✅ Qué hacer: necesita antibiótico (en crema si es poco, tomado si está extendido) y terminar el tratamiento. Uñas cortas, lavarse las manos, no compartir toallas ni ropa, y cubrir las llagas. Puede volver a clases unas 24 horas después de empezar el antibiótico (AAP).\n\n⚡ Ojo: el impétigo se confunde con un fuego, pero el fuego es viral y se trata distinto.\n\n💬 ¿Ya lo habías visto en algún peque? Cuéntame en los comentarios.\n\n🔖 Guárdalo para el regreso a clases y compártelo con otros papás y con las maestras.\n\n📲 ¿Tu hijo tiene estas costras? Agenda tu consulta en Doctoralia, el link está en mi bio, y lo tratamos bien desde el inicio.\n\n#Impetigo #RegresoAClases #DermatologiaInfantil #SaludDeLaPiel #DermatologoDurango",
+  "pilar": "Diagnóstico que salva",
+  "objetivo": "guardar",
+  "nota": "Regreso a clases",
+  "hashtags": [
+    "#Impetigo",
+    "#RegresoAClases",
+    "#DermatologiaInfantil",
+    "#SaludDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La infección de*\nRegreso **a clases**",
+      "pregunta": "¿Qué es el impétigo?",
+      "foto": "/proyectos/dr-edwin/media/impetigo-regreso-a-clases/portada.jpg"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "El impétigo se dispara\n**en el regreso a clases.**",
+      "bajada": "Costras color miel en la cara de tu hijo: ojo, es contagioso.",
+      "cuerpo": "Esas llaguitas con costra amarilla o color miel, casi siempre alrededor de la nariz y la boca, son impétigo: una infección bacteriana de la piel muy común en niños y muy contagiosa. Y el regreso a clases es justo cuando más se dispara.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/impetigo-regreso-a-clases/01.jpg",
+        "ideaImagen": "niño con costras color miel alrededor de la boca, primer plano"
+      },
+      "fuente": "Cleveland Clinic."
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo* **reconocerlo?**",
+      "cuerpo": "Empieza como pequeñas ampollas o granitos rojos que se rompen y forman una costra amarillenta, como si la piel tuviera miel encima. Suele picar. Es de las infecciones de piel más frecuentes en la infancia: cerca del 10% de las consultas de piel en niños.",
+      "visual": {
+        "clase": "icono",
+        "slug": "lupa",
+        "tam": 252,
+        "iconoSugerido": "magnifying glass"
+      },
+      "fuente": "StatPearls y KidsHealth."
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Por qué se riega** *tan rápido.*",
+      "cuerpo": "Se contagia al tocar las llagas y también al compartir toallas, ropa o cobijas. El calor y los lugares con muchos niños, como la escuela, lo disparan. Sin tratamiento, puede seguir contagiando durante semanas.",
+      "emblema": {
+        "slug": "alerta"
+      },
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/impetigo-regreso-a-clases/03.jpg",
+        "ideaImagen": "salón de clases con muchos niños juntos en la hora de la siesta"
+      },
+      "fuente": "Mayo Clinic y AAP."
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Qué hacer y qué no.**",
+      "puntos": [
+        "Necesita antibiótico: en crema si es poco, tomado si está extendido. Termina el tratamiento completo.",
+        "Que no se rasque: uñas cortas, lava manos seguido y cubre las llagas.",
+        "No compartas toallas, ropa ni sábanas mientras esté activo.",
+        "Puede volver a clases unas 24 horas después de empezar el antibiótico."
+      ],
+      "fuente": "Mayo Clinic y AAP.",
+      "overrides": {
+        "tituloPx": 75
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo verlo con el **médico?**",
+      "cuerpo": "No lo trates a ciegas ni con remedios: necesita el antibiótico correcto y dejar de contagiar. Y ojo, se confunde con un fuego, que es viral y se trata distinto. Si tu hijo tiene estas costras, o si hay fiebre o se extiende, acude a valoración.",
+      "visual": {
+        "clase": "icono",
+        "slug": "termometro",
+        "tam": 430,
+        "iconoSugerido": "stethoscope"
+      },
+      "fuente": "Cleveland Clinic."
+    },
+    {
+      "tipo": "cierre"
+    }
+  ]
+}

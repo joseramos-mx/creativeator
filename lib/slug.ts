@@ -2,7 +2,7 @@
  * lib/slug.ts — el nombre de archivo de un carrusel.
  *
  * Vivía dentro de `lib/brief.ts` y sale aquí por una razón concreta: el slug
- * decide el nombre del JSON en content/posts/, y la tanda del mes
+ * decide el nombre del JSON en proyectos/<id>/posts/, y la tanda del mes
  * (`scripts/mes.mjs`) necesita **calcular el mismo** antes de llamar al
  * servidor, para saber si ese carrusel ya existe y saltarlo sin pagar la
  * llamada. Un script de node no puede cargar `brief.ts`, que importa con el

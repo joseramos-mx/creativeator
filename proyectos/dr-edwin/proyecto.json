@@ -1,0 +1,27 @@
+{
+  "nombre": "Dr. Edwin Maldonado",
+  "usuario": "@alergo_derma",
+  "especialidad": "Especialista en alergología y dermatología",
+  "ciudad": "Durango",
+  "plataforma": "Doctoralia",
+  "plataformaLogo": "/proyectos/dr-edwin/marca/doctoralia-blanco.png",
+  "logo": "/proyectos/dr-edwin/marca/logo-blanco.png",
+  "retrato": "",
+  "cierre": {
+    "lugar": "*Consulta en* **{ciudad}**",
+    "invitacion": "Agenda tu cita desde"
+  },
+  "plantilla": "clinica",
+  "giro": "un dermatólogo",
+  "fuentes": [
+    "Mayo Clinic",
+    "Cleveland Clinic",
+    "AAP",
+    "AAD",
+    "KidsHealth",
+    "StatPearls"
+  ],
+  "iconosRecientes": [
+    "termometro"
+  ]
+}

@@ -1,0 +1,503 @@
+/* plantillas/clinica/plantilla.css
+ *
+ * Estilos del slide, por zona: fuentes, lienzo, cabecera y número, área de
+ * contenido, lista, visual, pie, portada, cierre y las ayudas de ajuste.
+ *
+ * Aquí no hay ni un número suelto: todo sale de las variables que
+ * plantillas/clinica/variables.ts inyecta en el elemento .slide a partir de tokens.ts.
+ * Si un valor te parece mal, se cambia en tokens.ts y cambia en los dos lados.
+ */
+
+/* ─────────── fuentes ───────────
+ * Auto-alojadas. Nada de CDN: si la red tarda, la captura sale con la letra
+ * del sistema y nadie lo nota hasta que el post está publicado.
+ * Albert Sans es variable, así que un archivo cubre de 100 a 900. */
+
+@font-face {
+  font-family: 'Albert Sans';
+  src: url('/fonts/AlbertSans.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces-Italic.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+/* ─────────── lienzo ─────────── */
+
+.slide {
+  width: var(--ancho);
+  height: var(--alto);
+  position: relative;
+  overflow: hidden;
+  background: var(--fondo);
+  color: var(--c-titulo);
+  font-family: var(--sans);
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.slide__foto {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.slide__velo {
+  position: absolute;
+  inset: 0;
+}
+
+/* ─────────── cabecera y número ─────────── */
+
+.cabecera {
+  position: absolute;
+  top: var(--b-cabecera-top);
+  left: var(--margen-borde);
+  z-index: 4;
+  line-height: var(--nombre-lh);
+}
+
+.cabecera b {
+  display: block;
+  font-size: var(--nombre-px);
+  font-weight: var(--nombre-peso);
+  letter-spacing: var(--nombre-ls);
+  color: var(--c-cuerpo);
+}
+
+.cabecera span {
+  display: block;
+  font-size: var(--especialidad-px);
+  font-weight: var(--especialidad-peso);
+  letter-spacing: var(--especialidad-ls);
+  color: var(--c-cuerpo);
+}
+
+/* El número se ancla por su borde izquierdo, no por el derecho: así lo hace la
+ * referencia, donde 01 y 04 empiezan en el mismo punto y terminan en distinto. */
+.numero {
+  position: absolute;
+  top: var(--b-numero-top);
+  left: var(--b-numero-left);
+  z-index: 4;
+  font-size: var(--numero-px);
+  font-weight: var(--numero-peso);
+  letter-spacing: var(--numero-ls);
+  line-height: 1.2;
+  color: var(--c-cuerpo);
+}
+
+/* Sobre la parte clara del retrato (slide de cierre) la tinta se invierte. */
+.slide--tintaOscura .cabecera b,
+.slide--tintaOscura .numero {
+  color: var(--tinta-foto);
+}
+
+.slide--tintaOscura .cabecera span {
+  color: rgba(50, 32, 24, 0.8);
+}
+
+/* ─────────── área de contenido ─────────── */
+
+.area {
+  position: absolute;
+  left: var(--margen-lateral);
+  right: var(--margen-lateral);
+  top: var(--area-top);
+  bottom: var(--area-bottom);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Ícono chico encima del título (slide 03 de la referencia). */
+.emblema {
+  width: var(--b-emblema-tam);
+  height: auto;
+  margin-bottom: var(--b-gap-emblema-titulo);
+  flex: 0 0 auto;
+  display: block;
+}
+
+.titulo {
+  margin: 0;
+  max-width: var(--titulo-ancho);
+  font-size: var(--titulo-px);
+  font-weight: var(--titulo-peso);
+  line-height: var(--titulo-lh);
+  letter-spacing: var(--titulo-ls);
+  color: var(--c-titulo);
+  white-space: pre-wrap;
+  text-wrap: balance;
+}
+
+.titulo b {
+  font-weight: var(--titulo-fuerte);
+  color: var(--crema);
+}
+
+/* La serif itálica no aguanta el tracking de la sans: a −0.062em se le comen
+ * los espacios entre palabras. Lleva el suyo, medido aparte. */
+.titulo i,
+.cta__l1 i {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: var(--serif-ls);
+  color: var(--crema);
+}
+
+.bajada {
+  margin: var(--b-gap-titulo-bajada) 0 0;
+  max-width: var(--bajada-ancho);
+  font-size: var(--bajada-px);
+  font-weight: var(--bajada-peso);
+  line-height: var(--bajada-lh);
+  letter-spacing: var(--bajada-ls);
+  color: var(--c-bajada);
+}
+
+.cuerpo {
+  margin: var(--b-gap-titulo-cuerpo) 0 0;
+  max-width: var(--cuerpo-ancho);
+  font-size: var(--cuerpo-px);
+  font-weight: var(--cuerpo-peso);
+  line-height: var(--cuerpo-lh);
+  letter-spacing: var(--cuerpo-ls);
+  color: var(--c-cuerpo);
+}
+
+/* Cuando hay bajada, el cuerpo respira más. */
+.bajada + .cuerpo {
+  margin-top: var(--b-gap-bajada-cuerpo);
+}
+
+/* ─────────── lista con palomita ─────────── */
+
+.lista {
+  margin: var(--b-gap-titulo-lista) 0 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--b-gap-lista);
+}
+
+.lista__item {
+  display: flex;
+  gap: var(--b-palomita-gap);
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* La palomita se apoya en la primera línea base del punto, no en su caja. */
+.lista__item svg {
+  width: var(--b-palomita);
+  height: var(--b-palomita);
+  margin-top: var(--b-palomita-offset-y);
+  flex: 0 0 auto;
+}
+
+.lista__item p {
+  margin: 0;
+  /* Con pre-wrap el autor puede partir un punto donde quiera con un salto. */
+  white-space: pre-wrap;
+  max-width: var(--punto-ancho);
+  font-size: var(--punto-px);
+  font-weight: var(--punto-peso);
+  line-height: var(--punto-lh);
+  letter-spacing: var(--punto-ls);
+  color: var(--c-cuerpo);
+}
+
+/* ─────────── visual: foto o ícono ─────────── */
+
+/* Foto e ícono se tratan igual: separación fija respecto al texto y el bloque
+ * entero centrado en el área. Es lo que mantiene los slides parejos entre sí.
+ * Si en un slide concreto la foto tiene que subir o bajar, eso es un override
+ * del post, no un cambio de plantilla. */
+.media {
+  width: var(--b-media-ancho);
+  height: var(--b-media-alto);
+  border-radius: var(--b-media-radio);
+  background-size: cover;
+  background-position: center;
+  margin-top: var(--b-gap-cuerpo-foto);
+  flex: 0 0 auto;
+}
+
+/* Los íconos de Thiings traen color fijo. Sobre un fondo de su mismo tono se
+ * funden, y la sombra de la paleta es lo único que los despega sin tocar el
+ * archivo: sigue la silueta, no una caja. */
+.icono,
+.emblema {
+  filter: var(--sombra-icono);
+}
+
+/* El ícono no lleva margen automático: el bloque entero queda centrado. */
+.icono {
+  width: var(--b-icono-tam);
+  height: auto;
+  margin-top: var(--b-gap-cuerpo-icono);
+  flex: 0 0 auto;
+  display: block;
+}
+
+/* ─────────── pie ─────────── */
+
+.pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--b-usuario-bottom);
+  z-index: 4;
+  text-align: center;
+  font-size: var(--usuario-px);
+  font-weight: var(--usuario-peso);
+  letter-spacing: var(--usuario-ls);
+  line-height: 1.2;
+  color: var(--c-chrome);
+}
+
+.fuente {
+  position: absolute;
+  left: var(--margen-borde);
+  bottom: var(--b-fuente-bottom);
+  z-index: 4;
+  font-size: var(--fuente-px);
+  font-weight: var(--fuente-peso);
+  letter-spacing: var(--fuente-ls);
+  color: var(--c-chrome);
+}
+
+.desliza {
+  position: absolute;
+  right: var(--b-desliza-right);
+  bottom: var(--b-desliza-bottom);
+  z-index: 4;
+  text-align: center;
+  color: var(--c-chrome);
+}
+
+.desliza span {
+  display: block;
+  font-size: var(--desliza-px);
+  font-weight: var(--desliza-peso);
+  letter-spacing: var(--desliza-ls);
+  line-height: 1;
+  margin-bottom: var(--b-gap-desliza);
+}
+
+.desliza svg {
+  width: var(--b-flecha-ancho);
+  height: var(--b-flecha-alto);
+  display: block;
+}
+
+/* ─────────── portada ─────────── */
+
+/* El bloque de título + papel se ancla por abajo, sobre el logotipo. */
+.slide--portada .area {
+  top: auto;
+  height: auto;
+  bottom: var(--b-area-portada-bottom);
+  justify-content: flex-end;
+}
+
+.slide--portada .titulo {
+  max-width: var(--titulo-portada-ancho);
+  font-size: var(--titulo-portada-px);
+  font-weight: var(--titulo-portada-peso);
+  line-height: var(--titulo-portada-lh);
+  letter-spacing: var(--titulo-portada-ls);
+}
+
+.slide--portada .titulo b {
+  font-weight: var(--titulo-portada-fuerte);
+}
+
+.papel {
+  position: relative;
+  margin-top: var(--b-papel-gap);
+  width: var(--b-papel-ancho);
+  height: var(--b-papel-alto);
+  flex: 0 0 auto;
+}
+
+.papel svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.papel span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tinta-papel);
+  font-size: var(--pregunta-px);
+  font-weight: var(--pregunta-peso);
+  letter-spacing: var(--pregunta-ls);
+}
+
+.logo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--b-logo-bottom);
+  z-index: 4;
+  text-align: center;
+}
+
+.logo img {
+  width: var(--b-logo-ancho);
+  height: auto;
+}
+
+/* En la portada el usuario va más chico y casi al filo. */
+.slide--portada .pie {
+  bottom: var(--b-usuario-portada-bottom);
+  font-size: var(--usuario-portada-px);
+  letter-spacing: var(--usuario-portada-ls);
+}
+
+/* ─────────── cierre ─────────── */
+
+.cta {
+  position: absolute;
+  left: var(--margen-lateral);
+  right: var(--margen-lateral);
+  bottom: var(--b-cta-bottom);
+  z-index: 4;
+  text-align: center;
+}
+
+/* La línea grande, cuando el carrusel trae una. */
+.cta__frase {
+  margin-bottom: var(--b-gap-frase-cta);
+  font-size: var(--cta-frase-px);
+  font-weight: var(--cta-frase-peso);
+  line-height: var(--cta-frase-lh);
+  letter-spacing: var(--cta-frase-ls);
+  color: var(--c-titulo);
+}
+
+.cta__frase b {
+  font-weight: var(--cta-frase-fuerte);
+  color: var(--crema);
+}
+
+.cta__frase i {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: var(--serif-ls);
+  color: var(--crema);
+}
+
+.cta__l1 {
+  font-size: var(--cta-l1-px);
+  font-weight: var(--cta-l1-peso);
+  line-height: var(--cta-l1-lh);
+  letter-spacing: var(--cta-l1-ls);
+  color: var(--c-titulo);
+}
+
+.cta__l1 b {
+  font-weight: var(--cta-l1-fuerte);
+  color: var(--crema);
+}
+
+.cta__l2 {
+  margin-top: var(--b-gap-cta-l1-l2);
+  font-size: var(--cta-l2-px);
+  font-weight: var(--cta-l2-peso);
+  letter-spacing: var(--cta-l2-ls);
+  color: var(--teal);
+}
+
+.cta__l3 {
+  margin-top: var(--b-gap-cta-l2-l3);
+  font-size: var(--cta-l3-px);
+  font-weight: var(--cta-l3-peso);
+  letter-spacing: var(--cta-l3-ls);
+  line-height: 1.1;
+}
+
+.cta__l3 img {
+  width: var(--b-cta-logo-ancho);
+  height: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ─────────── ayudas de ajuste, solo en desarrollo ─────────── */
+
+/* Tecla G: márgenes laterales, área de contenido y las franjas donde Instagram
+ * encima su propia interfaz. */
+.rejilla {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.rejilla i {
+  position: absolute;
+  display: block;
+}
+
+.rejilla .v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 0, 80, 0.55);
+}
+
+.rejilla .h {
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 0, 80, 0.35);
+}
+
+.rejilla .zona {
+  left: 0;
+  right: 0;
+  background: rgba(255, 0, 80, 0.1);
+}
+
+/* Tecla R: la captura publicada encima del slide, en modo diferencia. Lo que
+ * coincide se apaga; lo que baila queda brillante. */
+.overlayRef {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: difference;
+}

@@ -1,12 +1,13 @@
 'use client';
 
-import { Slide } from '@/template/Slide';
-import { lienzo } from '@/template/tokens';
-import type { Marca, Post } from '@/template/tipos';
+import { plantillaDe } from '@/plantillas';
+import { lienzo } from '@/plantillas/clinica/tokens';
+import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
 
 /** La portada del carrusel, chiquita, para la lista. Es el slide de verdad. */
-export function Miniatura({ post, marca, ancho = 132 }: { post: Post; marca: Marca; ancho?: number }) {
+export function Miniatura({ post, marca, ancho = 132 }: { post: Post; marca: Proyecto; ancho?: number }) {
   const zoom = ancho / lienzo.ancho;
+  const { Slide } = plantillaDe(marca.plantilla);
   return (
     <div
       className="miniatura"

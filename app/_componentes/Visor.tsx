@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState, type ReactNode } from 'react';
-import { Slide } from '@/template/Slide';
-import { lienzo, type NombrePaleta } from '@/template/tokens';
-import type { Marca, Post } from '@/template/tipos';
+import { plantillaDe } from '@/plantillas';
+import { lienzo, type NombrePaleta } from '@/plantillas/clinica/tokens';
+import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
 
 export type MazoVisible = {
   /** Identificador estable para los scripts de comparación. */
@@ -11,7 +11,7 @@ export type MazoVisible = {
   titulo: string;
   nota?: ReactNode;
   post: Post;
-  marca: Marca;
+  marca: Proyecto;
   /** Pisa la paleta del post. Es lo que permite ver el mismo carrusel en todas. */
   paleta?: NombrePaleta;
   /** Capturas publicadas, una por slide, para el overlay de la tecla R. */
@@ -121,13 +121,14 @@ function Mazo({
 }: {
   id: string;
   post: Post;
-  marca: Marca;
+  marca: Proyecto;
   paleta: NombrePaleta;
   zoom: number;
   rejilla: boolean;
   capturas?: string[];
   opacidad?: number;
 }) {
+  const { Slide } = plantillaDe(marca.plantilla);
   return (
     <div className="mazo" data-mazo={id}>
       {post.slides.map((slide, i) => (

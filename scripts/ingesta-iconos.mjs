@@ -41,7 +41,7 @@ const VIGILAR = process.argv.includes('--vigilar');
  * Recalcula las etiquetas de todo el manifiesto sin volver a tocar los PNG.
  *
  * Hace falta porque la ingesta es incremental por tamaño de archivo: editar
- * `content/sinonimos.json` no cambia ningún PNG, así que sin esto el
+ * `compartido/sinonimos.json` no cambia ningún PNG, así que sin esto el
  * diccionario se puede mejorar y no llegar nunca al buscador. Y el diccionario
  * es la palanca cuando `iconoSugerido` no encuentra algo que sí está — ver
  * `mejorCoincidencia` en lib/iconos.ts.
@@ -64,7 +64,7 @@ const ORIGEN = argumento ?? process.env.ICONOS_ORIGEN ?? path.join(process.cwd()
 const DESTINO = path.join(process.cwd(), 'public', 'iconos');
 const THUMBS = path.join(DESTINO, 'thumbs');
 const MANIFEST = path.join(DESTINO, 'manifest.json');
-const SINONIMOS = path.join(process.cwd(), 'content', 'sinonimos.json');
+const SINONIMOS = path.join(process.cwd(), 'compartido', 'sinonimos.json');
 
 const TAM = 1024;
 const THUMB = 192;
@@ -73,7 +73,7 @@ const BYTES_MINIMOS = 2048; // para no tragarse cualquier captura de pantalla
 
 /**
  * Los nombres vienen en inglés y aquí se busca en español, así que cada palabra
- * del slug arrastra sus sinónimos. El diccionario está en content/sinonimos.json
+ * del slug arrastra sus sinónimos. El diccionario está en compartido/sinonimos.json
  * y se edita a mano: para las doscientas palabras que de verdad se usan en
  * dermatología alcanza y sobra.
  */

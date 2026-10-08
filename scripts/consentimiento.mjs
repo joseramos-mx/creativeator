@@ -13,6 +13,8 @@
  *   npm run consentimiento "expediente 218" → solo ese
  *   npm run consentimiento --clinicas       → todas las fotos clínicas
  *
+ * Busca en todos los proyectos; `-- --proyecto <id>` lo limita a uno.
+ *
  * No borra nada. Dice qué archivos y qué carruseles hay que tocar, que es lo
  * que hace falta para poder tocarlos con criterio.
  */
@@ -20,61 +22,78 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { clinicasDe } from '../lib/clinicas.ts';
+import { existeProyecto, listarProyectos, rutasDe, sinProyecto } from '../lib/proyecto.ts';
 
-const POSTS = join(process.cwd(), 'content', 'posts');
-const argumento = process.argv[2] ?? '';
+/*
+ * Todos los proyectos, salvo que se pida uno con --proyecto. Quien pregunta
+ * por un consentimiento quiere saber dónde está esa foto, y la respuesta no
+ * debe depender de acordarse de en qué cuenta se usó.
+ */
+const iProyecto = process.argv.indexOf('--proyecto');
+const pedido = iProyecto === -1 ? undefined : process.argv[iProyecto + 1];
+if (pedido && !existeProyecto(pedido)) {
+  console.error(`No existe el proyecto "${pedido}". Hay: ${listarProyectos().join(', ')}.`);
+  process.exit(1);
+}
+const proyectos = pedido ? [pedido] : listarProyectos();
+
+const argumento = sinProyecto(process.argv.slice(2))[0] ?? '';
 const todasLasClinicas = argumento === '--clinicas';
 const buscado = todasLasClinicas ? '' : argumento.toLowerCase();
 
 const hallazgos = [];
 
-for (const archivo of readdirSync(POSTS).filter((f) => f.endsWith('.json'))) {
-  const post = JSON.parse(readFileSync(join(POSTS, archivo), 'utf8'));
+for (const proyecto of proyectos) {
+  const POSTS = rutasDe(proyecto).posts;
+  for (const archivo of readdirSync(POSTS).filter((f) => f.endsWith('.json'))) {
+    const post = JSON.parse(readFileSync(join(POSTS, archivo), 'utf8'));
 
-  post.slides.forEach((slide, i) => {
-    // La portada lleva su foto suelta; los de contenido, dentro del visual.
-    const fotos = [
-      slide.tipo === 'portada' && slide.foto
-        ? { src: slide.foto, credito: slide.fotoCredito, clinica: false, aprobacion: undefined }
-        : null,
-      slide.visual?.clase === 'foto'
-        ? {
-            src: slide.visual.src,
-            credito: slide.visual.credito,
-            clinica: Boolean(slide.visual.clinica),
-            aprobacion: slide.visual.aprobacion,
-          }
-        : null,
-    ].filter(Boolean);
+    post.slides.forEach((slide, i) => {
+      // La portada lleva su foto suelta; los de contenido, dentro del visual.
+      const fotos = [
+        slide.tipo === 'portada' && slide.foto
+          ? { src: slide.foto, credito: slide.fotoCredito, clinica: false, aprobacion: undefined }
+          : null,
+        slide.visual?.clase === 'foto'
+          ? {
+              src: slide.visual.src,
+              credito: slide.visual.credito,
+              clinica: Boolean(slide.visual.clinica),
+              aprobacion: slide.visual.aprobacion,
+            }
+          : null,
+      ].filter(Boolean);
 
-    for (const foto of fotos) {
-      const referencia = foto.credito?.consentimiento?.referencia;
-      const interesa = todasLasClinicas
-        ? foto.clinica
-        : buscado
-          ? (referencia ?? '').toLowerCase().includes(buscado)
-          : Boolean(referencia);
-      if (!interesa) continue;
+      for (const foto of fotos) {
+        const referencia = foto.credito?.consentimiento?.referencia;
+        const interesa = todasLasClinicas
+          ? foto.clinica
+          : buscado
+            ? (referencia ?? '').toLowerCase().includes(buscado)
+            : Boolean(referencia);
+        if (!interesa) continue;
 
-      hallazgos.push({
-        post: post.slug,
-        estado: post.estado,
-        donde: `slide ${String(i).padStart(2, '0')}`,
-        src: foto.src,
-        referencia,
-        fecha: foto.credito?.consentimiento?.fecha,
-        fuente: foto.credito?.fuente,
-        clinica: foto.clinica,
-        aprobacion: foto.aprobacion,
-      });
-    }
-  });
+        hallazgos.push({
+          proyecto,
+          post: post.slug,
+          estado: post.estado,
+          donde: `slide ${String(i).padStart(2, '0')}`,
+          src: foto.src,
+          referencia,
+          fecha: foto.credito?.consentimiento?.fecha,
+          fuente: foto.credito?.fuente,
+          clinica: foto.clinica,
+          aprobacion: foto.aprobacion,
+        });
+      }
+    });
+  }
 }
 
 if (hallazgos.length === 0) {
   console.log(
     todasLasClinicas
-      ? 'No hay ninguna foto clínica en content/posts/.'
+      ? 'No hay ninguna foto clínica en ningún proyecto.'
       : buscado
         ? `Ninguna foto lleva el consentimiento "${argumento}".`
         : 'Ninguna foto tiene referencia de consentimiento registrada.',
@@ -90,7 +109,7 @@ const titulo = todasLasClinicas
 console.log(`\n${titulo}: ${hallazgos.length}\n`);
 
 for (const h of hallazgos) {
-  console.log(`  ${h.post} · ${h.donde}  [${h.estado}]`);
+  console.log(`  ${h.proyecto} · ${h.post} · ${h.donde}  [${h.estado}]`);
   console.log(`    archivo:  public${h.src}`);
   if (h.fuente) console.log(`    fuente:   ${h.fuente}`);
   if (h.referencia) {

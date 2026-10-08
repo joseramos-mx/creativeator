@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
 
 /**
  * Pega el brief y sale el carrusel.

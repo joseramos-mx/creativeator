@@ -11,7 +11,7 @@
  * Por eso aquí no hay `server-only`, ni alias `@/`, ni un solo import: un
  * script de node tiene que poder cargarlo tal cual. Las paletas entran como
  * dato en el contexto en vez de importarse, y así el banco puede pasar las de
- * verdad —las de template/tokens.ts— y comprobar que llegan.
+ * verdad —las de plantillas/clinica/tokens.ts— y comprobar que llegan.
  */
 
 export type ContextoDeTemas = {
@@ -21,7 +21,12 @@ export type ContextoDeTemas = {
   publicados: string[];
   especialidad: string;
   ciudad: string;
-  /** Las paletas con su regla, de template/tokens.ts. */
+  /**
+   * Qué temas son de la cuenta y cuáles no, de proyectos/<id>/prompts/alcance.md.
+   * Va justo después de la especialidad, en la sección «Quién firma».
+   */
+  alcance: string;
+  /** Las paletas con su regla, de plantillas/clinica/tokens.ts. */
   paletas: { nombre: string; cuando: string }[];
 };
 
@@ -71,17 +76,7 @@ igual en cualquier mes del año casi siempre es un tema flojo.
 
 ## Quién firma
 
-${contexto.especialidad}. **Alergología y dermatología**, no dermatología
-general, y la diferencia importa para elegir tema:
-
-  · Sí son suyos: dermatitis atópica, urticaria, alergias alimentarias y
-    ambientales con expresión en la piel, dermatitis de contacto, reacciones a
-    medicamentos, asma y rinitis en lo que tocan a la piel, infecciones
-    cutáneas comunes de la infancia, prueba de parche.
-  · No son suyos, aunque sean de piel: cirugía dermatológica, estética y
-    rellenos, láser, tratamiento del melanoma, tricología quirúrgica. Si el
-    tema termina en "eso lo ve otro especialista", no es un buen carrusel para
-    esta cuenta.
+${contexto.especialidad}. ${contexto.alcance}
 
 ## Lo que ya se publicó — no lo repitas
 

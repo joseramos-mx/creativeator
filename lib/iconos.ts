@@ -116,7 +116,7 @@ export function buscar(fuse: Fuse<Icono>, consulta: string, limite = 60): Icono[
  * una erupción. La segunda es la que hay que impedir.
  *
  * Cuando algo que sí está en la librería no se encuentra, el arreglo no es
- * bajar el umbral: es añadir la palabra a `content/sinonimos.json`.
+ * bajar el umbral: es añadir la palabra a `compartido/sinonimos.json`.
  */
 const FRASE = 0.25;
 const PALABRA_EXACTA = 0.05;

@@ -4,7 +4,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import { MODELO_PROPUESTA } from './modelo';
-import { NOMBRES_PALETA } from '@/template/tokens';
+import { NOMBRES_PALETA } from '@/plantillas/clinica/tokens';
 import { instrucciones, type ContextoDeTemas } from './temas';
 
 /**

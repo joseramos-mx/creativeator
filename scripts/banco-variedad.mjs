@@ -18,7 +18,7 @@
  */
 
 import { repartir } from '../lib/variedad.ts';
-import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '../template/tokens.ts';
+import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '../plantillas/clinica/tokens.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {

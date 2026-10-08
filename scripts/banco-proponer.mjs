@@ -18,9 +18,10 @@
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { PROYECTO_DE_PRUEBAS, rutasDe } from '../lib/proyecto.ts';
 import { instrucciones, mesDe } from '../lib/temas.ts';
 // Las paletas de verdad, para comprobar que llegan y no solo que el banco las inventa.
-import { paletas } from '../template/tokens.ts';
+import { paletas } from '../plantillas/clinica/tokens.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -33,6 +34,7 @@ const CONTEXTO = {
   publicados: ['Impétigo en el regreso a clases', 'Dermatitis atópica en invierno'],
   especialidad: 'Especialista en alergología y dermatología',
   ciudad: 'Durango',
+  alcance: readFileSync(rutasDe(PROYECTO_DE_PRUEBAS).prompt('alcance'), 'utf8').trimEnd(),
   paletas: Object.entries(paletas)
     .filter(([, p]) => p.automatica)
     .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
@@ -108,9 +110,9 @@ for (const [iso, esperado] of [
 }
 
 /* ── lo que la ruta va a mandar ──────────────────────────────────────────── */
-console.log('\nLos temas salen de content/posts/, sin el laboratorio');
+console.log('\nLos temas salen de proyectos/<id>/posts/, sin el laboratorio');
 
-const POSTS = join(process.cwd(), 'content', 'posts');
+const POSTS = rutasDe(PROYECTO_DE_PRUEBAS).posts;
 const enDisco = readdirSync(POSTS)
   .filter((f) => f.endsWith('.json'))
   .map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')));

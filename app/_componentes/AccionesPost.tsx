@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
+import { useApi } from './proyecto';
 
 /**
  * Los dos botones de cada tarjeta de la lista: avanzar el estado y exportar.
@@ -96,6 +97,7 @@ const Esperando = () => (
 );
 
 export function AccionesPost({ post }: { post: Post }) {
+  const api = useApi();
   const router = useRouter();
   // El estado local hace que la tarjeta responda al instante. `router.refresh()`
   // trae la verdad del disco un momento después y los dos coinciden.
@@ -110,7 +112,7 @@ export function AccionesPost({ post }: { post: Post }) {
     setTrabajando('estado');
     setError(undefined);
     try {
-      const r = await fetch('/api/post', {
+      const r = await fetch(api('/post'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post: { ...post, estado: siguiente } }),
@@ -130,7 +132,7 @@ export function AccionesPost({ post }: { post: Post }) {
     setTrabajando('exportar');
     setError(undefined);
     try {
-      const r = await fetch('/api/exportar', {
+      const r = await fetch(api('/exportar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug: post.slug }),

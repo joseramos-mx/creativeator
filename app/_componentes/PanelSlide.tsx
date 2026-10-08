@@ -18,9 +18,9 @@ import {
   ponerFotoDeBanco,
   tituloDeTarjeta,
 } from '@/lib/edicion';
-import type { NombrePaleta } from '@/template/tokens';
-import type { Credito, Post, Slide } from '@/template/tipos';
-import type { EstadoAjuste } from '@/template/usarAjuste';
+import type { NombrePaleta } from '@/plantillas/clinica/tokens';
+import type { Credito, Post, Slide } from '@/plantillas/clinica/tipos';
+import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
 
 export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' | 'media' };
 
@@ -30,7 +30,7 @@ type Props = {
   slug: string;
   /** El nombre del médico: el único que firma una imagen clínica. */
   medico: string;
-  /** Los últimos íconos usados, de content/marca.json. */
+  /** Los últimos íconos usados, de proyecto.json. */
   recientes: string[];
   /** La paleta del post: decide qué íconos se funden con el fondo. */
   paleta: NombrePaleta;
@@ -313,7 +313,7 @@ export function PanelSlide({
               onChange={(e) => cambiar({ frase: e.target.value || undefined } as Partial<Slide>)}
             />
             <p className="pista">
-              Lo demás de este slide se arma solo con los datos de content/marca.json.
+              Lo demás de este slide se arma solo con los datos de proyecto.json.
             </p>
           </>
         ) : null}
@@ -409,7 +409,7 @@ function Ajustes({
           {overrides >= OVERRIDES_DEMASIADOS ? (
             <p className="aviso">
               Este slide ya junta {overrides} ajustes a mano. Si te pasa en varios slides, lo que está
-              mal es el valor de la plantilla, no este slide: súbelo a template/tokens.ts.
+              mal es el valor de la plantilla, no este slide: súbelo a plantillas/clinica/tokens.ts.
             </p>
           ) : null}
           <button className="boton" onClick={() => setPost((p) => limpiarOverrides(p, indice))}>

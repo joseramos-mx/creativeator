@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useApi, useProyecto } from './proyecto';
 
 /**
  * El panel de /descargas que manda un carrusel al teléfono.
@@ -33,6 +34,8 @@ type Fila = {
 };
 
 export function PrepararCelular({ filas }: { filas: Fila[] }) {
+  const api = useApi();
+  const proyecto = useProyecto();
   const router = useRouter();
   const [abierto, setAbierto] = useState(false);
   const [trabajando, setTrabajando] = useState<string | null>(null);
@@ -42,7 +45,7 @@ export function PrepararCelular({ filas }: { filas: Fila[] }) {
     setTrabajando(slug);
     setAviso(undefined);
     try {
-      const r = await fetch('/api/celular', {
+      const r = await fetch(api('/celular'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, quitar }),
@@ -51,8 +54,8 @@ export function PrepararCelular({ filas }: { filas: Fila[] }) {
       if (!r.ok) throw new Error(c.error);
       setAviso(
         quitar
-          ? `Quitado. Haz commit de public/descargas y súbelo.`
-          : `Listo: ${c.slides} slides, ${c.pesoMB} MB. Haz commit de public/descargas y súbelo para verlo en el teléfono.`,
+          ? `Quitado. Haz commit de public/proyectos/${proyecto}/descargas y súbelo.`
+          : `Listo: ${c.slides} slides, ${c.pesoMB} MB. Haz commit de public/proyectos/${proyecto}/descargas y súbelo para verlo en el teléfono.`,
       );
       router.refresh();
     } catch (e) {

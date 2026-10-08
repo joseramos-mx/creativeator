@@ -42,7 +42,7 @@ for (const [concepto, esperado] of [
   ['thermometer', 'termometro'],
   ['band aid', 'curitas'],
   // El redactor escribe en inglés y la librería mezcla los dos idiomas: el
-  // puente son los sinónimos de content/sinonimos.json.
+  // puente son los sinónimos de compartido/sinonimos.json.
   ['lupa', 'lupa'],
   ['termometro', 'termometro'],
 ]) {
@@ -88,7 +88,7 @@ ok(
 console.log('\nLa librería se llena sola y no repite');
 
 const sinonimos = JSON.parse(
-  readFileSync(join(process.cwd(), 'content', 'sinonimos.json'), 'utf8'),
+  readFileSync(join(process.cwd(), 'compartido', 'sinonimos.json'), 'utf8'),
 );
 
 /** La entrada tal como la escribe `guardarIcono` cuando genera un concepto. */

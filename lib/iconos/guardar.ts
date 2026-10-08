@@ -2,6 +2,7 @@ import 'server-only';
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { COMPARTIDO } from '../proyecto';
 import sharp from 'sharp';
 import { fusionar, gitignoreDeIconos, type Entrada } from '../manifiesto';
 import { etiquetar, slugificar } from './etiquetas';
@@ -47,7 +48,7 @@ export async function guardarIcono(
   await writeFile(join(DESTINO, `${slug}.png`), png);
   await sharp(png).resize(THUMB, THUMB).png().toFile(join(DESTINO, 'thumbs', `${slug}.png`));
 
-  const sinonimos = await readFile(join(process.cwd(), 'content', 'sinonimos.json'), 'utf8')
+  const sinonimos = await readFile(join(process.cwd(), COMPARTIDO, 'sinonimos.json'), 'utf8')
     .then(JSON.parse)
     .catch(() => ({}));
 

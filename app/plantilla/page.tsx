@@ -1,12 +1,12 @@
 import { Visor } from '@/app/_componentes/Visor';
-import { leerMarca, leerPost } from '@/lib/posts';
-import { paletas, type NombrePaleta } from '@/template/tokens';
-import { capturas, limites } from './datos';
+import { leerPost, leerProyecto } from '@/lib/posts';
+import { paletas, type NombrePaleta } from '@/plantillas/clinica/tokens';
+import { capturas, limites, REFERENCIA } from './datos';
 
 /**
  * /plantilla — el banco de pruebas.
  *
- * El primer mazo es el carrusel publicado leído de content/posts/, así que con
+ * El primer mazo es el carrusel publicado leído de proyectos/dr-edwin/posts/, así que con
  * la tecla R se le encima la captura real y las diferencias saltan solas. Que
  * salga del mismo JSON que usa la app entera es a propósito: un banco que pinta
  * datos distintos a los de producción no prueba nada.
@@ -19,8 +19,8 @@ import { capturas, limites } from './datos';
 export const dynamic = 'force-dynamic';
 
 export default async function Plantilla() {
-  const publicado = await leerPost('impetigo-regreso-a-clases');
-  const marca = await leerMarca();
+  const publicado = await leerPost(REFERENCIA.proyecto, REFERENCIA.slug);
+  const marca = await leerProyecto(REFERENCIA.proyecto);
 
   return (
     <Visor
@@ -32,7 +32,7 @@ export default async function Plantilla() {
           titulo: 'Carrusel publicado',
           nota: (
             <>
-              El post de <code>content/posts/{publicado.slug}.json</code>, en el mismo orden que las
+              El post de <code>proyectos/{REFERENCIA.proyecto}/posts/{publicado.slug}.json</code>, en el mismo orden que las
               capturas de <code>public/referencia/</code>. Con la referencia encendida, lo que
               coincide se apaga y lo que baila queda brillante: es la forma más rápida de cazar una
               diferencia de tracking o de interlineado.

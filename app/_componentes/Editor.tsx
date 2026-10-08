@@ -13,14 +13,15 @@ import {
   empujarOverride,
   ponerImagen,
 } from '@/lib/edicion';
-import { Slide } from '@/template/Slide';
-import { ProveedorDeAvisos } from '@/template/avisos';
+import { plantillaDe } from '@/plantillas';
+import { ProveedorDeAvisos } from '@/plantillas/clinica/avisos';
 import { pendientes } from '@/lib/afirmaciones';
 import { faltaClinico } from '@/lib/clinicas';
 import { fotosSinCredito } from '@/lib/fotos';
-import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
-import type { Marca, Post } from '@/template/tipos';
-import type { EstadoAjuste } from '@/template/usarAjuste';
+import { bloque, lienzo, paletas, tipo } from '@/plantillas/clinica/tokens';
+import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
+import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
+import { useApi, useProyecto } from './proyecto';
 
 const DESARROLLO = process.env.NODE_ENV === 'development';
 const RETRASO_GUARDADO = 600;
@@ -42,7 +43,10 @@ type EstadoGuardado = 'limpio' | 'guardando' | 'guardado' | 'error';
  *  · Las flechas empujan el slide y escriben en `overrides`, con un contador
  *    que avisa cuando un slide junta demasiados ajustes a mano.
  */
-export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Marca; capturas?: string[] }) {
+export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Proyecto; capturas?: string[] }) {
+  const api = useApi();
+  const proyecto = useProyecto();
+  const { Slide } = plantillaDe(marca.plantilla);
   const [post, setPost] = useState<Post>(inicial);
   const [guardado, setGuardado] = useState<EstadoGuardado>('limpio');
   const [errorGuardado, setErrorGuardado] = useState<string>();
@@ -69,7 +73,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
     setGuardado('guardando');
     const t = setTimeout(async () => {
       try {
-        const r = await fetch('/api/post', {
+        const r = await fetch(api('/post'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ post }),
@@ -108,7 +112,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
         const datos = new FormData();
         datos.append('archivo', archivo);
         datos.append('slug', post.slug);
-        const r = await fetch('/api/subir', { method: 'POST', body: datos });
+        const r = await fetch(api('/subir'), { method: 'POST', body: datos });
         const cuerpo = await r.json();
         if (!r.ok) throw new Error(cuerpo.error);
         setPost((p) => ponerImagen(p, i, cuerpo.ruta));
@@ -124,8 +128,8 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
 
   const usarIcono = useCallback((slug: string) => {
     setRecientes((prev) => [slug, ...prev.filter((s) => s !== slug)].slice(0, 12));
-    // Se apunta en content/marca.json sin esperar: si falla, no se pierde nada.
-    void fetch('/api/recientes', {
+    // Se apunta en proyecto.json sin esperar: si falla, no se pierde nada.
+    void fetch(api('/recientes'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slug }),
@@ -207,7 +211,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
     <div className="editor">
       <aside className="panel">
         <div className="panel__cabecera">
-          <Link className="boton" href="/">
+          <Link className="boton" href={`/${proyecto}`}>
             ← carruseles
           </Link>
           <span className="sep" />

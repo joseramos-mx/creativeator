@@ -3,7 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { afirmacionesDe } from '@/lib/afirmaciones';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
+import { useApi, useProyecto } from './proyecto';
 
 /**
  * Escribe un tema y sale un borrador.
@@ -75,6 +76,8 @@ type Propuesta = {
 };
 
 export function Redactar() {
+  const api = useApi();
+  const proyecto = useProyecto();
   const router = useRouter();
   const [tema, setTema] = useState('');
   const [propuestas, setPropuestas] = useState<Propuesta[] | null>(null);
@@ -115,7 +118,7 @@ export function Redactar() {
     setSalida(null);
     setPropuestas(null);
     try {
-      const r = await fetch('/api/proponer', { method: 'POST' });
+      const r = await fetch(api('/proponer'), { method: 'POST' });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
 
@@ -139,7 +142,7 @@ export function Redactar() {
     setError(undefined);
     setSalida(null);
     try {
-      const r = await fetch('/api/redactar', {
+      const r = await fetch(api('/redactar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tema: cual }),
@@ -162,14 +165,14 @@ export function Redactar() {
     setError(undefined);
     try {
       const post = { ...salida.post, slug };
-      const r = await fetch('/api/post', {
+      const r = await fetch(api('/post'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post }),
       });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
-      router.push(`/post/${slug}`);
+      router.push(`/${proyecto}/post/${slug}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo guardar.');
       setGuardando(false);

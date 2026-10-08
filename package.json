@@ -27,6 +27,8 @@
     "iconos:vigilar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs --vigilar",
     "iconos:reetiquetar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/ingesta-iconos.mjs --reetiquetar",
     "iconos:recortar": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/recortar-iconos.mjs",
+    "proyecto:nuevo": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/nuevo-proyecto.mjs",
+    "banco-proyectos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-proyectos.mjs",
     "celular": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/para-el-celular.mjs"
   },
   "dependencies": {

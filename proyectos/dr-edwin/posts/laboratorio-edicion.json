@@ -1,0 +1,95 @@
+{
+  "slug": "laboratorio-edicion",
+  "tema": "Laboratorio · edición ·",
+  "creado": "2026-01-01",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "copy": "Carrusel de laboratorio. No es contenido: es sobre lo que corren las pruebas.",
+  "revisiones": {
+    "e4e5cd0b": {
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
+      "texto": "Con bajada, para que el bloque cargue lo que puede cargar.\nUn texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. "
+    },
+    "c978ac28": {
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
+      "texto": "Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica."
+    },
+    "39c89e4f": {
+      "revisadaPor": "Dr. Edwin Maldonado",
+      "fecha": "2026-01-01",
+      "texto": "El primer punto, con su palomita.\nEl segundo, para ver la separación entre puntos.\nEl tercero, que en la paleta verde cambia de color.\nY el cuarto, que es el máximo cómodo."
+    }
+  },
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Carrusel de*\n**laboratorio**",
+      "pregunta": "¿Sobre qué corren las pruebas?",
+      "foto": "/proyectos/dr-edwin/media/laboratorio-edicion/pexels-10637951.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ron Lach",
+        "url": "https://www.pexels.com/photo/scout-boys-in-classroom-10637951/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Un slide **con foto** y una coma,",
+      "bajada": "Con bajada, para que el bloque cargue lo que puede cargar.",
+      "cuerpo": "Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. ",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/laboratorio-edicion/clinica-file-porrigo-impetigo-contagiosa-2-jpg.jpg",
+        "ideaImagen": "lo que la prueba espera encontrar descrito aquí",
+        "credito": {
+          "fuente": "Wikimedia Commons",
+          "licencia": "Public domain",
+          "autor": "George Henry Fox",
+          "url": "https://commons.wikimedia.org/wiki/File:Porrigo_(impetigo_contagiosa)_2.jpg"
+        },
+        "clinica": true,
+        "aprobacion": {
+          "aprobadaPor": "Dr. Edwin Maldonado",
+          "fecha": "2026-09-09",
+          "huella": "53c12ed506692289e88caf1e89d0f80f"
+        }
+      },
+      "fuente": "Prueba.",
+      "overrides": {
+        "offsetY": 1,
+        "tituloPx": 90,
+        "cuerpoPx": 33
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Un slide* **con ícono**",
+      "cuerpo": "Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica.",
+      "visual": {
+        "clase": "icono",
+        "slug": "termometro",
+        "tam": 280,
+        "iconoSugerido": "magnifying glass"
+      },
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Una lista** de cuatro.",
+      "puntos": [
+        "El primer punto, con su palomita.",
+        "El segundo, para ver la separación entre puntos.",
+        "El tercero, que en la paleta verde cambia de color.",
+        "Y el cuarto, que es el máximo cómodo."
+      ],
+      "fuente": "Prueba."
+    },
+    {
+      "tipo": "cierre"
+    }
+  ]
+}

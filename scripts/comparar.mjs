@@ -13,7 +13,7 @@
  *     vista previa de /post/[slug]. Eso responde "¿el PNG es lo que vi?".
  *
  * La segunda es la que conviene vigilar. Si sale distinta, casi siempre es que
- * el ajuste automático de texto no corrió en /render: el hook vive en template/
+ * el ajuste automático de texto no corrió en /render: el hook vive en plantillas/clinica/
  * y lo usan las dos rutas justamente para que no pueda pasar, pero es el error
  * clásico de este tipo de proyecto y más vale que salte solo.
  */
@@ -22,9 +22,15 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
 import JSZip from 'jszip';
+import { PROYECTO_DE_PRUEBAS, sinProyecto } from '../lib/proyecto.ts';
 
-const puerto = process.argv[2] ?? '3000';
-const slug = process.argv[3] ?? 'impetigo-regreso-a-clases';
+// La referencia publicada es del Dr. Edwin: es el carrusel contra el que se
+// midió la plantilla `clinica`. Otro proyecto se compara con --proyecto.
+const iProyecto = process.argv.indexOf('--proyecto');
+const proyecto = iProyecto === -1 ? PROYECTO_DE_PRUEBAS : process.argv[iProyecto + 1];
+const posicionales = sinProyecto(process.argv.slice(2));
+const puerto = posicionales[0] ?? '3000';
+const slug = posicionales[1] ?? 'impetigo-regreso-a-clases';
 const base = `http://localhost:${puerto}`;
 
 const dirComparar = join(process.cwd(), 'salidas', 'comparar');
@@ -89,8 +95,8 @@ for (let i = 0; i < nBanco; i++) {
 console.log(`  ${nBanco} slides en salidas/comparar/ — ahora: python scripts/medir.py\n`);
 
 // ── 2. la exportación contra la vista previa ────────────────────────────────
-console.log(`Capturando la vista previa de ${base}/post/${slug} …`);
-const previa = await abrirVisor(`/post/${slug}`);
+console.log(`Capturando la vista previa de ${base}/${proyecto}/post/${slug} …`);
+const previa = await abrirVisor(`/${proyecto}/post/${slug}`);
 const total = await previa.count();
 const vistas = [];
 for (let i = 0; i < total; i++) {
@@ -99,8 +105,8 @@ for (let i = 0; i < total; i++) {
   vistas.push(ruta);
 }
 
-console.log('Exportando por /api/exportar a escala 1 …');
-const r = await fetch(`${base}/api/exportar`, {
+console.log(`Exportando por /api/${proyecto}/exportar a escala 1 …`);
+const r = await fetch(`${base}/api/${proyecto}/exportar`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ slug, escala: 1 }),

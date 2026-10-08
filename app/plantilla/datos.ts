@@ -1,4 +1,4 @@
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
 
 /**
  * Los casos límite del banco de pruebas.
@@ -8,10 +8,18 @@ import type { Post } from '@/template/tipos';
  * reventar el ajuste automático antes de que lo reviente un post real.
  *
  * Esto sí se queda quemado en el código, porque no es contenido: es la prueba.
- * El carrusel publicado, que sí es contenido, vive en content/posts/.
+ * El carrusel publicado, que sí es contenido, vive en proyectos/<id>/posts/.
  */
 
 /** Las capturas publicadas, en el orden de los slides del post de impétigo. */
+/**
+ * El carrusel contra el que se midió la plantilla `clinica`: el de impétigo
+ * del Dr. Edwin, el que está publicado y tiene sus capturas en
+ * public/referencia/. Es de una cuenta concreta y no de "la cuenta", así que
+ * se nombra entero.
+ */
+export const REFERENCIA = { proyecto: 'dr-edwin', slug: 'impetigo-regreso-a-clases' } as const;
+
 export const capturas = [
   '/referencia/portada.png',
   '/referencia/contenido-01.png',

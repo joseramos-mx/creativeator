@@ -2,7 +2,7 @@
  * lib/iconos/clinico.ts — el concepto que no se genera.
  *
  * La regla está escrita en tres sitios —el SKILL, `references/iconos-generados.md`
- * y el propio `content/estilo-iconos.md`— y dice lo mismo en los tres: **si la
+ * y el propio `compartido/estilo-iconos.md`— y dice lo mismo en los tres: **si la
  * imagen es lo que el lector debe aprender a reconocer, tiene que ser real y
  * aprobada.** El criterio no es el estilo ni el realismo, es la función. Una
  * carita 3D como recurso emocional se puede; la misma carita con los signos de

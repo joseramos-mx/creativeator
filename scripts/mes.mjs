@@ -3,8 +3,11 @@
  *
  * Los carruseles que faltan, escritos de una tanda.
  *
+ * Es el mes de **una** cuenta. Con varios proyectos se dice cuál:
+ * `npm run mes -- --proyecto dra-mildreth`. Con uno solo no hace falta.
+ *
  * ── Dos modos, y el del calendario es el bueno ──────────────────────────────
- * Si hay `content/calendario.tsv`, los temas salen de ahí: ya están decididos,
+ * Si hay `proyectos/<id>/calendario.tsv`, los temas salen de ahí: ya están decididos,
  * con su fecha, su pilar, su objetivo y su nota. Si no lo hay, el modelo
  * propone la tanda del mes, que es lo que servía antes de tener calendario.
  *
@@ -37,14 +40,29 @@ import { join } from 'node:path';
 import { afirmacionesDe } from '../lib/afirmaciones.ts';
 import { desde, leerCalendario } from '../lib/calendario.ts';
 import { revisarTanda, yaEscrito } from '../lib/mes.ts';
+import { proyectoDeArgumentos, rutasDe, sinProyecto } from '../lib/proyecto.ts';
 import { aSlug } from '../lib/slug.ts';
-
-const CONTENIDO = join(process.cwd(), 'content');
-const POSTS = join(CONTENIDO, 'posts');
 
 /* ── los argumentos ──────────────────────────────────────────────────────── */
 
-const args = process.argv.slice(2);
+/*
+ * De qué cuenta es el mes. Con un solo proyecto no hace falta decirlo; con
+ * varios, el script se niega a adivinar, porque escribir el mes de una cuenta
+ * en la carpeta de otra es justo el error que no avisa.
+ */
+let proyecto;
+try {
+  proyecto = proyectoDeArgumentos(process.argv);
+} catch (e) {
+  console.error(`\nALTO: ${e.message}`);
+  console.error('Van así: npm run mes -- --proyecto <id> [cuantos] [puerto] [--desde X] [--plan]');
+  process.exit(1);
+}
+const RUTAS = rutasDe(proyecto);
+const POSTS = RUTAS.posts;
+const API = `/api/${proyecto}`;
+
+const args = sinProyecto(process.argv.slice(2));
 const soloPlan = args.includes('--temas') || args.includes('--plan');
 const iDesde = args.findIndex((a) => a === '--desde');
 const marcaDesde = iDesde !== -1 ? (args[iDesde + 1] ?? '') : '';
@@ -65,7 +83,7 @@ const numeros = args
 const sueltos = numeros.filter((n) => (n > 20 && n < 1000) || n === 0);
 if (sueltos.length) {
   console.error(`\nALTO: ${sueltos[0]} no es una cantidad (van de 1 a 20) ni un puerto.`);
-  console.error('Van así: npm run mes -- [cuantos] [puerto] [--desde X] [--plan]');
+  console.error('Van así: npm run mes -- [--proyecto <id>] [cuantos] [puerto] [--desde X] [--plan]');
   process.exit(1);
 }
 
@@ -104,7 +122,7 @@ async function comprobarServidor() {
   let ultimo = '';
   while (Date.now() < hasta) {
     try {
-      const r = await fetch(`${base}/api/redactar`, {
+      const r = await fetch(`${base}${API}/redactar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: '{}',
@@ -136,7 +154,7 @@ async function comprobarServidor() {
 /* ── lo que ya está escrito ──────────────────────────────────────────────── */
 
 function loQueYaHay() {
-  const archivos = readdirSync(POSTS).filter((f) => f.endsWith('.json'));
+  const archivos = existsSync(POSTS) ? readdirSync(POSTS).filter((f) => f.endsWith('.json')) : [];
   const posts = archivos.map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')));
   // Los de laboratorio son andamio de las pruebas, no contenido de la cuenta.
   const dela = posts.filter((p) => !p.slug.startsWith('laboratorio-'));
@@ -162,9 +180,7 @@ await comprobarServidor();
 const yaHay = loQueYaHay();
 const arranque = Date.now();
 
-const calendario = ['calendario.tsv', 'calendario.csv']
-  .map((f) => join(CONTENIDO, f))
-  .find(existsSync);
+const calendario = [RUTAS.calendario, RUTAS.calendarioAlterno].find(existsSync);
 
 /** Cada entrada: `{ tema, editorial?, linea2 }`. `linea2` es lo que se enseña debajo. */
 let cola = [];
@@ -226,10 +242,10 @@ if (calendario) {
     }
   }
 } else {
-  console.log(`\nSin content/calendario.tsv, así que el modelo propone.`);
+  console.log(`\nSin proyectos/${proyecto}/calendario.tsv, así que el modelo propone.`);
   console.log(`Hay ${yaHay.temas.length} carrusel(es) de la cuenta. Pidiendo ${cuantos} temas…`);
 
-  const { contexto, propuestas } = await pedir('/api/proponer', { cuantos });
+  const { contexto, propuestas } = await pedir(`${API}/proponer`, { cuantos });
   console.log(`Temas de ${contexto.mes}, en ${reloj((Date.now() - arranque) / 1000)}:\n`);
 
   /*
@@ -291,7 +307,7 @@ for (const [i, item] of cola.entries()) {
   const desdeYa = Date.now();
 
   try {
-    const r = await pedir('/api/redactar', {
+    const r = await pedir(`${API}/redactar`, {
       tema: item.tema,
       slug,
       usadas,
@@ -304,7 +320,7 @@ for (const [i, item] of cola.entries()) {
 
     // El estado no se toca: sale `borrador` de la ruta y así se guarda. Entre
     // lo que escribe el modelo y un PNG hay una persona, también en tanda.
-    await pedir('/api/post', { post: r.post });
+    await pedir(`${API}/post`, { post: r.post });
     yaHay.slugs.add(slug);
     yaHay.temas.push(r.post.tema);
     yaHay.escritos.push({ slug, tema: r.post.tema });
@@ -368,5 +384,5 @@ if (hechos.length) {
         : ''),
   );
   console.log('Ninguno se puede pasar de borrador hasta que estén revisadas.');
-  console.log(`\nA revisar: ${base}`);
+  console.log(`\nA revisar: ${base}/${proyecto}`);
 }

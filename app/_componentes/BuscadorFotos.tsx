@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { Credito } from '@/template/tipos';
+import type { Credito } from '@/plantillas/clinica/tipos';
+import { useApi } from './proyecto';
 
 /**
  * Buscar la foto del slide en un banco, sin salir del editor.
@@ -47,6 +48,7 @@ export function BuscadorFotos({
   indice: number;
   onElegir: (ruta: string, credito: Credito) => void;
 }) {
+  const api = useApi();
   const [hallazgo, setHallazgo] = useState<Hallazgo | null>(null);
   const [query, setQuery] = useState('');
   const [error, setError] = useState<string>();
@@ -73,7 +75,7 @@ export function BuscadorFotos({
     setBuscando(true);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/buscar', {
+      const r = await fetch(api('/fotos/buscar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
@@ -99,7 +101,7 @@ export function BuscadorFotos({
     setBajando(candidato.id);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/elegir', {
+      const r = await fetch(api('/fotos/elegir'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, candidato }),

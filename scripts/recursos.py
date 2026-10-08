@@ -17,7 +17,7 @@ P = lambda *a: os.path.join(RAIZ, *a)
 def dirs(*rutas):
     for r in rutas: os.makedirs(r, exist_ok=True)
 
-dirs(P("public","fonts"), P("public","marca"), P("public","media","impetigo-regreso-a-clases"),
+dirs(P("public","fonts"), P("public","proyectos","dr-edwin","marca"), P("public","proyectos","dr-edwin","media","impetigo-regreso-a-clases"),
      P("public","iconos","thumbs"), P("referencia"))
 
 # ── fuentes ──────────────────────────────────────────────────────────────────
@@ -28,7 +28,7 @@ print("fuentes: AlbertSans.ttf, Fraunces.ttf (la italica ya se bajo aparte)")
 # ── logotipo de la marca, en blanco ──────────────────────────────────────────
 lg = Image.open(os.path.join(KIT,"marca","Mesa de trabajo 1 copia 4logoc.png")).convert("RGBA")
 lg.thumbnail((1400, 1400), Image.LANCZOS)
-lg.save(P("public","marca","logo-blanco.png"))
+lg.save(P("public","proyectos","dr-edwin","marca","logo-blanco.png"))
 print("logo-blanco.png", lg.size)
 
 # ── logotipo de Doctoralia, todo en blanco ───────────────────────────────────
@@ -40,7 +40,7 @@ for y in range(dl.height):
         r,g,b,a = px[x,y]
         if a: px[x,y] = (255,255,255,a)
 dl.thumbnail((1200,1200), Image.LANCZOS)
-dl.save(P("public","marca","doctoralia-blanco.png"))
+dl.save(P("public","proyectos","dr-edwin","marca","doctoralia-blanco.png"))
 print("doctoralia-blanco.png", dl.size)
 
 # ── fotos de ejemplo ─────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ fotos = {"85a72e5d0a48578687c1190d567e84c2.jpg":"portada.jpg",
 for orig, nuevo in fotos.items():
     im = Image.open(os.path.join(KIT,"media-ejemplo",orig)).convert("RGB")
     if im.width > 1600: im = im.resize((1600, round(im.height*1600.0/im.width)), Image.LANCZOS)
-    im.save(P("public","media","impetigo-regreso-a-clases",nuevo), quality=88, optimize=True)
+    im.save(P("public","proyectos","dr-edwin","media","impetigo-regreso-a-clases",nuevo), quality=88, optimize=True)
     print("media/%s" % nuevo, im.size)
 
 # ── iconos de prueba, normalizados ───────────────────────────────────────────

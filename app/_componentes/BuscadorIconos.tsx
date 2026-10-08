@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { SEPARACION_MINIMA, buscar, crearBuscador, separacion, type Icono } from '@/lib/iconos';
-import { paletaDe, type NombrePaleta } from '@/template/tokens';
+import { paletaDe, type NombrePaleta } from '@/plantillas/clinica/tokens';
 
 /**
  * El buscador de íconos: un modal con campo de búsqueda y rejilla de
@@ -126,7 +126,7 @@ export function BuscadorIconos({
             {sinCoincidencias ? (
               <p className="pista">
                 Si la palabra que buscas debería encontrar algo, agrégala a{' '}
-                <code>content/sinonimos.json</code> y vuelve a correr <code>npm run iconos</code>.
+                <code>compartido/sinonimos.json</code> y vuelve a correr <code>npm run iconos</code>.
               </p>
             ) : null}
             <p className="pista">

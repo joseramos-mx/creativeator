@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { afirmacionesDe } from '@/lib/afirmaciones';
+import { useApi, useProyecto } from './proyecto';
 
 /**
  * Sube el calendario editorial y escribe los carruseles que faltan.
@@ -56,6 +57,8 @@ const reloj = (s: number) =>
   s < 60 ? `${Math.round(s)}s` : `${Math.floor(s / 60)} min ${String(Math.round(s % 60)).padStart(2, '0')}s`;
 
 export function Calendario() {
+  const api = useApi();
+  const proyecto = useProyecto();
   const router = useRouter();
   const [filas, setFilas] = useState<Fila[]>([]);
   const [saltadas, setSaltadas] = useState<Saltada[]>([]);
@@ -84,7 +87,7 @@ export function Calendario() {
   useEffect(() => {
     void (async () => {
       try {
-        const r = await fetch('/api/calendario');
+        const r = await fetch(api('/calendario'));
         const c = await r.json();
         recibir(c);
       } catch {
@@ -119,7 +122,7 @@ export function Calendario() {
    */
   async function refrescar() {
     try {
-      const c = await (await fetch('/api/calendario')).json();
+      const c = await (await fetch(api('/calendario'))).json();
       if (!c.filas) return;
       setFilas(c.filas);
       setSaltadas(c.saltadas ?? []);
@@ -157,7 +160,7 @@ export function Calendario() {
     setError(undefined);
     try {
       const texto = await archivo.text();
-      const r = await fetch('/api/calendario', {
+      const r = await fetch(api('/calendario'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ texto }),
@@ -194,7 +197,7 @@ export function Calendario() {
       setEstados((e) => ({ ...e, [fila.linea]: { fase: 'escribiendo', desde: Date.now() } }));
 
       try {
-        const r = await fetch('/api/redactar', {
+        const r = await fetch(api('/redactar'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -215,7 +218,7 @@ export function Calendario() {
         if (!r.ok) throw new Error(c.error);
         usadas = c.usadas ?? usadas;
 
-        const g = await fetch('/api/post', {
+        const g = await fetch(api('/post'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ post: c.post }),
@@ -308,7 +311,7 @@ export function Calendario() {
         {hay === false && !error ? (
           <p className="pista">
             Todavía no hay calendario. También se puede pegar la hoja directamente en{' '}
-            <code>content/calendario.tsv</code>.
+            <code>proyectos/{proyecto}/calendario.tsv</code>.
           </p>
         ) : null}
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { afirmacionesDe, type Afirmacion } from '@/lib/afirmaciones';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
 
 /**
  * La cola de revisión: las afirmaciones del carrusel, una por una.
@@ -22,7 +22,7 @@ export function Afirmaciones({
   setPost,
 }: {
   post: Post;
-  /** El nombre del médico, de content/marca.json. Solo él firma lo clínico. */
+  /** El nombre del médico, de proyecto.json. Solo él firma lo clínico. */
   medico: string;
   setPost: (f: (p: Post) => Post) => void;
 }) {
