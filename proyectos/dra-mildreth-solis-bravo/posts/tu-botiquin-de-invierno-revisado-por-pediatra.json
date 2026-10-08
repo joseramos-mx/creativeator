@@ -72,6 +72,7 @@
       "cuerpo": "Un botiquín lleno de sobrantes hace dos cosas. Tapa información que tu pediatra necesita: cuántos días lleva, cómo es la fiebre, cómo respira. Y deja al alcance frascos que un niño abre en segundos. Los medicamentos están entre las causas más frecuentes de intoxicación accidental en casa.",
       "visual": {
         "clase": "icono",
+        "slug": "leftover-pill-bottle-with-child-proof-cap",
         "iconoSugerido": "leftover pill bottle with child-proof cap"
       },
       "fuente": "AAP"
