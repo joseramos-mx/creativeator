@@ -566,6 +566,24 @@
   "bytes": 1249077
  },
  {
+  "slug": "lollipop-and-gummy-candies",
+  "nombre": "lollipop and gummy candies",
+  "etiquetas": [
+   "lollipop",
+   "and",
+   "gummy",
+   "candies"
+  ],
+  "color": "#B74C49",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 786307,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "lollipop and gummy candies",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "lupa",
   "nombre": "Lupa",
   "etiquetas": [
