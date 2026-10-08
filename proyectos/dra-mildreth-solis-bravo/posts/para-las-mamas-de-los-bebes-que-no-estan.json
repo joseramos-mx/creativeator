@@ -59,6 +59,7 @@
       "cuerpo": "Lo dicen para consolar y aterriza como una resta. Pasa igual con \"eres joven, vas a tener otro\" y con \"todo pasa por algo\". Un hijo no se reemplaza con el siguiente. El duelo por una pérdida gestacional o neonatal es un duelo real y no tiene calendario.",
       "visual": {
         "clase": "icono",
+        "slug": "speech-bubble",
         "iconoSugerido": "speech bubble"
       },
       "fuente": "Cleveland Clinic"
