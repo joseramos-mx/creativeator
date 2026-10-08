@@ -154,6 +154,25 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "candy-bucket-full-of-wrapped-candy",
+  "nombre": "candy bucket full of wrapped candy",
+  "etiquetas": [
+   "candy",
+   "bucket",
+   "full",
+   "of",
+   "wrapped"
+  ],
+  "color": "#4B92A7",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 316272,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "candy bucket full of wrapped candy",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "cold-compress-cloth",
   "nombre": "cold compress cloth",
   "etiquetas": [
