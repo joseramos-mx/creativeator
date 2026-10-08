@@ -1,0 +1,99 @@
+{
+  "slug": "los-ninos-deben-ir-a-los-funerales-hablemos-de-muerte-sin-mi",
+  "tema": "¿Los niños deben ir a los funerales? Hablar de la muerte sin miedo, con el altar de Día de Muertos como herramienta de duelo infantil",
+  "creado": "2026-10-28",
+  "estado": "borrador",
+  "paleta": "purpura",
+  "copy": "¿Lo llevo al funeral? Hablemos de muerte sin miedo 🕯️\n\nEstamos a nada del Día de Muertos: va a haber altar, va a haber foto y va a haber un niño preguntando por qué el abuelo ya no viene. Y tú ahí, decidiendo en dos segundos si le dices la verdad o si le dices que se fue de viaje. Hablar de la muerte con los niños no es un tema de psicólogos nada más: es crianza, y casi siempre nos agarra sin guion.\n\n🧠 La ciencia dice: antes de los 5 o 6 años muchos niños creen que la muerte es temporal, que se regresa. Por eso preguntan lo mismo una y otra vez. Explicar claro y dejarlos elegir si quieren ir al funeral ayuda más que esconderles el tema (KidsHealth, AAP).\n\n🕯️ \"Está chiquito, se va a traumar\": no es el funeral lo que lastima, es llegar sin que nadie le explique qué está pasando y que lo manden a jugar afuera. Preparado y acompañado, un niño no sale roto: sale con una despedida.\n\n🧩 Lo que pasa cuando no le dices: se da cuenta igual, llena el hueco con su propia versión y casi siempre es peor —que fue su culpa, que a ti también te va a pasar—. Y los eufemismos cobran caro: \"se durmió\" puede volverse miedo a dormirse. La palabra correcta es murió.\n\n✔️ Cómo prepararlo: dile la verdad con palabras simples, cuéntale qué va a ver, déjalo decidir si entra, asígnale un adulto que pueda salirse con él y dale una tarea pequeña: una flor, un dibujo, poner la foto.\n\n🌼 Por eso existe el altar: el duelo infantil necesita un lugar, una fecha y una tarea, y el altar le da las tres. Poner la foto, servir lo que le gustaba, contar la anécdota y reírse. Recordar a quien murió no es romperse.\n\n💙 Si ya le dijiste que se fue de viaje, no pasa nada: se puede corregir hoy, sin drama. \"¿Te acuerdas que te dije que el abuelo se fue de viaje? Te lo voy a contar bien.\" Nadie nos enseñó a dar esta noticia, y la mayoría la damos llorando. No estás sola. Si conoces a una mamá que está cargando una pérdida este año y no sabe qué decirle a su hijo, mándale este post: a veces lo único que falta es que alguien te dé las palabras.\n\n💬 ¿Cómo te explicaron a ti la muerte de alguien cuando eras niña? Te leo abajo 👇\n\n🔖 Guárdalo antes del 1 y 2 de noviembre: lo vas a querer releer la noche que armes el altar y te caiga la primera pregunta difícil. Y compártelo con la abuela o con quien va a estar en la mesa: que todos cuenten la misma versión le ahorra mucha confusión al niño.\n\n📲 ¿Tu peque dejó de dormir, volvió a mojar la cama o cambió de humor después de una pérdida en la familia? Eso se valora. Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp.",
+  "pilar": "crianza y cultura",
+  "objetivo": "compartir",
+  "nota": "8 láminas. Anticipo de Día de Muertos: el altar como herramienta de duelo infantil. Evitar eufemismos, la palabra correcta es murió. El más rico visualmente del mes.",
+  "hashtags": [
+    "#DueloInfantil",
+    "#DiaDeMuertos",
+    "#CrianzaSinCulpa",
+    "#SaludEmocionalInfantil",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*¿Lo llevo* **al funeral?**",
+      "pregunta": "Hablemos de muerte sin miedo",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/los-ninos-deben-ir-a-los-funerales-hablemos-de-muerte-sin-mi/pexels-18950636.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Chris Luengas",
+        "url": "https://www.pexels.com/photo/dia-de-muertos-altar-18950636/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Le dijimos que* **se fue de viaje\"**",
+      "bajada": "Nadie te enseñó a dar esta noticia.",
+      "cuerpo": "Murió el abuelo y alguien decidió, con todo el cariño del mundo, no decirle. Que se fue de viaje. Que se durmió. Que Diosito se lo llevó. Casi todos lo hemos hecho alguna vez: no se calla para protegerlo, se calla porque decirlo en voz alta duele muchísimo.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "small vintage suitcase"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Entender la muerte toma años, no una plática.",
+      "cuerpo": "Antes de los 5 o 6 años muchos niños creen que la muerte es temporal: que se regresa, como de un viaje. Por eso preguntan diez veces lo mismo. Las guías pediátricas coinciden en algo sencillo: explicar con palabras claras y dejarlo elegir si quiere ir ayuda más que esconderle el tema.",
+      "visual": {
+        "clase": "icono",
+        "slug": "hourglass",
+        "iconoSugerido": "hourglass"
+      },
+      "fuente": "KidsHealth (Nemours) y AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Está chiquito,* **se va a traumar\"**",
+      "bajada": "El miedo no está en ir. Está en no entender.",
+      "cuerpo": "No es el funeral lo que lastima. Es llegar sin que nadie te explique qué está pasando, ver a todos llorar y que te manden a jugar afuera. Un niño preparado, acompañado y con permiso de salirse cuando quiera no sale roto de ahí: sale con una despedida.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "glass cloche dome"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que pasa cuando **no le dices**",
+      "bajada": "Por eso la palabra correcta es murió.",
+      "cuerpo": "Los niños se dan cuenta de todo. Si nadie les explica, llenan el hueco con su propia versión, y casi siempre es peor: que fue su culpa, que a ti también te va a pasar. Y los eufemismos cobran caro: \"se durmió\" puede convertirse en miedo a dormirse.",
+      "visual": {
+        "clase": "icono",
+        "slug": "jigsaw-puzzle-with-one-missing-piece",
+        "iconoSugerido": "jigsaw puzzle with one missing piece"
+      }
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo prepararlo **para el funeral**",
+      "puntos": [
+        "→ **Usa la palabra:** murió. Su cuerpo dejó de funcionar y no va a regresar. Claro duele menos que confuso.",
+        "→ **Cuéntale qué va a ver:** cuánta gente habrá, que varios van a llorar, cuánto dura y si el cuerpo va a estar ahí.",
+        "→ **Déjalo decidir:** pregúntale si quiere ir. Si dice que no, no lo obligues y no se lo reproches después.",
+        "→ **Asígnale un adulto:** alguien que no esté en el centro del duelo y pueda salirse con él en cuanto lo pida.",
+        "→ **Dale una tarea:** una flor, un dibujo, poner la foto. Despedirse sale más fácil con las manos ocupadas."
+      ],
+      "fuente": "KidsHealth (Nemours)"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Por eso existe* **el altar**",
+      "bajada": "Recordar en voz alta también es cuidar.",
+      "cuerpo": "El duelo de un niño necesita algo concreto: un lugar, una fecha y una tarea. El altar le da las tres. Poner la foto, servir lo que le gustaba, contar la anécdota y reírse. Así aprende que recordar a quien murió no es romperse: es seguir queriéndolo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "day-of-the-dead-altar-with-marigolds-and-photo-frame",
+        "iconoSugerido": "day of the dead altar with marigolds and photo frame"
+      }
+    }
+  ]
+}
