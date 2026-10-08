@@ -4,7 +4,7 @@
   "especialidad": "Pediatría · Neonatología · Lactancia",
   "ciudad": "Durango",
   "plataforma": "Doctoralia",
-  "logo": "/proyectos/dra-mildreth-solis-bravo/marca/logo-blanco.png",
+  "logo": "/proyectos/dra-mildreth-solis-bravo/marca/logo-mv04f4xj.png",
   "retrato": "",
   "cierre": {
     "lugar": "*Consulta en* **{ciudad}**",
@@ -22,13 +22,21 @@
     "Esquema Nacional de Vacunación de México"
   ],
   "iconosRecientes": [
-    "appointment-calendar"
+    "lit-candle-on-windowsill",
+    "speech-bubble",
+    "small-knitted-baby-bootie",
+    "empty-picture-frame",
+    "serum-dropper-bottle",
+    "leftover-pill-bottle-with-child-proof-cap",
+    "cough-syrup-bottle-with-measuring-spoon",
+    "antibiotic-syrup-bottle",
+    "open-medicine-drawer-with-boxes"
   ],
   "diseno": {
     "fondo": "#4FA0FB",
     "tinta": "#FFFFFF",
     "tituloFuente": "Bagel Fat One",
-    "tituloMayusculas": true,
+    "tituloMayusculas": false,
     "textoFuente": "Figtree",
     "numeroFuente": "Fredoka",
     "paletas": []

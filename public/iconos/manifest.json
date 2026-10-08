@@ -233,10 +233,10 @@
    "measuring",
    "spoon"
   ],
-  "color": "#A691D1",
+  "color": "#C85157",
   "w": 1024,
   "h": 1024,
-  "bytes": 221225,
+  "bytes": 798709,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "cough syrup bottle with measuring spoon",
@@ -337,6 +337,23 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "dna strand",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "empty-picture-frame",
+  "nombre": "empty picture frame",
+  "etiquetas": [
+   "empty",
+   "picture",
+   "frame"
+  ],
+  "color": "#6A91D4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 489651,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "empty picture frame",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "face-paint-palette-with-brush",
@@ -615,6 +632,51 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "leftover-pill-bottle-with-child-proof-cap",
+  "nombre": "leftover pill bottle with child-proof cap",
+  "etiquetas": [
+   "leftover",
+   "pill",
+   "bottle",
+   "with",
+   "child",
+   "proof",
+   "cap",
+   "pastilla",
+   "medicamento",
+   "antibiotico",
+   "nino",
+   "peque",
+   "hijo"
+  ],
+  "color": "#A45C18",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 839589,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "leftover pill bottle with child-proof cap",
+  "fecha": "2026-10-08"
+ },
+ {
+  "slug": "lit-candle-on-windowsill",
+  "nombre": "lit candle on windowsill",
+  "etiquetas": [
+   "lit",
+   "candle",
+   "on",
+   "windowsill"
+  ],
+  "color": "#EFCF6E",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 574722,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "lit candle on windowsill",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
@@ -701,6 +763,25 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "mosquito",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "open-medicine-drawer-with-boxes",
+  "nombre": "open medicine drawer with boxes",
+  "etiquetas": [
+   "open",
+   "medicine",
+   "drawer",
+   "with",
+   "boxes"
+  ],
+  "color": "#95B5DA",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 849592,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "open medicine drawer with boxes",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "palomita-verde",
@@ -806,6 +887,27 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "small-knitted-baby-bootie",
+  "nombre": "small knitted baby bootie",
+  "etiquetas": [
+   "small",
+   "knitted",
+   "baby",
+   "bootie",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#B05747",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1133091,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small knitted baby bootie",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "snowflake",
   "nombre": "snowflake",
   "etiquetas": [
@@ -819,6 +921,22 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "snowflake",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "speech-bubble",
+  "nombre": "speech bubble",
+  "etiquetas": [
+   "speech",
+   "bubble"
+  ],
+  "color": "#85BEF5",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 715122,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "speech bubble",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "stack-of-research-papers",
