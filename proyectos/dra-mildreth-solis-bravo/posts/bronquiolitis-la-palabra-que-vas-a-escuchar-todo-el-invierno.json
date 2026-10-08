@@ -1,0 +1,99 @@
+{
+  "slug": "bronquiolitis-la-palabra-que-vas-a-escuchar-todo-el-invierno",
+  "tema": "Bronquiolitis: la palabra que vas a escuchar todo el invierno",
+  "creado": "2026-10-19",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "Bronquiolitis: la palabra que vas a escuchar todo el invierno ❄️\n\nTu bebé lleva tres días con mocos y hoy tose distinto. Lo cargas y sientes que respira más rápido. Alguien te dijo \"es un catarrito\", otra persona te dijo \"eso ya es bronquiolitis\" y tú llevas media hora contándole las respiraciones mientras duerme. Estamos justo antes del pico de VSR en Durango, así que esta palabra la vas a escuchar mucho en las próximas semanas. Vengo a que llegues a esa noche sabiendo qué mirar.\n\n❄️ Qué es la bronquiolitis: una infección de las vías respiratorias más pequeñas, casi siempre por VSR (virus sincicial respiratorio). Casi todos los niños lo contraen antes de los 2 años; en un niño grande se queda en catarro y en un bebé de meses tapa unas vías que ya son angostas (AAP).\n\n✔️ \"Con un antibiótico se le quita\": los antibióticos actúan contra bacterias y esto es un virus. Las guías tampoco recomiendan de rutina broncodilatadores ni cortisona en la bronquiolitis típica. Que no te den receta no es que te estén dejando sin plan: el plan es hidratación, nariz limpia y vigilar cómo respira (AAP).\n\n🌡️ No es la fiebre, es cómo respira: puede tener poca fiebre y aun así estar haciendo mucho esfuerzo. Lo que orienta es el pecho: costillas que se marcan, nariz que se abre, quejido al soltar el aire. Revísalo sin ropa y con buena luz (KidsHealth).\n\n😴 Qué sí ayuda en casa: lavados nasales antes de cada toma y de dormir, tomas más cortas y frecuentes, contar pañales mojados y casa sin humo. Nada de esto mata al virus: sostiene a tu bebé mientras el virus pasa.\n\n💙 Si ya estuviste en esa madrugada contando respiraciones, ya sabes que ninguna te preparó. No es exageración, es instinto con buena información encima. Y nadie debería estrenar esta palabra a las tres de la mañana buscándola en el celular: mándale este post a la amiga que acaba de tener bebé, a tu hermana con el de un año, al grupo de mamás de la guardería. Que la lean hoy, en calma, y no esa noche. Compartirlo cuesta diez segundos y le ahorra a alguien una hora de pánico.\n\n💬 ¿Cuál fue la primera señal que te hizo decir \"esto ya no es un catarro normal\"? Cuéntamela, nos sirve a todas leerlas.\n\n🔖 Guarda el semáforo de la lámina 7: verde, amarillo y rojo. Es la que vas a querer abrir de madrugada sin tener que leer todo otra vez.\n\n📲 ¿Tu bebé tiene menos de 2 años, ya trae mocos y no sabes si está respirando con esfuerzo? Eso se valora viendo el pecho, no por mensaje. Agenda tu consulta en Durango por Doctoralia, con el enlace en mi biografía, o escríbenos por WhatsApp si tienes dudas para apartar el horario. Atención presencial en Pediatrik Durango.",
+  "pilar": "temporada invernal",
+  "objetivo": "compartir",
+  "nota": "8 láminas. VSR antes del pico. La señal clave es cómo respira: retracción costal, aleteo nasal, quejido. Semáforo de cuándo acudir. Dirigido a mamás de menores de 2 años.",
+  "hashtags": [
+    "#Bronquiolitis",
+    "#VirusSincicial",
+    "#InviernoConBebes",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Bronquiolitis:* **la palabra del invierno**",
+      "pregunta": "Empieza como un catarrito",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/bronquiolitis-la-palabra-que-vas-a-escuchar-todo-el-invierno/pexels-29691577.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Marius  Gabriel",
+        "url": "https://www.pexels.com/photo/mother-and-baby-by-festive-christmas-scene-29691577/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Es un catarrito,* **pero respira raro\"**",
+      "bajada": "No estás exagerando por mirarle el pecho.",
+      "cuerpo": "Son las tres de la mañana. Tiene mocos desde el lunes y hoy tose distinto. Le cuentas las respiraciones mientras duerme y buscas en el celular con el brillo al mínimo para no despertarlo. Esa sensación de \"algo cambió\" no es paranoia. Es información y vale la pena atenderla.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "baby crib at night"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Qué es* **la bronquiolitis**",
+      "bajada": "Mismo virus, distinto tamaño de vía aérea.",
+      "cuerpo": "Es una infección de las vías respiratorias más pequeñas. Casi siempre la causa el VSR: virus sincicial respiratorio, el que circula cada invierno. Casi todos los niños lo contraen antes de los 2 años. En un niño grande se queda en catarro. En un bebé de meses esas vías son angostas y se tapan con moco.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "virus particle 3d"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Con un antibiótico* **se le quita\"**",
+      "bajada": "Que no haya receta no significa que no haya plan.",
+      "cuerpo": "Ojalá fuera así. Los antibióticos actúan contra bacterias y esto es un virus: no acortan nada. Las guías tampoco recomiendan de rutina broncodilatadores ni cortisona en la bronquiolitis típica. No es que te estén negando tratamiento. Es que el que sirve es otro: hidratación, nariz despejada y vigilancia de cómo respira.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "antibiotic pill bottle"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No es la fiebre.* **Es cómo respira**",
+      "bajada": "El termómetro no mide el esfuerzo para respirar.",
+      "cuerpo": "Un bebé con bronquiolitis puede tener poca fiebre y aun así estar trabajando de más para meter aire. Lo que orienta es el esfuerzo: las costillas que se marcan al respirar, la nariz que se abre, el quejido al soltar el aire. Por eso se revisa el pecho descubierto y no solo el número del termómetro.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "digital thermometer"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Qué sí ayuda **en casa**",
+      "puntos": [
+        "→ **Lavados nasales** Suero y aspirar antes de cada toma y antes de dormir. Comer y respirar pasan por la misma nariz.",
+        "→ **Tomas cortas y frecuentes** Pecho o fórmula, lo que uses. Comer cansa cuando respirar ya cuesta trabajo.",
+        "→ **Cuenta los pañales mojados** Son tu medidor de hidratación más honesto a lo largo del día.",
+        "→ **Casa sin humo** Ni cigarro ni leña adentro: irritan justo las vías que están inflamadas.",
+        "→ **Mírale el pecho una vez al día** Con buena luz y sin ropa, para comparar cómo respiraba ayer."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Semáforo:* **cuándo acudir**",
+      "bajada": "Guárdala. A las tres de la mañana no se piensa igual.",
+      "cuerpo": "Verde: come, moja pañales y respira tranquilo entre tos y tos. Vigila en casa. Amarillo: respira más rápido, come menos de la mitad, duerme inquieto. Consulta ese mismo día. Rojo: se le marcan las costillas, se le abre la nariz, hace quejido, hace pausas al respirar o se ve pálido. Valoración ya.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "traffic light"
+      },
+      "fuente": "AAP · Mayo Clinic"
+    }
+  ]
+}
