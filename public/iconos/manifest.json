@@ -869,6 +869,27 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "small-knitted-baby-bootie",
+  "nombre": "small knitted baby bootie",
+  "etiquetas": [
+   "small",
+   "knitted",
+   "baby",
+   "bootie",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#B05747",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1133091,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small knitted baby bootie",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "snowflake",
   "nombre": "snowflake",
   "etiquetas": [
