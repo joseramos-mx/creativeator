@@ -800,6 +800,31 @@
   "bytes": 1370661
  },
  {
+  "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
+  "nombre": "peanut next to candy wrapper with ingredient label",
+  "etiquetas": [
+   "peanut",
+   "next",
+   "to",
+   "candy",
+   "wrapper",
+   "with",
+   "ingredient",
+   "label",
+   "cacahuate",
+   "alergia",
+   "frutos-secos"
+  ],
+  "color": "#D8B48D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 796977,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "peanut next to candy wrapper with ingredient label",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "preservativo",
   "nombre": "preservativo",
   "etiquetas": [
