@@ -15,7 +15,8 @@ import {
 import { plantillaDe } from '@/plantillas';
 import { ProveedorDeAvisos } from '@/plantillas/clinica/avisos';
 import { fotosSinCredito } from '@/lib/fotos';
-import { bloque, lienzo, paletas, tipo } from '@/plantillas/clinica/tokens';
+import { bloque, lienzo, tipo } from '@/plantillas/clinica/tokens';
+import { paletaDelPost, paletasDe } from '@/plantillas/paletas';
 import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
 import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
 import { useApi, useProyecto } from './proyecto';
@@ -248,7 +249,7 @@ export function Editor({
           </span>
         </div>
 
-        <Ficha post={post} setPost={setPost} />
+        <Ficha post={post} setPost={setPost} marca={marca} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
 
         {post.slides.map((slide, i) => (
@@ -260,6 +261,7 @@ export function Editor({
             onSubir={(archivo) => void subirImagen(i, archivo)}
             subiendo={subiendo === i}
             paleta={post.paleta}
+            fondo={paletaDelPost(marca, post.paleta).color}
             onUsarIcono={usarIcono}
             indice={i}
             total={post.slides.length}
@@ -418,7 +420,15 @@ function esFoto(slide: Post['slides'][number]) {
 }
 
 /** Los datos del carrusel que no se pintan en ningún slide. */
-function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) => void }) {
+function Ficha({
+  post,
+  setPost,
+  marca,
+}: {
+  post: Post;
+  setPost: (f: (p: Post) => Post) => void;
+  marca: Proyecto;
+}) {
   const [copiado, setCopiado] = useState(false);
   // Un carrusel no se declara aprobado con fotos de las que no se sabe de
   // dónde salieron. El esquema lo rechaza al guardar; aquí se apaga la opción
@@ -455,12 +465,12 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
           <div>
             <label>Paleta</label>
             <select
-              value={post.paleta}
+              value={paletaDelPost(marca, post.paleta).clave}
               onChange={(e) => setPost((p) => ({ ...p, paleta: e.target.value as Post['paleta'] }))}
             >
-              {Object.entries(paletas).map(([nombre, p]) => (
-                <option key={nombre} value={nombre}>
-                  {p.nombre}
+              {paletasDe(marca).map((p) => (
+                <option key={p.clave} value={p.clave}>
+                  {p.etiqueta}
                 </option>
               ))}
             </select>
@@ -482,7 +492,7 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
           </p>
         ) : null}
 
-        <p className="pista">{paletas[post.paleta].cuando}</p>
+        <p className="pista">{paletaDelPost(marca, post.paleta).cuando}</p>
 
         <label>Objetivo — la acción buscada</label>
         <input

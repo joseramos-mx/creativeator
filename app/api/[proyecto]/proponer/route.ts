@@ -3,7 +3,7 @@ import { leerIdentidad } from '@/lib/identidad';
 import { asegurarEscrito, leerPieza } from '@/lib/piezas';
 import { leerProyecto, listarPosts } from '@/lib/posts';
 import { mesDe, proponer } from '@/lib/proponer';
-import { paletas } from '@/plantillas/clinica/tokens';
+import { paletasDe } from '@/plantillas/paletas';
 
 /**
  * POST /api/<proyecto>/proponer — `{ cuantos? }` → temas para elegir. Tres por defecto.
@@ -47,9 +47,9 @@ export async function POST(req: Request, ctx: ConProyecto) {
       ciudad: marca.ciudad,
       alcance,
       // Las mismas que ve el redactor: solo las que tienen regla.
-      paletas: Object.entries(paletas)
-        .filter(([, p]) => p.automatica)
-        .map(([nombre, p]) => ({ nombre, cuando: p.cuando })),
+      paletas: paletasDe(marca)
+        .filter((p) => p.automatica)
+        .map((p) => ({ nombre: p.clave, cuando: p.cuando })),
     };
 
     return Response.json({

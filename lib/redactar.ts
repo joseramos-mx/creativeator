@@ -4,7 +4,8 @@ import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
-import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/plantillas/clinica/tokens';
+import { NOMBRES_PALETA } from '@/plantillas/clinica/tokens';
+import { paletaDelPost, paletaPorDefectoDe, paletasDe } from '@/plantillas/paletas';
 import { MODELO_REDACCION } from './modelo';
 import { repartir } from './variedad';
 import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
@@ -149,7 +150,12 @@ export async function redactar(
   ]);
   const prompt = instruccionesDeRedaccion(
     tema,
-    { marca, piezas: { estructura, iconos, fotos }, paletas, paletaPorDefecto: PALETA_POR_DEFECTO },
+    {
+      marca,
+      piezas: { estructura, iconos, fotos },
+      paletas: Object.fromEntries(paletasDe(marca).map((p) => [p.clave, { cuando: p.cuando }])),
+      paletaPorDefecto: paletaPorDefectoDe(marca),
+    },
     opciones.editorial,
   );
   const cliente = new Anthropic();
@@ -196,11 +202,15 @@ export async function redactar(
    * azul siempre, se mira qué se ha usado últimamente. Ver lib/variedad.ts.
    */
   let porQuePaleta = redaccion.porQuePaleta;
+  // Una cuenta con diseño propio tiene menos colores que nombres conoce el
+  // esquema: si el modelo contestó uno que la cuenta no tiene, va el suyo.
+  const propias = paletasDe(marca);
+  if (!propias.some((p) => p.clave === redaccion.paleta)) redaccion.paleta = paletaPorDefectoDe(marca);
   const reparto = repartir(
     redaccion.paleta,
-    PALETA_POR_DEFECTO,
+    paletaPorDefectoDe(marca),
     await paletasRecientes(proyecto),
-    NOMBRES_PALETA.filter((n) => paletas[n].variedad),
+    propias.filter((p) => p.variedad).map((p) => p.clave),
   );
   if (reparto.paleta !== redaccion.paleta) {
     redaccion.paleta = reparto.paleta as typeof redaccion.paleta;
@@ -238,7 +248,7 @@ export async function redactar(
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
     rellenarFotos(proyecto, post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
-    rellenarIconos(post, avisos),
+    rellenarIconos(post, avisos, marca),
   ]);
   return {
     post,
@@ -271,7 +281,7 @@ export async function redactar(
  * Y como con las fotos, ningún fallo interrumpe la redacción: el slide se queda
  * sin ícono, el editor lo marca, y se resuelve con un clic.
  */
-async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
+async function rellenarIconos(post: TPost, avisos: string[], marca: Parameters<typeof paletaDelPost>[0]): Promise<void> {
   if (!process.env.GEMINI_API_KEY) return;
 
   // En serie: cada ícono nuevo entra en el manifiesto, y el siguiente slide
@@ -307,7 +317,7 @@ async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
       // azul grisáceo y sobre la paleta azul se separaba 25. El editor ya lo
       // marca cuando alguien abre el buscador, pero el relleno automático no
       // abre nada, así que aquí se dice.
-      const fondo = paletas[post.paleta].fondo;
+      const fondo = paletaDelPost(marca, post.paleta).color;
       const delta = separacion({ color: entrada.color as string | null }, fondo);
       if (delta !== null && delta < SEPARACION_MINIMA) {
         avisos.push(
@@ -522,7 +532,7 @@ function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
     creado: new Date().toISOString().slice(0, 10),
     // Siempre borrador. Lo que sale del modelo no está aprobado por nadie.
     estado: 'borrador',
-    paleta: r.paleta ?? PALETA_POR_DEFECTO,
+    paleta: r.paleta,
     copy: r.copy,
     ...(r.pilar ? { pilar: r.pilar } : {}),
     ...(r.objetivo ? { objetivo: r.objetivo } : {}),

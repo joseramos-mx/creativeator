@@ -87,10 +87,15 @@ export async function darDeAlta(
     especialidad: POR_ESCRIBIR,
     ciudad: POR_ESCRIBIR,
     plataforma: POR_ESCRIBIR,
-    logo: `/proyectos/${id}/marca/logo-blanco.png`,
+    // Sin logo hasta que se suba en la página de identidad: la plantilla
+    // escribe el nombre mientras tanto.
+    logo: '',
     retrato: '',
     cierre: base.cierre,
-    plantilla: base.plantilla,
+    // El diseño de la cuenta de la que se copian los textos es de esa cuenta.
+    // La nueva empieza con la plantilla plana, y Claude le pone sus colores y
+    // tipografías al leer sus referencias.
+    plantilla: 'plana',
     giro: POR_ESCRIBIR,
     fuentes: base.fuentes,
     iconosRecientes: [],

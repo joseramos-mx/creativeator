@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/plantillas/clinica/plantilla.css';
+import '@/plantillas/plana/plana.css';
 import './globals.css';
 
 export const metadata: Metadata = {

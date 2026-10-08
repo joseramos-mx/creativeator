@@ -27,6 +27,7 @@ export function BuscadorIconos({
   sugerencia,
   recientes,
   paleta,
+  fondo: fondoDeLaCuenta,
   onElegir,
   onCerrar,
 }: {
@@ -35,10 +36,12 @@ export function BuscadorIconos({
   recientes: string[];
   /** La del post: los íconos se marcan contra su fondo, no contra el azul. */
   paleta: NombrePaleta;
+  /** El color real del fondo, si la cuenta tiene el suyo. */
+  fondo?: string;
   onElegir: (slug: string) => void;
   onCerrar: () => void;
 }) {
-  const fondo = paletaDe(paleta).fondo;
+  const fondo = fondoDeLaCuenta ?? paletaDe(paleta).fondo;
   const [manifiesto, setManifiesto] = useState<Icono[] | null>(null);
   const [consulta, setConsulta] = useState(sugerencia ?? '');
   const campo = useRef<HTMLInputElement>(null);

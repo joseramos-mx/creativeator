@@ -1,8 +1,8 @@
 {
   "slug": "laboratorio-edicion",
-  "tema": "Laboratorio · edición",
+  "tema": "Laboratorio · edición ·",
   "creado": "2026-01-01",
-  "estado": "borrador",
+  "estado": "aprobado",
   "paleta": "azul",
   "copy": "Carrusel de laboratorio. No es contenido: es sobre lo que corren las pruebas.",
   "slides": [
@@ -10,19 +10,37 @@
       "tipo": "portada",
       "titulo": "*Carrusel de*\n**laboratorio**",
       "pregunta": "¿Sobre qué corren las pruebas?",
-      "foto": "/proyectos/dr-edwin/media/laboratorio-edicion/portada.jpg"
+      "foto": "/proyectos/dr-edwin/media/laboratorio-edicion/pexels-10637951.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ron Lach",
+        "url": "https://www.pexels.com/photo/scout-boys-in-classroom-10637951/"
+      }
     },
     {
       "tipo": "contenido",
       "titulo": "Un slide **con foto**",
       "bajada": "Con bajada, para que el bloque cargue lo que puede cargar.",
-      "cuerpo": "Este slide existe para probar el arrastre de imágenes sobre el propio slide y el empuje con flechas. Su foto se reemplaza en cada corrida y no le importa a nadie.",
+      "cuerpo": "Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. Un texto larguísimo que no cabe de ninguna manera. ",
       "visual": {
         "clase": "foto",
-        "src": "/proyectos/dr-edwin/media/laboratorio-edicion/01.jpg",
-        "ideaImagen": "lo que la prueba espera encontrar descrito aquí"
+        "src": "/proyectos/dr-edwin/media/laboratorio-edicion/wikimedia-commons-file-porrigo-impetigo-contagiosa-2-jpg.jpg",
+        "ideaImagen": "lo que la prueba espera encontrar descrito aquí",
+        "credito": {
+          "fuente": "Wikimedia Commons",
+          "licencia": "Public domain",
+          "autor": "George Henry Fox",
+          "url": "https://commons.wikimedia.org/wiki/File:Porrigo_(impetigo_contagiosa)_2.jpg"
+        }
       },
-      "fuente": "Prueba."
+      "fuente": "Prueba.",
+      "overrides": {
+        "offsetY": 1,
+        "tituloPx": 90,
+        "cuerpoPx": 33
+      }
     },
     {
       "tipo": "contenido",
@@ -30,7 +48,7 @@
       "cuerpo": "Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica.",
       "visual": {
         "clase": "icono",
-        "slug": "informacion",
+        "slug": "termometro",
         "tam": 280,
         "iconoSugerido": "magnifying glass"
       },
