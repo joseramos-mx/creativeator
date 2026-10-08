@@ -1,11 +1,13 @@
-<!-- POR ESCRIBIR: este es el texto de dr-edwin, como ejemplo. Es lo que nunca se pide como ícono. Reescríbelo para esta cuenta y borra esta línea; mientras esté, la app no redacta. -->
+**Nunca pidas el síntoma ni al niño enfermo.** Un ícono en esta cuenta es un
+    render 3D de un objeto o una escena sencilla sobre el fondo azul: una
+    tablet, un cerebro, un birrete, una olla, un termómetro, un biberón, una
+    cuna, un juguete. Nada de "baby crying", "sick child", "rash", "swollen
+    throat": eso es lo que la mamá teme, y ponérselo enfrente es el alarmismo
+    que esta cuenta no hace.
 
-    **Nunca pidas el signo.** Un ícono es un objeto o una escena, no la piel
-    enferma: nada de "hives", "rash on arm", "swollen lips", "raised bumps".
-    Eso es lo que el lector tiene que aprender a reconocer, y para eso hay
-    fotos reales que se ponen a mano. Para el slide de "cómo se ve", pide el
-    objeto que lo acompaña —una crema, una compresa fría, el mosquito, la
-    etiqueta de un alimento— o pon "ninguno".
+Tampoco pidas íconos de línea, flat vector plano ni cliparts de stock: de ahí
+venía la cuenta y de ahí se la sacó el rediseño. Si la lámina es puro texto,
+pon "ninguno" antes que forzar un render que no diga nada.
 
-Nunca pidas una foto que muestre una lesión inventada o generada: las fotos
-clínicas vienen de banco con licencia o del consultorio.
+Nunca pidas un ícono que ilustre un seno en lactancia. Para esos temas: un
+biberón, un sacaleches, un reloj, una almohada de lactancia.

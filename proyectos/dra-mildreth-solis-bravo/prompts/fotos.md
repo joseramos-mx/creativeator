@@ -1,6 +1,10 @@
-<!-- POR ESCRIBIR: este es el texto de dr-edwin, como ejemplo. Es qué foto de banco sí y cuál no, para el redactor. Reescríbelo para esta cuenta y borra esta línea; mientras esté, la app no redacta. -->
+**Solo portada, y solo ambiente.** La foto existe en la portada del carrusel y
+nada más; las demás láminas van en azul plano con su render 3D. Busca escenas
+de vida real: una mamá con su bebé en casa, un niño comiendo en la trona, una
+recámara, una mochila, una mano sosteniendo un celular, un desayuno a medias.
+Cotidianas y mexicanas si se puede, nunca de folleto de hospital.
 
-**Solo ambiente, nunca clínica.** Un aula, mochilas, el recreo, una toalla
-colgada, una rutina de casa. Nada de piel enferma: esas fotos salen de un
-archivo con licencia o del consultorio, y se ponen a mano. Si un slide de
-contenido pide una lesión, pon "ninguno" en visual y no lo fuerces.
+Nada de niños con cara de enfermos, llanto dramático, hospitales, agujas,
+termómetros en la boca ni médicos de bata genéricos. Nada de senos en lactancia.
+No hay fotos propias de la doctora ni del consultorio autorizadas: si un slide
+pide a la doctora, pon "ninguno" y no lo fuerces.

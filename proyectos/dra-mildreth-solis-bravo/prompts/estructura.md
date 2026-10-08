@@ -1,11 +1,12 @@
-<!-- POR ESCRIBIR: este es el texto de dr-edwin, como ejemplo. Es cuántos slides lleva un carrusel y qué va en cada uno. Reescríbelo para esta cuenta y borra esta línea; mientras esté, la app no redacta. -->
+Siete slides, en este orden, que es el de la cuenta:
 
-Seis slides, en este orden, que es el de la cuenta:
-
-  1. portada    — titulo con marcado, pregunta de cinco palabras o menos, y
-                  su búsqueda de foto: la portada siempre lleva fondo
-  2. contenido  — qué es
-  3. contenido  — cómo se reconoce
-  4. contenido  — por qué importa ahora, o cómo se contagia
-  5. lista      — cuatro puntos accionables
-  6. contenido  — cuándo acudir a consulta
+  1. portada    — título con marcado y kicker corto (cinco palabras o menos),
+                  y su búsqueda de foto: la portada siempre lleva foto
+  2. contenido  — la confesión: la escena real donde esto le pasa a la mamá,
+                  sin juicio
+  3. contenido  — qué dice la evidencia, con su fuente
+  4. contenido  — el mito o la frase que todos repiten, desarmada
+  5. contenido  — por qué importa: qué se asocia o qué se deja de hacer
+  6. lista      — cuatro o cinco puntos accionables, abiertos con flecha
+  7. contenido  — la lámina guardable: la que funciona sola si la recortan y
+                  la reenvían por WhatsApp

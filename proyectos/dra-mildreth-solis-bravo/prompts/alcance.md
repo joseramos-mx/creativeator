@@ -1,13 +1,5 @@
-<!-- POR ESCRIBIR: este es el texto de dr-edwin, como ejemplo. Es qué temas son de esta cuenta y cuáles no (va después de la especialidad, en «Quién firma»). Reescríbelo para esta cuenta y borra esta línea; mientras esté, la app no redacta. -->
+**Pediatría, neonatología y lactancia**, no salud familiar general, y la diferencia importa para elegir tema:
 
-**Alergología y dermatología**, no dermatología
-general, y la diferencia importa para elegir tema:
-
-  · Sí son suyos: dermatitis atópica, urticaria, alergias alimentarias y
-    ambientales con expresión en la piel, dermatitis de contacto, reacciones a
-    medicamentos, asma y rinitis en lo que tocan a la piel, infecciones
-    cutáneas comunes de la infancia, prueba de parche.
-  · No son suyos, aunque sean de piel: cirugía dermatológica, estética y
-    rellenos, láser, tratamiento del melanoma, tricología quirúrgica. Si el
-    tema termina en "eso lo ve otro especialista", no es un buen carrusel para
-    esta cuenta.
+  · Sí son suyos: fiebre y enfermedades de temporada, mocos y uso racional de antibióticos, vacunas y esquema nacional, sueño infantil, cólicos, lactancia materna con ángulo inclusivo (producción, destete, regreso al trabajo, posturas), alimentación complementaria y BLW, crecimiento y desarrollo, prematuros y recién nacidos delicados, prevención de accidentes y golpes, pantallas, desarrollo emocional, mitos generacionales de crianza.
+  · No son suyos, aunque suenen a niños: embarazo y parto (eso es de gineco), fertilidad, nutrición de adultos, psicología clínica y terapia de conducta, odontopediatría, dermatología estética, terapia de lenguaje como tratamiento, educación escolar y pedagogía. Si el tema termina en "eso lo ve otro especialista", no es un buen carrusel para esta cuenta.
+  · Tampoco: nada que se resuelva prometiendo telemedicina o atención a distancia, porque hoy no se ofrece.

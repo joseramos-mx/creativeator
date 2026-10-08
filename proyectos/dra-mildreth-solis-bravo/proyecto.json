@@ -3,22 +3,23 @@
   "usuario": "@dramildrethsolisbravo",
   "especialidad": "Pediatría · Neonatología · Lactancia",
   "ciudad": "Durango",
-  "plataforma": "Doctoralia y whatsapp",
+  "plataforma": "Doctoralia",
   "logo": "/proyectos/dra-mildreth-solis-bravo/marca/logo-blanco.png",
   "retrato": "",
   "cierre": {
     "lugar": "*Consulta en* **{ciudad}**",
-    "invitacion": "Agenda tu cita desde Doctoralia"
+    "invitacion": "Agenda tu cita desde"
   },
   "plantilla": "clinica",
-  "giro": "Pediatra y neonatóloga, consultora internacional de lactancia materna",
+  "giro": "una pediatra",
   "fuentes": [
+    "AAP",
+    "OMS",
     "Mayo Clinic",
     "Cleveland Clinic",
-    "AAP",
-    "AAD",
     "KidsHealth",
-    "StatPearls"
+    "StatPearls",
+    "Esquema Nacional de Vacunación de México"
   ],
   "iconosRecientes": []
 }
