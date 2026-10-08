@@ -36,6 +36,7 @@
       "cuerpo": "Son las dos de la mañana. Tose desde hace una hora, nadie duerme y abres el cajón de las medicinas. Ahí está el jarabe que le funcionó a tu sobrino y el antibiótico que sobró en octubre. Todas hemos estado frente a ese cajón. No vengo a regañarte.",
       "visual": {
         "clase": "icono",
+        "slug": "open-medicine-drawer-with-boxes",
         "iconoSugerido": "open medicine drawer with boxes"
       }
     },
