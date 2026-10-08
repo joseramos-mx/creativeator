@@ -1,0 +1,100 @@
+{
+  "slug": "tu-botiquin-de-invierno-revisado-por-pediatra",
+  "tema": "Tu botiquín de invierno, revisado por pediatra",
+  "creado": "2026-10-30",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "Abre el cajón de las medicinas. Te espero aquí ❄️\n\nLlegó el frío y con él la temporada en que cada semana hay mocos nuevos en casa. Antes de que empiecen las noches largas, vale la pena revisar el botiquín de invierno: no para comprar más cosas, sino para sacar las que ya no deberían estar ahí. Te apuesto que hay por lo menos un antibiótico sobrante.\n\n🌡️ Lo que la ciencia dice: los jarabes de venta libre para tos y gripa no se recomiendan en niños pequeños, no acortan el resfriado y sí pueden dar efectos no deseados (AAP, Mayo Clinic).\n\n✔️ \"Un jarabito y duerme\": la tos saca el moco de la vía respiratoria, taparla no cura nada. Después del año, un poco de miel antes de dormir tiene mejor respaldo que muchos jarabes; antes del año, miel no, por riesgo de botulismo. Y nada de alcanfor o mentol antes de los 2 años (AAP, KidsHealth).\n\n🔖 Lo que sobra sí pesa: la medicina guardada tapa información que necesito en consulta —cuántos días lleva, cómo es la fiebre, cómo respira— y deja frascos al alcance. Los medicamentos están entre las causas más frecuentes de intoxicación accidental en casa (AAP).\n\n💙 Si encontraste tres prohibidos, no eres una mala mamá: eres una mamá que ya pasó tres inviernos sin dormir y que hizo lo que pudo con lo que tenía a la mano. Todos hemos dado algo a las dos de la mañana. Revisar el cajón hoy, con luz y sin prisa, ya es prevención.\n\n💬 Ahora sí, el juego: ve a tu botiquín y dime cuántos prohibidos encontraste. ¿Uno, dos, los cinco? Y cuéntame cuál te sorprendió más, porque el del Vaporub siempre levanta ámpula. Leo todos los comentarios y ahí mismo te contesto las dudas.\n\n🔖 Guárdalo para el domingo que te sientes a limpiar la caja de medicinas, y mándaselo a la mamá que te presta jarabes \"que a mi hijo le funcionaron\". A las dos les va a servir.\n\n📲 ¿Tu peque lleva más de una semana con tos, le cuesta respirar o ya vas en la tercera gripa del mes? Eso se valora, no se adivina. Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp.",
+  "pilar": "prevención",
+  "objetivo": "comentar",
+  "nota": "8 láminas estilo checklist. Lo que sí (suero, termómetro con pila) y lo que no (jarabes para tos, antibióticos sobrantes, Vaporub en menores de 2). Pregunta: cuántos prohibidos encontraste.",
+  "hashtags": [
+    "#BotiquinInfantil",
+    "#TemporadaDeFrios",
+    "#PediatriaSinCulpa",
+    "#CrianzaInformada",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Tu botiquín* **de invierno**",
+      "pregunta": "¿Cuántos prohibidos hay dentro?",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/tu-botiquin-de-invierno-revisado-por-pediatra/pexels-9874610.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ron Lach",
+        "url": "https://www.pexels.com/photo/mother-taking-throat-spray-from-bedside-cabinet-9874610/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**CONFIESA**",
+      "bajada": "Todas hemos abierto ese cajón a media noche.",
+      "cuerpo": "Son las dos de la mañana. Tose desde hace una hora, nadie duerme y abres el cajón de las medicinas. Ahí está el jarabe que le funcionó a tu sobrino y el antibiótico que sobró en octubre. Todas hemos estado frente a ese cajón. No vengo a regañarte.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "open medicine drawer with boxes"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Lo que sí funciona es aburrido y barato.",
+      "cuerpo": "Los jarabes de venta libre para tos y gripa no se recomiendan en niños pequeños: no acortan el resfriado y sí pueden causar efectos no deseados. Lo que sí ayuda es simple: suero fisiológico en la nariz, líquidos, aire húmedo y tiempo. El resfriado común se va solo en unos días.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "saline nasal spray bottle"
+      },
+      "fuente": "AAP · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Un jarabito* **y duerme\"**",
+      "bajada": "La tos no es el enemigo del invierno.",
+      "cuerpo": "La tos es la forma en que el cuerpo saca moco de la vía respiratoria. Taparla no cura nada. Después del año, un poco de miel antes de dormir tiene mejor respaldo que muchos jarabes. Antes del año, miel no: riesgo de botulismo. Y el Vaporub con alcanfor o mentol, no antes de los 2.",
+      "visual": {
+        "clase": "icono",
+        "slug": "cough-syrup-bottle-with-measuring-spoon",
+        "iconoSugerido": "cough syrup bottle with measuring spoon"
+      },
+      "fuente": "AAP · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Por qué importa **lo que sobra**",
+      "bajada": "La medicina guardada no es ahorro, es ruido.",
+      "cuerpo": "Un botiquín lleno de sobrantes hace dos cosas. Tapa información que tu pediatra necesita: cuántos días lleva, cómo es la fiebre, cómo respira. Y deja al alcance frascos que un niño abre en segundos. Los medicamentos están entre las causas más frecuentes de intoxicación accidental en casa.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "leftover pill bottle with child-proof cap"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Lo que **sí va dentro**",
+      "puntos": [
+        "→ **Termómetro digital** Revisa hoy que la pila sirva. Un termómetro sin pila a media noche no sirve de nada.",
+        "→ **Suero fisiológico y perilla** Para despejar la nariz antes de comer y de dormir. Es lo que más vas a usar este invierno.",
+        "→ **Suero oral de farmacia** Por si hay vómito o diarrea. El casero no se mide igual y en bebés eso importa.",
+        "→ **El antitérmico que tu pediatra ya indicó** Con la dosis anotada según el peso de ahora, no el del año pasado.",
+        "→ **Gasas, curitas y jabón neutro** Lo básico de raspones. Y la caja, arriba y cerrada, lejos de manos chiquitas."
+      ],
+      "fuente": "AAP · Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Lo que* **sale hoy**",
+      "bajada": "Si lo que queda cabe en una mano, vas bien.",
+      "cuerpo": "Fuera del botiquín: jarabes para tos y antigripales de venta libre en niños pequeños. Antibióticos sobrantes, de quien sea. Ungüentos con alcanfor o mentol antes de los 2 años. Miel antes del año. Termómetro de mercurio. Y todo lo que ya no tiene caja ni fecha.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "medicine boxes going into trash bin"
+      },
+      "fuente": "AAP · Mayo Clinic"
+    }
+  ]
+}
