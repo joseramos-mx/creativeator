@@ -21,7 +21,9 @@
     "StatPearls",
     "Esquema Nacional de Vacunación de México"
   ],
-  "iconosRecientes": [],
+  "iconosRecientes": [
+    "appointment-calendar"
+  ],
   "diseno": {
     "fondo": "#4FA0FB",
     "tinta": "#FFFFFF",
