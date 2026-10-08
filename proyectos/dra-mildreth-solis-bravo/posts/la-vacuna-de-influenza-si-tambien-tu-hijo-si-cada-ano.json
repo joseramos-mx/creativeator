@@ -37,6 +37,7 @@
       "visual": {
         "clase": "icono",
         "slug": "appointment-calendar",
+        "tam": 400,
         "iconoSugerido": "wall calendar october page"
       }
     },
