@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, type Respuestas } from '@/lib/cuestionario';
 import { useApi, useProyecto } from './proyecto';
+import { reducirImagen, TOPE_SUBIDA } from './reducirImagen';
 
 /**
  * La identidad de la cuenta: lo que hay que saber antes de escribir por ella.
@@ -65,12 +66,15 @@ export function Identidad({
   materialesIniciales,
   textosIniciales,
   nuevo,
+  remoto = false,
 }: {
   respuestasIniciales: Respuestas;
   materialesIniciales: Material[];
   textosIniciales: Textos;
   /** Recién dada de alta: se abre el cuestionario y se explica el camino. */
   nuevo: boolean;
+  /** Si se guarda en el repositorio (Vercel): las subidas tienen tope. */
+  remoto?: boolean;
 }) {
   const api = useApi();
   const proyecto = useProyecto();
@@ -127,10 +131,21 @@ export function Identidad({
     setSubiendo(true);
     setAviso(undefined);
     try {
-      const datos = new FormData();
-      for (const archivo of Array.from(lista)) datos.append('archivos', archivo);
-      const cuerpo = await pedir('/identidad/materiales', { method: 'POST', body: datos });
-      setMateriales(cuerpo.materiales);
+      // De uno en uno y las imágenes reducidas: en Vercel una petición no pasa
+      // de 4.5 MB, y un manual en PDF más un par de fotos lo rebasan juntos.
+      for (const original of Array.from(lista)) {
+        const archivo = await reducirImagen(original);
+        if (remoto && archivo.size > TOPE_SUBIDA) {
+          throw new Error(
+            `«${archivo.name}» pesa ${(archivo.size / 1048576).toFixed(1)} MB y desde aquí caben 4. ` +
+              'Súbelo desde la computadora, o exporta el PDF con menos páginas.',
+          );
+        }
+        const datos = new FormData();
+        datos.append('archivos', archivo);
+        const cuerpo = await pedir('/identidad/materiales', { method: 'POST', body: datos });
+        setMateriales(cuerpo.materiales);
+      }
     } catch (e) {
       fallo(e, 'No se pudo subir.');
     } finally {

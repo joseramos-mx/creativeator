@@ -1,4 +1,4 @@
-import { access } from 'node:fs/promises';
+import { almacen } from '@/lib/almacen';
 import { aSlug } from '@/lib/brief';
 import { redactar, type OpcionesRedaccion } from '@/lib/redactar';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
@@ -76,10 +76,5 @@ export async function POST(req: Request, ctx: ConProyecto) {
 const esTexto = (v: unknown): v is string => typeof v === 'string';
 
 async function existe(proyecto: string, slug: string) {
-  try {
-    await access(rutasDe(proyecto).post(slug));
-    return true;
-  } catch {
-    return false;
-  }
+  return almacen.existe(rutasDe(proyecto).post(slug));
 }

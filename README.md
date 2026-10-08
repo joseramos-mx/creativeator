@@ -75,7 +75,8 @@ Si solo quieres el servidor, `npm run dev:solo`.
 
 | Página | Qué es |
 |---|---|
-| `/` | Elegir proyecto. Con uno solo se salta y lleva directo a él. |
+| `/` | Todos los proyectos, con accesos a carruseles, identidad, archivos y descargas. |
+| `/<proyecto>/archivos` | Las carpetas de la cuenta, para navegarlas, ver imágenes y corregir textos. |
 | `/<proyecto>` | La lista de carruseles de esa cuenta, con la portada de cada uno. |
 | `/<proyecto>/descargas` | Los slides listos para bajarlos al teléfono. |
 | `/<proyecto>/identidad` | Quién es la cuenta: cuestionario, materiales y los textos con los que escribe la IA. |
@@ -1201,25 +1202,63 @@ sirven igual; a Adimex le conviene revisarlos en la fase 6.
 - **`salidas/` no se versiona.** Se regenera cada vez que exportas.
 
 
-## Subirlo a Vercel
+## Usarlo desde Vercel
 
-El despliegue sirve para **dos cosas y ninguna más**: ver los carruseles desde
-donde sea y bajar los slides al teléfono para publicarlos. No edita.
+El despliegue hace **lo mismo que la computadora**: ver todos los proyectos,
+navegar sus archivos, redactar, editar, subir fotos, generar íconos, contar la
+identidad de una cuenta nueva y exportar. Es para el post urgente que sale desde
+el teléfono.
 
-### Por qué no edita
+### Dónde se guarda
 
-No es una decisión de diseño, es lo que hay. En Vercel el disco del proyecto es
-de solo lectura y cada petición corre en un contenedor que se destruye al
-terminar, así que las siete rutas que guardan archivos —el carrusel, las fotos,
-el calendario, los íconos, la exportación— no pueden funcionar allá. Escribirían
-en un `/tmp` que se evapora, y parecería que guardaron.
+En Vercel el disco es de solo lectura y cada petición corre en un contenedor que
+se destruye al terminar. Así que allá **cada cambio es un commit en el
+repositorio**, en la rama del despliegue, por la API de GitHub
+(`lib/almacen.ts`), y leer también va contra esa rama, no contra los archivos
+del build.
 
-`lib/soloLectura.ts` las apaga cuando detecta que está en Vercel y contesta
-diciendo qué pasa. Sin eso, dar a guardar desde el teléfono devuelve un error de
-permisos de Node en crudo.
+Con eso el repositorio sigue siendo la única fuente, como siempre:
 
-Y la exportación además abre un Chromium de verdad, que allá no existe. Por eso
-se exporta aquí y el despliegue solo sirve el resultado.
+- **Lo que hagas en el teléfono aparece en la computadora con `git pull`.**
+- Lo que hagas en la computadora llega al teléfono con `git push`.
+- Antes de ponerte a trabajar en la computadora, `git pull`; si no, el
+  siguiente push choca con lo que se escribió desde el teléfono.
+
+Cada guardado es un commit con un mensaje que dice qué fue ("dr-edwin: Impétigo
+en el regreso a clases"). En el teléfono el guardado automático espera 2,5 s en
+vez de 600 ms, para que un párrafo sea un commit y no veinte. Un carrusel
+redactado y retocado son unos cuantos; la suite entera, unos treinta.
+
+**Los commits de contenido no reconstruyen el sitio.** `vercel.json` le dice a
+Vercel que se salte el build cuando un commit solo toca `proyectos/`,
+`public/proyectos/`, `public/iconos/` o `compartido/`. Lo nuevo —una foto
+subida, un ícono generado— no está en el build, y lo sirven `/proyectos/…`,
+`/iconos/…` y `/archivo/…` desde el repositorio (`lib/servir.ts`).
+
+### Exportar
+
+En la computadora se captura con el Chromium de Playwright. En Vercel no hay
+ninguno, y se usa `@sparticuz/chromium`, que está hecho para funciones: viene
+comprimido y se descomprime al arrancar. Playwright lo maneja igual. El primer
+export después de un rato tarda unos segundos más, mientras se descomprime.
+
+Ese Chromium visita `/render` como cualquier visitante, y la protección de
+Vercel lo mandaría a iniciar sesión. Para eso está la «Protection Bypass for
+Automation» (paso 4): Vercel pone el secreto en
+`VERCEL_AUTOMATION_BYPASS_SECRET` y el exportador lo manda.
+
+### Desde el teléfono
+
+- **`/`** enseña siempre todos los proyectos, con accesos a carruseles,
+  identidad, archivos y descargas.
+- **`/<proyecto>/archivos`** navega las carpetas de la cuenta: lo que se edita
+  (`proyectos/<id>/`) y lo que se sirve (`public/proyectos/<id>/`). Se ven las
+  imágenes y los PDF, se leen los JSON, y los textos —`voz.md`, los prompts, el
+  calendario— se corrigen ahí mismo.
+- **El editor se ajusta al ancho** del teléfono al abrirlo, con un solo scroll.
+- **Las fotos se reducen en el teléfono** antes de subirse: Vercel no acepta
+  más de 4,5 MB por petición, y una foto de cámara pesa el doble. Los PDF de
+  materiales de más de 4 MB se suben desde la computadora.
 
 ### Que solo entres tú
 
@@ -1230,24 +1269,43 @@ Vercel lo trae de fábrica y no hay que programar nada:
 
 Con eso, abrir la URL exige iniciar sesión con una cuenta de Vercel de tu equipo.
 Es mejor que cualquier login escrito a mano: no hay contraseñas que guardar, ni
-sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso.
+sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso. Y
+como ahora el despliegue escribe en el repositorio, **no lo quites**.
 
 ### Los pasos
 
 1. **Importar.** En vercel.com → Add New → Project → el repositorio. Next.js lo
    detecta solo; no hay que tocar la configuración de build.
-2. **Las llaves.** Settings → Environment Variables, las mismas tres de
-   `.env.local` (ver `.env.local.ejemplo`). Sin ellas la app arranca, pero
-   redactar y buscar fotos no funcionan — que allá tampoco funcionarían.
-3. **La protección**, arriba.
-4. **Push.** Cada `git push` a `main` despliega.
+2. **El token de GitHub.** En GitHub → Settings → Developer settings →
+   Fine-grained tokens → nuevo token con acceso **solo a este repositorio** y el
+   permiso **Contents: Read and write**. Va en Vercel → Settings → Environment
+   Variables como `GITHUB_TOKEN`. Sin él la app arranca en solo lectura y lo
+   dice al intentar guardar.
+3. **Las llaves** de `.env.local` —`ANTHROPIC_API_KEY`, `PEXELS_API_KEY`,
+   `GEMINI_API_KEY`—, en el mismo sitio.
+4. **La protección**, arriba, y en la misma página **Protection Bypass for
+   Automation → Add**: es lo que deja exportar.
+5. **La duración de las funciones.** Redactar un carrusel o escribir la
+   identidad tarda uno o dos minutos; las rutas piden hasta 300 s. Con Fluid
+   Compute (activado por omisión en proyectos nuevos) caben.
+6. **Push.** Cada `git push` a `main` despliega.
+
+Para probar el modo Vercel sin token ni red está el GitHub simulado: habla la
+misma API y por debajo es la carpeta del proyecto.
+
+```bash
+npm run github-simulado 3999
+ALMACEN=github GITHUB_TOKEN=prueba GITHUB_REPO=yo/carruseles \
+  GITHUB_API_URL=http://localhost:3999 npm run dev:solo -- -p 3002
+ALMACEN=github npm run pruebas 3002
+```
 
 ### Bajar los slides al teléfono
 
 Desde la app, que es lo cómodo: en **/<proyecto>/descargas → «Mandar un carrusel al
-teléfono»** sale la lista entera y cada uno tiene su botón. Ese panel solo
-aparece en tu máquina; en Vercel no, porque allá exportar es imposible y
-enseñar botones que no funcionan es peor que no enseñarlos.
+teléfono»** sale la lista entera y cada uno tiene su botón. Funciona igual en
+Vercel: allá exporta con su propio Chromium y deja los PNG en el repositorio, sin
+push de por medio.
 
 Por consola hace lo mismo:
 
@@ -1261,13 +1319,13 @@ git add public/proyectos/<id>/descargas && git commit && git push
 Con más de un proyecto se dice de cuál, después de `--` para que npm no se
 quede la bandera: `npm run celular -- <slug> --proyecto dra-mildreth`.
 
-Y en los dos casos falta el `git push`: los PNG viven en el repositorio, que es
-de donde Vercel los sirve. El panel lo dice en pantalla — si no, preparas, abres
-el teléfono y no está, sin ninguna pista de por qué.
+Preparado **en la computadora**, falta el `git push`: los PNG viven en el
+repositorio, que es de donde Vercel los sirve. El panel lo dice en pantalla — si
+no, preparas, abres el teléfono y no está, sin ninguna pista de por qué.
+Preparado en Vercel ya es un commit, y no hace falta nada más.
 
 Y en el teléfono, `/<proyecto>/descargas`: cada slide es una imagen; se mantiene pulsada y
-**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram. Eso sí
-funciona en producción — lo que no se puede allá es *preparar* uno nuevo.
+**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram.
 
 Un detalle que rompe el despliegue en silencio si se pierde de vista: `public/`
 no viaja en el paquete de las funciones, porque Vercel lo sirve como estático.

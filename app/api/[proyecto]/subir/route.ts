@@ -1,7 +1,7 @@
-import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
+import { guardar } from '@/lib/almacen';
 import { rutasDe } from '@/lib/proyecto';
 import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
@@ -45,9 +45,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
 
     const nombre = normalizar(archivo.name, tuboAlfa ? 'png' : 'jpg');
     const rutas = rutasDe(proyecto);
-    const carpeta = rutas.media(slug);
-    await mkdir(carpeta, { recursive: true });
-    await writeFile(join(carpeta, nombre), await salida.toBuffer());
+    await guardar(join(rutas.media(slug), nombre), await salida.toBuffer(), `${proyecto}: imagen para ${slug}`);
 
     return Response.json({ ruta: rutas.urlMedia(slug, nombre) });
   } catch (e) {

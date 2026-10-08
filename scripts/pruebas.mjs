@@ -22,6 +22,12 @@ import { rutasDe } from '../lib/proyecto.ts';
 const puerto = process.argv[2] ?? '3000';
 const base = `http://localhost:${puerto}`;
 
+/**
+ * El retraso del guardado automático: 600 ms en el disco, 2,5 s cuando cada
+ * guardado es un commit (ALMACEN=github, contra scripts/github-simulado.mjs).
+ */
+const RETRASO = process.env.ALMACEN === 'github' ? 2500 : 600;
+
 /** Las pruebas corren en el proyecto del laboratorio y en ningún otro. */
 const RUTAS = rutasDe(PROYECTO);
 
@@ -155,8 +161,8 @@ const temaAntes = leer(EDICION).tema;
 await page.locator('[data-ficha] input').first().fill(`${temaAntes} ·`);
 await espera(300);
 ok(leer(EDICION).tema === temaAntes, 'a los 300 ms todavía no escribe: el retraso existe');
-await espera(1500);
-ok(leer(EDICION).tema.endsWith('·'), 'a los 1800 ms ya guardó');
+await espera(RETRASO + 1200);
+ok(leer(EDICION).tema.endsWith('·'), `a los ${RETRASO + 1500} ms ya guardó`);
 ok((await page.locator('.estado').innerText()).includes('guardado'), 'y el estado lo dice');
 
 /* ── la idea de imagen, junto a la imagen ────────────────────────────────── */
@@ -262,13 +268,13 @@ console.log('\nModo de empuje');
 const tarjeta1 = await abrirTarjeta(page, 1);
 await tarjeta1.locator('button:has-text("bloque")').click();
 for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides?.offsetY === 3, `offsetY = ${leer(EDICION).slides[1].overrides?.offsetY}`);
 await page.keyboard.press('Shift+ArrowUp');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides?.offsetY === -7, 'Shift mueve de diez en diez');
 for (let i = 0; i < 7; i++) await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides === undefined, 'volver al valor de la plantilla borra el override');
 
 await tarjeta1.locator('button:has-text("titulo")').click();
@@ -278,7 +284,7 @@ await tarjeta1.locator('button:has-text("cuerpo")').click();
 await page.keyboard.press('-');
 await tarjeta1.locator('button:has-text("bloque")').click();
 await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(Object.keys(leer(EDICION).slides[1].overrides ?? {}).length === 3, 'tres ajustes a mano');
 ok(/plantilla/.test(await tarjeta1.locator('.aviso').innerText()), 'y el aviso apunta a la plantilla');
 
@@ -666,7 +672,12 @@ console.log('\nDescargas');
     // Fotos», y eso necesita una imagen servida, no un botón con JavaScript.
     const enlace = pagina.locator('.descargas__slides a').first();
     const href = await enlace.getAttribute('href');
-    ok(new RegExp(`^/proyectos/${PROYECTO}/descargas/[a-z0-9-]+/\\d+\\.png$`).test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
+    // En Vercel va por /archivo, que lee del repositorio y no del build, con
+    // la versión en la URL. Ver lib/almacen.ts, urlServida.
+    ok(
+      new RegExp(`^(/archivo)?/proyectos/${PROYECTO}/descargas/[a-z0-9-]+/\\d+\\.png(\\?v=[a-z0-9]+)?$`).test(href ?? ''),
+      `cada slide es un enlace a su PNG (${href})`,
+    );
 
     const png = await pagina.request.get(base + href);
     ok(png.status() === 200, '  y el PNG se sirve de verdad');

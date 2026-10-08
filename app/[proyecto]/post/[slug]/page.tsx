@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Editor } from '@/app/_componentes/Editor';
 import { capturas, REFERENCIA } from '@/app/plantilla/datos';
-import { existeProyecto, leerPost, leerProyecto, listarSlugs } from '@/lib/posts';
+import { remoto } from '@/lib/almacen';
+import { hayProyecto, leerPost, leerProyecto, listarSlugs } from '@/lib/posts';
 
 /**
  * /<proyecto>/post/[slug] — el editor.
@@ -17,7 +18,7 @@ export default async function Carrusel({
   params: Promise<{ proyecto: string; slug: string }>;
 }) {
   const { proyecto, slug } = await params;
-  if (!existeProyecto(proyecto)) notFound();
+  if (!(await hayProyecto(proyecto))) notFound();
   const slugs = await listarSlugs(proyecto);
   if (!slugs.includes(slug)) notFound();
 
@@ -27,5 +28,5 @@ export default async function Carrusel({
   const referencia =
     proyecto === REFERENCIA.proyecto && slug === REFERENCIA.slug ? capturas : undefined;
 
-  return <Editor inicial={post} marca={marca} capturas={referencia} />;
+  return <Editor inicial={post} marca={marca} capturas={referencia} remoto={remoto} />;
 }

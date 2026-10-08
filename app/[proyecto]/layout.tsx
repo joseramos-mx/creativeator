@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { existeProyecto, leerProyecto } from '@/lib/posts';
+import { hayProyecto, leerProyecto } from '@/lib/posts';
 
 /** El título de la pestaña dice de qué cuenta es: con dos abiertas, se confunden. */
 export async function generateMetadata({
@@ -8,7 +8,7 @@ export async function generateMetadata({
   params: Promise<{ proyecto: string }>;
 }): Promise<Metadata> {
   const { proyecto } = await params;
-  if (!existeProyecto(proyecto)) return {};
+  if (!(await hayProyecto(proyecto))) return {};
   const marca = await leerProyecto(proyecto);
   return { title: `Carruseles · ${marca.usuario}` };
 }

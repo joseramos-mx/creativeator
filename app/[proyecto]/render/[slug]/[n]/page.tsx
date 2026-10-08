@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { existeProyecto, leerPost, leerProyecto, listarSlugs } from '@/lib/posts';
+import { hayProyecto, leerPost, leerProyecto, listarSlugs } from '@/lib/posts';
 import { plantillaDe } from '@/plantillas';
 import { Listo } from './Listo';
 import './render.css';
@@ -24,7 +24,7 @@ export default async function Render({
   params: Promise<{ proyecto: string; slug: string; n: string }>;
 }) {
   const { proyecto, slug, n } = await params;
-  if (!existeProyecto(proyecto)) notFound();
+  if (!(await hayProyecto(proyecto))) notFound();
   const slugs = await listarSlugs(proyecto);
   if (!slugs.includes(slug)) notFound();
 

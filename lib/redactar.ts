@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
@@ -15,6 +14,7 @@ import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemin
 import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
+import { almacen } from './almacen';
 import { instruccionesDeRedaccion } from './instrucciones';
 import { leerIdentidad } from './identidad';
 import { asegurarEscrito, leerPieza, leerVoz } from './piezas';
@@ -454,9 +454,8 @@ function explicar(e: unknown): string {
 
 /** La librería de íconos, para casar `iconoSugerido` sin abrir el buscador. */
 async function leerManifiesto(): Promise<Icono[]> {
-  return readFile(join(process.cwd(), 'public', 'iconos', 'manifest.json'), 'utf8')
-    .then(JSON.parse)
-    .catch(() => []);
+  const crudo = await almacen.leerTexto(join(process.cwd(), 'public', 'iconos', 'manifest.json'));
+  return crudo ? JSON.parse(crudo) : [];
 }
 
 function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {

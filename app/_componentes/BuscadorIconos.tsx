@@ -15,7 +15,9 @@ import { paletaDe, type NombrePaleta } from '@/plantillas/clinica/tokens';
 let cache: Promise<Icono[]> | null = null;
 
 function cargarManifiesto() {
-  cache ??= fetch('/iconos/manifest.json')
+  // Por /archivo y no por /iconos: en Vercel, /iconos/manifest.json es el del
+  // último build y no trae los íconos generados después. Ver lib/servir.ts.
+  cache ??= fetch('/archivo/iconos/manifest.json', { cache: 'no-store' })
     .then((r) => (r.ok ? r.json() : []))
     .catch(() => [] as Icono[]);
   return cache;

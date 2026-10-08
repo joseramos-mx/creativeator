@@ -1,7 +1,7 @@
 import 'server-only';
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { almacen } from '../almacen';
 import { COMPARTIDO } from '../proyecto';
 import sharp from 'sharp';
 import { fusionar, gitignoreDeIconos, type Entrada } from '../manifiesto';
@@ -44,17 +44,10 @@ export async function guardarIcono(
     throw new Error('Esa imagen no tiene transparencia: el recorte del fondo no funcionó.');
   }
 
-  await mkdir(join(DESTINO, 'thumbs'), { recursive: true });
-  await writeFile(join(DESTINO, `${slug}.png`), png);
-  await sharp(png).resize(THUMB, THUMB).png().toFile(join(DESTINO, 'thumbs', `${slug}.png`));
+  const miniatura = await sharp(png).resize(THUMB, THUMB).png().toBuffer();
 
-  const sinonimos = await readFile(join(process.cwd(), COMPARTIDO, 'sinonimos.json'), 'utf8')
-    .then(JSON.parse)
-    .catch(() => ({}));
-
-  const manifiesto: Entrada[] = await readFile(join(DESTINO, 'manifest.json'), 'utf8')
-    .then(JSON.parse)
-    .catch(() => []);
+  const sinonimos = JSON.parse((await almacen.leerTexto(join(process.cwd(), COMPARTIDO, 'sinonimos.json'))) ?? '{}');
+  const manifiesto: Entrada[] = JSON.parse((await almacen.leerTexto(join(DESTINO, 'manifest.json'))) ?? '[]');
   const indice = new Map<string, Entrada>(manifiesto.map((e) => [String(e.slug), e]));
 
   // Los cuatro campos de la generación van fuera de `fusionar`, que por
@@ -78,9 +71,18 @@ export async function guardarIcono(
 
   indice.set(slug, entrada);
   const lista = [...indice.values()].sort((a, b) => String(a.slug).localeCompare(String(b.slug)));
-  await writeFile(join(DESTINO, 'manifest.json'), `${JSON.stringify(lista, null, 1)}\n`);
+  // El PNG, su miniatura, el manifiesto y el .gitignore van juntos: en Vercel
+  // es un solo commit, y un ícono sin su entrada no lo encuentra el buscador.
   // Lo propio se versiona; lo de Thiings no. Ver lib/manifiesto.ts.
-  await writeFile(join(DESTINO, '.gitignore'), gitignoreDeIconos(lista));
+  await almacen.escribir(
+    [
+      { ruta: join(DESTINO, `${slug}.png`), datos: png },
+      { ruta: join(DESTINO, 'thumbs', `${slug}.png`), datos: miniatura },
+      { ruta: join(DESTINO, 'manifest.json'), datos: `${JSON.stringify(lista, null, 1)}\n` },
+      { ruta: join(DESTINO, '.gitignore'), datos: gitignoreDeIconos(lista) },
+    ],
+    `Ícono generado: ${slug}`,
+  );
 
   return { slug, entrada };
 }

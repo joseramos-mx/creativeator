@@ -1,4 +1,5 @@
 import { darDeAlta } from '@/lib/alta';
+import { almacen } from '@/lib/almacen';
 import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
 
 /**
@@ -13,7 +14,11 @@ export async function POST(req: Request) {
   try {
     const { id, nombre } = await req.json();
     if (typeof id !== 'string') return Response.json({ error: 'Falta el id.' }, { status: 400 });
-    await darDeAlta({ id: id.trim(), nombre: typeof nombre === 'string' ? nombre : undefined });
+    await darDeAlta(
+      { id: id.trim(), nombre: typeof nombre === 'string' ? nombre : undefined },
+      process.cwd(),
+      almacen,
+    );
     return Response.json({ ok: true, id: id.trim() });
   } catch (e) {
     return Response.json({ error: e instanceof Error ? e.message : 'No se pudo dar de alta.' }, { status: 400 });

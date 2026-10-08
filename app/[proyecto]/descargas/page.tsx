@@ -1,10 +1,10 @@
-import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { PrepararCelular } from '@/app/_componentes/PrepararCelular';
-import { existeProyecto, leerProyecto, listarPosts } from '@/lib/posts';
-import { listarProyectos, rutasDe } from '@/lib/proyecto';
+import { hayProyecto, leerProyecto, listarPosts, proyectosDisponibles } from '@/lib/posts';
+import { rutasDe } from '@/lib/proyecto';
+import { almacen, remoto, urlServida } from '@/lib/almacen';
 import { soloLectura } from '@/lib/soloLectura';
 
 /**
@@ -43,17 +43,17 @@ type Entrada = {
 };
 
 async function huellaActual(proyecto: string, slug: string) {
-  const crudo = await readFile(rutasDe(proyecto).post(slug), 'utf8').catch(() => null);
+  const crudo = await almacen.leerTexto(rutasDe(proyecto).post(slug));
   return crudo === null ? null : createHash('sha1').update(crudo).digest('hex').slice(0, 12);
 }
 
 export default async function Descargas({ params }: { params: Promise<{ proyecto: string }> }) {
   const { proyecto } = await params;
-  if (!existeProyecto(proyecto)) notFound();
+  if (!(await hayProyecto(proyecto))) notFound();
 
   const rutas = rutasDe(proyecto);
   const marca = await leerProyecto(proyecto);
-  const crudo = await readFile(rutas.indiceDescargas, 'utf8').catch(() => '[]');
+  const crudo = (await almacen.leerTexto(rutas.indiceDescargas)) ?? '[]';
   const entradas: Entrada[] = JSON.parse(crudo);
 
   const conEstado = await Promise.all(
@@ -67,8 +67,9 @@ export default async function Descargas({ params }: { params: Promise<{ proyecto
    */
   // Con un solo proyecto el comando es el de siempre; con varios hay que decir
   // de cuál, o el script se niega a adivinar.
+  const variosProyectos = (await proyectosDisponibles()).length > 1;
   const comandoCelular = (slug: string) =>
-    listarProyectos().length > 1
+    variosProyectos
       ? `npm run celular -- ${slug} --proyecto ${proyecto}`
       : `npm run celular ${slug}`;
 
@@ -97,7 +98,7 @@ export default async function Descargas({ params }: { params: Promise<{ proyecto
         </p>
       </header>
 
-      {filas.length > 0 ? <PrepararCelular filas={filas} /> : null}
+      {filas.length > 0 ? <PrepararCelular filas={filas} remoto={remoto} /> : null}
 
       {/*
         El mensaje cambia según dónde se lea, porque el consejo no sirve igual.
@@ -141,9 +142,9 @@ export default async function Descargas({ params }: { params: Promise<{ proyecto
           <ol className="descargas__slides">
             {e.slides.map((nombre, i) => (
               <li key={nombre}>
-                <a href={`${rutas.urlDescargas}/${e.slug}/${nombre}`} download={`${e.slug}-${nombre}`}>
+                <a href={urlServida(`${rutas.urlDescargas}/${e.slug}/${nombre}`, e.huella)} download={`${e.slug}-${nombre}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`${rutas.urlDescargas}/${e.slug}/${nombre}`} alt={`Slide ${i + 1} de ${e.tema}`} loading="lazy" />
+                  <img src={urlServida(`${rutas.urlDescargas}/${e.slug}/${nombre}`, e.huella)} alt={`Slide ${i + 1} de ${e.tema}`} loading="lazy" />
                   <span>{i + 1}</span>
                 </a>
               </li>

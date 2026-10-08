@@ -1,29 +1,28 @@
+import { remoto } from './almacen';
+
 /**
- * lib/soloLectura.ts — el despliegue no escribe.
+ * lib/soloLectura.ts — cuando el despliegue no puede escribir.
  *
  * En Vercel el disco del proyecto es de solo lectura y cada petición corre en
- * un contenedor que se destruye al terminar, así que las rutas que guardan
- * archivos no pueden funcionar allá. Eso no se arregla: **es lo que es**, y el
- * despliegue existe para otra cosa —ver los carruseles y bajarlos al teléfono
- * desde /descargas—.
- *
- * Lo que sí se puede arreglar es cómo se entera quien lo intente. Sin esto, dar
- * a guardar en el teléfono devuelve un error de permisos de Node en crudo, o
- * peor: escribe en un /tmp que se evapora y parece que guardó. Con esto dice lo
- * que pasa y dónde sí se puede.
- *
- * `VERCEL` la pone la propia plataforma; en tu máquina no existe y todo
- * funciona como siempre.
+ * un contenedor que se destruye al terminar. Con `GITHUB_TOKEN` eso da igual:
+ * se escribe en el repositorio (lib/almacen.ts). Sin él, las rutas que guardan
+ * contestan diciendo qué falta, en vez de un error de permisos de Node en crudo
+ * o, peor, escribir en un /tmp que se evapora y parecer que guardó.
  */
 
-export const soloLectura = process.env.VERCEL === '1';
+/**
+ * Solo cuando no hay dónde escribir: en Vercel **sin** `GITHUB_TOKEN`. Con el
+ * token, cada cambio es un commit en el repositorio (ver lib/almacen.ts) y el
+ * despliegue edita igual que la computadora.
+ */
+export const soloLectura = process.env.VERCEL === '1' && !remoto;
 
 export function avisoDeSoloLectura() {
   return Response.json(
     {
       error:
-        'Este despliegue es de solo lectura: en Vercel el disco no se puede escribir. ' +
-        'Para editar, abre el proyecto en tu computadora. Para bajar los slides al teléfono, ve a /descargas.',
+        'Este despliegue es de solo lectura: falta GITHUB_TOKEN en las variables de Vercel. ' +
+        'Con el token, cada cambio se guarda como un commit en el repositorio. Ver el README, «Usarlo desde Vercel».',
     },
     { status: 503 },
   );

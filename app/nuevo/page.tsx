@@ -5,6 +5,8 @@ import { soloLectura } from '@/lib/soloLectura';
  * /nuevo — dar de alta una cuenta. Solo pide el nombre; lo demás se pregunta
  * en /<id>/identidad, adonde lleva al terminar.
  */
+export const dynamic = 'force-dynamic';
+
 export default function Nuevo() {
   return (
     <>

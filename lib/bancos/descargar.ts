@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { guardar } from '../almacen';
 import { rutasDe } from '../proyecto';
 import type { Banco, Candidato } from './tipos';
 
@@ -38,9 +38,7 @@ export async function descargarFoto(
 
   const nombre = `${aTrozo(candidato.proveedor)}-${aTrozo(String(candidato.id))}.jpg`;
   const rutas = rutasDe(proyecto);
-  const carpeta = rutas.media(slug);
-  await mkdir(carpeta, { recursive: true });
-  await writeFile(join(carpeta, nombre), await salida.toBuffer());
+  await guardar(join(rutas.media(slug), nombre), await salida.toBuffer(), `${proyecto}: foto de banco para ${slug}`);
 
   return rutas.urlMedia(slug, nombre);
 }

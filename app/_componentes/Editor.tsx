@@ -19,9 +19,15 @@ import { bloque, lienzo, paletas, tipo } from '@/plantillas/clinica/tokens';
 import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
 import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
 import { useApi, useProyecto } from './proyecto';
+import { reducirImagen } from './reducirImagen';
 
 const DESARROLLO = process.env.NODE_ENV === 'development';
 const RETRASO_GUARDADO = 600;
+/**
+ * En Vercel cada guardado es un commit en el repositorio. A 600 ms, escribir
+ * un párrafo serían veinte commits; a 2,5 s, uno por pausa de verdad.
+ */
+const RETRASO_GUARDADO_REMOTO = 2500;
 
 type EstadoGuardado = 'limpio' | 'guardando' | 'guardado' | 'error';
 
@@ -40,7 +46,18 @@ type EstadoGuardado = 'limpio' | 'guardando' | 'guardado' | 'error';
  *  · Las flechas empujan el slide y escriben en `overrides`, con un contador
  *    que avisa cuando un slide junta demasiados ajustes a mano.
  */
-export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Proyecto; capturas?: string[] }) {
+export function Editor({
+  inicial,
+  marca,
+  capturas,
+  remoto = false,
+}: {
+  inicial: Post;
+  marca: Proyecto;
+  capturas?: string[];
+  /** Si se guarda en el repositorio (Vercel) y no en el disco. */
+  remoto?: boolean;
+}) {
   const api = useApi();
   const proyecto = useProyecto();
   const { Slide } = plantillaDe(marca.plantilla);
@@ -82,9 +99,23 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Pro
         setGuardado('error');
         setErrorGuardado(e instanceof Error ? e.message : 'No se pudo guardar.');
       }
-    }, RETRASO_GUARDADO);
+    }, remoto ? RETRASO_GUARDADO_REMOTO : RETRASO_GUARDADO);
     return () => clearTimeout(t);
   }, [post]);
+
+  // Con el guardado más espaciado, cerrar la pestaña justo después de escribir
+  // perdería la última frase: se avisa mientras quede algo sin guardar.
+  useEffect(() => {
+    if (guardado !== 'guardando') return;
+    const avisar = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener('beforeunload', avisar);
+    return () => window.removeEventListener('beforeunload', avisar);
+  }, [guardado]);
+
+  // En el teléfono el carrusel se ajusta al ancho de la pantalla al abrir.
+  useEffect(() => {
+    if (window.innerWidth < 860) setZoom(Math.max(0.2, (window.innerWidth - 24) / lienzo.ancho));
+  }, []);
 
   const reportarAjuste = useCallback((i: number, estado: EstadoAjuste) => {
     setAvisos((prev) => {
@@ -107,7 +138,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Pro
       setSubiendo(i);
       try {
         const datos = new FormData();
-        datos.append('archivo', archivo);
+        datos.append('archivo', await reducirImagen(archivo));
         datos.append('slug', post.slug);
         const r = await fetch(api('/subir'), { method: 'POST', body: datos });
         const cuerpo = await r.json();

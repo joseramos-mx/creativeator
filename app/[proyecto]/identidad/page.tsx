@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Identidad } from '@/app/_componentes/Identidad';
+import { remoto } from '@/lib/almacen';
 import { leerCuestionario, leerTextos, listarMateriales } from '@/lib/identidad';
-import { existeProyecto, leerProyecto } from '@/lib/posts';
+import { hayProyecto, leerProyecto } from '@/lib/posts';
 
 /**
  * /<proyecto>/identidad — quién es la cuenta, y de ahí cómo escribe la IA.
@@ -18,7 +19,7 @@ export default async function PaginaIdentidad({
   searchParams: Promise<{ nuevo?: string }>;
 }) {
   const { proyecto } = await params;
-  if (!existeProyecto(proyecto)) notFound();
+  if (!(await hayProyecto(proyecto))) notFound();
   const { nuevo } = await searchParams;
 
   const [marca, respuestas, materiales, textos] = await Promise.all([
@@ -44,6 +45,7 @@ export default async function PaginaIdentidad({
           materialesIniciales={materiales}
           textosIniciales={textos}
           nuevo={nuevo === '1'}
+          remoto={remoto}
         />
       </main>
     </>

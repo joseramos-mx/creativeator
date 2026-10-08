@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { Miniatura } from '@/app/_componentes/Miniatura';
 import { listarPosts, listarProyectosConMarca } from '@/lib/posts';
 
@@ -11,14 +10,14 @@ import { listarPosts, listarProyectosConMarca } from '@/lib/posts';
  * que se abre desde aquí —la lista, el editor, las descargas— sabe de qué
  * cuenta es sin tener que recordarlo.
  *
- * Con uno solo esta pantalla no aporta nada y se salta; el alta de otro está
- * también en la cabecera de cada proyecto.
+ * Siempre se enseña, aunque haya uno solo: es la entrada desde el teléfono, y
+ * desde aquí se va a los carruseles, a la identidad o a los archivos de cada
+ * cuenta.
  */
 export const dynamic = 'force-dynamic';
 
 export default async function Proyectos() {
   const proyectos = await listarProyectosConMarca();
-  if (proyectos.length === 1) redirect(`/${proyectos[0].id}`);
 
   const conPortada = await Promise.all(
     proyectos.map(async (p) => {
@@ -31,7 +30,7 @@ export default async function Proyectos() {
     <>
       <header className="cromo">
         <h1>Carruseles</h1>
-        <p>{proyectos.length} proyectos en proyectos/</p>
+        <p>{proyectos.length === 1 ? '1 proyecto' : `${proyectos.length} proyectos`}</p>
         <span className="sep" />
         <Link className="boton" href="/nuevo">
           Nuevo proyecto
@@ -46,7 +45,7 @@ export default async function Proyectos() {
         ) : (
           <ul className="proyectos">
             {conPortada.map(({ id, proyecto, cuantos, portada }) => (
-              <li key={id}>
+              <li key={id} data-proyecto={id}>
                 <Link href={`/${id}`}>
                   {portada ? <Miniatura post={portada} marca={proyecto} ancho={120} /> : <span className="proyectos__hueco" />}
                   <span className="proyectos__texto">
@@ -58,6 +57,12 @@ export default async function Proyectos() {
                     <em>{cuantos === 1 ? '1 carrusel' : `${cuantos} carruseles`}</em>
                   </span>
                 </Link>
+                <nav className="proyectos__accesos">
+                  <Link href={`/${id}`}>Carruseles</Link>
+                  <Link href={`/${id}/identidad`}>Identidad</Link>
+                  <Link href={`/${id}/archivos`}>Archivos</Link>
+                  <Link href={`/${id}/descargas`}>Descargas</Link>
+                </nav>
               </li>
             ))}
           </ul>

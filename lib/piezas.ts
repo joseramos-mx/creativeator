@@ -1,7 +1,7 @@
 import 'server-only';
 
-import { readFile } from 'node:fs/promises';
 import { relative } from 'node:path';
+import { almacen } from './almacen';
 import { rutasDe } from './proyecto';
 
 /**
@@ -31,16 +31,14 @@ export const POR_ESCRIBIR = 'POR ESCRIBIR';
  * mandó tal cual estaba en el archivo.
  */
 async function leer(ruta: string, recortar = true): Promise<string> {
-  let texto: string;
-  try {
-    texto = await readFile(ruta, 'utf8');
-    if (recortar) texto = texto.trimEnd();
-  } catch {
+  let texto = await almacen.leerTexto(ruta);
+  if (texto === null) {
     throw new Error(
       `Falta ${relative(process.cwd(), ruta)}. Cada proyecto lleva su copia; ` +
         'la del Dr. Edwin sirve de modelo.',
     );
   }
+  if (recortar) texto = texto.trimEnd();
   if (texto.includes(POR_ESCRIBIR)) {
     throw new Error(
       `${relative(process.cwd(), ruta)} todavía es el ejemplo de otra cuenta. ` +

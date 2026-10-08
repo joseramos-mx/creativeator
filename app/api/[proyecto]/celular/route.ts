@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { almacen, type Cambio } from '@/lib/almacen';
 import { join } from 'node:path';
 import { z } from 'zod';
 import { exportarSlides } from '@/lib/exportar';
@@ -39,20 +39,19 @@ const Peticion = z.object({
 });
 
 async function leerIndice(proyecto: string): Promise<Array<Record<string, unknown>>> {
-  return JSON.parse(await readFile(rutasDe(proyecto).indiceDescargas, 'utf8').catch(() => '[]'));
+  return JSON.parse((await almacen.leerTexto(rutasDe(proyecto).indiceDescargas)) ?? '[]');
 }
 
 /** La huella del carrusel tal como está en disco: ver `app/[proyecto]/descargas`. */
 async function huellaDe(proyecto: string, slug: string) {
-  const crudo = await readFile(rutasDe(proyecto).post(slug), 'utf8');
+  const crudo = (await almacen.leerTexto(rutasDe(proyecto).post(slug))) ?? '';
   return createHash('sha1').update(crudo).digest('hex').slice(0, 12);
 }
 
-async function guardarIndice(proyecto: string, indice: Array<Record<string, unknown>>) {
+/** El índice como cambio, para que vaya en el mismo commit que los PNG. */
+function cambioDeIndice(proyecto: string, indice: Array<Record<string, unknown>>): Cambio {
   indice.sort((a, b) => String(b.exportado).localeCompare(String(a.exportado)));
-  const rutas = rutasDe(proyecto);
-  await mkdir(rutas.descargas, { recursive: true });
-  await writeFile(rutas.indiceDescargas, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
+  return { ruta: rutasDe(proyecto).indiceDescargas, datos: `${JSON.stringify(indice, null, 2)}\n` };
 }
 
 export async function POST(req: Request, ctx: ConProyecto) {
@@ -65,8 +64,13 @@ export async function POST(req: Request, ctx: ConProyecto) {
     const { slug, quitar } = validar(Peticion, await req.json(), 'la petición');
 
     if (quitar) {
-      await rm(join(DESTINO, slug), { recursive: true, force: true });
-      await guardarIndice(proyecto, (await leerIndice(proyecto)).filter((e) => e.slug !== slug));
+      await almacen.escribir(
+        [
+          { ruta: join(DESTINO, slug), datos: null },
+          cambioDeIndice(proyecto, (await leerIndice(proyecto)).filter((e) => e.slug !== slug)),
+        ],
+        `${proyecto}: quitar ${slug} de las descargas`,
+      );
       return Response.json({ ok: true, quitado: slug });
     }
 
@@ -83,9 +87,6 @@ export async function POST(req: Request, ctx: ConProyecto) {
       escala: 1,
     });
 
-    await mkdir(join(DESTINO, slug), { recursive: true });
-    await Promise.all(archivos.map((a) => writeFile(join(DESTINO, slug, a.nombre), a.png)));
-
     const indice = await leerIndice(proyecto);
     const entrada = {
       slug,
@@ -98,7 +99,16 @@ export async function POST(req: Request, ctx: ConProyecto) {
     const i = indice.findIndex((e) => e.slug === slug);
     if (i === -1) indice.push(entrada);
     else indice[i] = entrada;
-    await guardarIndice(proyecto, indice);
+    // Todo en un commit: la carpeta vieja fuera (por si ahora tiene menos
+    // slides), los PNG nuevos y el índice que los nombra.
+    await almacen.escribir(
+      [
+        { ruta: join(DESTINO, slug), datos: null },
+        ...archivos.map((a) => ({ ruta: join(DESTINO, slug, a.nombre), datos: a.png })),
+        cambioDeIndice(proyecto, indice),
+      ],
+      `${proyecto}: ${post.tema}, listo para el celular`,
+    );
 
     const pesoMB = archivos.reduce((s, a) => s + a.png.length, 0) / 1048576;
     return Response.json({ ok: true, slides: archivos.length, pesoMB: Number(pesoMB.toFixed(1)) });

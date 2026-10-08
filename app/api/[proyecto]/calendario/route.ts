@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { almacen, guardar } from '@/lib/almacen';
 import { aSlug } from '@/lib/brief';
 import { leerCalendario, type Fila } from '@/lib/calendario';
 import { yaEscrito } from '@/lib/mes';
@@ -31,8 +31,7 @@ export async function GET(_req: Request, ctx: ConProyecto) {
   // `calendario.csv` es el nombre viejo, por si alguien dejó ahí su
   // exportación. Solo se lee.
   const texto =
-    (await readFile(rutas.calendario, 'utf8').catch(() => null)) ??
-    (await readFile(rutas.calendarioAlterno, 'utf8').catch(() => null));
+    (await almacen.leerTexto(rutas.calendario)) ?? (await almacen.leerTexto(rutas.calendarioAlterno));
 
   if (texto === null) return Response.json({ hay: false, filas: [], saltadas: [] });
 
@@ -90,7 +89,11 @@ export async function POST(req: Request, ctx: ConProyecto) {
     );
   }
 
-  await writeFile(rutasDe(proyecto).calendario, texto.endsWith('\n') ? texto : `${texto}\n`, 'utf8');
+  await guardar(
+    rutasDe(proyecto).calendario,
+    texto.endsWith('\n') ? texto : `${texto}\n`,
+    `${proyecto}: calendario editorial`,
+  );
   return Response.json({ hay: true, ...leido });
 }
 

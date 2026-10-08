@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { guardar } from '@/lib/almacen';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
 import { rutasDe } from '@/lib/proyecto';
 import { PostGuardable, validar } from '@/lib/schema';
@@ -20,11 +20,11 @@ export async function POST(req: Request, ctx: ConProyecto) {
 
     const limpio = validar(PostGuardable, post, 'el carrusel que mandó el editor');
 
-    const rutas = rutasDe(proyecto);
-    // Un proyecto recién creado todavía no tiene carpeta de posts.
-    await mkdir(rutas.posts, { recursive: true });
-    const ruta = rutas.post(limpio.slug);
-    await writeFile(ruta, `${JSON.stringify(limpio, null, 2)}\n`, 'utf8');
+    await guardar(
+      rutasDe(proyecto).post(limpio.slug),
+      `${JSON.stringify(limpio, null, 2)}\n`,
+      `${proyecto}: ${limpio.tema}`,
+    );
     return Response.json({ ok: true, guardado: new Date().toISOString() });
   } catch (e) {
     const error = e instanceof Error ? e.message : 'No se pudo guardar.';

@@ -3,8 +3,7 @@ import { notFound } from 'next/navigation';
 import { Calendario } from '@/app/_componentes/Calendario';
 import { ListaPosts } from '@/app/_componentes/ListaPosts';
 import { Redactar } from '@/app/_componentes/Redactar';
-import { existeProyecto, leerProyecto, listarPosts } from '@/lib/posts';
-import { listarProyectos } from '@/lib/proyecto';
+import { hayProyecto, leerProyecto, listarPosts, proyectosDisponibles } from '@/lib/posts';
 
 /**
  * /<proyecto> — la lista de carruseles de una cuenta. Un post es un JSON en
@@ -20,11 +19,11 @@ export const dynamic = 'force-dynamic';
 
 export default async function Inicio({ params }: { params: Promise<{ proyecto: string }> }) {
   const { proyecto } = await params;
-  if (!existeProyecto(proyecto)) notFound();
+  if (!(await hayProyecto(proyecto))) notFound();
 
   const marca = await leerProyecto(proyecto);
   const posts = await listarPosts(proyecto);
-  const hayOtros = listarProyectos().length > 1;
+  const hayOtros = (await proyectosDisponibles()).length > 1;
 
   return (
     <>
@@ -34,11 +33,12 @@ export default async function Inicio({ params }: { params: Promise<{ proyecto: s
           {posts.length === 1 ? '1 carrusel' : `${posts.length} carruseles`} en proyectos/{proyecto}/posts/
         </p>
         <span className="sep" />
-        {hayOtros ? (
-          <Link className="boton" href="/">
-            Cambiar de proyecto
-          </Link>
-        ) : null}
+        <Link className="boton" href="/">
+          {hayOtros ? 'Cambiar de proyecto' : 'Proyectos'}
+        </Link>
+        <Link className="boton" href={`/${proyecto}/archivos`}>
+          Archivos
+        </Link>
         <Link className="boton" href="/nuevo">
           Nuevo proyecto
         </Link>

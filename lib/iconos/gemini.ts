@@ -1,7 +1,7 @@
 import 'server-only';
 
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { almacen } from '../almacen';
 import { COMPARTIDO } from '../proyecto';
 import sharp from 'sharp';
 import { esSignoClinico } from './clinico';
@@ -47,7 +47,8 @@ const ORILLA_MAXIMA = 0.02;
 
 /** El estilo congelado, que se antepone a cada concepto. Ver compartido/estilo-iconos.md. */
 export async function leerEstilo(): Promise<string> {
-  const texto = await readFile(join(process.cwd(), COMPARTIDO, 'estilo-iconos.md'), 'utf8');
+  const texto = await almacen.leerTexto(join(process.cwd(), COMPARTIDO, 'estilo-iconos.md'));
+  if (texto === null) throw new Error('Falta compartido/estilo-iconos.md.');
   // Solo la parte de arriba: lo que va después del separador explica el archivo
   // a quien lo edite, no al modelo.
   return texto.split('\n---\n')[0].trim();

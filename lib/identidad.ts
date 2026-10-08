@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
@@ -8,7 +7,9 @@ import sharp from 'sharp';
 import { z } from 'zod';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, respuestasComoTexto, type Respuestas } from './cuestionario';
 import { MODELO_REDACCION } from './modelo';
-import { existeProyecto, PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
+import { almacen, guardar, type Cambio } from './almacen';
+import { hayProyecto } from './posts';
+import { PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
 
 /**
  * lib/identidad.ts — quién es la cuenta, por escrito.
@@ -32,7 +33,7 @@ import { existeProyecto, PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
 /* ── el cuestionario ─────────────────────────────────────────────────────── */
 
 export async function leerCuestionario(proyecto: string): Promise<Respuestas> {
-  const crudo = await readFile(rutasDe(proyecto).cuestionario, 'utf8').catch(() => '{}');
+  const crudo = (await almacen.leerTexto(rutasDe(proyecto).cuestionario)) ?? '{}';
   const leido = JSON.parse(crudo) as Record<string, unknown>;
   return Object.fromEntries(
     Object.entries(leido).filter((e): e is [string, string] => typeof e[1] === 'string'),
@@ -44,7 +45,7 @@ export async function guardarCuestionario(proyecto: string, respuestas: Respuest
   const limpias = Object.fromEntries(
     Object.entries(respuestas).filter(([id, v]) => validas.has(id) && typeof v === 'string' && v.trim()),
   );
-  await writeFile(rutasDe(proyecto).cuestionario, `${JSON.stringify(limpias, null, 2)}\n`, 'utf8');
+  await guardar(rutasDe(proyecto).cuestionario, `${JSON.stringify(limpias, null, 2)}\n`, `${proyecto}: cuestionario de identidad`);
 }
 
 /* ── los materiales ──────────────────────────────────────────────────────── */
@@ -61,14 +62,11 @@ const TOPE_BYTES = 22 * 1024 * 1024;
 const LADO_IMAGEN = 1568;
 
 export async function listarMateriales(proyecto: string): Promise<Material[]> {
-  const dir = rutasDe(proyecto).materiales;
-  const nombres = await readdir(dir).catch(() => [] as string[]);
-  const materiales = await Promise.all(
-    nombres
-      .filter((n) => EXTENSIONES_MATERIAL.includes(extname(n).toLowerCase()))
-      .map(async (nombre) => ({ nombre, bytes: (await stat(join(dir, nombre))).size })),
-  );
-  return materiales.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  const entradas = await almacen.listar(rutasDe(proyecto).materiales);
+  return entradas
+    .filter((e) => e.tipo === 'archivo' && EXTENSIONES_MATERIAL.includes(extname(e.nombre).toLowerCase()))
+    .map((e) => ({ nombre: e.nombre, bytes: e.bytes }))
+    .sort((a, b) => a.nombre.localeCompare(b.nombre));
 }
 
 function nombreSeguro(nombre: string): string {
@@ -104,17 +102,20 @@ export async function guardarMaterial(proyecto: string, nombre: string, datos: B
       bytes = await sharp(datos).resize({ width: LADO_IMAGEN, height: LADO_IMAGEN, fit: 'inside' }).toBuffer();
     }
   }
-  const dir = rutasDe(proyecto).materiales;
-  await mkdir(dir, { recursive: true });
   const final = nombreSeguro(nombre);
-  await writeFile(join(dir, final), bytes);
+  await guardar(join(rutasDe(proyecto).materiales, final), bytes, `${proyecto}: material ${final}`);
   return { nombre: final, bytes: bytes.length };
 }
 
 export async function quitarMaterial(proyecto: string, nombre: string): Promise<void> {
   // Solo un nombre que ya esté en la lista: nada de rutas armadas desde fuera.
   const existe = (await listarMateriales(proyecto)).some((m) => m.nombre === nombre);
-  if (existe) await rm(join(rutasDe(proyecto).materiales, nombre), { force: true });
+  if (existe) {
+    await almacen.escribir(
+      [{ ruta: join(rutasDe(proyecto).materiales, nombre), datos: null }],
+      `${proyecto}: quitar material ${nombre}`,
+    );
+  }
 }
 
 const TIPO_IMAGEN: Record<string, 'image/png' | 'image/jpeg' | 'image/webp' | 'image/gif'> = {
@@ -140,7 +141,8 @@ async function bloquesDeMateriales(proyecto: string): Promise<Anthropic.ContentB
   const bloques: Anthropic.ContentBlockParam[] = [];
   for (const m of materiales) {
     const ext = extname(m.nombre).toLowerCase();
-    const datos = await readFile(join(dir, m.nombre));
+    const datos = await almacen.leer(join(dir, m.nombre));
+    if (!datos) continue;
     if (ext === '.pdf') {
       bloques.push({
         type: 'document',
@@ -196,12 +198,12 @@ export type TPropuesta = z.infer<typeof Propuesta>;
 
 const PIEZAS = { alcance: 'alcance', estructura: 'estructura', iconos: 'iconos', fotos: 'fotos', fotosBanco: 'fotos-banco' } as const;
 
-const leerSiHay = (ruta: string) => readFile(ruta, 'utf8').catch(() => '');
+const leerSiHay = async (ruta: string) => (await almacen.leerTexto(ruta)) ?? '';
 
 /** Los textos como están en disco, para la página de identidad. */
 export async function leerTextos(proyecto: string): Promise<TTextos> {
   const r = rutasDe(proyecto);
-  const config = JSON.parse(await readFile(r.config, 'utf8'));
+  const config = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
   const piezas = Object.fromEntries(
     await Promise.all(
       Object.entries(PIEZAS).map(async ([clave, archivo]) => [clave, await leerSiHay(r.prompt(archivo))]),
@@ -233,18 +235,20 @@ export async function guardarTextos(proyecto: string, textos: TTextos): Promise<
   const limpio = Textos.parse(textos);
   const conSalto = (t: string) => (t.trim() ? `${t.trim()}\n` : '');
 
-  await mkdir(join(r.carpeta, 'prompts'), { recursive: true });
-  await writeFile(r.identidad, conSalto(limpio.identidad), 'utf8');
-  await writeFile(r.voz, conSalto(limpio.voz), 'utf8');
-  for (const [clave, archivo] of Object.entries(PIEZAS)) {
-    await writeFile(r.prompt(archivo), conSalto(limpio[clave as keyof typeof PIEZAS]), 'utf8');
-  }
+  const cambios: Cambio[] = [
+    { ruta: r.identidad, datos: conSalto(limpio.identidad) },
+    { ruta: r.voz, datos: conSalto(limpio.voz) },
+    ...Object.entries(PIEZAS).map(([clave, archivo]) => ({
+      ruta: r.prompt(archivo),
+      datos: conSalto(limpio[clave as keyof typeof PIEZAS]),
+    })),
+  ];
 
-  const config = JSON.parse(await readFile(r.config, 'utf8'));
+  const config = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
   const { fuentes, cierre, ...resto } = limpio.marca;
-  await writeFile(
-    r.config,
-    `${JSON.stringify(
+  cambios.push({
+    ruta: r.config,
+    datos: `${JSON.stringify(
       {
         ...config,
         ...Object.fromEntries(Object.entries(resto).map(([k, v]) => [k, v.trim()])),
@@ -254,8 +258,9 @@ export async function guardarTextos(proyecto: string, textos: TTextos): Promise<
       null,
       2,
     )}\n`,
-    'utf8',
-  );
+  });
+  // Todo en un commit: la identidad, la voz y la marca cambian juntas.
+  await almacen.escribir(cambios, `${proyecto}: identidad y textos de la IA`);
 }
 
 /** La identidad de la cuenta, si ya tiene. La redacción la lee con la voz. */
@@ -272,7 +277,7 @@ export async function leerIdentidad(proyecto: string): Promise<string | undefine
  * viñeta—, y eso se enseña mejor con un ejemplo que se describe.
  */
 async function ejemploDeForma(proyecto: string): Promise<string> {
-  if (proyecto === PROYECTO_DE_PRUEBAS || !existeProyecto(PROYECTO_DE_PRUEBAS)) return '';
+  if (proyecto === PROYECTO_DE_PRUEBAS || !(await hayProyecto(PROYECTO_DE_PRUEBAS))) return '';
   const t = await leerTextos(PROYECTO_DE_PRUEBAS);
   if (!t.voz) return '';
   const bloque = (titulo: string, texto: string) => `### ${titulo}\n\n<ejemplo>\n${texto.trim()}\n</ejemplo>`;

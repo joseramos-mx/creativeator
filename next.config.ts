@@ -16,7 +16,7 @@ const config: NextConfig = {
    * Playwright abre un navegador de verdad desde el route handler: es un
    * paquete de Node, no de bundle. Empaquetarlo rompe la ruta de exportación.
    */
-  serverExternalPackages: ['playwright'],
+  serverExternalPackages: ['playwright', '@sparticuz/chromium'],
 
   /**
    * `public/` no viaja en el paquete de las funciones: Vercel lo sirve como
@@ -36,6 +36,10 @@ const config: NextConfig = {
     '/': ['./proyectos/*/proyecto.json', './proyectos/*/posts/*.json'],
     '/[proyecto]': ['./proyectos/*/proyecto.json', './proyectos/*/posts/*.json'],
     '/[proyecto]/post/[slug]': ['./proyectos/*/proyecto.json', './proyectos/*/posts/*.json'],
+    // El Chromium de Vercel viene comprimido en bin/ y se lee de ahí al
+    // arrancar: el rastreador no lo ve porque nadie lo importa.
+    '/api/[proyecto]/exportar': ['./node_modules/@sparticuz/chromium/bin/**'],
+    '/api/[proyecto]/celular': ['./node_modules/@sparticuz/chromium/bin/**'],
     '/[proyecto]/descargas': [
       './public/proyectos/*/descargas/indice.json',
       './proyectos/*/proyecto.json',

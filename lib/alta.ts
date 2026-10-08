@@ -16,10 +16,9 @@
  * la otra cuenta.
  */
 
-import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { esIdValido, existeProyecto, PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto.ts';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { esIdValido, PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto.ts';
 
 export const POR_ESCRIBIR = 'POR ESCRIBIR';
 
@@ -41,18 +40,47 @@ export type Alta = {
   desde?: string;
 };
 
-export async function darDeAlta({ id, nombre, desde = PROYECTO_DE_PRUEBAS }: Alta, raiz = process.cwd()): Promise<void> {
+/**
+ * Con qué se lee y se escribe. Por omisión, el disco; la ruta de la API le
+ * pasa lib/almacen.ts, que en Vercel escribe en el repositorio. Aquí no se
+ * importa directamente porque este archivo también lo carga un script de node.
+ */
+export type Archivos = {
+  existe(ruta: string): Promise<boolean>;
+  leerTexto(ruta: string): Promise<string | null>;
+  escribir(cambios: Array<{ ruta: string; datos: string }>, mensaje: string): Promise<void>;
+};
+
+const disco: Archivos = {
+  existe: (ruta) => stat(ruta).then(() => true, () => false),
+  leerTexto: (ruta) => readFile(ruta, 'utf8').catch(() => null),
+  async escribir(cambios) {
+    for (const { ruta, datos } of cambios) {
+      await mkdir(dirname(ruta), { recursive: true });
+      await writeFile(ruta, datos, 'utf8');
+    }
+  },
+};
+
+export async function darDeAlta(
+  { id, nombre, desde = PROYECTO_DE_PRUEBAS }: Alta,
+  raiz = process.cwd(),
+  archivos: Archivos = disco,
+): Promise<void> {
   if (!esIdValido(id)) {
     throw new Error(
       `"${id}" no sirve como id: solo minúsculas, números y guiones, y no un nombre de ruta de la app.`,
     );
   }
   const nuevo = rutasDe(id, raiz);
-  if (existsSync(nuevo.carpeta)) throw new Error(`proyectos/${id}/ ya existe. No se sobrescribe nada.`);
-  if (!existeProyecto(desde, raiz)) throw new Error(`No existe el proyecto "${desde}" para copiar sus textos.`);
+  if ((await archivos.existe(nuevo.config)) || (await archivos.existe(nuevo.carpeta))) {
+    throw new Error(`proyectos/${id}/ ya existe. No se sobrescribe nada.`);
+  }
   const origen = rutasDe(desde, raiz);
+  const configOrigen = esIdValido(desde) ? await archivos.leerTexto(origen.config) : null;
+  if (configOrigen === null) throw new Error(`No existe el proyecto "${desde}" para copiar sus textos.`);
 
-  const base = JSON.parse(await readFile(origen.config, 'utf8'));
+  const base = JSON.parse(configOrigen);
   const config = {
     nombre: nombre?.trim() || POR_ESCRIBIR,
     usuario: `@${POR_ESCRIBIR}`,
@@ -68,22 +96,20 @@ export async function darDeAlta({ id, nombre, desde = PROYECTO_DE_PRUEBAS }: Alt
     iconosRecientes: [],
   };
 
-  await mkdir(nuevo.posts, { recursive: true });
-  await mkdir(join(nuevo.carpeta, 'prompts'), { recursive: true });
-  await mkdir(nuevo.materiales, { recursive: true });
-  await mkdir(nuevo.marca, { recursive: true });
-
-  await writeFile(nuevo.config, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+  const cambios = [{ ruta: nuevo.config, datos: `${JSON.stringify(config, null, 2)}\n` }];
 
   for (const [archivo, que] of Object.entries(TEXTOS_DE_EJEMPLO)) {
-    const texto = await readFile(join(origen.carpeta, archivo), 'utf8');
+    const texto = (await archivos.leerTexto(join(origen.carpeta, archivo))) ?? '';
     const aviso =
       `<!-- ${POR_ESCRIBIR}: este es el texto de ${desde}, como ejemplo. Es ${que}. ` +
       `Reescríbelo para esta cuenta y borra esta línea; mientras esté, la app no redacta. -->\n\n`;
-    await writeFile(join(nuevo.carpeta, archivo), aviso + texto, 'utf8');
+    cambios.push({ ruta: join(nuevo.carpeta, archivo), datos: aviso + texto });
   }
 
   // Para que git guarde las carpetas aunque estén vacías.
-  await writeFile(join(nuevo.posts, '.gitkeep'), '', 'utf8');
-  await writeFile(join(nuevo.materiales, '.gitkeep'), '', 'utf8');
+  cambios.push({ ruta: join(nuevo.posts, '.gitkeep'), datos: '' });
+  cambios.push({ ruta: join(nuevo.materiales, '.gitkeep'), datos: '' });
+  cambios.push({ ruta: join(nuevo.marca, '.gitkeep'), datos: '' });
+
+  await archivos.escribir(cambios, `Alta de la cuenta ${id}`);
 }

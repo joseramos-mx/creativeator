@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { existeProyecto } from './proyecto';
+import { hayProyecto } from './posts';
 
 /**
  * lib/peticion.ts — el proyecto de una ruta de la API.
@@ -15,7 +15,7 @@ export type ConProyecto = { params: Promise<{ proyecto: string }> };
 /** El id del proyecto, o `null` si no existe. */
 export async function proyectoDe(ctx: ConProyecto): Promise<string | null> {
   const { proyecto } = await ctx.params;
-  return existeProyecto(proyecto) ? proyecto : null;
+  return (await hayProyecto(proyecto)) ? proyecto : null;
 }
 
 export function proyectoInexistente(): Response {

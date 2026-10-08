@@ -61,7 +61,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
         headers: {
           'Content-Type': 'image/png',
           'Content-Disposition': `attachment; filename="${cuerpo.slug}-${uno.nombre}"`,
-          'X-Salida': carpeta,
+          ...(carpeta ? { 'X-Salida': carpeta } : {}),
         },
       });
     }
@@ -73,7 +73,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
     // y buscarlo aparte es justo lo que se hace a mano hoy.
     if (post.copy) {
       zip.file('copy.txt', post.copy);
-      await writeFile(join(carpeta, 'copy.txt'), post.copy, 'utf8');
+      if (carpeta) await writeFile(join(carpeta, 'copy.txt'), post.copy, 'utf8');
     }
 
     // Y los créditos de las fotos viajan igual, por la misma razón: el ZIP es
@@ -83,7 +83,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
     const creditos = creditosDe(post);
     if (creditos) {
       zip.file('creditos.txt', creditos);
-      await writeFile(join(carpeta, 'creditos.txt'), creditos, 'utf8');
+      if (carpeta) await writeFile(join(carpeta, 'creditos.txt'), creditos, 'utf8');
     }
 
     const blob = await zip.generateAsync({ type: 'nodebuffer' });
@@ -91,7 +91,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="carrusel-${cuerpo.slug}.zip"`,
-        'X-Salida': carpeta,
+        ...(carpeta ? { 'X-Salida': carpeta } : {}),
       },
     });
   } catch (e) {

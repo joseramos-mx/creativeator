@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium, type Browser } from 'playwright';
 import { lienzo } from '@/plantillas/clinica/tokens';
+import { remoto } from './almacen';
 import { rutasDe } from './proyecto';
 
 /**
@@ -32,6 +33,35 @@ export type OpcionesExport = {
 
 export type SlideExportado = { n: number; nombre: string; png: Buffer };
 
+/**
+ * El Chromium con el que se captura.
+ *
+ * En la computadora, el de Playwright. En Vercel no hay ninguno instalado y el
+ * de Playwright no cabe en una función, así que se usa @sparticuz/chromium, que
+ * está hecho para eso: viene comprimido y se descomprime en /tmp al arrancar.
+ * Playwright lo maneja igual; solo cambia de dónde sale el ejecutable.
+ */
+async function abrirNavegador(): Promise<Browser> {
+  if (process.env.VERCEL !== '1') return chromium.launch();
+  const sparticuz = (await import('@sparticuz/chromium')).default;
+  return chromium.launch({
+    executablePath: await sparticuz.executablePath(),
+    args: sparticuz.args,
+    headless: true,
+  });
+}
+
+/**
+ * El despliegue va con la protección de Vercel, y el Chromium que captura
+ * /render es un visitante más: sin esto, lo que fotografía es la pantalla de
+ * iniciar sesión. «Protection Bypass for Automation» da un secreto que deja
+ * pasar a quien lo manda; Vercel lo pone en `VERCEL_AUTOMATION_BYPASS_SECRET`.
+ */
+function cabecerasDeVercel(): Record<string, string> {
+  const secreto = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  return secreto ? { 'x-vercel-protection-bypass': secreto } : {};
+}
+
 export async function exportarSlides({
   proyecto,
   slug,
@@ -42,13 +72,14 @@ export async function exportarSlides({
   let navegador: Browser | undefined;
 
   try {
-    navegador = await chromium.launch();
+    navegador = await abrirNavegador();
     // deviceScaleFactor en el contexto, no `scale` en la captura: Instagram
     // recomprime, y entregarle el doble de píxeles conserva mucho mejor los
     // bordes de la tipografía.
     const ctx = await navegador.newContext({
       viewport: { width: lienzo.ancho, height: lienzo.alto },
       deviceScaleFactor: escala,
+      extraHTTPHeaders: cabecerasDeVercel(),
     });
     const page = await ctx.newPage();
     const salidas: SlideExportado[] = [];
@@ -81,7 +112,13 @@ export async function exportarSlides({
  * Deja también los PNG en salidas/<proyecto>/<slug>/. Es más cómodo abrir una carpeta que
  * descomprimir un ZIP, y sirve de respaldo si el navegador se come la descarga.
  */
-export async function guardarEnDisco(proyecto: string, slug: string, archivos: SlideExportado[]) {
+export async function guardarEnDisco(
+  proyecto: string,
+  slug: string,
+  archivos: SlideExportado[],
+): Promise<string | null> {
+  // En Vercel no hay disco donde dejarlos: el ZIP que se descarga es la copia.
+  if (remoto) return null;
   const carpeta = join(rutasDe(proyecto).salidas, slug);
   await mkdir(carpeta, { recursive: true });
   await Promise.all(archivos.map((a) => writeFile(join(carpeta, a.nombre), a.png)));

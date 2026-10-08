@@ -33,7 +33,7 @@ type Fila = {
   alDia: boolean;
 };
 
-export function PrepararCelular({ filas }: { filas: Fila[] }) {
+export function PrepararCelular({ filas, remoto = false }: { filas: Fila[]; remoto?: boolean }) {
   const api = useApi();
   const proyecto = useProyecto();
   const router = useRouter();
@@ -54,8 +54,12 @@ export function PrepararCelular({ filas }: { filas: Fila[] }) {
       if (!r.ok) throw new Error(c.error);
       setAviso(
         quitar
-          ? `Quitado. Haz commit de public/proyectos/${proyecto}/descargas y súbelo.`
-          : `Listo: ${c.slides} slides, ${c.pesoMB} MB. Haz commit de public/proyectos/${proyecto}/descargas y súbelo para verlo en el teléfono.`,
+          ? remoto
+            ? 'Quitado.'
+            : `Quitado. Haz commit de public/proyectos/${proyecto}/descargas y súbelo.`
+          : remoto
+            ? `Listo: ${c.slides} slides, ${c.pesoMB} MB. Ya están abajo.`
+            : `Listo: ${c.slides} slides, ${c.pesoMB} MB. Haz commit de public/proyectos/${proyecto}/descargas y súbelo para verlo en el teléfono.`,
       );
       router.refresh();
     } catch (e) {
@@ -77,8 +81,14 @@ export function PrepararCelular({ filas }: { filas: Fila[] }) {
       {abierto ? (
         <>
           <p className="preparar__nota">
-            Exporta aquí y el despliegue lo sirve. Entre las dos cosas va un <code>git push</code>: los
-            PNG viven en el repositorio.
+            {remoto ? (
+              <>Exporta aquí mismo y los deja en el repositorio: aparecen abajo al terminar.</>
+            ) : (
+              <>
+                Exporta aquí y el despliegue lo sirve. Entre las dos cosas va un <code>git push</code>: los
+                PNG viven en el repositorio.
+              </>
+            )}
           </p>
 
           <ul className="preparar__lista">
