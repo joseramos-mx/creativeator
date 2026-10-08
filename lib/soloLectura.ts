@@ -1,4 +1,4 @@
-import { remoto } from './almacen';
+import { faltaParaEscribir, remoto } from './almacen';
 
 /**
  * lib/soloLectura.ts — cuando el despliegue no puede escribir.
@@ -20,9 +20,7 @@ export const soloLectura = process.env.VERCEL === '1' && !remoto;
 export function avisoDeSoloLectura() {
   return Response.json(
     {
-      error:
-        'Este despliegue es de solo lectura: falta GITHUB_TOKEN en las variables de Vercel. ' +
-        'Con el token, cada cambio se guarda como un commit en el repositorio. Ver el README, «Usarlo desde Vercel».',
+      error: `Este despliegue es de solo lectura. ${faltaParaEscribir() ?? ''} Ver el README, «Usarlo desde Vercel».`,
     },
     { status: 503 },
   );

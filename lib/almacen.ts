@@ -122,6 +122,28 @@ function configDeGithub() {
   return token && repo ? { token, repo, rama, api } : null;
 }
 
+/**
+ * Por qué no se puede escribir en el repositorio, en palabras de quien tiene
+ * que arreglarlo. `null` si se puede. Lo enseñan las pantallas de solo
+ * lectura: «falta configurar algo» no dice qué, y en Vercel hay tres sitios
+ * donde se puede haber quedado a medias.
+ */
+export function faltaParaEscribir(): string | null {
+  if (configDeGithub()) return null;
+  const entorno = process.env.VERCEL_ENV === 'production' ? 'Production' : process.env.VERCEL_ENV === 'preview' ? 'Preview' : 'este entorno';
+  if (!process.env.GITHUB_TOKEN?.trim()) {
+    return (
+      `Este despliegue (${entorno}${process.env.VERCEL_GIT_COMMIT_REF ? `, rama ${process.env.VERCEL_GIT_COMMIT_REF}` : ''}) ` +
+      'no ve la variable GITHUB_TOKEN. En Vercel → Settings → Environment Variables, revisa que exista, que esté ' +
+      `marcada para ${entorno} y vuelve a desplegar: las variables nuevas no llegan a un despliegue que ya estaba hecho.`
+    );
+  }
+  return (
+    'Hay GITHUB_TOKEN, pero no se sabe en qué repositorio escribir: Vercel no pasó VERCEL_GIT_REPO_OWNER ni ' +
+    'VERCEL_GIT_REPO_SLUG. Agrega la variable GITHUB_REPO con el valor «dueño/repositorio» y vuelve a desplegar.'
+  );
+}
+
 function github(config: NonNullable<ReturnType<typeof configDeGithub>>): Almacen {
   const { token, repo, rama, api } = config;
   const cabeceras = (accept = 'application/vnd.github+json') => ({

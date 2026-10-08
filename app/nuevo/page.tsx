@@ -1,4 +1,5 @@
 import { NuevoProyecto } from '@/app/_componentes/NuevoProyecto';
+import { faltaParaEscribir } from '@/lib/almacen';
 import { soloLectura } from '@/lib/soloLectura';
 
 /**
@@ -15,7 +16,7 @@ export default function Nuevo() {
       </header>
       <main className="banco">
         {soloLectura ? (
-          <p className="aviso">Este despliegue es de solo lectura: las cuentas se dan de alta en tu computadora.</p>
+          <p className="aviso">Este despliegue todavía no puede guardar. {faltaParaEscribir()}</p>
         ) : (
           <NuevoProyecto />
         )}
