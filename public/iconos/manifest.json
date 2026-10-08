@@ -905,6 +905,22 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "speech-bubble",
+  "nombre": "speech bubble",
+  "etiquetas": [
+   "speech",
+   "bubble"
+  ],
+  "color": "#85BEF5",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 715122,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "speech bubble",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "stack-of-research-papers",
   "nombre": "stack of research papers",
   "etiquetas": [
