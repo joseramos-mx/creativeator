@@ -1,0 +1,26 @@
+import { NuevoProyecto } from '@/app/_componentes/NuevoProyecto';
+import { faltaParaEscribir } from '@/lib/almacen';
+import { soloLectura } from '@/lib/soloLectura';
+
+/**
+ * /nuevo — dar de alta una cuenta. Solo pide el nombre; lo demás se pregunta
+ * en /<id>/identidad, adonde lleva al terminar.
+ */
+export const dynamic = 'force-dynamic';
+
+export default function Nuevo() {
+  return (
+    <>
+      <header className="cromo">
+        <h1>Nuevo proyecto</h1>
+      </header>
+      <main className="banco">
+        {soloLectura ? (
+          <p className="aviso">Este despliegue todavía no puede guardar. {faltaParaEscribir()}</p>
+        ) : (
+          <NuevoProyecto />
+        )}
+      </main>
+    </>
+  );
+}

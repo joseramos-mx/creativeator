@@ -1,44 +1,72 @@
 import Link from 'next/link';
-import { Calendario } from '@/app/_componentes/Calendario';
-import { ListaPosts } from '@/app/_componentes/ListaPosts';
-import { Redactar } from '@/app/_componentes/Redactar';
-import { leerMarca, listarPosts } from '@/lib/posts';
+import { Miniatura } from '@/app/_componentes/Miniatura';
+import { listarPosts, listarProyectosConMarca } from '@/lib/posts';
 
 /**
- * La lista de carruseles. Un post es un JSON en content/posts/: para agregar
- * uno a mano basta con copiar otro y cambiarle el slug y los textos.
+ * / — elegir proyecto.
  *
- * Redactar uno con la IA también empieza aquí, y termina en el editor: lo que
- * escribe el modelo entra como borrador y no hay camino de ahí a un PNG que no
- * pase por una persona. Lo mismo vale para los doce de un calendario: la tanda
- * es más rápida de escribir, no de revisar.
+ * Un proyecto es una cuenta: el Dr. Edwin, la Dra. Mildreth, Adimex. Cada uno
+ * vive en su carpeta de proyectos/ y su URL empieza por su id, así que todo lo
+ * que se abre desde aquí —la lista, el editor, las descargas— sabe de qué
+ * cuenta es sin tener que recordarlo.
+ *
+ * Siempre se enseña, aunque haya uno solo: es la entrada desde el teléfono, y
+ * desde aquí se va a los carruseles, a la identidad o a los archivos de cada
+ * cuenta.
  */
 export const dynamic = 'force-dynamic';
 
-export default async function Inicio() {
-  const marca = await leerMarca();
-  const posts = await listarPosts();
+export default async function Proyectos() {
+  const proyectos = await listarProyectosConMarca();
+
+  const conPortada = await Promise.all(
+    proyectos.map(async (p) => {
+      const posts = (await listarPosts(p.id)).filter((x) => !x.slug.startsWith('laboratorio-'));
+      return { ...p, cuantos: posts.length, portada: posts[0] };
+    }),
+  );
 
   return (
     <>
       <header className="cromo">
-        <h1>Carruseles · {marca.usuario}</h1>
-        <p>{posts.length === 1 ? '1 carrusel' : `${posts.length} carruseles`} en content/posts/</p>
+        <h1>Carruseles</h1>
+        <p>{proyectos.length === 1 ? '1 proyecto' : `${proyectos.length} proyectos`}</p>
         <span className="sep" />
-        <Link className="boton" href="/descargas">
-          Descargas →
-        </Link>
-        <Link className="boton" href="/plantilla">
-          Banco de pruebas →
+        <Link className="boton" href="/nuevo">
+          Nuevo proyecto
         </Link>
       </header>
 
       <main className="banco">
-        <Redactar />
-        <Calendario />
-
-        <ListaPosts posts={posts} marca={marca} />
-
+        {proyectos.length === 0 ? (
+          <p className="proyectos__vacio">
+            Todavía no hay ningún proyecto. <Link href="/nuevo">Da de alta el primero</Link>.
+          </p>
+        ) : (
+          <ul className="proyectos">
+            {conPortada.map(({ id, proyecto, cuantos, portada }) => (
+              <li key={id} data-proyecto={id}>
+                <Link href={`/${id}`}>
+                  {portada ? <Miniatura post={portada} marca={proyecto} ancho={120} /> : <span className="proyectos__hueco" />}
+                  <span className="proyectos__texto">
+                    <strong>{proyecto.nombre}</strong>
+                    <span>{proyecto.usuario}</span>
+                    <span>
+                      {proyecto.especialidad} · {proyecto.ciudad}
+                    </span>
+                    <em>{cuantos === 1 ? '1 carrusel' : `${cuantos} carruseles`}</em>
+                  </span>
+                </Link>
+                <nav className="proyectos__accesos">
+                  <Link href={`/${id}`}>Carruseles</Link>
+                  <Link href={`/${id}/identidad`}>Identidad</Link>
+                  <Link href={`/${id}/archivos`}>Archivos</Link>
+                  <Link href={`/${id}/descargas`}>Descargas</Link>
+                </nav>
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
     </>
   );

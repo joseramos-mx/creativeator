@@ -9,18 +9,21 @@
  *
  * Desde entonces las pruebas solo tocan slugs que empiezan por `laboratorio-`,
  * y este script los devuelve a su estado inicial antes de cada corrida. Que
- * sean posts de verdad, en content/posts/ y leídos por el mismo código, es a
+ * sean posts de verdad, en proyectos/dr-edwin/posts/ y leídos por el mismo código, es a
  * propósito: una prueba contra datos falsos no prueba el camino real.
  */
 
 import { copyFile, mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { PROYECTO_DE_PRUEBAS, rutasDe } from '../lib/proyecto.ts';
 
 export const PREFIJO = 'laboratorio-';
 
-const RAIZ = process.cwd();
-const POSTS = join(RAIZ, 'content', 'posts');
-const MEDIA = join(RAIZ, 'public', 'media');
+/** Los carruseles de laboratorio son de un proyecto: ver PROYECTO_DE_PRUEBAS. */
+export const PROYECTO = PROYECTO_DE_PRUEBAS;
+const RUTAS = rutasDe(PROYECTO);
+const POSTS = RUTAS.posts;
+const MEDIA_URL = `/proyectos/${PROYECTO}/media/laboratorio-edicion`;
 
 /**
  * El de edición: lleva un slide de cada tipo, con foto, con ícono y con
@@ -39,7 +42,7 @@ const edicion = {
       tipo: 'portada',
       titulo: '*Carrusel de*\n**laboratorio**',
       pregunta: '¿Sobre qué corren las pruebas?',
-      foto: '/media/laboratorio-edicion/portada.jpg',
+      foto: `${MEDIA_URL}/portada.jpg`,
     },
     {
       tipo: 'contenido',
@@ -49,7 +52,7 @@ const edicion = {
         'Este slide existe para probar el arrastre de imágenes sobre el propio slide y el empuje con flechas. Su foto se reemplaza en cada corrida y no le importa a nadie.',
       visual: {
         clase: 'foto',
-        src: '/media/laboratorio-edicion/01.jpg',
+        src: `${MEDIA_URL}/01.jpg`,
         ideaImagen: 'lo que la prueba espera encontrar descrito aquí',
       },
       fuente: 'Prueba.',
@@ -57,9 +60,6 @@ const edicion = {
     {
       tipo: 'contenido',
       titulo: '*Un slide* **con ícono**',
-      // La segunda frase está para disparar el tercer disparador de la cola: un
-      // modal junto a una palabra de tratamiento. Es la única afirmación de
-      // laboratorio que solo puede firmar el médico.
       cuerpo:
         'Este otro prueba el buscador de íconos, el aviso de los que se funden con la paleta y el tamaño por slide. Y no lo trates con antibiótico sin valoración médica.',
       visual: { clase: 'icono', slug: 'informacion', tam: 280, iconoSugerido: 'magnifying glass' },
@@ -95,7 +95,7 @@ const paletas = {
       tipo: 'portada',
       titulo: '*El velo sigue*\na la **paleta**',
       pregunta: '¿Termina fundido en el fondo?',
-      foto: '/media/laboratorio-edicion/portada.jpg',
+      foto: `${MEDIA_URL}/portada.jpg`,
     },
     {
       tipo: 'contenido',
@@ -103,7 +103,7 @@ const paletas = {
       titulo: 'Con **emblema** encima',
       cuerpo:
         'El triángulo de alerta es amarillo por semántica y no se puede cambiar de color: sobre naranja es donde se mide si la sombra lo despega.',
-      visual: { clase: 'foto', src: '/media/laboratorio-edicion/01.jpg' },
+      visual: { clase: 'foto', src: `${MEDIA_URL}/01.jpg` },
       fuente: 'Prueba.',
     },
     {
@@ -131,9 +131,9 @@ const LABORATORIO = [edicion, paletas];
 
 /** Las fotos de laboratorio salen de las de ejemplo, para no depender de nada. */
 async function copiarMedia() {
-  const destino = join(MEDIA, 'laboratorio-edicion');
+  const destino = RUTAS.media('laboratorio-edicion');
   await mkdir(destino, { recursive: true });
-  const origen = join(MEDIA, 'impetigo-regreso-a-clases');
+  const origen = RUTAS.media('impetigo-regreso-a-clases');
   for (const [de, a] of [
     ['portada.jpg', 'portada.jpg'],
     ['01.jpg', '01.jpg'],

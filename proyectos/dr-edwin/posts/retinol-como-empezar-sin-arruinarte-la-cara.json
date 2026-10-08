@@ -1,0 +1,99 @@
+{
+  "slug": "retinol-como-empezar-sin-arruinarte-la-cara",
+  "tema": "Retinol: cómo empezar sin arruinarte la cara",
+  "creado": "2026-09-07",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "Retinol: cómo empezar sin arruinarte la cara 🧴\n\nCompraste el frasco, lo usaste tres noches seguidas y hoy traes la cara pelándose. No es que el retinol no te sirva: es que casi siempre se empieza mal. Y con el aire seco y la calefacción de estos meses la piel perdona todavía menos.\n\n🔍 Qué es: una forma de vitamina A que acelera la renovación de las células de la piel; por eso se usa en acné y en líneas finas, y por eso incomoda al principio (AAD).\n\n⚠️ Con retinol el sol pega más: los retinoides vuelven la piel más sensible al sol, así que se aplica de noche y el protector solar de la mañana deja de ser opcional (AAD).\n\n✅ Cómo empezar: concentración baja, dos o tres noches por semana, cantidad del tamaño de un chícharo para toda la cara y crema hidratante de compañera (AAD).\n\n⚡ Ojo con la confusión: la resequedad y la descamación de las primeras semanas son la irritación esperada. La comezón con ronchas, la hinchazón o el ardor que empeora cada noche son otra cosa y pueden ser dermatitis de contacto. La primera cede conforme la piel se acostumbra; la segunda se valora.\n\n💬 ¿Cuántas noches aguantaste antes de guardar el frasco en el cajón? Cuéntamelo aquí abajo.\n\n🔖 Guárdalo para la noche que abras el frasco: aquí está el orden completo, cuántas noches, cuánto producto y qué ponerte encima, sin andar adivinando a media madrugada. Y mándaselo a quien acaba de comprar su primer retinol por recomendación de internet: le ahorras dos semanas de cara roja.\n\n📲 ¿Llevas más de un mes con ardor o te salieron ronchas? Eso ya se revisa. Agenda conmigo en Doctoralia, el enlace está en la biografía.\n\n#Retinol #PielSecaDeInvierno #DermatologiaParaFamilias #CuidadoDeLaPiel #DermatologoDurango",
+  "pilar": "Cuidado diario de la piel",
+  "objetivo": "guardar",
+  "nota": "Aire seco y calefacción",
+  "hashtags": [
+    "#Retinol",
+    "#PielSecaDeInvierno",
+    "#DermatologiaParaFamilias",
+    "#CuidadoDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Retinol:* cómo empezar\nsin **arruinarte la cara**",
+      "pregunta": "¿Por dónde se empieza?",
+      "foto": "/proyectos/dr-edwin/media/retinol-como-empezar-sin-arruinarte-la-cara/pexels-11199588.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Мария Ушакова",
+        "url": "https://www.pexels.com/photo/photo-of-a-woman-with-a-head-towel-putting-on-makeup-11199588/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **el retinol?**",
+      "bajada": "Vitamina A que renueva la piel más rápido.",
+      "cuerpo": "El retinol es una forma de vitamina A que se aplica en la piel. Acelera la renovación de las células y por eso se usa para acné y para líneas finas. El de farmacia es la versión suave. Los retinoides con receta son sus primos fuertes.",
+      "visual": {
+        "clase": "icono",
+        "slug": "serum-dropper-bottle",
+        "iconoSugerido": "serum dropper bottle"
+      },
+      "fuente": "AAD, Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Arde y se pela.**\n*¿Es normal?*",
+      "bajada": "Las primeras semanas la piel protesta.",
+      "cuerpo": "Al principio la piel se siente tirante, se descama alrededor de la nariz y arde un poco al aplicar. Eso es la irritación esperada del retinol y suele bajar conforme la piel se acostumbra. Lo que no entra ahí: ronchas, hinchazón o ardor que empeora cada noche.",
+      "visual": {
+        "clase": "icono",
+        "slug": "moisturizer-tube",
+        "iconoSugerido": "moisturizer tube"
+      },
+      "fuente": "AAD, Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Con retinol** *el sol pega más.*",
+      "bajada": "De noche el retinol; de día, protector solar.",
+      "cuerpo": "Los retinoides vuelven la piel más sensible al sol. Y en estos meses el aire seco y la calefacción ya la traen tirante de por sí. Por eso el retinol se aplica de noche y el protector solar de la mañana deja de ser opcional. Si no, avanzas de noche y retrocedes de día.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/retinol-como-empezar-sin-arruinarte-la-cara/pexels-5269653.jpg",
+        "ideaImagen": "Mujer adulta aplicándose protector solar en la cara junto a una ventana con luz de mañana, gesto cotidiano y fondo limpio.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Armin  Rimoldi",
+          "url": "https://www.pexels.com/photo/faceless-woman-applying-lotion-on-hand-on-sunny-day-5269653/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cómo empezar* **sin sufrir**",
+      "puntos": [
+        "Empieza con la concentración más baja, dos o tres noches por semana.",
+        "Cantidad del tamaño de un chícharo para toda la cara, sobre piel seca.",
+        "Crema hidratante antes o después: la piel lo tolera mejor acompañada.",
+        "Protector solar cada mañana, aunque el día esté nublado."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo* **verlo con tu derma**",
+      "bajada": "Si arde después de un mes, se revisa.",
+      "cuerpo": "Si pasado un mes sigue el ardor, o aparece comezón con ronchas e hinchazón, ya no es adaptación: puede ser dermatitis de contacto, una reacción alérgica de la piel. Consulta también antes de empezar si tienes rosácea o dermatitis atópica, o si estás embarazada o buscando embarazo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "appointment-calendar",
+        "iconoSugerido": "appointment calendar"
+      },
+      "fuente": "AAD, Cleveland Clinic"
+    }
+  ]
+}

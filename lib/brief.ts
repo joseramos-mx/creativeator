@@ -1,5 +1,5 @@
-import { PALETA_POR_DEFECTO } from '@/template/tokens';
-import type { Post, Slide } from '@/template/tipos';
+import { PALETA_POR_DEFECTO } from '@/plantillas/clinica/tokens';
+import type { Post, Slide } from '@/plantillas/clinica/tipos';
 import { FOTO_PENDIENTE } from './edicion';
 // El slug vive aparte para que la tanda del mes pueda calcularlo sin cargar
 // este archivo, que importa con el alias `@/`. Ver lib/slug.ts.
@@ -16,7 +16,7 @@ export { aSlug };
  * renglón, valores entre comillas y renglones sueltos que son notas para el
  * diseñador y no campos.
  *
- * El ejemplo vivo está en `content/ejemplos/impetigo-brief.md`. En resumen:
+ * El ejemplo vivo está en `proyectos/dr-edwin/ejemplos/impetigo-brief.md`. En resumen:
  *
  *     # Publicación 2 · Impétigo: la infección del regreso a clases
  *

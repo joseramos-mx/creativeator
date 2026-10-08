@@ -23,4 +23,4 @@ __pycache__/
 iconos-entrada/
 
 # Las fotos de laboratorio las recrea scripts/laboratorio.mjs.
-public/media/laboratorio-*/
+public/proyectos/*/media/laboratorio-*/

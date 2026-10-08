@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
+import { useApi } from './proyecto';
 
 /**
  * Los dos botones de cada tarjeta de la lista: avanzar el estado y exportar.
@@ -19,12 +20,10 @@ import type { Post } from '@/template/tipos';
  * editor, que es donde se mira lo que se está cambiando.
  *
  * ── La barrera sigue donde estaba ───────────────────────────────────────────
- * Esto no aprueba nada: manda el post a `/api/post` con el estado nuevo y **el
- * servidor decide**. Si quedan afirmaciones sin revisar, fotos clínicas sin
- * firmar o imágenes sin licencia, la respuesta es un error y el estado no se
- * mueve. El botón enseña ese error en la tarjeta en vez de tragárselo: enterarse
- * aquí de que faltan once afirmaciones es información útil, y es lo mismo que
- * habría dicho el editor.
+ * Esto manda el post a `/api/<proyecto>/post` con el estado nuevo y **el
+ * servidor decide**. Si hay fotos sin fuente ni licencia, la respuesta es un
+ * error y el estado no se mueve. El botón enseña ese error en la tarjeta en vez
+ * de tragárselo: es lo mismo que habría dicho el editor.
  */
 
 /**
@@ -34,8 +33,8 @@ import type { Post } from '@/template/tipos';
  * lista entera de lo que falta:
  *
  *     No se pudo leer el carrusel que mandó el editor:
- *       · estado: no se puede guardar como "aprobado" con 8 afirmaciones sin revisar:
- *           · slide 01 · texto (fuente, sin revisar)
+ *       · estado: no se puede guardar como "aprobado" con 2 fotos sin fuente ni licencia:
+ *           · slide 03 (/proyectos/…/foto.jpg)
  *
  * En una columna de rejilla solo cabe una línea, y la primera —el envoltorio—
  * no dice nada. Se busca la que sí, y se le quitan los adornos. La lista entera
@@ -96,6 +95,7 @@ const Esperando = () => (
 );
 
 export function AccionesPost({ post }: { post: Post }) {
+  const api = useApi();
   const router = useRouter();
   // El estado local hace que la tarjeta responda al instante. `router.refresh()`
   // trae la verdad del disco un momento después y los dos coinciden.
@@ -110,7 +110,7 @@ export function AccionesPost({ post }: { post: Post }) {
     setTrabajando('estado');
     setError(undefined);
     try {
-      const r = await fetch('/api/post', {
+      const r = await fetch(api('/post'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post: { ...post, estado: siguiente } }),
@@ -130,7 +130,7 @@ export function AccionesPost({ post }: { post: Post }) {
     setTrabajando('exportar');
     setError(undefined);
     try {
-      const r = await fetch('/api/exportar', {
+      const r = await fetch(api('/exportar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug: post.slug }),
@@ -163,7 +163,7 @@ export function AccionesPost({ post }: { post: Post }) {
           onClick={avanzar}
           title={
             siguiente
-              ? `Pasar a ${siguiente}${siguiente === 'aprobado' ? ' — el servidor revisa la cola de afirmaciones antes' : ''}`
+              ? `Pasar a ${siguiente}`
               : 'Ya está publicado. Para volver atrás, en el editor.'
           }
         >
@@ -183,7 +183,7 @@ export function AccionesPost({ post }: { post: Post }) {
 
       {/*
         El error va entero en el `title` y recortado en la tarjeta: la barrera de
-        afirmaciones contesta con la lista de las que faltan, y eso no cabe en
+        licencias contesta con la lista de las fotos que faltan, y eso no cabe en
         una columna de rejilla. La primera línea ya dice cuántas son.
       */}
       {error ? (

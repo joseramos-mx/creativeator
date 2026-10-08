@@ -1,21 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { Aprobacion, Credito } from '@/template/tipos';
+import { useState } from 'react';
+import type { Credito } from '@/plantillas/clinica/tipos';
+import { useApi } from './proyecto';
 
 /**
  * El archivo clínico: fotos de lesión, no de ambiente.
  *
- * Va en un panel aparte y se ve distinto a propósito. Son dos gestos con el
- * mismo aspecto y consecuencias distintas: elegir una foto de aula es una
- * decisión de diseño, y elegir una foto de piel enferma es una afirmación
- * clínica —"esto es lo que dice el texto que es"— que lleva el nombre de un
- * médico detrás. Si los dos paneles se parecieran, tarde o temprano se usarían
- * igual.
- *
- * **El sistema propone; el médico inserta.** El botón no se activa hasta que se
- * escribe su nombre, y el servidor lo vuelve a comprobar: lo que queda escrito
- * en el JSON es una firma, y un botón desactivado en el navegador no basta.
+ * Va en un panel aparte porque busca en otro sitio —Wikimedia Commons— y con
+ * otra consulta: el nombre de la condición, no la escena. Lo demás es igual que
+ * el banco de ambiente: se elige, se baja y queda con su licencia escrita. La
+ * validación con la cuenta pasa por fuera, cuando se le mandan las imágenes.
  */
 
 type Candidato = {
@@ -32,38 +27,25 @@ type Candidato = {
 
 export function BuscadorClinicas({
   slug,
-  indice,
-  medico,
-  onAprobar,
+  onElegir,
 }: {
   slug: string;
-  indice: number;
-  /** El nombre de content/marca.json. Es el único que puede firmar. */
-  medico: string;
-  onAprobar: (ruta: string, credito: Credito, aprobacion: Aprobacion) => void;
+  onElegir: (ruta: string, credito: Credito) => void;
 }) {
+  const api = useApi();
   const [abierto, setAbierto] = useState(false);
   const [query, setQuery] = useState('');
   const [candidatos, setCandidatos] = useState<Candidato[] | null>(null);
   const [sinLicencia, setSinLicencia] = useState(0);
   const [elegido, setElegido] = useState<Candidato | null>(null);
-  const [firma, setFirma] = useState('');
-  const [nota, setNota] = useState('');
   const [error, setError] = useState<string>();
   const [trabajando, setTrabajando] = useState(false);
-
-  // El nombre no se hereda de la marca: se escribe. Es la misma regla que en la
-  // cola de afirmaciones, y por el mismo motivo — una firma que se rellena sola
-  // no es una firma.
-  useEffect(() => setFirma(localStorage.getItem('revisor') ?? ''), []);
-
-  const puedeFirmar = firma.trim() === medico;
 
   async function buscar(propia?: string) {
     setTrabajando(true);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/clinicas', {
+      const r = await fetch(api('/fotos/clinicas'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug, ...(propia ? { query: propia } : {}) }),
@@ -80,24 +62,24 @@ export function BuscadorClinicas({
     }
   }
 
-  async function aprobar() {
+  async function usar() {
     if (!elegido) return;
     setTrabajando(true);
     setError(undefined);
     try {
-      const r = await fetch('/api/fotos/aprobar', {
+      const r = await fetch(api('/fotos/elegir'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug, candidato: elegido, aprobadaPor: firma.trim(), nota }),
+        body: JSON.stringify({ slug, candidato: elegido, archivo: true }),
       });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
-      onAprobar(cuerpo.ruta, cuerpo.credito, cuerpo.aprobacion);
+      onElegir(cuerpo.ruta, cuerpo.credito);
       setElegido(null);
       setCandidatos(null);
       setAbierto(false);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'No se pudo aprobar.');
+      setError(e instanceof Error ? e.message : 'No se pudo traer la imagen.');
     } finally {
       setTrabajando(false);
     }
@@ -123,7 +105,7 @@ export function BuscadorClinicas({
     <div className="clinico" data-clinico>
       <p className="clinico__cabecera">
         <span className="chip chip--clinico">clínico</span>
-        Fotos de piel enferma. Las firma {medico} y no se pueden insertar sin esa firma.
+        Fotos de lesión de Wikimedia Commons, solo con licencias que permiten uso comercial.
       </p>
 
       <label>Qué buscar en el archivo</label>
@@ -179,8 +161,8 @@ export function BuscadorClinicas({
       ) : null}
 
       {elegido ? (
-        <div className="clinico__firma">
-          <p className="afirmacion__texto">{elegido.descripcion}</p>
+        <div className="clinico__elegida">
+          <p className="clinico__texto">{elegido.descripcion}</p>
           <p className="pista">
             {elegido.credito?.licencia}
             {elegido.credito?.autor ? ` · ${elegido.credito.autor}` : ''}
@@ -202,34 +184,9 @@ export function BuscadorClinicas({
             </ul>
           ) : null}
 
-          <label>Quién aprueba — solo {medico}</label>
-          <input
-            value={firma}
-            placeholder={medico}
-            onChange={(e) => {
-              setFirma(e.target.value);
-              try {
-                localStorage.setItem('revisor', e.target.value);
-              } catch {
-                // navegador sin almacenamiento: se pierde al recargar
-              }
-            }}
-          />
-
-          <label>Nota de la aprobación (opcional)</label>
-          <input value={nota} onChange={(e) => setNota(e.target.value)} />
-
-          <button className="boton" onClick={aprobar} disabled={trabajando || !puedeFirmar}>
-            {trabajando
-              ? 'bajando y firmando…'
-              : puedeFirmar
-                ? 'Aprobar y poner en el slide'
-                : `esta la firma ${medico}`}
+          <button className="boton" onClick={usar} disabled={trabajando}>
+            {trabajando ? 'bajando…' : 'Poner en el slide'}
           </button>
-          <p className="pista">
-            La firma queda pegada a los bytes de esta imagen. Si el archivo cambia, se cae y hay que
-            volver a mirarla.
-          </p>
         </div>
       ) : null}
     </div>

@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BotonExportar } from './BotonExportar';
-import { Afirmaciones } from './Afirmaciones';
 import { ImportarBrief } from './ImportarBrief';
 import { PanelSlide, type Seleccion } from './PanelSlide';
 import {
@@ -13,17 +12,22 @@ import {
   empujarOverride,
   ponerImagen,
 } from '@/lib/edicion';
-import { Slide } from '@/template/Slide';
-import { ProveedorDeAvisos } from '@/template/avisos';
-import { pendientes } from '@/lib/afirmaciones';
-import { faltaClinico } from '@/lib/clinicas';
+import { plantillaDe } from '@/plantillas';
+import { ProveedorDeAvisos } from '@/plantillas/clinica/avisos';
 import { fotosSinCredito } from '@/lib/fotos';
-import { bloque, lienzo, paletas, tipo } from '@/template/tokens';
-import type { Marca, Post } from '@/template/tipos';
-import type { EstadoAjuste } from '@/template/usarAjuste';
+import { bloque, lienzo, paletas, tipo } from '@/plantillas/clinica/tokens';
+import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
+import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
+import { useApi, useProyecto } from './proyecto';
+import { reducirImagen } from './reducirImagen';
 
 const DESARROLLO = process.env.NODE_ENV === 'development';
 const RETRASO_GUARDADO = 600;
+/**
+ * En Vercel cada guardado es un commit en el repositorio. A 600 ms, escribir
+ * un párrafo serían veinte commits; a 2,5 s, uno por pausa de verdad.
+ */
+const RETRASO_GUARDADO_REMOTO = 2500;
 
 type EstadoGuardado = 'limpio' | 'guardando' | 'guardado' | 'error';
 
@@ -42,7 +46,21 @@ type EstadoGuardado = 'limpio' | 'guardando' | 'guardado' | 'error';
  *  · Las flechas empujan el slide y escriben en `overrides`, con un contador
  *    que avisa cuando un slide junta demasiados ajustes a mano.
  */
-export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Marca; capturas?: string[] }) {
+export function Editor({
+  inicial,
+  marca,
+  capturas,
+  remoto = false,
+}: {
+  inicial: Post;
+  marca: Proyecto;
+  capturas?: string[];
+  /** Si se guarda en el repositorio (Vercel) y no en el disco. */
+  remoto?: boolean;
+}) {
+  const api = useApi();
+  const proyecto = useProyecto();
+  const { Slide } = plantillaDe(marca.plantilla);
   const [post, setPost] = useState<Post>(inicial);
   const [guardado, setGuardado] = useState<EstadoGuardado>('limpio');
   const [errorGuardado, setErrorGuardado] = useState<string>();
@@ -69,7 +87,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
     setGuardado('guardando');
     const t = setTimeout(async () => {
       try {
-        const r = await fetch('/api/post', {
+        const r = await fetch(api('/post'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ post }),
@@ -81,9 +99,23 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
         setGuardado('error');
         setErrorGuardado(e instanceof Error ? e.message : 'No se pudo guardar.');
       }
-    }, RETRASO_GUARDADO);
+    }, remoto ? RETRASO_GUARDADO_REMOTO : RETRASO_GUARDADO);
     return () => clearTimeout(t);
   }, [post]);
+
+  // Con el guardado más espaciado, cerrar la pestaña justo después de escribir
+  // perdería la última frase: se avisa mientras quede algo sin guardar.
+  useEffect(() => {
+    if (guardado !== 'guardando') return;
+    const avisar = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener('beforeunload', avisar);
+    return () => window.removeEventListener('beforeunload', avisar);
+  }, [guardado]);
+
+  // En el teléfono el carrusel se ajusta al ancho de la pantalla al abrir.
+  useEffect(() => {
+    if (window.innerWidth < 860) setZoom(Math.max(0.2, (window.innerWidth - 24) / lienzo.ancho));
+  }, []);
 
   const reportarAjuste = useCallback((i: number, estado: EstadoAjuste) => {
     setAvisos((prev) => {
@@ -106,9 +138,9 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
       setSubiendo(i);
       try {
         const datos = new FormData();
-        datos.append('archivo', archivo);
+        datos.append('archivo', await reducirImagen(archivo));
         datos.append('slug', post.slug);
-        const r = await fetch('/api/subir', { method: 'POST', body: datos });
+        const r = await fetch(api('/subir'), { method: 'POST', body: datos });
         const cuerpo = await r.json();
         if (!r.ok) throw new Error(cuerpo.error);
         setPost((p) => ponerImagen(p, i, cuerpo.ruta));
@@ -124,8 +156,8 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
 
   const usarIcono = useCallback((slug: string) => {
     setRecientes((prev) => [slug, ...prev.filter((s) => s !== slug)].slice(0, 12));
-    // Se apunta en content/marca.json sin esperar: si falla, no se pierde nada.
-    void fetch('/api/recientes', {
+    // Se apunta en proyecto.json sin esperar: si falla, no se pierde nada.
+    void fetch(api('/recientes'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slug }),
@@ -207,7 +239,7 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
     <div className="editor">
       <aside className="panel">
         <div className="panel__cabecera">
-          <Link className="boton" href="/">
+          <Link className="boton" href={`/${proyecto}`}>
             ← carruseles
           </Link>
           <span className="sep" />
@@ -217,7 +249,6 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
         </div>
 
         <Ficha post={post} setPost={setPost} />
-        <Afirmaciones post={post} medico={marca.nombre} setPost={setPost} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
 
         {post.slides.map((slide, i) => (
@@ -225,8 +256,9 @@ export function Editor({ inicial, marca, capturas }: { inicial: Post; marca: Mar
             key={i}
             slide={slide}
             slug={post.slug}
-            medico={marca.nombre}
             recientes={recientes}
+            onSubir={(archivo) => void subirImagen(i, archivo)}
+            subiendo={subiendo === i}
             paleta={post.paleta}
             onUsarIcono={usarIcono}
             indice={i}
@@ -388,13 +420,11 @@ function esFoto(slide: Post['slides'][number]) {
 /** Los datos del carrusel que no se pintan en ningún slide. */
 function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) => void }) {
   const [copiado, setCopiado] = useState(false);
-  // Un carrusel no se declara aprobado con afirmaciones sin mirar ni con fotos
-  // de las que no se sabe de dónde salieron. El esquema lo rechaza al guardar;
-  // aquí se apaga la opción para no chocar contra ello.
-  const sinRevisar = pendientes(post, post.revisiones).length;
+  // Un carrusel no se declara aprobado con fotos de las que no se sabe de
+  // dónde salieron. El esquema lo rechaza al guardar; aquí se apaga la opción
+  // para no chocar contra ello.
   const sinLicencia = fotosSinCredito(post).length;
-  const sinFirmar = faltaClinico(post).length;
-  const trabado = sinRevisar > 0 || sinLicencia > 0 || sinFirmar > 0;
+  const trabado = sinLicencia > 0;
 
   return (
     <details className="tarjeta" data-ficha open>
@@ -443,21 +473,6 @@ function Ficha({ post, setPost }: { post: Post; setPost: (f: (p: Post) => Post) 
             />
           </div>
         </div>
-
-        {sinRevisar > 0 ? (
-          <p className="pista pista--aviso">
-            Quedan {sinRevisar} {sinRevisar === 1 ? 'afirmación' : 'afirmaciones'} sin revisar: hasta
-            entonces el carrusel se queda en borrador.
-          </p>
-        ) : null}
-
-        {sinFirmar > 0 ? (
-          <p className="pista pista--clinico">
-            {sinFirmar === 1 ? 'Hay una imagen clínica' : `Hay ${sinFirmar} imágenes clínicas`} sin
-            la firma del médico, o con la firma caída porque el archivo cambió. Se aprueban desde el
-            archivo clínico de su slide.
-          </p>
-        ) : null}
 
         {sinLicencia > 0 ? (
           <p className="pista pista--aviso">

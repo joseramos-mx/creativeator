@@ -28,10 +28,8 @@ export function bancoDe(slug: string): Banco {
 /**
  * El banco de imágenes clínicas: fotos de lesión, no de ambiente.
  *
- * Va aparte de `bancoDe` y no como una opción suya porque no son dos
- * proveedores del mismo servicio: lo que sale de aquí no se puede insertar sin
- * la firma del médico, y esa diferencia tiene que verse en el código igual que
- * se ve en el editor.
+ * Va aparte de `bancoDe` y no como una opción suya porque se busca distinto:
+ * por el nombre de la condición, no por la escena, y sin criterios del modelo.
  */
 export function archivoDe(slug: string): Banco {
   return slug.startsWith('laboratorio-') ? archivoLaboratorio : commons;

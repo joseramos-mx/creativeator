@@ -1,7 +1,7 @@
 /**
- * scripts/para-el-celular.mjs — `npm run celular <slug…> [--puerto 3000]`
+ * scripts/para-el-celular.mjs — `npm run celular -- <slug…> [--puerto 3000] [--proyecto <id>]`
  *
- * Exporta un carrusel a `public/descargas/<slug>/` para poder bajarlo desde el
+ * Exporta un carrusel a `public/proyectos/<id>/descargas/<slug>/` para poder bajarlo desde el
  * teléfono en el despliegue de Vercel.
  *
  * ── Por qué se exporta aquí y no allá ───────────────────────────────────────
@@ -25,12 +25,12 @@
  * carrusel, lo exportas, lo subes, lo publicas desde el teléfono.
  *
  * `--todos` está para cuando de verdad los quieras todos, y avisa de lo que va
- * a pesar antes de empezar. Desde la app se hace lo mismo en /descargas, que
+ * a pesar antes de empezar. Desde la app se hace lo mismo en /<proyecto>/descargas, que
  * es donde se acaba estando.
  *
  * Y para lo que caduque igual, cada exportación guarda la **huella** del post
  * tal como estaba. Si después lo editas, la página de descargas lo dice en vez
- * de darte callado un PNG que ya no es el carrusel. Ver `app/descargas`.
+ * de darte callado un PNG que ya no es el carrusel. Ver `app/[proyecto]/descargas`.
  *
  * ── Por qué llama a la API en vez de exportar aquí ──────────────────────────
  * Porque es exactamente el mismo camino que usa el botón de la app, ya probado,
@@ -43,17 +43,29 @@ import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import JSZip from 'jszip';
+import { proyectoDeArgumentos, rutasDe, sinProyecto } from '../lib/proyecto.ts';
 
-const DESTINO = join(process.cwd(), 'public', 'descargas');
-const INDICE = join(DESTINO, 'indice.json');
+// Con varios proyectos hay que decir de cuál: --proyecto <id>.
+let proyecto;
+try {
+  proyecto = proyectoDeArgumentos(process.argv);
+} catch (e) {
+  console.error(`\nALTO: ${e.message}\n`);
+  process.exit(1);
+}
+const RUTAS = rutasDe(proyecto);
+const DESTINO = RUTAS.descargas;
+const INDICE = RUTAS.indiceDescargas;
 
-const args = process.argv.slice(2);
+const args = sinProyecto(process.argv.slice(2));
 const iPuerto = args.indexOf('--puerto');
 const puerto = iPuerto === -1 ? '3000' : args[iPuerto + 1];
 const base = `http://localhost:${puerto}`;
-let slugs = args.filter((a, i) => !a.startsWith('--') && i !== iPuerto + 1);
+// Sin `--puerto`, `iPuerto + 1` es 0 y el filtro se comía el primer slug: el
+// mismo tropiezo que ya tuvo `npm run mes`.
+let slugs = args.filter((a, i) => !a.startsWith('--') && !(iPuerto !== -1 && i === iPuerto + 1));
 
-const CARPETA_POSTS = join(process.cwd(), 'content', 'posts');
+const CARPETA_POSTS = RUTAS.posts;
 
 /** La huella del carrusel tal como está en disco ahora mismo. */
 async function huellaDe(slug) {
@@ -84,7 +96,7 @@ if (slugs.length === 0) {
   const archivos = (await readdir(CARPETA_POSTS)).filter((a) => a.endsWith('.json'));
   const posts = await Promise.all(archivos.map(async (a) => await leerPostCrudo(a.replace(/\.json$/, ''))));
   const indice = await leerIndice();
-  console.log('\nVa así:  npm run celular <slug> [--puerto 3000]\n');
+  console.log('\nVa así:  npm run celular -- <slug> [--puerto 3000] [--proyecto <id>]\n');
   console.log('Carruseles que hay:\n');
   const enLista = posts.filter((p) => p && !p.slug.startsWith('laboratorio-'));
   for (const p of enLista.sort((a, b) => String(b.fecha ?? '').localeCompare(String(a.fecha ?? '')))) {
@@ -110,7 +122,7 @@ if (args.includes('--quitar')) {
 /* ── exportar ─────────────────────────────────────────────────────────────── */
 
 // El servidor tiene que estar corriendo: la app se captura a sí misma.
-const vivo = await fetch(base)
+const vivo = await fetch(`${base}/${proyecto}`)
   .then((r) => r.ok)
   .catch(() => false);
 if (!vivo) {
@@ -131,7 +143,7 @@ for (const slug of slugs) {
 
   // Escala 1: el tamaño nativo de Instagram, y el que hace que esto quepa en
   // el repositorio.
-  const r = await fetch(`${base}/api/exportar`, {
+  const r = await fetch(`${base}/api/${proyecto}/exportar`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ slug, escala: 1 }),
@@ -171,5 +183,5 @@ indice.sort((a, b) => b.exportado.localeCompare(a.exportado));
 await mkdir(DESTINO, { recursive: true });
 await writeFile(INDICE, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
 
-console.log(`\nListo. ${indice.length} carrusel(es) en /descargas.`);
-console.log('Haz commit de public/descargas/ y súbelo para verlo en el teléfono.\n');
+console.log(`\nListo. ${indice.length} carrusel(es) en /${proyecto}/descargas.`);
+console.log(`Haz commit de public/proyectos/${proyecto}/descargas/ y súbelo para verlo en el teléfono.\n`);

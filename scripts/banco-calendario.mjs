@@ -26,6 +26,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { aISO, desde, leerCalendario, pareceInvertida, verificarDia } from '../lib/calendario.ts';
 import { IDENTICOS, parecido } from '../lib/mes.ts';
+import { listarProyectos, rutasDe } from '../lib/proyecto.ts';
 
 let fallos = 0;
 const ok = (bien, texto) => {
@@ -187,81 +188,84 @@ ok(desde(hoja, '')?.length === 3, 'sin marca, la hoja entera');
 ok(desde(hoja, 'melanoma') === null, 'lo que no está devuelve null, no la hoja entera');
 
 /* ── contra el calendario y los posts de verdad ──────────────────────────── */
-console.log('\nContra la hoja de esta cuenta');
+// Cada cuenta con su hoja: la de una no tiene por qué parecerse a la de otra.
+for (const proyecto of listarProyectos()) {
+  console.log(`\nContra la hoja de ${proyecto}`);
 
-const ruta = ['calendario.tsv', 'calendario.csv']
-  .map((f) => join(process.cwd(), 'content', f))
-  .find((f) => {
-    try { readFileSync(f); return true; } catch { return false; }
-  });
+  const rutas = rutasDe(proyecto);
+  const ruta = [rutas.calendario, rutas.calendarioAlterno]
+    .find((f) => {
+      try { readFileSync(f); return true; } catch { return false; }
+    });
 
-if (!ruta) {
-  console.log('  —    no hay content/calendario.tsv, así que esta parte no corre');
-} else {
-  const real = leerCalendario(readFileSync(ruta, 'utf8'));
-  ok(real.filas.length > 0, `${real.filas.length} carrusel(es) en la hoja`);
-  ok(
-    real.filas.every((f) => /^\d{4}-\d{2}-\d{2}$/.test(f.fecha)),
-    'todas las fechas quedaron en ISO',
-  );
-  // Ninguna se apartó por algo que no sea "es un reel" o "sin tema": si una fila
-  // de verdad se está cayendo, aquí se ve.
-  const rotas = real.saltadas.filter((s) => !/reel|sin tema/.test(s.porque));
-  ok(
-    rotas.length === 0,
-    rotas.length ? `hay filas que no se leen: ${rotas.map((r) => `l.${r.linea} ${r.porque}`).join('; ')}` : 'ninguna fila se cae por un error',
-  );
-  ok(
-    real.filas.every((f, i, a) => i === 0 || a[i - 1].fecha <= f.fecha),
-    'y van en orden de fecha',
-  );
-
-  /*
-   * La integración que sostiene "genera los que me faltan": el tema de la hoja
-   * contra el tema del archivo ya escrito.
-   *
-   * Los slugs NO coinciden —la hoja dice "Impétigo: la infección del regreso a
-   * clases" y el archivo se llama `impetigo-regreso-a-clases`— así que comparar
-   * nombres de archivo daría el carrusel por no escrito y lo redactaría otra
-   * vez. Es una llamada larga para acabar con dos carruseles del mismo tema.
-   */
-  const POSTS = join(process.cwd(), 'content', 'posts');
-  const escritos = readdirSync(POSTS)
-    .filter((f) => f.endsWith('.json') && !f.startsWith('laboratorio-'))
-    .map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')));
-
-  const impetigoHoja = real.filas.find((f) => /imp[eé]tigo/i.test(f.tema));
-  const impetigoPost = escritos.find((p) => /imp[eé]tigo/i.test(p.tema));
-  if (impetigoHoja && impetigoPost) {
-    ok(
-      parecido(impetigoHoja.tema, impetigoPost.tema) >= IDENTICOS,
-      `«${impetigoHoja.tema}» ya está escrito como «${impetigoPost.tema}»`,
-    );
+  if (!ruta) {
+    console.log(`  —    no hay proyectos/${proyecto}/calendario.tsv, así que esta parte no corre`);
   } else {
-    console.log('  —    el impétigo ya no está en la hoja o en los posts; esa comprobación se salta');
-  }
+    const real = leerCalendario(readFileSync(ruta, 'utf8'));
+    ok(real.filas.length > 0, `${real.filas.length} carrusel(es) en la hoja`);
+    ok(
+      real.filas.every((f) => /^\d{4}-\d{2}-\d{2}$/.test(f.fecha)),
+      'todas las fechas quedaron en ISO',
+    );
+    // Ninguna se apartó por algo que no sea "es un reel" o "sin tema": si una fila
+    // de verdad se está cayendo, aquí se ve.
+    const rotas = real.saltadas.filter((s) => !/reel|sin tema/.test(s.porque));
+    ok(
+      rotas.length === 0,
+      rotas.length ? `hay filas que no se leen: ${rotas.map((r) => `l.${r.linea} ${r.porque}`).join('; ')}` : 'ninguna fila se cae por un error',
+    );
+    ok(
+      real.filas.every((f, i, a) => i === 0 || a[i - 1].fecha <= f.fecha),
+      'y van en orden de fecha',
+    );
 
-  // Y al revés: ningún tema de la hoja se confunde con un post de otro tema. Un
-  // falso positivo aquí es un carrusel que nunca se escribe porque el sistema
-  // cree que ya está.
-  const confusiones = [];
-  for (const f of real.filas) {
-    for (const p of escritos) {
-      if (parecido(f.tema, p.tema) < IDENTICOS) continue;
-      // Solo cuenta como error si de verdad no son el mismo tema. Los que sí lo
-      // son se listan arriba; aquí se comprueba que no haya ninguno raro.
-      const primeraDeCada = f.tema.split(/[\s:]+/)[0].toLowerCase();
-      if (!p.tema.toLowerCase().includes(primeraDeCada.slice(0, 6))) {
-        confusiones.push(`«${f.tema}» ↔ «${p.tema}»`);
+    /*
+     * La integración que sostiene "genera los que me faltan": el tema de la hoja
+     * contra el tema del archivo ya escrito.
+     *
+     * Los slugs NO coinciden —la hoja dice "Impétigo: la infección del regreso a
+     * clases" y el archivo se llama `impetigo-regreso-a-clases`— así que comparar
+     * nombres de archivo daría el carrusel por no escrito y lo redactaría otra
+     * vez. Es una llamada larga para acabar con dos carruseles del mismo tema.
+     */
+    const POSTS = rutas.posts;
+    const escritos = readdirSync(POSTS)
+      .filter((f) => f.endsWith('.json') && !f.startsWith('laboratorio-'))
+      .map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')));
+
+    const impetigoHoja = real.filas.find((f) => /imp[eé]tigo/i.test(f.tema));
+    const impetigoPost = escritos.find((p) => /imp[eé]tigo/i.test(p.tema));
+    if (impetigoHoja && impetigoPost) {
+      ok(
+        parecido(impetigoHoja.tema, impetigoPost.tema) >= IDENTICOS,
+        `«${impetigoHoja.tema}» ya está escrito como «${impetigoPost.tema}»`,
+      );
+    } else {
+      console.log('  —    el impétigo ya no está en la hoja o en los posts; esa comprobación se salta');
+    }
+
+    // Y al revés: ningún tema de la hoja se confunde con un post de otro tema. Un
+    // falso positivo aquí es un carrusel que nunca se escribe porque el sistema
+    // cree que ya está.
+    const confusiones = [];
+    for (const f of real.filas) {
+      for (const p of escritos) {
+        if (parecido(f.tema, p.tema) < IDENTICOS) continue;
+        // Solo cuenta como error si de verdad no son el mismo tema. Los que sí lo
+        // son se listan arriba; aquí se comprueba que no haya ninguno raro.
+        const primeraDeCada = f.tema.split(/[\s:]+/)[0].toLowerCase();
+        if (!p.tema.toLowerCase().includes(primeraDeCada.slice(0, 6))) {
+          confusiones.push(`«${f.tema}» ↔ «${p.tema}»`);
+        }
       }
     }
+    ok(
+      confusiones.length === 0,
+      confusiones.length
+        ? `un tema de la hoja se confunde con un post distinto: ${confusiones.join('; ')}`
+        : 'y ningún tema de la hoja se confunde con un post de otro tema',
+    );
   }
-  ok(
-    confusiones.length === 0,
-    confusiones.length
-      ? `un tema de la hoja se confunde con un post distinto: ${confusiones.join('; ')}`
-      : 'y ningún tema de la hoja se confunde con un post de otro tema',
-  );
 }
 
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);

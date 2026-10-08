@@ -93,7 +93,7 @@ def empareja(a, b, tolerancia=90):
 
 def revisar_control():
     """El post de control tiene que seguir en la paleta con la que se publico."""
-    ruta = os.path.join(RAIZ, "content", "posts", CONTROL + ".json")
+    ruta = os.path.join(RAIZ, "proyectos", "dr-edwin", "posts", CONTROL + ".json")
     try:
         with io.open(ruta, encoding="utf-8") as f:
             post = json.load(f)

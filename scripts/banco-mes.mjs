@@ -31,6 +31,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { contenido, parecido, revisarTanda, PARECIDOS, IDENTICOS } from '../lib/mes.ts';
+import { PROYECTO_DE_PRUEBAS, rutasDe } from '../lib/proyecto.ts';
 import { instrucciones } from '../lib/temas.ts';
 
 let fallos = 0;
@@ -164,7 +165,7 @@ ok(
 /* ── contra los temas de verdad ──────────────────────────────────────────── */
 console.log('\nContra lo que la cuenta ya publicó');
 
-const POSTS = join(process.cwd(), 'content', 'posts');
+const POSTS = rutasDe(PROYECTO_DE_PRUEBAS).posts;
 const reales = readdirSync(POSTS)
   .filter((f) => f.endsWith('.json') && !f.startsWith('laboratorio-'))
   .map((f) => JSON.parse(readFileSync(join(POSTS, f), 'utf8')).tema);
@@ -202,6 +203,7 @@ const CONTEXTO = {
   publicados: reales,
   especialidad: 'Especialista en alergología y dermatología',
   ciudad: 'Durango',
+  alcance: readFileSync(rutasDe(PROYECTO_DE_PRUEBAS).prompt('alcance'), 'utf8').trimEnd(),
   paletas: [{ nombre: 'azul', cuando: 'la respuesta cuando no hay color obvio' }],
 };
 

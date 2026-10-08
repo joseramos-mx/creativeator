@@ -1,7 +1,12 @@
-# Carruseles · @alergo_derma
+# Carruseles
 
-Genera los carruseles de Instagram de la cuenta a partir de una plantilla fija.
-Corre en tu computadora, no en internet.
+Genera carruseles de Instagram y Facebook a partir de un calendario de
+contenido, con una plantilla por cuenta. Corre en tu computadora, no en
+internet.
+
+Cada cuenta es un **proyecto**: hoy está el del Dr. Edwin (`@alergo_derma`), y
+la Dra. Mildreth, Adimex o la que venga se dan de alta al lado sin tocar código.
+Ver [Proyectos: una carpeta por cuenta](#proyectos-una-carpeta-por-cuenta).
 
 Las seis fases están construidas. Lo que sigue es un mapa de qué está
 encendido, qué está apagado y por qué.
@@ -18,12 +23,13 @@ encendido, qué está apagado y por qué.
 | Exportación | PNG a 2160×2700, ZIP con `copy.txt` y `creditos.txt` | — |
 | Íconos de la librería | Ingesta, manifiesto, buscador con sinónimos y aviso de fusión con la paleta | — |
 | Paletas | Veinticinco tonos a la misma luminancia; diez las elige el redactor, el resto a mano | — |
-| Redacción con IA | `/api/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
-| Propuesta de temas | `/api/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
+| Redacción con IA | `/api/<proyecto>/redactar`: el tema entra, el borrador sale con sus fotos puestas | `ANTHROPIC_API_KEY` + `PEXELS_API_KEY` |
+| Propuesta de temas | `/api/<proyecto>/proponer`: sin tema escrito, elige uno del mes y arranca | `ANTHROPIC_API_KEY` |
 | El calendario | Panel en la portada o `npm run mes`: lee la hoja y escribe los que faltan | las mismas tres |
-| Cola de afirmaciones | Extracción determinista y barrera de guardado | — |
+| Subir imagen propia | Botón en cada slide; la imagen queda con el crédito de la cuenta | — |
+| Identidad de la cuenta | Cuestionario + manual, posts y documentos → `identidad.md`, voz y prompts | `ANTHROPIC_API_KEY` |
 | Fotos de contexto | Búsqueda en Pexels, descarga y crédito en el mismo movimiento | `PEXELS_API_KEY` |
-| Archivo clínico | Wikimedia Commons con firma del médico y huella de la imagen | — |
+| Archivo clínico | Wikimedia Commons, solo licencias de uso comercial | — |
 | Íconos generados | Se genera lo que la librería no tiene, al redactar | `GEMINI_API_KEY` con facturación |
 
 **Apagado, y el porqué de cada uno.**
@@ -69,10 +75,15 @@ Si solo quieres el servidor, `npm run dev:solo`.
 
 | Página | Qué es |
 |---|---|
-| `/` | La lista de carruseles, con la portada de cada uno. |
-| `/post/<slug>` | El editor: formulario a la izquierda, carrusel a la derecha. |
+| `/` | Todos los proyectos, con accesos a carruseles, identidad, archivos y descargas. |
+| `/<proyecto>/archivos` | Las carpetas de la cuenta, para navegarlas, ver imágenes y corregir textos. |
+| `/<proyecto>` | La lista de carruseles de esa cuenta, con la portada de cada uno. |
+| `/<proyecto>/descargas` | Los slides listos para bajarlos al teléfono. |
+| `/<proyecto>/identidad` | Quién es la cuenta: cuestionario, materiales y los textos con los que escribe la IA. |
+| `/nuevo` | Dar de alta una cuenta. |
+| `/<proyecto>/post/<slug>` | El editor: formulario a la izquierda, carrusel a la derecha. |
 | `/plantilla` | El banco de pruebas: aquí se prueba un cambio de diseño sin tocar contenido. |
-| `/render/<slug>/<n>` | Un slide solo, sin nada alrededor. No es para ti: es la que captura Playwright. |
+| `/<proyecto>/render/<slug>/<n>` | Un slide solo, sin nada alrededor. No es para ti: es la que captura Playwright. |
 
 | Tecla | Qué hace |
 |---|---|
@@ -102,7 +113,7 @@ abrir el primer carrusel:
   generados con Gemini sí van en el repositorio: esa restricción no es nuestra.
 
 Lo demás sí viaja: las fuentes, las fotos de los carruseles, el calendario y los
-posts. Las carpetas `public/media/laboratorio-*` no, pero las recrea
+posts. Las carpetas `public/proyectos/<id>/media/laboratorio-*` no, pero las recrea
 `npm run laboratorio` cuando corren las pruebas.
 
 Si al exportar se queja de que falta el navegador, `npx playwright install
@@ -110,9 +121,166 @@ chromium`.
 
 ---
 
+## Proyectos: una carpeta por cuenta
+
+Todo lo que es de una cuenta vive en dos carpetas con su id, y nada más:
+
+```
+proyectos/<id>/                 lo que se edita
+  proyecto.json                 marca y configuración (ver abajo)
+  identidad.md                  quién es la cuenta: historia, público, tono, visual
+  cuestionario.json             lo que se contestó para escribir la identidad
+  materiales/                   manual de identidad, posts pasados, documentos
+  voz.md                        el system prompt de la redacción
+  prompts/                      lo demás que la IA tiene que saber de la cuenta
+    alcance.md                  qué temas son suyos y cuáles no
+    estructura.md               cuántos slides y qué va en cada uno
+    iconos.md                   lo que nunca se pide como ícono
+    fotos.md                    qué foto de banco sí y cuál no (al redactar)
+    fotos-banco.md              lo mismo, para quien busca la foto
+  calendario.tsv                el calendario editorial
+  posts/<slug>.json             los carruseles
+
+public/proyectos/<id>/          lo que se sirve
+  marca/                        logo, logo de la plataforma, retrato
+  media/<slug>/                 las fotos de cada carrusel
+  descargas/                    los PNG para el teléfono
+```
+
+Lo **compartido** entre cuentas: la librería de íconos (`public/iconos/`), su
+estilo (`compartido/estilo-iconos.md`) y los sinónimos del buscador
+(`compartido/sinonimos.json`). Un ícono generado para una cuenta le sirve a la
+siguiente, y la librería se llena el doble de rápido.
+
+El id es lo que va en la URL (`/dr-edwin`, `/dra-mildreth`) y en las rutas de la
+API (`/api/dr-edwin/redactar`). Sale de la URL y no de un "proyecto activo"
+guardado, a propósito: con dos pestañas abiertas en dos cuentas, cada una
+guarda en la suya. Todas las rutas se resuelven en un solo sitio,
+`lib/proyecto.ts`; ninguna otra parte del código arma una a mano.
+
+### proyecto.json
+
+```json
+{
+  "nombre": "Dr. Edwin Maldonado",
+  "usuario": "@alergo_derma",
+  "especialidad": "Especialista en alergología y dermatología",
+  "ciudad": "Durango",
+  "plataforma": "Doctoralia",
+  "plataformaLogo": "/proyectos/dr-edwin/marca/doctoralia-blanco.png",
+  "logo": "/proyectos/dr-edwin/marca/logo-blanco.png",
+  "retrato": "",
+  "cierre": {
+    "lugar": "*Consulta en* **{ciudad}**",
+    "invitacion": "Agenda tu cita desde"
+  },
+  "plantilla": "clinica",
+  "giro": "un dermatólogo",
+  "fuentes": ["Mayo Clinic", "Cleveland Clinic", "AAP", "AAD", "KidsHealth", "StatPearls"],
+  "iconosRecientes": []
+}
+```
+
+- **`cierre`** son las dos líneas de la llamada a la acción del último slide,
+  encima del logo de la plataforma. Aceptan el marcado de la plantilla, y
+  `{ciudad}` y `{plataforma}` se sustituyen. Una consulta dice "Agenda tu cita
+  desde"; una distribuidora dirá "Cotiza por".
+- **`plantilla`** es el diseño que usa la cuenta. Ver
+  [Una plantilla nueva](#una-plantilla-nueva).
+- **`giro`** es quién es la cuenta dicho por un tercero: entra en frases como
+  "un carrusel de Instagram de *un dermatólogo*".
+- **`fuentes`** son las únicas instituciones que el redactor puede citar.
+
+### Lo que es de cada cuenta, y dónde entra en los prompts
+
+Los prompts tienen dos partes. Lo que es de la app —la forma de los campos, cómo
+se busca una foto, la regla de las cifras— vive en el código
+(`lib/instrucciones.ts` y `lib/temas.ts`). Lo que es de la cuenta llega de su
+carpeta y se inserta en su sitio:
+
+| Archivo | Entra en | Qué dice en el del Dr. Edwin |
+|---|---|---|
+| `voz.md` | El system prompt de la redacción | A quién le habla, cómo suena, límites clínicos, la fórmula del copy |
+| `prompts/alcance.md` | Proponer temas, sección «Quién firma» | Alergología **y** dermatología: qué temas sí, cuáles no (láser, estética) |
+| `prompts/estructura.md` | Redactar, sección «Estructura» | Seis slides: portada, qué es, cómo se reconoce, por qué ahora, lista, cuándo acudir |
+| `prompts/iconos.md` | Redactar, «El elemento visual» | Nunca el signo clínico como ícono: el objeto que lo acompaña |
+| `prompts/fotos.md` | Redactar, «La búsqueda de la foto» | Solo ambiente, nunca piel enferma |
+| `prompts/fotos-banco.md` | Buscar foto, con su encabezado | Lo mismo, dicho para quien elige entre candidatos |
+
+Al separarlos, los prompts del Dr. Edwin quedaron **idénticos letra por letra** a
+los de antes: se comprobó armándolos con el código viejo y con el nuevo.
+
+### Dar de alta una cuenta: primero conocerla
+
+**Nuevo proyecto** (en `/` o en la cabecera de cualquier cuenta) pide el nombre y
+lleva a **`/<id>/identidad`**, que hace lo que hace Claude antes de empezar un
+proyecto: preguntar lo que debería saber.
+
+1. **El cuestionario.** A qué se dedican, cómo llegaron ahí, qué los hace
+   distintos, a quién le hablan, cómo suenan, de qué temas sí y de cuáles no,
+   cómo es un buen carrusel suyo. Nada es obligatorio.
+2. **Los materiales.** El manual de identidad, posts publicados, el Canva de una
+   plantilla, el documento del negocio: PDF, imágenes o texto (un Word o un
+   Canva se exportan a PDF). Los posts publicados son lo que más enseña del
+   tono.
+3. **Escribir la identidad con Claude.** Lee todo y propone `identidad.md`, la
+   voz, las cinco piezas de los prompts y los datos de la marca —nombre, ciudad,
+   cierre, fuentes—, más **las preguntas que le faltan** en vez de inventar las
+   respuestas. Se lee, se corrige y se guarda; **hasta que se guarda no cambia
+   nada**, así que pedirla en una cuenta con la voz afinada a mano no la pisa.
+
+Desde ahí, la redacción y la propuesta de temas leen `identidad.md` junto con la
+voz. Se puede volver a esa pantalla cuando cambie algo —un servicio nuevo, otro
+tono— y pedir la identidad otra vez: parte de la que ya hay.
+
+Al darla de alta, la cuenta nace con los textos del Dr. Edwin **como ejemplo**,
+marcados `POR ESCRIBIR`, igual que los campos de `proyecto.json`. **Mientras la
+marca siga, la app no redacta con ellos** y dice qué falta: es la barrera contra
+el error que no avisa, una pediatra escribiendo con el alcance de un
+dermatólogo. Guardar la identidad los reemplaza.
+
+Falta a mano solo el logo en blanco: `public/proyectos/<id>/marca/logo-blanco.png`.
+Desde la terminal hace lo mismo `npm run proyecto:nuevo -- dra-mildreth`.
+
+### Con más de un proyecto
+
+`/` enseña las cuentas para elegir. Los scripts que escriben —`npm run mes`,
+`npm run celular`— **se niegan a adivinar** y piden `--proyecto <id>`; con uno
+solo no hace falta. Va después de `--` para que npm no se quede la bandera:
+
+```bash
+npm run mes -- --proyecto dra-mildreth --plan
+```
+
+`npm run consentimiento` busca en todas las cuentas, porque quien pregunta por
+un consentimiento quiere saber dónde está esa foto.
+
+### Una plantilla nueva
+
+Una plantilla es un diseño completo: sus tipos de slide, su CSS y sus tokens.
+Hoy hay una, `plantillas/clinica/`, la medida sobre el carrusel publicado del Dr.
+Edwin. Lo que pinta un slide —la ruta que captura Playwright, el editor, la
+lista— la pide por su nombre a `plantillas/index.ts`, así que dos cuentas pueden
+verse completamente distintas con la misma app.
+
+Hoy, si una cuenta nueva usa `clinica`, cambia todo lo que es de la marca
+—nombre, logo, cierre, ciudad— y conserva el diseño. Para un diseño propio:
+
+1. Copiar `plantillas/clinica/` a `plantillas/<nombre>/` y cambiar lo que haga falta.
+2. Añadir el nombre en `plantillas/nombres.ts` y su `Slide` en `plantillas/index.ts`.
+3. Poner `"plantilla": "<nombre>"` en el `proyecto.json` de la cuenta.
+
+Lo que todavía no está separado, y es lo siguiente: el CSS de `clinica` se carga
+para toda la app (`app/layout.tsx`), y las paletas y los tamaños que usan el
+editor y el esquema salen de `plantillas/clinica/tokens.ts`. Una segunda
+plantilla tiene que ir con sus clases bajo su propio prefijo y, mientras no se
+generalice eso, usar los mismos nombres de paleta.
+
+---
+
 ## Un carrusel es un archivo
 
-Cada post vive en `content/posts/<slug>.json`. No hay base de datos: el sistema
+Cada post vive en `proyectos/<id>/posts/<slug>.json`. No hay base de datos: el sistema
 de archivos es la base de datos y git es el historial. Para agregar uno a mano,
 copia otro, cámbiale el `slug` y los textos, y aparece solo en la lista.
 
@@ -131,9 +299,9 @@ copia otro, cámbiale el `slug` y los textos, y aparece solo en la lista.
                "#dermatologodurango", "#pielsana"],
   "slides": [
     { "tipo": "portada", "titulo": "*La infección de*\nRegreso **a clases**",
-      "pregunta": "¿Qué es el impétigo?", "foto": "/media/…/portada.jpg" },
+      "pregunta": "¿Qué es el impétigo?", "foto": "/proyectos/dr-edwin/media/…/portada.jpg" },
     { "tipo": "contenido", "titulo": "…", "bajada": "…", "cuerpo": "…",
-      "visual": { "clase": "foto", "src": "/media/…/01.jpg" },
+      "visual": { "clase": "foto", "src": "/proyectos/dr-edwin/media/…/01.jpg" },
       "fuente": "Cleveland Clinic." },
     { "tipo": "lista", "titulo": "…", "puntos": ["…", "…", "…", "…"] },
     { "tipo": "cierre" }
@@ -146,14 +314,14 @@ Cosas que conviene saber del formato:
 - **Cada tipo de slide tiene sus campos y no acepta los del otro.** Si le pones
   `puntos` a un slide de contenido, el archivo no pasa y la app te dice el campo
   exacto en vez de pintar la página a medias.
-- **El cierre no guarda nada.** Sale todo de `content/marca.json`, así que el día
+- **El cierre no guarda nada.** Sale todo de `proyectos/<id>/proyecto.json`, así que el día
   que cambies de ciudad o de plataforma de citas se corrige en un solo lugar y se
   arregla el archivo histórico completo.
 - **Las rutas de imagen son locales**, siempre dentro de `public/`. Una URL
   externa es un error de validación a propósito: los enlaces caducan y el PNG
   sale con un hueco meses después.
-- **`estado`** es `borrador`, `aprobado` o `publicado`. Sirve para saber qué
-  falta revisar del mes.
+- **`estado`** es `borrador`, `aprobado` o `publicado`. `aprobado` es que la
+  cuenta ya dio el visto bueno; sirve para saber qué falta del mes.
 - **`overrides`** es la excepción de un slide: `offsetY`, `tituloPx`, `cuerpoPx`,
   `mediaAncho`, `mediaAlto`. Vive en el contenido, nunca en los tokens. Si un
   slide junta muchos, la señal es que el token está mal.
@@ -182,23 +350,17 @@ Opus—; lo que baja el costo es cambiar de *nivel*, Opus → Sonnet. Proponer t
 y sacar criterios de búsqueda ya van en Sonnet: eligen entre reglas que están
 escritas en el prompt, no inventan contenido.
 
-Bajar el de redactar es otra cosa, y **el riesgo no está donde parece**. La
-barrera de afirmaciones no deja publicar una cifra sin revisar venga del modelo
-que venga, así que no se arriesga una mentira publicada: se arriesga que salgan
-*más afirmaciones que revisar*, y revisar ya es el cuello de botella —once por
-carrusel, cinco de ellas para el médico—. Un modelo que escriba dos cifras de
-más por carrusel se paga solo en tiempo de revisión.
-
-Así que la forma de saber si salió a cuenta no es leer el carrusel: es mirar
-**cuántas afirmaciones dejó en la cola**, que sale en el resumen de `npm run
-mes` y en el panel del calendario. Un carrusel son unos 7.400 tokens de entrada
-y 7.800 de salida, medidos.
+Bajar el de redactar es otra cosa: el texto es lo que la cuenta lee cuando se le
+manda el carrusel, y un modelo más barato escribe más cifras flojas y frases más
+genéricas, que son justo los cambios que la cuenta pide de vuelta. Lo que se
+ahorra en tokens se paga en vueltas por WhatsApp. Un carrusel son unos 7.400
+tokens de entrada y 7.800 de salida, medidos.
 
 El esquema está en `lib/schema.ts` y se usa en los tres momentos: al leer un
 archivo, al guardar desde el editor y al validar lo que devuelva el modelo al
 redactar (fase 6). Es el mismo en los tres a propósito.
 
-En `content/ejemplos/impetigo-brief.md` está el brief de una publicación real,
+En `proyectos/dr-edwin/ejemplos/impetigo-brief.md` está el brief de una publicación real,
 con su copy. Sirve de dos cosas: de formato de referencia para el importador, y
 de recordatorio de que **el brief no es el arte final**. En ese ejemplo el título
 de la portada acabó siendo otro, los íconos que proponía no son los que se
@@ -211,11 +373,14 @@ publicaron y la sección de cierre describe una plantilla anterior.
 Formulario a la izquierda, carrusel a la derecha. Cuatro cosas son las que se
 notan al usarlo todos los días:
 
-**La imagen se suelta sobre el slide, no sobre un campo.** Arrastra la foto y
-suéltala encima del slide de la derecha. El slide se ilumina cuando la va a
-aceptar; el de cierre y el de lista no la aceptan y no se iluminan. La imagen se
-guarda en `public/media/<slug>/`, con el nombre normalizado y bajada a 1600 px
-de ancho.
+**Tu imagen, con un botón o soltándola sobre el slide.** En la tarjeta de cada
+slide con imagen está **Subir mi imagen**; también se puede arrastrar la foto
+encima del slide de la derecha, que se ilumina cuando la va a aceptar (el de
+cierre y el de lista no la aceptan). La imagen se guarda en
+`public/proyectos/<id>/media/<slug>/`, con el nombre normalizado y bajada a
+1600 px, y queda con el crédito de la cuenta puesto, así que no hay que llenar
+nada para poder aprobar el carrusel. Es para las que manda la cuenta: una foto
+que tomó el doctor, una de un libro o un estudio que puede usar.
 
 **No hay botón de guardar.** Se guarda solo, 600 ms después de la última tecla,
 y el indicador de arriba dice en qué va. Si el guardado falla —porque el
@@ -289,7 +454,7 @@ de tamaños distintos. Es incremental, así que correrlo dos veces no duplica na
 
 **Para buscar**, en la tarjeta de un slide con ícono, el botón abre un modal con
 la rejilla. Los nombres vienen en inglés y aquí se busca en español, así que cada
-palabra arrastra sus sinónimos desde `content/sinonimos.json`, que se edita a
+palabra arrastra sus sinónimos desde `compartido/sinonimos.json`, que se edita a
 mano: "fiebre" encuentra el termómetro, "advertencia" encuentra la alerta. Los
 últimos doce usados salen primero.
 
@@ -354,7 +519,7 @@ curl -X POST localhost:3001/api/icono   -H 'Content-Type: application/json'   -d
 npm run comparar-iconos <archivo.png> lupa   # el candidato contra la librería
 ```
 
-**El estilo vive en `content/estilo-iconos.md`**, hermano de `voz.md`: se
+**El estilo vive en `compartido/estilo-iconos.md`**, hermano de `voz.md`: se
 antepone a cada concepto en cada llamada y se edita ahí, no en el código. Su
 descripción sale de mirar la librería que ya está —plástico mate con brillo
 satinado, sombra propia sin sombra proyectada, vista de tres cuartos—, porque
@@ -437,25 +602,19 @@ cuesta lo mismo que haberlo elegido antes.**
 
 **Lo que sigue preguntando no es preferencia y no va a dejar de preguntar:**
 
-- **La cola de afirmaciones.** Una cifra plausible con una institución al lado
-  es el error más difícil de cazar. Se revisa de una en una y no hay botón de
-  aprobar todo.
-- **La aprobación de imágenes clínicas.** Que esa piel sea lo que el texto dice
-  que es lo firma un médico, y el servidor lo comprueba contra
-  `content/marca.json`.
 - **El paso de edición entre redactar y exportar.** El borrador se abre en el
   editor. No hay camino de un texto generado a un PNG sin que alguien lo mire.
 
 Cada tarjeta de la lista lleva dos botones cuadrados, sin texto porque en una
 rejilla de cinco columnas una etiqueta la partiría: **avanzar el estado**
 (`borrador → aprobado → publicado`, apagado en publicado) y **exportar el ZIP**.
-El primero no es un atajo alrededor de nada: manda el post a `/api/post` y el
-servidor decide, así que si quedan afirmaciones sin revisar el estado no se
-mueve y la tarjeta dice por qué. La suite lo comprueba dando el clic.
+El primero no es un atajo alrededor de nada: manda el post a `/api/<proyecto>/post` y el
+servidor decide, así que si queda una foto sin fuente ni licencia el estado no
+se mueve y la tarjeta dice por qué. La suite lo comprueba dando el clic.
 
 ## El calendario: escribir los que faltan
 
-El calendario editorial vive en **`content/calendario.tsv`**. Se sube de dos
+El calendario editorial vive en **`proyectos/<id>/calendario.tsv`**. Se sube de dos
 maneras y las dos escriben el mismo archivo, así que da igual cuál se use:
 
 **Desde la portada** — «Escribir varios desde el calendario». Se suelta el CSV o
@@ -471,6 +630,7 @@ npm run mes -- 3001 --plan               # qué falta, sin escribir ni gastar na
 npm run mes -- 3001                      # escribe todos los que faltan
 npm run mes -- 3001 --desde colageno     # de esa fila en adelante
 npm run mes -- 3001 --desde 4            # lo mismo, por el número de la hoja
+npm run mes -- 3001 --proyecto adimex    # con varias cuentas, de cuál
 ```
 
 | No. | Fecha | Día | Tipo | Pilar | Tema | Objetivo | Nota estratégica |
@@ -485,7 +645,7 @@ las filas sin tema se saltan y se cuentan; cualquier otra que se caiga se dice
 con su línea y su motivo, porque una fila que desaparece en silencio es un
 carrusel que nadie echa de menos hasta su día.
 
-**Sin `content/calendario.tsv`, el modelo propone la tanda** como antes:
+**Sin `proyectos/<id>/calendario.tsv`, el modelo propone la tanda** como antes:
 `npm run mes -- 8 3001`, ocho por defecto —dos por semana— con techo de veinte.
 
 ### Lo que el calendario le quita de encima al modelo
@@ -516,7 +676,7 @@ medida de `lib/mes.ts`, que es la misma que detecta repetidos.
 Doce carruseles son media hora y una ruta de Next se corta a los cinco minutos,
 así que una sola petición que lo haga todo no existe. Las opciones eran una cola
 de trabajos en el servidor —con su estado, su reinicio y su endpoint de
-consulta— o que el bucle viva en el navegador y llame a `/api/redactar` una vez
+consulta— o que el bucle viva en el navegador y llame a `/api/<proyecto>/redactar` una vez
 por fila, que es exactamente lo que hace `npm run mes` desde la terminal.
 
 Gana lo segundo, y no solo por ser menos código: **cada carrusel se guarda en
@@ -527,7 +687,7 @@ pregunta antes de cerrarla.
 
 ### Lo demás que hace la tanda
 
-- **Habla por HTTP con el servidor de desarrollo** y llama a `/api/redactar`, la
+- **Habla por HTTP con el servidor de desarrollo** y llama a `/api/<proyecto>/redactar`, la
   misma ruta que el botón de redactar uno. Mismo prompt, mismas fotos, mismos
   íconos. No es una segunda implementación que se va separando sola.
 - **Ninguna foto se usa dos veces.** Nueve carruseles sobre temas vecinos le
@@ -558,17 +718,10 @@ lo que convierte una suposición en una comprobación.
 
 ### El costo de verdad no son los tokens
 
-Al terminar dice cuántas afirmaciones acaban de entrar a la cola y cuántas de
-ésas son indicaciones de seguridad. Medido sobre un carrusel real de la tanda:
-**once afirmaciones, cinco de seguridad.** Ocho carruseles son del orden de
-noventa por revisar y cuarenta que firma el doctor, no tú. Escribir el mes toma
-veinte minutos; revisarlo, no.
-
-**La tanda no afloja nada.** Todo sale en `borrador`, la cola de afirmaciones
-queda entera, las fotos clínicas siguen sin poder entrar por aquí y ninguno se
-puede pasar de estado hasta que esté revisado. Lo único que se hace en tanda es
-**escribir**, que es la parte lenta y la que no decide nada. Revisar sigue
-siendo de uno en uno, y ahí no hay atajo.
+Escribir el mes toma veinte minutos; lo caro es lo que viene después: leer cada
+carrusel, mandárselo a la cuenta y aplicar lo que pida. Por eso la tanda **no
+aprueba nada**: todo sale en `borrador`. Lo único que se hace en tanda es
+**escribir**, que es la parte lenta y la que no decide nada.
 
 ### Los dos umbrales del repetido
 
@@ -589,17 +742,17 @@ se parece: cuál de los dos sobra es criterio editorial y no de un umbral.
 
 ## Exportar
 
-Desde `/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
+Desde `/<proyecto>/post/<slug>`, el botón **Exportar carrusel (ZIP)**. Tarda unos segundos
 por slide porque abre un navegador de verdad.
 
 Te bajas un ZIP con `01.png` … `07.png` y el `copy.txt`. Los mismos
-archivos quedan además en `salidas/<slug>/`, que suele ser más cómodo que
+archivos quedan además en `salidas/<proyecto>/<slug>/`, que suele ser más cómodo que
 descomprimir.
 
 Los PNG salen a **2160 × 2700**, el doble del lienzo. Instagram recomprime, y
 entregarle el doble de píxeles conserva mucho mejor los bordes de la tipografía.
 
-Por debajo es `POST /api/exportar`:
+Por debajo es `POST /api/<proyecto>/exportar`:
 
 ```jsonc
 { "slug": "impetigo-regreso-a-clases",
@@ -618,38 +771,17 @@ el flujo de una persona eso no es una limitación, es una simplificación.
 
 ---
 
-## La cola de revisión
+## La revisión es con la cuenta, no en la app
 
-Un modelo puede escribir una cifra plausible con una institución real al lado
-—"cerca del 10% de las consultas de piel en niños (StatPearls)"— y eso es más
-difícil de cazar que un error obvio, porque llega ya vestido de verificado.
+La validación pasa por fuera: se le mandan las imágenes a la cuenta —al doctor,
+al cliente— por WhatsApp y dice si algo cambia. A veces pide cambiar una imagen
+por otra que tomó o que vio en un libro o un estudio que tiene libertad de usar;
+para eso está **Subir mi imagen** en cada slide.
 
-Por eso el editor extrae del carrusel las afirmaciones que hay que mirar y no
-deja marcarlo como aprobado hasta que estén revisadas una por una. El post de
-impétigo, por ejemplo, tiene nueve.
-
-Entran por cuatro disparadores, que se acumulan:
-
-| | qué lo dispara |
-|---|---|
-| `cifra` | un porcentaje, "N de cada N", una cantidad con unidad |
-| `fuente` | una institución nombrada, en el slide o dentro del copy |
-| `seguridad` | un modal junto a tratamiento, contagio, vuelta a clases o consulta: "necesita antibiótico", "puede volver a clases" |
-| cifra sin fuente | no es para revisar, es una regla rota |
-
-**Las que llevan cifra exigen el enlace a la fuente.** Pegar la URL obliga a
-haber abierto la fuente; con el campo opcional, "la verifiqué" se vuelve trámite.
-En las demás el enlace es opcional.
-
-Cada revisión se guarda por una **huella** del texto: si cambias una coma, la
-afirmación vuelve sola a la cola. No se puede aprobar una frase y luego cambiarla.
-
-**Lo que esto no hace.** El sistema no comprueba nada: no abre la fuente, no
-valida el enlace, no contrasta la atribución. Una entrada en `revisiones`
-significa una sola cosa, que **una persona la miró un día**. Por eso el JSON
-guarda `revisadaPor` y `fecha`, y no un `"verificada"` que dentro de seis meses
-alguien leería como si el sistema hubiera comprobado algo. Está explicado largo
-en `references/ia.md` de la skill.
+La app no pide firmas ni revisiones a nadie: hacerlo sería molestar a la cuenta
+dos veces por lo mismo. Lo que sí sigue cuidando es lo que es de quien edita:
+que el texto lleve sus fuentes (el prompt lo pide) y que cada foto diga de dónde
+salió.
 
 ## Las fotos: de dónde salen y bajo qué licencia
 
@@ -665,10 +797,14 @@ Cada foto del carrusel guarda en el JSON de dónde salió y bajo qué términos:
 }
 ```
 
-**Sin eso el carrusel no se puede marcar como aprobado.** Es la misma barrera
-que la de las afirmaciones: va en el estado y no en la exportación, y del
-guardado y no de la lectura, para que un carrusel de antes del mecanismo siga
-abriéndose. Y `"desconocida"` no la pasa, a propósito: si no se sabe de dónde
+**Sin eso el carrusel no se puede marcar como aprobado.** La barrera va en el
+estado y no en la exportación, y del guardado y no de la lectura, para que un
+carrusel de antes del mecanismo siga abriéndose.
+
+**Las imágenes que se suben a mano ya lo llevan**: quedan con fuente
+"Proporcionada por la cuenta" y licencia "Uso autorizado por la cuenta", que es
+lo que se sabe de una foto que mandó el doctor. Si se sabe más —el libro, el
+estudio, quién la tomó—, se escribe en la tarjeta del slide. Y `"desconocida"` no la pasa, a propósito: si no se sabe de dónde
 salió la foto, el crédito se queda vacío y el post se queda en borrador.
 Rellenar el campo satisfaría la validación sin registrar nada.
 
@@ -682,7 +818,7 @@ En la tarjeta de un slide con foto, **Buscar foto en el banco**. Dos etapas:
 2. El banco devuelve candidatos. Corregir la consulta y volver a buscar no gasta
    modelo, solo cuota del banco.
 
-Al elegir una, **se descarga a `public/media/<slug>/` y el crédito se escribe en
+Al elegir una, **se descarga a `public/proyectos/<id>/media/<slug>/` y el crédito se escribe en
 el mismo movimiento**. No hay ventana en la que el archivo esté puesto y la
 procedencia sin escribir; ese era el problema, porque el campo se llenaba a mano
 y por eso estaba vacío en todo el proyecto.
@@ -698,7 +834,7 @@ por un caso concreto: el slide del contagio en la escuela se publicó con la fot
 de un gimnasio, porque encajaba con "niños juntos".
 
 Solo fotos **de contexto**: un aula, mochilas, el recreo. Nada clínico. Las
-fotos de lesiones son otro flujo, con aprobación del médico, y no pasan por aquí.
+fotos de lesiones salen del archivo clínico o las sube la cuenta.
 
 ### Por qué Unsplash no está en el buscador
 
@@ -725,38 +861,22 @@ llene sola.
 `PEXELS_API_KEY` en `.env.local`. El límite gratuito es de 200 peticiones por
 hora y 20 000 al mes, de sobra para un mes de carruseles.
 
-### Las fotos clínicas van por otra cola
+### Subir mi imagen
 
-Una foto de aula y una foto de piel enferma se eligen con el mismo gesto y no
-son la misma decisión. En la de aula lo único que se revisa es de dónde salió;
-en la de piel, además, **si esa imagen es lo que el texto dice que es**, y eso
-lo firma un médico. Por eso el archivo clínico es un panel aparte, se ve
-distinto, y lo que sale de él no se puede insertar sin firma.
+En la tarjeta de cada slide con imagen —portada y contenido— está **Subir mi
+imagen**, o se arrastra la foto encima del slide. Funciona aunque el slide lleve
+ícono o nada: subir una imagen la pone como foto. La imagen se guarda en
+`public/proyectos/<id>/media/<slug>/`, bajada a 1600 px.
+
+Lo que sugirió el algoritmo no estorba: los buscadores siguen debajo, para volver
+a una foto de banco cuando se quiera.
+
+### El archivo clínico
 
 En la tarjeta de un slide con foto: **Archivo clínico — imágenes de lesión**.
-El sistema propone; el médico inserta. El botón no se activa hasta que se
-escribe su nombre, y el servidor lo vuelve a comprobar: lo que queda en el JSON
-es una firma, y un botón desactivado en el navegador no basta para eso.
-
-Lo que se guarda al aprobar:
-
-```json
-"clinica": true,
-"aprobacion": {
-  "aprobadaPor": "Dr. Edwin Maldonado",
-  "fecha": "2026-09-06",
-  "huella": "9f2c…"
-}
-```
-
-**La huella es de los bytes de la imagen, no de su ruta.** Si el archivo cambia
-—alguien lo sustituye por otro con el mismo nombre—, la firma deja de valer y el
-carrusel vuelve a borrador. Es la misma idea que sostiene la cola de
-afirmaciones: allí editar el texto devuelve la afirmación a la cola, aquí
-cambiar la imagen devuelve la aprobación al médico.
-
-Y como allí, esto no dice que el sistema haya comprobado nada. Dice que una
-persona con cédula miró esa imagen concreta un día concreto.
+Busca en Wikimedia Commons por el nombre de la condición y solo ofrece las que
+tienen una licencia de uso comercial. Se elige una, **Poner en el slide**, y
+queda con su crédito escrito, igual que una de Pexels.
 
 ### El consentimiento es una referencia, no un sí
 
@@ -771,7 +891,6 @@ que esté publicado.** Un sí no se puede buscar.
 ```bash
 npm run consentimiento                      # todo lo que lleva consentimiento
 npm run consentimiento "expediente 218"     # solo ese
-npm run consentimiento -- --clinicas        # todas las fotos clínicas
 ```
 
 Devuelve el carrusel, el slide, la ruta del archivo y si está publicado. No
@@ -817,9 +936,8 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 
 | Banco | Qué mide | Por qué no se puede mirar a ojo |
 |---|---|---|
-| `npm run banco` | El disparador de seguridad, contra quince frases | "Necesita antibiótico" y "suele picar de noche" tienen las dos un verbo, y solo una manda hacer algo |
 | `npm run banco-fotos` | El adaptador de Pexels y el descarte | Aparta el gimnasio del slide del contagio, y prueba lo que pasa cuando la respuesta viene rota |
-| `npm run banco-clinicas` | El archivo clínico y la barrera de aprobación | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
+| `npm run banco-clinicas` | Las licencias del archivo clínico | Inventa licencias —incluida la de DermNet— y comprueba que las malas no pasan |
 | `npm run banco-croma` | El recorte del fondo verde | El halo verde no se ve sobre el blanco del editor y sí sobre el azul del slide |
 | `npm run banco-manifiesto` | Que la ingesta no borre lo que no calculó | El borrado no se nota: la entrada sigue ahí, solo le faltan campos |
 | `npm run banco-proponer` | Que el contexto llegue al prompt de propuestas | Con la lista de temas vacía el modelo sigue contestando bien, y uno repetiría lo publicado |
@@ -828,13 +946,14 @@ npm run pruebas 3002      # el editor entero, con Playwright y servidor
 | `npm run banco-mes` | Que la tanda no escriba dos veces el mismo carrusel | Un repetido cuesta una llamada larga y una revisión entera para tirarlo; tirar uno bueno deja el mes corto sin que nadie sepa por qué |
 | `npm run banco-calendario` | Que la hoja se lea como está escrita | Una fecha al revés se publica fuera de temporada y una fila que desaparece no se echa de menos hasta su día. Ninguna de las dos da error |
 | `npm run banco-variedad` | Que el reparto de color no pise una elección del modelo | Cambiar el turquesa de un carrusel de albercas no se ve en la cuadrícula: se ve leyendo, y para entonces está publicado |
+| `npm run banco-proyectos` | Que cada cuenta escriba con lo suyo y guarde en lo suyo | Un carrusel de la pediatra redactado con el alcance del dermatólogo no revienta: sale bien escrito y equivocado. Tampoco una foto guardada en la carpeta de otra cuenta |
 | `npm run iconos:recortar` | Busca íconos guardados con el fondo de croma puesto | No es una prueba, es una reparación. Sin `--escribir` solo dice cuáles están mal; `--fondo <slug> <r,g,b>` para los que ya no tienen el croma en la orilla |
 
 ```bash
 npm run laboratorio       # devuelve los carruseles de prueba a su estado inicial
 ```
 
-**Los cinco `banco*` corren sin navegador, sin servidor y sin salir a la red.**
+**Los `banco*` corren sin navegador, sin servidor y sin salir a la red.**
 Miden contra respuestas reales congeladas en `scripts/muestras/` y contra copias
 mutadas a mano. Eso es lo que hace que los casos de fallo —una foto sin autor,
 una licencia no comercial, un campo que el adaptador no reconoce— salgan tan
@@ -883,7 +1002,7 @@ píxel a píxel contra la vista previa.
 
 Esta segunda es la que conviene vigilar. Si sale distinta, casi siempre es que el
 ajuste automático de texto no corrió en `/render` y el PNG salió con la letra en
-otro tamaño. El hook vive en `template/` y lo usan las dos rutas justamente para
+otro tamaño. El hook vive en `plantillas/clinica/` y lo usan las dos rutas justamente para
 que no pueda pasar, pero es el error clásico de este tipo de proyecto.
 
 Siempre quedan unas decenas de píxeles de diferencia en el borde de un ícono
@@ -898,23 +1017,24 @@ Los mapas de diferencias quedan en `salidas/verificar/diff-NN.png`, en rojo.
 
 ## Dónde se cambia cada cosa
 
-Todo el diseño vive en `template/`. **Si quieres cambiar cómo se ve algo, la
+Todo el diseño vive en `plantillas/clinica/`. **Si quieres cambiar cómo se ve algo, la
 respuesta siempre está dentro de esa carpeta.** Si para mover un título hay que
 tocar `app/`, algo se rompió.
 
 | Quiero cambiar… | Archivo |
 |---|---|
-| Un color, un tamaño de letra, un margen, una separación | `template/tokens.ts` |
-| Cómo se acomodan las piezas de un slide | `template/plantilla.css` |
-| Qué lleva cada tipo de slide | `template/slides/` |
-| La cabecera, el pie, la flecha, la palomita, el papel | `template/partes/` |
+| Un color, un tamaño de letra, un margen, una separación | `plantillas/clinica/tokens.ts` |
+| Cómo se acomodan las piezas de un slide | `plantillas/clinica/plantilla.css` |
+| Qué lleva cada tipo de slide | `plantillas/clinica/slides/` |
+| La cabecera, el pie, la flecha, la palomita, el papel | `plantillas/clinica/partes/` |
 | Qué campos acepta un post | `lib/schema.ts` |
-| Tu nombre, ciudad, plataforma de citas, logotipo | `content/marca.json` |
-| El papel rasgado, la palomita y la flecha | `template/partes/` (van dibujados en línea) |
-| El color de fondo y todo lo que va encima | `template/tokens.ts`, en `paletas` |
+| Tu nombre, ciudad, plataforma de citas, logotipo, el texto del cierre | `proyectos/<id>/proyecto.json` |
+| Cómo escribe la IA, qué temas son de la cuenta, cuántos slides | `proyectos/<id>/voz.md` y `proyectos/<id>/prompts/` |
+| El papel rasgado, la palomita y la flecha | `plantillas/clinica/partes/` (van dibujados en línea) |
+| El color de fondo y todo lo que va encima | `plantillas/clinica/tokens.ts`, en `paletas` |
 
 `tokens.ts` es la única fuente de verdad de los números. `plantilla.css` no tiene
-ni un valor suelto: los lee de ahí a través de `template/variables.ts`.
+ni un valor suelto: los lee de ahí a través de `plantillas/clinica/variables.ts`.
 
 ### Las paletas
 
@@ -1022,11 +1142,11 @@ sale con la letra equivocada y nadie lo nota hasta que el post está publicado.
 | Fase | Qué trae |
 |---|---|
 | 1 · plantilla | ✅ Los tipos de slide y sus valores. |
-| 2 · contenido | ✅ Los posts en `content/posts/*.json`, validados con Zod. |
+| 2 · contenido | ✅ Los posts en `proyectos/<id>/posts/*.json`, validados con Zod. |
 | 3 · exportación | ✅ Los PNG a 2160×2700 y el ZIP con el copy y los créditos. |
 | 4 · editor | ✅ Dos columnas, arrastrar y soltar imágenes, ajuste fino sobre el canvas. |
 | 5 · íconos | ✅ La librería alojada aquí, con ingesta, manifiesto y buscador. |
-| 6 · redacción | ✅ `/api/redactar`, la cola de afirmaciones y el mes entero. |
+| 6 · redacción | ✅ `/api/<proyecto>/redactar` y el mes entero. |
 | + imágenes | ✅ Pexels para contexto, Wikimedia Commons para clínicas, con registro de licencia. |
 | + generación | ✅ Íconos con Gemini, croma y la misma puerta que los descargados. |
 
@@ -1046,6 +1166,21 @@ leerla bien y en saber cuáles ya se escribieron. El paso de tachar a mano
 tampoco hizo falta: `--plan` enseña la tanda sin escribirla y `--desde` recorta
 por dónde empezar.
 
+### Varios proyectos
+
+| Fase | Qué trae |
+|---|---|
+| 1 · una carpeta por cuenta | ✅ `proyectos/<id>/`, rutas en `lib/proyecto.ts`, URLs y API con el id, scripts con `--proyecto`. |
+| 2 · lo de la cuenta fuera del código | ✅ Alcance, estructura, reglas de imagen, fuentes, giro y cierre en la carpeta de cada cuenta; plantilla elegida por proyecto. |
+| 3 · sin revisión en la app | ✅ Fuera la cola de afirmaciones y la firma de fotos clínicas: la validación es con la cuenta, por fuera. Botón para subir la imagen propia en cada slide. |
+| 4 · la identidad de cada cuenta | ✅ Cuestionario, materiales e `identidad.md` escrito por Claude, que la redacción lee con la voz. |
+| 5 · la Dra. Mildreth | La primera cuenta de verdad que no es el Dr. Edwin: alta, identidad, y un mes de carruseles. |
+| 6 · una cuenta que no es médica | Adimex. El panel del archivo clínico tendría que poder apagarse en `proyecto.json` y, si su diseño es otro, la plantilla propia con su CSS separado (ver «Una plantilla nueva»). |
+
+Lo que queda de dermatología en los prompts compartidos son **ejemplos** —"en un
+carrusel de alergia alimentaria van cacahuates"—, no reglas. A otra consulta le
+sirven igual; a Adimex le conviene revisarlos en la fase 6.
+
 ---
 
 ## Cosas que conviene saber
@@ -1062,30 +1197,68 @@ por dónde empezar.
   generado se versiona solo, sin que nadie mantenga una lista. Los once de
   Thiings que hay son de prueba; la lupa es propia.
 - **Falta tu retrato** para el slide de cierre. Ponlo en
-  `public/marca/retrato.jpg` y apunta ahí `retrato` en `content/marca.json`.
+  `public/proyectos/<id>/marca/retrato.jpg` y apunta ahí `retrato` en `proyectos/<id>/proyecto.json`.
   Mientras tanto ese slide sale con el fondo café y el degradado, sin foto.
 - **`salidas/` no se versiona.** Se regenera cada vez que exportas.
 
 
-## Subirlo a Vercel
+## Usarlo desde Vercel
 
-El despliegue sirve para **dos cosas y ninguna más**: ver los carruseles desde
-donde sea y bajar los slides al teléfono para publicarlos. No edita.
+El despliegue hace **lo mismo que la computadora**: ver todos los proyectos,
+navegar sus archivos, redactar, editar, subir fotos, generar íconos, contar la
+identidad de una cuenta nueva y exportar. Es para el post urgente que sale desde
+el teléfono.
 
-### Por qué no edita
+### Dónde se guarda
 
-No es una decisión de diseño, es lo que hay. En Vercel el disco del proyecto es
-de solo lectura y cada petición corre en un contenedor que se destruye al
-terminar, así que las siete rutas que guardan archivos —el carrusel, las fotos,
-el calendario, los íconos, la exportación— no pueden funcionar allá. Escribirían
-en un `/tmp` que se evapora, y parecería que guardaron.
+En Vercel el disco es de solo lectura y cada petición corre en un contenedor que
+se destruye al terminar. Así que allá **cada cambio es un commit en el
+repositorio**, en la rama del despliegue, por la API de GitHub
+(`lib/almacen.ts`), y leer también va contra esa rama, no contra los archivos
+del build.
 
-`lib/soloLectura.ts` las apaga cuando detecta que está en Vercel y contesta
-diciendo qué pasa. Sin eso, dar a guardar desde el teléfono devuelve un error de
-permisos de Node en crudo.
+Con eso el repositorio sigue siendo la única fuente, como siempre:
 
-Y la exportación además abre un Chromium de verdad, que allá no existe. Por eso
-se exporta aquí y el despliegue solo sirve el resultado.
+- **Lo que hagas en el teléfono aparece en la computadora con `git pull`.**
+- Lo que hagas en la computadora llega al teléfono con `git push`.
+- Antes de ponerte a trabajar en la computadora, `git pull`; si no, el
+  siguiente push choca con lo que se escribió desde el teléfono.
+
+Cada guardado es un commit con un mensaje que dice qué fue ("dr-edwin: Impétigo
+en el regreso a clases"). En el teléfono el guardado automático espera 2,5 s en
+vez de 600 ms, para que un párrafo sea un commit y no veinte. Un carrusel
+redactado y retocado son unos cuantos; la suite entera, unos treinta.
+
+**Los commits de contenido no reconstruyen el sitio.** `vercel.json` le dice a
+Vercel que se salte el build cuando un commit solo toca `proyectos/`,
+`public/proyectos/`, `public/iconos/` o `compartido/`. Lo nuevo —una foto
+subida, un ícono generado— no está en el build, y lo sirven `/proyectos/…`,
+`/iconos/…` y `/archivo/…` desde el repositorio (`lib/servir.ts`).
+
+### Exportar
+
+En la computadora se captura con el Chromium de Playwright. En Vercel no hay
+ninguno, y se usa `@sparticuz/chromium`, que está hecho para funciones: viene
+comprimido y se descomprime al arrancar. Playwright lo maneja igual. El primer
+export después de un rato tarda unos segundos más, mientras se descomprime.
+
+Ese Chromium visita `/render` como cualquier visitante, y la protección de
+Vercel lo mandaría a iniciar sesión. Para eso está la «Protection Bypass for
+Automation» (paso 4): Vercel pone el secreto en
+`VERCEL_AUTOMATION_BYPASS_SECRET` y el exportador lo manda.
+
+### Desde el teléfono
+
+- **`/`** enseña siempre todos los proyectos, con accesos a carruseles,
+  identidad, archivos y descargas.
+- **`/<proyecto>/archivos`** navega las carpetas de la cuenta: lo que se edita
+  (`proyectos/<id>/`) y lo que se sirve (`public/proyectos/<id>/`). Se ven las
+  imágenes y los PDF, se leen los JSON, y los textos —`voz.md`, los prompts, el
+  calendario— se corrigen ahí mismo.
+- **El editor se ajusta al ancho** del teléfono al abrirlo, con un solo scroll.
+- **Las fotos se reducen en el teléfono** antes de subirse: Vercel no acepta
+  más de 4,5 MB por petición, y una foto de cámara pesa el doble. Los PDF de
+  materiales de más de 4 MB se suben desde la computadora.
 
 ### Que solo entres tú
 
@@ -1096,41 +1269,63 @@ Vercel lo trae de fábrica y no hay que programar nada:
 
 Con eso, abrir la URL exige iniciar sesión con una cuenta de Vercel de tu equipo.
 Es mejor que cualquier login escrito a mano: no hay contraseñas que guardar, ni
-sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso.
+sesiones que caduquen mal, ni una ruta que se olvide de comprobar el permiso. Y
+como ahora el despliegue escribe en el repositorio, **no lo quites**.
 
 ### Los pasos
 
 1. **Importar.** En vercel.com → Add New → Project → el repositorio. Next.js lo
    detecta solo; no hay que tocar la configuración de build.
-2. **Las llaves.** Settings → Environment Variables, las mismas tres de
-   `.env.local` (ver `.env.local.ejemplo`). Sin ellas la app arranca, pero
-   redactar y buscar fotos no funcionan — que allá tampoco funcionarían.
-3. **La protección**, arriba.
-4. **Push.** Cada `git push` a `main` despliega.
+2. **El token de GitHub.** En GitHub → Settings → Developer settings →
+   Fine-grained tokens → nuevo token con acceso **solo a este repositorio** y el
+   permiso **Contents: Read and write**. Va en Vercel → Settings → Environment
+   Variables como `GITHUB_TOKEN`. Sin él la app arranca en solo lectura y lo
+   dice al intentar guardar.
+3. **Las llaves** de `.env.local` —`ANTHROPIC_API_KEY`, `PEXELS_API_KEY`,
+   `GEMINI_API_KEY`—, en el mismo sitio.
+4. **La protección**, arriba, y en la misma página **Protection Bypass for
+   Automation → Add**: es lo que deja exportar.
+5. **La duración de las funciones.** Redactar un carrusel o escribir la
+   identidad tarda uno o dos minutos; las rutas piden hasta 300 s. Con Fluid
+   Compute (activado por omisión en proyectos nuevos) caben.
+6. **Push.** Cada `git push` a `main` despliega.
+
+Para probar el modo Vercel sin token ni red está el GitHub simulado: habla la
+misma API y por debajo es la carpeta del proyecto.
+
+```bash
+npm run github-simulado 3999
+ALMACEN=github GITHUB_TOKEN=prueba GITHUB_REPO=yo/carruseles \
+  GITHUB_API_URL=http://localhost:3999 npm run dev:solo -- -p 3002
+ALMACEN=github npm run pruebas 3002
+```
 
 ### Bajar los slides al teléfono
 
-Desde la app, que es lo cómodo: en **/descargas → «Mandar un carrusel al
-teléfono»** sale la lista entera y cada uno tiene su botón. Ese panel solo
-aparece en tu máquina; en Vercel no, porque allá exportar es imposible y
-enseñar botones que no funcionan es peor que no enseñarlos.
+Desde la app, que es lo cómodo: en **/<proyecto>/descargas → «Mandar un carrusel al
+teléfono»** sale la lista entera y cada uno tiene su botón. Funciona igual en
+Vercel: allá exporta con su propio Chromium y deja los PNG en el repositorio, sin
+push de por medio.
 
 Por consola hace lo mismo:
 
 ```bash
 npm run celular                      # lista qué hay, qué está al día y qué cambió
 npm run celular <slug>               # lo prepara
-npm run celular --todos              # todos (avisa del peso antes)
-git add public/descargas && git commit && git push
+npm run celular -- --todos           # todos (avisa del peso antes)
+git add public/proyectos/<id>/descargas && git commit && git push
 ```
 
-Y en los dos casos falta el `git push`: los PNG viven en el repositorio, que es
-de donde Vercel los sirve. El panel lo dice en pantalla — si no, preparas, abres
-el teléfono y no está, sin ninguna pista de por qué.
+Con más de un proyecto se dice de cuál, después de `--` para que npm no se
+quede la bandera: `npm run celular -- <slug> --proyecto dra-mildreth`.
 
-Y en el teléfono, `/descargas`: cada slide es una imagen; se mantiene pulsada y
-**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram. Eso sí
-funciona en producción — lo que no se puede allá es *preparar* uno nuevo.
+Preparado **en la computadora**, falta el `git push`: los PNG viven en el
+repositorio, que es de donde Vercel los sirve. El panel lo dice en pantalla — si
+no, preparas, abres el teléfono y no está, sin ninguna pista de por qué.
+Preparado en Vercel ya es un commit, y no hace falta nada más.
+
+Y en el teléfono, `/<proyecto>/descargas`: cada slide es una imagen; se mantiene pulsada y
+**Guardar en Fotos**. Salen a 1080 × 1350, el tamaño nativo de Instagram.
 
 Un detalle que rompe el despliegue en silencio si se pierde de vista: `public/`
 no viaja en el paquete de las funciones, porque Vercel lo sirve como estático.
@@ -1148,6 +1343,7 @@ página lo dice en vez de darte callado un slide pasado. La suite lo comprueba.
 | | |
 |---|---|
 | `npm run celular` | Sin argumentos: qué hay, qué está exportado y qué cambió después |
-| `npm run celular <slug>` | Lo exporta a `public/descargas/<slug>/` a 1080 × 1350 |
-| `npm run celular <slug> --quitar` | Lo borra de las descargas |
+| `npm run celular <slug>` | Lo exporta a `public/proyectos/<id>/descargas/<slug>/` a 1080 × 1350 |
+| `npm run celular -- <slug> --quitar` | Lo borra de las descargas |
 | `--puerto 3001` | Si el servidor no está en el 3000 |
+| `--proyecto <id>` | De qué cuenta, cuando hay más de una |

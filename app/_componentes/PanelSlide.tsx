@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BuscadorClinicas } from './BuscadorClinicas';
 import { BuscadorFotos } from './BuscadorFotos';
 import { BuscadorIconos } from './BuscadorIconos';
@@ -14,13 +14,12 @@ import {
   limpiarOverrides,
   moverSlide,
   nuevoSlide,
-  ponerClinica,
   ponerFotoDeBanco,
   tituloDeTarjeta,
 } from '@/lib/edicion';
-import type { NombrePaleta } from '@/template/tokens';
-import type { Credito, Post, Slide } from '@/template/tipos';
-import type { EstadoAjuste } from '@/template/usarAjuste';
+import type { NombrePaleta } from '@/plantillas/clinica/tokens';
+import type { Credito, Post, Slide } from '@/plantillas/clinica/tipos';
+import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
 
 export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' | 'media' };
 
@@ -28,9 +27,11 @@ type Props = {
   slide: Slide;
   /** El slug del post: la búsqueda de fotos lo necesita para guardar. */
   slug: string;
-  /** El nombre del médico: el único que firma una imagen clínica. */
-  medico: string;
-  /** Los últimos íconos usados, de content/marca.json. */
+  /** Sube una imagen propia al slide. La misma que arrastrar la foto encima. */
+  onSubir: (archivo: File) => void;
+  /** Si la imagen de este slide se está subiendo ahora. */
+  subiendo: boolean;
+  /** Los últimos íconos usados, de proyecto.json. */
   recientes: string[];
   /** La paleta del post: decide qué íconos se funden con el fondo. */
   paleta: NombrePaleta;
@@ -48,7 +49,8 @@ type Props = {
 export function PanelSlide({
   slide,
   slug,
-  medico,
+  onSubir,
+  subiendo,
   recientes,
   paleta,
   onUsarIcono,
@@ -126,6 +128,7 @@ export function PanelSlide({
             <label>Pregunta del papel rasgado</label>
             <input value={slide.pregunta} onChange={(e) => cambiar({ pregunta: e.target.value } as Partial<Slide>)} />
             <Imagen ruta={slide.foto} />
+            <SubirPropia onSubir={onSubir} subiendo={subiendo} />
 
             {/* La portada es la que más se ve y era la única sin buscador: su
                 foto había que arrastrarla a mano. El crédito se escribe en el
@@ -175,6 +178,10 @@ export function PanelSlide({
               <option value="icono">ícono</option>
             </select>
 
+            {/* Funciona con cualquier elemento visual: subir una imagen la pone
+                como foto del slide, aunque antes llevara ícono o nada. */}
+            <SubirPropia onSubir={onSubir} subiendo={subiendo} />
+
             {slide.visual.clase === 'foto' ? (
               <>
                 <Imagen ruta={slide.visual.src} />
@@ -193,15 +200,6 @@ export function PanelSlide({
                   }
                 />
 
-                {slide.visual.clinica ? (
-                  <p className="pista pista--clinico">
-                    Imagen clínica
-                    {slide.visual.aprobacion
-                      ? `, aprobada por ${slide.visual.aprobacion.aprobadaPor} el ${slide.visual.aprobacion.fecha}.`
-                      : ' sin aprobar: el carrusel no puede salir de borrador.'}
-                  </p>
-                ) : null}
-
                 <BuscadorFotos
                   slug={slug}
                   indice={indice}
@@ -212,10 +210,8 @@ export function PanelSlide({
 
                 <BuscadorClinicas
                   slug={slug}
-                  indice={indice}
-                  medico={medico}
-                  onAprobar={(ruta, credito, aprobacion) =>
-                    setPost((p) => ponerClinica(p, indice, ruta, credito, aprobacion))
+                  onElegir={(ruta, credito) =>
+                    setPost((p) => ponerFotoDeBanco(p, indice, ruta, credito))
                   }
                 />
 
@@ -313,7 +309,7 @@ export function PanelSlide({
               onChange={(e) => cambiar({ frase: e.target.value || undefined } as Partial<Slide>)}
             />
             <p className="pista">
-              Lo demás de este slide se arma solo con los datos de content/marca.json.
+              Lo demás de este slide se arma solo con los datos de proyecto.json.
             </p>
           </>
         ) : null}
@@ -409,7 +405,7 @@ function Ajustes({
           {overrides >= OVERRIDES_DEMASIADOS ? (
             <p className="aviso">
               Este slide ya junta {overrides} ajustes a mano. Si te pasa en varios slides, lo que está
-              mal es el valor de la plantilla, no este slide: súbelo a template/tokens.ts.
+              mal es el valor de la plantilla, no este slide: súbelo a plantillas/clinica/tokens.ts.
             </p>
           ) : null}
           <button className="boton" onClick={() => setPost((p) => limpiarOverrides(p, indice))}>
@@ -523,5 +519,41 @@ function CamposCredito({
         encontrar en qué carruseles salió la foto. <code>npm run consentimiento</code> los lista.
       </p>
     </>
+  );
+}
+
+/**
+ * Subir una imagen propia al slide: la que tomó el doctor, la de un libro o un
+ * estudio que la cuenta puede usar, la que llegó por WhatsApp.
+ *
+ * Es lo mismo que arrastrarla encima del slide, con un botón que se encuentra
+ * sin saber que se puede arrastrar. La imagen queda con `CREDITO_PROPIO`, así
+ * que el carrusel puede pasar a aprobado sin llenar nada más; si se sabe de
+ * dónde salió, se escribe abajo, en fuente y licencia.
+ *
+ * Lo que sugirió el algoritmo no se toca hasta que se sube otra: los buscadores
+ * de abajo siguen ahí para volver a una foto de banco.
+ */
+function SubirPropia({ onSubir, subiendo }: { onSubir: (archivo: File) => void; subiendo: boolean }) {
+  const entrada = useRef<HTMLInputElement>(null);
+  return (
+    <div className="subir-propia">
+      <button className="boton sm" data-subir-propia onClick={() => entrada.current?.click()} disabled={subiendo}>
+        {subiendo ? 'subiendo…' : 'Subir mi imagen'}
+      </button>
+      <span className="pista">o arrástrala encima del slide</span>
+      <input
+        ref={entrada}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={(e) => {
+          const archivo = e.target.files?.[0];
+          if (archivo) onSubir(archivo);
+          // Para poder volver a elegir el mismo archivo si algo falló.
+          e.target.value = '';
+        }}
+      />
+    </div>
   );
 }

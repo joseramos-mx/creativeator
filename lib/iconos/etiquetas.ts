@@ -21,7 +21,7 @@ export function slugificar(nombre: string): string {
 
 /**
  * Los nombres vienen en inglés y aquí se busca en español, así que cada palabra
- * del slug arrastra sus sinónimos de `content/sinonimos.json`.
+ * del slug arrastra sus sinónimos de `compartido/sinonimos.json`.
  */
 export function etiquetar(
   slug: string,

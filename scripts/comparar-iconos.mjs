@@ -18,7 +18,7 @@
 import { mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
-import { paletas } from '../template/tokens.ts';
+import { paletas } from '../plantillas/clinica/tokens.ts';
 import { separacion, SEPARACION_MINIMA } from '../lib/iconos.ts';
 
 // Varios candidatos a la vez: al generar salen tres variantes y lo que hay que

@@ -1,12 +1,13 @@
 import 'server-only';
 
-import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { guardar } from '../almacen';
+import { rutasDe } from '../proyecto';
 import type { Banco, Candidato } from './tipos';
 
 /**
- * lib/bancos/descargar.ts — de un candidato a un archivo en public/media/.
+ * lib/bancos/descargar.ts — de un candidato a un archivo en public/proyectos/<id>/media/.
  *
  * Vive aquí y no dentro de una ruta porque lo usan dos caminos que tienen que
  * hacer exactamente lo mismo: elegir una foto a mano en el editor, y el relleno
@@ -21,6 +22,7 @@ import type { Banco, Candidato } from './tipos';
 const ANCHO_MAX = 1600;
 
 export async function descargarFoto(
+  proyecto: string,
   banco: Banco,
   candidato: Candidato,
   slug: string,
@@ -35,11 +37,10 @@ export async function descargarFoto(
       : entrada.jpeg({ quality: 88, mozjpeg: true });
 
   const nombre = `${aTrozo(candidato.proveedor)}-${aTrozo(String(candidato.id))}.jpg`;
-  const carpeta = join(process.cwd(), 'public', 'media', slug);
-  await mkdir(carpeta, { recursive: true });
-  await writeFile(join(carpeta, nombre), await salida.toBuffer());
+  const rutas = rutasDe(proyecto);
+  await guardar(join(rutas.media(slug), nombre), await salida.toBuffer(), `${proyecto}: foto de banco para ${slug}`);
 
-  return `/media/${slug}/${nombre}`;
+  return rutas.urlMedia(slug, nombre);
 }
 
 function aTrozo(s: string) {

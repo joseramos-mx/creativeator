@@ -1,12 +1,10 @@
 import 'server-only';
 
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
-import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/template/tokens';
-import { afirmacionesDe } from './afirmaciones';
+import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas } from '@/plantillas/clinica/tokens';
 import { MODELO_REDACCION } from './modelo';
 import { repartir } from './variedad';
 import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
@@ -16,20 +14,23 @@ import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemin
 import { guardarIcono } from './iconos/guardar';
 import { desescapar } from './brief';
 import { FOTO_PENDIENTE } from './edicion';
-import { leerMarca, listarPosts } from './posts';
-import type { TMarca, TPost, TSlide } from './schema';
+import { almacen } from './almacen';
+import { instruccionesDeRedaccion } from './instrucciones';
+import { leerIdentidad } from './identidad';
+import { asegurarEscrito, leerPieza, leerVoz } from './piezas';
+import { leerProyecto, listarPosts } from './posts';
+import type { TPost, TSlide } from './schema';
 
 /**
  * lib/redactar.ts — el borrador que escribe el modelo.
  *
  * El modelo escribe **texto**, no diseño: devuelve los campos que la plantilla
  * espera y nada más. Todo lo que sea posición, tamaño o color se decide en
- * template/tokens.ts. Lo único parecido a diseño que sí elige es la paleta, y
+ * plantillas/clinica/tokens.ts. Lo único parecido a diseño que sí elige es la paleta, y
  * la elige por el tema, con las mismas reglas que están escritas en el token.
  *
- * Lo que sale de aquí es siempre un **borrador**. La cola de revisión de
- * lib/afirmaciones.ts es lo que decide si puede llegar a aprobado, y no se
- * salta: entre generar y exportar hay una persona, siempre.
+ * Lo que sale de aquí es siempre un **borrador**: entre generar y publicar
+ * hay una persona, que lo revisa en el editor y se lo manda a la cuenta.
  */
 
 
@@ -80,15 +81,6 @@ const Redaccion = z.object({
   slides: z.array(SlideRedactado).min(4).max(8),
   copy: z.string(),
   hashtags: z.array(z.string()),
-  /**
-   * Lo que el modelo dice haber afirmado.
-   *
-   * No se usa para construir la cola —la cola sale de leer el texto, porque un
-   * modelo que inventa una cifra también puede omitirla de su lista— sino para
-   * cruzarla: lo que el extractor encuentra y esto no declara es más
-   * sospechoso, no menos.
-   */
-  afirmaciones: z.array(z.object({ texto: z.string(), fuente: z.string() })),
 });
 
 export type TRedaccion = z.infer<typeof Redaccion>;
@@ -134,14 +126,32 @@ export type OpcionesRedaccion = {
 };
 
 export async function redactar(
+  proyecto: string,
   tema: string,
   slug: string,
   opciones: OpcionesRedaccion = {},
 ): Promise<ResultadoRedaccion> {
-  const voz = await readFile(join(process.cwd(), 'content', 'voz.md'), 'utf8');
+  // La identidad va detrás de la voz, en el mismo system prompt: la voz dice
+  // cómo escribir, la identidad quién es la cuenta. Sin identidad.md el prompt
+  // queda como estaba.
+  const identidad = await leerIdentidad(proyecto);
+  const voz = identidad
+    ? `${await leerVoz(proyecto)}\n\n# La identidad de la cuenta\n\n${identidad}\n`
+    : await leerVoz(proyecto);
   // La cuenta no está en voz.md, y el copy la necesita: el bloque 📲 nombra la
   // plataforma y el último hashtag lleva la ciudad.
-  const marca = await leerMarca();
+  const marca = await leerProyecto(proyecto);
+  asegurarEscrito(proyecto, marca);
+  const [estructura, iconos, fotos] = await Promise.all([
+    leerPieza(proyecto, 'estructura'),
+    leerPieza(proyecto, 'iconos'),
+    leerPieza(proyecto, 'fotos'),
+  ]);
+  const prompt = instruccionesDeRedaccion(
+    tema,
+    { marca, piezas: { estructura, iconos, fotos }, paletas, paletaPorDefecto: PALETA_POR_DEFECTO },
+    opciones.editorial,
+  );
   const cliente = new Anthropic();
 
   let respuesta;
@@ -156,7 +166,7 @@ export async function redactar(
         max_tokens: 16000,
         thinking: { type: 'adaptive' },
         system: voz,
-        messages: [{ role: 'user', content: instrucciones(tema, marca, opciones.editorial) }],
+        messages: [{ role: 'user', content: prompt }],
         output_config: { format: zodOutputFormat(Redaccion) },
       })
       .finalMessage();
@@ -189,7 +199,7 @@ export async function redactar(
   const reparto = repartir(
     redaccion.paleta,
     PALETA_POR_DEFECTO,
-    await paletasRecientes(),
+    await paletasRecientes(proyecto),
     NOMBRES_PALETA.filter((n) => paletas[n].variedad),
   );
   if (reparto.paleta !== redaccion.paleta) {
@@ -227,7 +237,7 @@ export async function redactar(
   }
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
-    rellenarFotos(post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
+    rellenarFotos(proyecto, post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
     rellenarIconos(post, avisos),
   ]);
   return {
@@ -327,10 +337,11 @@ async function rellenarIconos(post: TPost, avisos: string[]): Promise<void> {
  * banda del lienzo lo dice: es preferible un hueco señalado que un carrusel a
  * medio redactar, porque el texto es lo caro y la foto se pone en un clic.
  *
- * Solo el banco de ambiente. Lo clínico no pasa por aquí ni puede: va por la
- * cola que firma el médico.
+ * Solo el banco de ambiente. Lo clínico no se pone solo: se busca en el
+ * archivo clínico desde el editor, o se sube la imagen que mande la cuenta.
  */
 async function rellenarFotos(
+  proyecto: string,
   post: TPost,
   r: TRedaccion,
   slug: string,
@@ -392,7 +403,7 @@ async function rellenarFotos(
         // para que otro slide elija la misma. Apuntarla aquí es atómico.
         usadas.add(`${mejor.proveedor}:${mejor.id}`);
 
-        const ruta = await descargarFoto(banco, mejor, slug);
+        const ruta = await descargarFoto(proyecto, banco, mejor, slug);
         if (slide.tipo === 'portada') {
           slide.foto = ruta;
           slide.fotoCredito = mejor.credito;
@@ -417,8 +428,8 @@ async function rellenarFotos(
  * enseñar las veinticinco a la vez, así que contarlo diría que todo se acaba de
  * usar y el reparto se quedaría sin candidatas frescas.
  */
-async function paletasRecientes(): Promise<string[]> {
-  const posts = await listarPosts().catch(() => []);
+async function paletasRecientes(proyecto: string): Promise<string[]> {
+  const posts = await listarPosts(proyecto).catch(() => []);
   return posts.filter((p) => !p.slug.startsWith('laboratorio-')).map((p) => p.paleta);
 }
 
@@ -439,176 +450,12 @@ function explicar(e: unknown): string {
   return e instanceof Error ? e.message : 'No se pudo redactar.';
 }
 
-/* ── el prompt ────────────────────────────────────────────────────────────── */
-
-function instrucciones(tema: string, marca: TMarca, editorial?: OpcionesRedaccion['editorial']) {
-  const opciones = Object.entries(paletas)
-    .map(([nombre, p]) => `  · ${nombre}: ${p.cuando}`)
-    .join('\n');
-
-  return `Escribe un carrusel de Instagram sobre: ${tema}
-
-## La cuenta
-
-${marca.nombre} · ${marca.usuario} · ${marca.especialidad} · ${marca.ciudad}.
-Las citas se agendan en ${marca.plataforma}, con el enlace en la biografía.
-
-## Estructura
-
-Seis slides, en este orden, que es el de la cuenta:
-
-  1. portada    — titulo con marcado, pregunta de cinco palabras o menos, y
-                  su búsqueda de foto: la portada siempre lleva fondo
-  2. contenido  — qué es
-  3. contenido  — cómo se reconoce
-  4. contenido  — por qué importa ahora, o cómo se contagia
-  5. lista      — cuatro puntos accionables
-  6. contenido  — cuándo acudir a consulta
-
-**No escribas slide de cierre.** La cuenta usa siempre el mismo, ya hecho, y
-se añade después. Si escribieras uno, habría que borrarlo cada vez.
-
-En cada slide rellena solo lo que le toca y deja el resto vacío ("" o []).
-
-## La paleta
-
-Elige una por el tema:
-
-${opciones}
-
-Si el tema no tiene un color obvio —impétigo, dermatitis atópica— la respuesta
-es "${PALETA_POR_DEFECTO}". Es la respuesta, no un relleno: no fuerces una
-asociación de color que no está.
-
-## El elemento visual
-
-En cada slide de contenido elige "foto", "icono" o "ninguno", y llena:
-
-  · ideaImagen — qué debe mostrar la foto, en una frase concreta y en español.
-    Esto no se dibuja: es la instrucción para quien busque la imagen, y es lo
-    que evita que acabe puesta una foto que no enseña lo que dice el texto.
-  · iconoSugerido — el concepto en inglés, corto y **del tema**.
-
-    Esto es lo que más se descuida. El ícono tiene que nombrar la cosa de la
-    que habla el slide, no el hecho de que sea un carrusel médico. En un
-    carrusel de alergia alimentaria van cacahuates, un camarón, un vaso de
-    leche, una etiqueta de ingredientes; en uno de dermatitis del pañal, un
-    pañal o un bote de crema; en uno de polen, una flor o una rama.
-
-    **No propongas "warning triangle", "magnifying glass" ni "stethoscope"**
-    salvo que el slide trate literalmente de eso. Son los tres a los que se
-    cae por defecto cualquier tema de salud, y un carrusel donde todos los
-    íconos son la lupa y el triángulo de alerta no dice nada de su tema.
-
-    Y no te limites a lo que creas que existe: si el concepto no está en la
-    librería se fabrica, así que pide lo que de verdad ilustra el slide.
-
-    **Nunca pidas el signo.** Un ícono es un objeto o una escena, no la piel
-    enferma: nada de "hives", "rash on arm", "swollen lips", "raised bumps".
-    Eso es lo que el lector tiene que aprender a reconocer, y para eso hay
-    fotos reales que aprueba el médico. Para el slide de "cómo se ve", pide el
-    objeto que lo acompaña —una crema, una compresa fría, el mosquito, la
-    etiqueta de un alimento— o pon "ninguno".
-
-Nunca pidas una foto que muestre una lesión inventada o generada: las fotos
-clínicas vienen de banco con licencia o del consultorio.
-
-## La búsqueda de la foto
-
-**La portada siempre lleva foto**, a sangre y de fondo, y los slides con
-"foto" llevan la suya. En los dos casos la foto se busca y se pone sola con lo
-que escribas en estos dos campos. Nadie los va a revisar antes, así que valen
-lo que valgan:
-
-  · busqueda — en inglés, de tres a seis palabras, del vocabulario con el que
-    indexan los bancos de fotos de ambiente. "children classroom backpacks
-    school", no "impetigo contagion at school".
-
-  · descartar — de dos a seis términos, en inglés, **de una sola palabra
-    siempre que sirva**, que aparecerían en la descripción de una foto que
-    encaja con la consulta y aun así está mal para este slide. El descarte
-    busca la secuencia entera, así que "gym equipment" no aparta una foto
-    descrita como "a gym full of adults", y "gym" sí.
-
-Este segundo campo es el que importa. Un slide sobre cómo se contagia una
-infección en la escuela se publicó una vez con la foto de un gimnasio: encajaba
-con "niños juntos" y no enseñaba nada de lo que decía el texto. Piensa qué
-buscaría alguien con tu consulta y saldría mal.
-
-**La de la portada es distinta.** Va a sangre, con un velo encima que la
-oscurece arriba y termina fundida en el color plano abajo, y el título grande
-cae a media altura.
-
-Un primer plano de una persona funciona y es lo que la cuenta publica: su
-portada de impétigo es una cara ocupando el encuadre entero. Lo que importa no
-es evitar caras, es **que lo que se quiere ver quede en los dos tercios de
-arriba**, porque el tercio inferior se lo come el fundido. Y que la escena
-tenga aire: una foto llena de detalle fino compite con el título.
-
-Busca la escena donde ocurre el tema —la recámara de noche, el patio de la
-escuela, el parque en otoño—, no el síntoma.
-
-**Solo ambiente, nunca clínica.** Un aula, mochilas, el recreo, una toalla
-colgada, una rutina de casa. Nada de piel enferma: esas fotos salen de un
-archivo con licencia y las aprueba el médico una por una. Si un slide de
-contenido pide una lesión, pon "ninguno" en visual y no lo fuerces.
-
-## Las cifras y las fuentes — lo más importante
-
-Una cifra plausible con una institución al lado es el error más difícil de
-cazar, porque llega con aspecto de verificado. Por eso:
-
-  · Prefiere lo cualitativo. "Es de los motivos de consulta más frecuentes en
-    verano" es mejor que "el 18% de las consultas de verano" si no estás seguro
-    de la cifra. Bajar la especificidad siempre es preferible.
-  · Si usas una cifra, tiene que llevar su institución en "fuente". Una cifra
-    sin respaldo no debe existir.
-  · Nunca atribuyas lo que no puedes atribuir. Si no sabes qué institución
-    respalda un dato, quita el dato; no le pongas una institución plausible.
-  · Declara en "afirmaciones" todo lo que afirmes como dato, con su fuente. Un
-    médico va a revisar esa lista una por una antes de publicar.
-
-Instituciones válidas: Mayo Clinic, Cleveland Clinic, AAP, AAD, KidsHealth,
-StatPearls.
-
-${
-    editorial?.pilar || editorial?.objetivo || editorial?.nota
-      ? `## Esto ya está decidido en el calendario editorial
-
-No lo propongas: escribe **hacia** esto. Va a ir en el post tal cual, y si
-devuelves otra cosa se sobrescribe.
-${editorial.pilar ? `\n  · pilar — ${editorial.pilar}. Es la línea editorial del post: el ángulo\n    del carrusel tiene que caer dentro de ella.` : ''}${
-          editorial.objetivo
-            ? `\n  · objetivo — **${editorial.objetivo}**. Es lo que se busca del lector, y\n    decide a cuál de los cierres del copy se le carga la mano. Escribe el copy\n    para que eso sea lo que pase.`
-            : ''
-        }${editorial.nota ? `\n  · nota — ${editorial.nota}. Es lo que hace que este tema toque ahora;\n    que se note en la portada y en el gancho del copy.` : ''}
-
-Devuélvelos igual en su campo, con estos valores.`
-      : `## Los tres campos que no se pintan en ningún slide
-
-  · pilar — la línea editorial del post, en tres o cuatro palabras: "Cuidado
-    diario de la piel", "Lo que no es alergia". Sirve para no repetir eje dos
-    veces en el mismo mes.
-  · objetivo — qué se busca del lector: guardar, compartir, comentar o agendar.
-    Decide a cuál de los cierres del copy se le carga la mano.
-  · nota — el gancho de calendario, corto: "Primeros calores", "Semana de
-    frío". Qué hace que este tema toque publicarse ahora.`
-  }
-
-## El copy
-
-Sigue la fórmula que está en tus instrucciones, con sus bloques y sus emojis, y
-termina en exactamente cinco hashtags en MayúsculasPegadas, con su almohadilla
-("#PielSensible"). El último cruza especialidad y ciudad.`;
-}
-
 /* ── de la redacción al post ──────────────────────────────────────────────── */
 
 /** La librería de íconos, para casar `iconoSugerido` sin abrir el buscador. */
 async function leerManifiesto(): Promise<Icono[]> {
-  return readFile(join(process.cwd(), 'public', 'iconos', 'manifest.json'), 'utf8')
-    .then(JSON.parse)
-    .catch(() => []);
+  const crudo = await almacen.leerTexto(join(process.cwd(), 'public', 'iconos', 'manifest.json'));
+  return crudo ? JSON.parse(crudo) : [];
 }
 
 function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
@@ -700,28 +547,5 @@ function revisar(r: TRedaccion, post: TPost): string[] {
     avisos.push('Escribió un slide de cierre; ese no se genera, quítalo.');
   }
 
-  // El cruce: lo que se lee en el texto contra lo que el modelo dice haber
-  // afirmado. Las que aparecen aquí y no en su lista no son un descuido menor.
-  const declaradas = r.afirmaciones.map((a) => normalizar(a.texto));
-  const noDeclaradas = afirmacionesDe(post).filter(
-    (a) =>
-      a.disparadores.includes('cifra') &&
-      !declaradas.some((d) => d.includes(normalizar(a.texto).slice(0, 40)) || normalizar(a.texto).includes(d.slice(0, 40))),
-  );
-  for (const a of noDeclaradas) {
-    avisos.push(`Afirma una cifra en ${a.donde} que no declaró: «${a.marcas.join(', ')}». Revísala con cuidado.`);
-  }
-
-  const sinFuente = afirmacionesDe(post).filter(
-    (a) => a.disparadores.includes('cifra') && !a.fuente,
-  );
-  for (const a of sinFuente) {
-    avisos.push(`Cifra sin fuente en ${a.donde}: «${a.marcas.join(', ')}». Quítala o atribúyela.`);
-  }
-
   return avisos;
-}
-
-function normalizar(s: string) {
-  return s.toLowerCase().replace(/\s+/g, ' ').trim();
 }

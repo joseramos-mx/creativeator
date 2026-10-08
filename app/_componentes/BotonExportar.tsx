@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useApi } from './proyecto';
 
 /**
  * Pide el carrusel a /api/exportar y lo baja.
@@ -9,6 +10,7 @@ import { useState } from 'react';
  * verdad, así que el botón dice en qué va en vez de quedarse mudo.
  */
 export function BotonExportar({ slug, slides }: { slug: string; slides: number }) {
+  const api = useApi();
   const [estado, setEstado] = useState<'listo' | 'trabajando' | 'error'>('listo');
   const [aviso, setAviso] = useState<string>();
 
@@ -16,7 +18,7 @@ export function BotonExportar({ slug, slides }: { slug: string; slides: number }
     setEstado('trabajando');
     setAviso(undefined);
     try {
-      const r = await fetch('/api/exportar', {
+      const r = await fetch(api('/exportar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slug }),

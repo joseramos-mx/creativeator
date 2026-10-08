@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { afirmacionesDe } from '@/lib/afirmaciones';
-import type { Post } from '@/template/tipos';
+import type { Post } from '@/plantillas/clinica/tipos';
+import { useApi, useProyecto } from './proyecto';
 
 /**
  * Escribe un tema y sale un borrador.
@@ -13,7 +13,7 @@ import type { Post } from '@/template/tipos';
  * · **No exporta.** Guarda como borrador y abre el editor. Entre lo que escribe
  *   el modelo y un PNG hay una persona, siempre.
  * · **Enseña antes de escribir a disco.** Una llamada cuesta y tarda; ver qué
- *   salió —con qué paleta, con cuántas afirmaciones por revisar— antes de
+ *   salió —con qué paleta, con qué slides— antes de
  *   crear el archivo es lo que evita acumular borradores que nadie quiso.
  *
  * Y si el tema se deja vacío, el modelo propone y arranca con el primero. No
@@ -75,6 +75,8 @@ type Propuesta = {
 };
 
 export function Redactar() {
+  const api = useApi();
+  const proyecto = useProyecto();
   const router = useRouter();
   const [tema, setTema] = useState('');
   const [propuestas, setPropuestas] = useState<Propuesta[] | null>(null);
@@ -115,7 +117,7 @@ export function Redactar() {
     setSalida(null);
     setPropuestas(null);
     try {
-      const r = await fetch('/api/proponer', { method: 'POST' });
+      const r = await fetch(api('/proponer'), { method: 'POST' });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
 
@@ -139,7 +141,7 @@ export function Redactar() {
     setError(undefined);
     setSalida(null);
     try {
-      const r = await fetch('/api/redactar', {
+      const r = await fetch(api('/redactar'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tema: cual }),
@@ -162,23 +164,19 @@ export function Redactar() {
     setError(undefined);
     try {
       const post = { ...salida.post, slug };
-      const r = await fetch('/api/post', {
+      const r = await fetch(api('/post'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post }),
       });
       const cuerpo = await r.json();
       if (!r.ok) throw new Error(cuerpo.error);
-      router.push(`/post/${slug}`);
+      router.push(`/${proyecto}/post/${slug}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'No se pudo guardar.');
       setGuardando(false);
     }
   }
-
-  // Se cuentan aquí con el mismo extractor del editor: lo que se enseña es lo
-  // que va a pedir la cola, no una estimación aparte que pueda desviarse.
-  const porRevisar = salida ? afirmacionesDe(salida.post).length : 0;
 
   return (
     <details className="tarjeta" data-redactar>
@@ -250,12 +248,6 @@ export function Redactar() {
                 </li>
               ))}
             </ol>
-
-            <p className="pista">
-              {porRevisar === 0
-                ? 'Ninguna afirmación entra en la cola: nada con cifra, fuente ni indicación de seguridad.'
-                : `${porRevisar} ${porRevisar === 1 ? 'afirmación' : 'afirmaciones'} para revisar antes de poder aprobarlo.`}
-            </p>
 
             {salida.avisos.length ? (
               <ul className="avisos">

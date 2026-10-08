@@ -53,7 +53,7 @@ export type Criterios = { query: string; criterios: string; descartar: string[] 
 
 export type Banco = {
   nombre: string;
-  /** Los clínicos van por otra cola y los firma el médico. Ver lib/clinicas.ts. */
+  /** Si es el archivo clínico (fotos de lesión) y no un banco de ambiente. */
   clinico?: true;
   /** Si falta la llave, el editor lo dice en vez de fallar al buscar. */
   disponible: () => boolean;

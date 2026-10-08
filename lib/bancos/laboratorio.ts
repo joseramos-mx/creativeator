@@ -2,13 +2,14 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { aCandidato as aCandidatoClinico } from './commons';
 import { aCandidato } from './pexels';
+import { PROYECTO_DE_PRUEBAS, rutasDe } from '../proyecto';
 import type { Banco, Candidato } from './tipos';
 
 /**
  * lib/bancos/laboratorio.ts — el banco que no sale a la red.
  *
  * Devuelve la muestra real de Pexels que está guardada en scripts/muestras/, y
- * "baja" un archivo que ya está en public/media/. Con eso las pruebas de
+ * "baja" un archivo que ya está en la carpeta de fotos del laboratorio. Con eso las pruebas de
  * Playwright recorren el flujo entero —buscar, apartar, elegir, descargar,
  * crédito escrito, barrera satisfecha— sin una sola llamada y sin depender de
  * que Pexels tenga hoy las mismas fotos que ayer.
@@ -19,7 +20,7 @@ import type { Banco, Candidato } from './tipos';
 
 const MUESTRA = join(process.cwd(), 'scripts', 'muestras', 'pexels-aula.json');
 const MUESTRA_CLINICA = join(process.cwd(), 'scripts', 'muestras', 'commons-impetigo.json');
-const ARCHIVO = join(process.cwd(), 'public', 'media', 'laboratorio-edicion', '01.jpg');
+const ARCHIVO = join(rutasDe(PROYECTO_DE_PRUEBAS).media('laboratorio-edicion'), '01.jpg');
 
 export const laboratorio: Banco = {
   nombre: 'laboratorio',

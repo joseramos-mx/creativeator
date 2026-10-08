@@ -16,11 +16,20 @@ import { readFileSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
-import { PREFIJO, reiniciarLaboratorio } from './laboratorio.mjs';
-import { afirmacionesDe } from '../lib/afirmaciones.ts';
+import { PREFIJO, PROYECTO, reiniciarLaboratorio } from './laboratorio.mjs';
+import { rutasDe } from '../lib/proyecto.ts';
 
 const puerto = process.argv[2] ?? '3000';
 const base = `http://localhost:${puerto}`;
+
+/**
+ * El retraso del guardado automático: 600 ms en el disco, 2,5 s cuando cada
+ * guardado es un commit (ALMACEN=github, contra scripts/github-simulado.mjs).
+ */
+const RETRASO = process.env.ALMACEN === 'github' ? 2500 : 600;
+
+/** Las pruebas corren en el proyecto del laboratorio y en ningún otro. */
+const RUTAS = rutasDe(PROYECTO);
 
 const EDICION = 'laboratorio-edicion';
 const PALETAS = 'laboratorio-paletas';
@@ -73,7 +82,7 @@ const dormirSync = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4))
  * prueba, porque parece un fallo del editor y no lo es.
  */
 const leer = (slug) => {
-  const ruta = join(process.cwd(), 'content', 'posts', `${slug}.json`);
+  const ruta = RUTAS.post(slug);
   for (let intento = 0; ; intento++) {
     try {
       return JSON.parse(readFileSync(ruta, 'utf8'));
@@ -84,14 +93,9 @@ const leer = (slug) => {
   }
 };
 
-/** El nombre del médico: el único que puede firmar una indicación clínica. */
-const medico = JSON.parse(
-  readFileSync(join(process.cwd(), 'content', 'marca.json'), 'utf8'),
-).nombre;
-
 async function abrir(page, slug) {
   soloLaboratorio(slug);
-  await page.goto(`${base}/post/${slug}`, { waitUntil: 'networkidle', timeout: 120_000 });
+  await page.goto(`${base}/${PROYECTO}/post/${slug}`, { waitUntil: 'networkidle', timeout: 120_000 });
   await page.evaluate(() => document.fonts.ready);
   await espera(1500);
 }
@@ -118,7 +122,7 @@ async function comprobarServidor() {
   let ultimo = '';
   const responde = async () => {
     try {
-      ultimo = await (await fetch(`${base}/post/${EDICION}`)).text();
+      ultimo = await (await fetch(`${base}/${PROYECTO}/post/${EDICION}`)).text();
       return ultimo.includes('data-ficha');
     } catch {
       ultimo = '';
@@ -157,37 +161,9 @@ const temaAntes = leer(EDICION).tema;
 await page.locator('[data-ficha] input').first().fill(`${temaAntes} ·`);
 await espera(300);
 ok(leer(EDICION).tema === temaAntes, 'a los 300 ms todavía no escribe: el retraso existe');
-await espera(1500);
-ok(leer(EDICION).tema.endsWith('·'), 'a los 1800 ms ya guardó');
+await espera(RETRASO + 1200);
+ok(leer(EDICION).tema.endsWith('·'), `a los ${RETRASO + 1500} ms ya guardó`);
 ok((await page.locator('.estado').innerText()).includes('guardado'), 'y el estado lo dice');
-
-/* ── arrastrar la imagen sobre el slide ──────────────────────────────────── */
-console.log('\nArrastrar la imagen sobre el slide');
-const srcAntes = leer(EDICION).slides[1].visual.src;
-const dt = await page.evaluateHandle(async () => {
-  const dt = new DataTransfer();
-  const blob = await (await fetch('/media/laboratorio-edicion/portada.jpg')).blob();
-  dt.items.add(new File([blob], 'Foto Arrastrada Ñandú.jpg', { type: 'image/jpeg' }));
-  return dt;
-});
-const slide01 = page.locator('.marco--soltable').nth(1);
-await slide01.dispatchEvent('dragover', { dataTransfer: dt });
-ok((await slide01.getAttribute('data-soltando')) !== null, 'el slide se marca al pasar la imagen');
-await slide01.dispatchEvent('drop', { dataTransfer: dt });
-await esperarA(() => leer(EDICION).slides[1].visual.src !== srcAntes);
-const src = leer(EDICION).slides[1].visual.src;
-ok(src !== srcAntes, `la imagen cambió a ${src}`);
-ok(/foto-arrastrada-nandu-[a-z0-9]+\.jpg$/.test(src), 'con el nombre normalizado');
-ok(
-  (await page.locator('.marco--soltable').last().getAttribute('data-soltando')) === null,
-  'el cierre no acepta imagen',
-);
-// Cambiar la foto no borra lo que la foto debería mostrar: soltarla es el
-// gesto de intentar cumplir esa idea, no de renunciar a ella.
-ok(
-  leer(EDICION).slides[1].visual.ideaImagen !== undefined,
-  'y la idea de imagen sobrevive al cambio de foto',
-);
 
 /* ── la idea de imagen, junto a la imagen ────────────────────────────────── */
 console.log('\nIdea de imagen y crédito');
@@ -228,31 +204,77 @@ ok(
   'y la banda deja de avisar',
 );
 
-// Y al revés: cambiar la foto tira el crédito, porque describía a la anterior.
-// Un crédito heredado es peor que ninguno: parece registrado y miente.
+/* ── arrastrar la imagen sobre el slide ──────────────────────────────────── */
+console.log('\nArrastrar la imagen sobre el slide');
+const srcAntes = leer(EDICION).slides[1].visual.src;
+// Corre en el navegador: la ruta va como argumento, que ahí no hay PROYECTO.
+const dt = await page.evaluateHandle(async (ruta) => {
+  const dt = new DataTransfer();
+  const blob = await (await fetch(ruta)).blob();
+  dt.items.add(new File([blob], 'Foto Arrastrada Ñandú.jpg', { type: 'image/jpeg' }));
+  return dt;
+}, `/proyectos/${PROYECTO}/media/laboratorio-edicion/portada.jpg`);
+const slide01 = page.locator('.marco--soltable').nth(1);
+await slide01.dispatchEvent('dragover', { dataTransfer: dt });
+ok((await slide01.getAttribute('data-soltando')) !== null, 'el slide se marca al pasar la imagen');
 await slide01.dispatchEvent('drop', { dataTransfer: dt });
-await esperarA(() => leer(EDICION).slides[1].visual.credito === undefined);
+await esperarA(() => leer(EDICION).slides[1].visual.src !== srcAntes);
+const src = leer(EDICION).slides[1].visual.src;
+ok(src !== srcAntes, `la imagen cambió a ${src}`);
+ok(/foto-arrastrada-nandu-[a-z0-9]+\.jpg$/.test(src), 'con el nombre normalizado');
 ok(
-  leer(EDICION).slides[1].visual.credito === undefined,
-  'cambiar la foto borra el crédito de la anterior',
+  leer(EDICION).slides[1].visual.credito?.fuente === 'Proporcionada por la cuenta',
+  'y con su crédito puesto solo: la subió la cuenta, no hace falta llenar nada',
 );
+// El de Unsplash que se escribió arriba describía a la foto anterior: no se hereda.
+ok(leer(EDICION).slides[1].visual.credito?.licencia !== 'Unsplash License', 'el crédito de la foto anterior no pasa a la nueva');
+ok(
+  (await page.locator('.marco--soltable').last().getAttribute('data-soltando')) === null,
+  'el cierre no acepta imagen',
+);
+// Cambiar la foto no borra lo que la foto debería mostrar: soltarla es el
+// gesto de intentar cumplir esa idea, no de renunciar a ella.
 ok(
   leer(EDICION).slides[1].visual.ideaImagen !== undefined,
-  'pero no la idea de imagen',
+  'y la idea de imagen sobrevive al cambio de foto',
 );
+
+/* ── el botón de subir mi imagen ────────────────────────────────────────── */
+console.log('\nSubir mi imagen');
+{
+  // La imagen que manda la cuenta —la que tomó el doctor, la de un libro— se
+  // sube con un botón en la tarjeta de cada slide, sin tener que saber que se
+  // puede arrastrar. Se prueba en la portada, que es la que más se cambia.
+  const portadaAntes = leer(EDICION).slides[0].foto;
+  const tarjeta = await abrirTarjeta(page, 0);
+  ok((await tarjeta.locator('[data-subir-propia]').count()) === 1, 'la portada tiene su botón de subir');
+  await tarjeta
+    .locator('.subir-propia input[type=file]')
+    .setInputFiles(join(RUTAS.media('laboratorio-edicion'), '01.jpg'));
+  await esperarA(() => leer(EDICION).slides[0].foto !== portadaAntes);
+  const portada = leer(EDICION).slides[0];
+  ok(portada.foto !== portadaAntes, `la portada cambió a ${portada.foto}`);
+  ok(portada.fotoCredito?.fuente === 'Proporcionada por la cuenta', 'con el crédito de la cuenta puesto solo');
+
+  const conIcono = await abrirTarjeta(page, 2);
+  ok(
+    (await conIcono.locator('[data-subir-propia]').count()) === 1,
+    'y un slide con ícono también: subir una imagen lo cambia a foto',
+  );
+}
 
 /* ── empuje y contador de overrides ──────────────────────────────────────── */
 console.log('\nModo de empuje');
 const tarjeta1 = await abrirTarjeta(page, 1);
 await tarjeta1.locator('button:has-text("bloque")').click();
 for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides?.offsetY === 3, `offsetY = ${leer(EDICION).slides[1].overrides?.offsetY}`);
 await page.keyboard.press('Shift+ArrowUp');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides?.offsetY === -7, 'Shift mueve de diez en diez');
 for (let i = 0; i < 7; i++) await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(leer(EDICION).slides[1].overrides === undefined, 'volver al valor de la plantilla borra el override');
 
 await tarjeta1.locator('button:has-text("titulo")').click();
@@ -262,7 +284,7 @@ await tarjeta1.locator('button:has-text("cuerpo")').click();
 await page.keyboard.press('-');
 await tarjeta1.locator('button:has-text("bloque")').click();
 await page.keyboard.press('ArrowDown');
-await espera(1200);
+await espera(RETRASO + 600);
 ok(Object.keys(leer(EDICION).slides[1].overrides ?? {}).length === 3, 'tres ajustes a mano');
 ok(/plantilla/.test(await tarjeta1.locator('.aviso').innerText()), 'y el aviso apunta a la plantilla');
 
@@ -329,80 +351,13 @@ const velo = await page
   .evaluate((e) => getComputedStyle(e).backgroundImage);
 ok(velo.includes('72, 180, 93'), 'el velo de la portada sigue a la paleta');
 
-/* ── cola de afirmaciones ────────────────────────────────────────────────── */
-console.log('\nCola de afirmaciones');
+/* ── sin cola de revisión ────────────────────────────────────────────────── */
+console.log('\nSin cola de revisión');
 
+// La validación con la cuenta pasa por fuera —se le mandan las imágenes y dice
+// si algo cambia—, así que el editor no pide firmas ni revisiones a nadie.
 await abrir(page, EDICION);
-ok((await page.locator('[data-cola]').count()) === 1, 'la cola aparece en el panel');
-const sinRevisarAntes = await page.locator('.afirmacion:not([data-revisada])').count();
-ok(sinRevisarAntes > 0, `${sinRevisarAntes} afirmaciones sin revisar`);
-ok(
-  (await page.locator('button:has-text("aprobar todo"), button:has-text("Aprobar todo")').count()) === 0,
-  'no hay botón de aprobar todo',
-);
-
-const estado = page.locator('[data-ficha] select').first();
-ok(
-  await estado.locator('option[value="aprobado"]').isDisabled(),
-  'con afirmaciones pendientes no se puede marcar como aprobado',
-);
-
-// La primera del laboratorio no lleva cifra: el enlace es opcional.
-const primera = page.locator('[data-cola] .afirmacion').first();
-ok(
-  /opcional/.test(await primera.locator('label').first().innerText()),
-  'sin cifra, el enlace es opcional',
-);
-
-// Nadie firma sin decir quién es. El nombre se escribe: antes se heredaba de
-// la marca, y entonces cualquiera que pulsara "la revisé" firmaba como el
-// médico. En una indicación clínica eso es peor que no tener firma.
-ok(
-  await primera.locator('button').last().isDisabled(),
-  'sin nombre de revisor no se puede firmar',
-);
-await page.locator('[data-cola] > .tarjeta__cuerpo > input').fill('Quien Revisa');
-await espera(300);
-
-// Y las de seguridad solo las firma el médico: son criterio clínico, no un
-// dato que se compruebe abriendo una fuente.
-const deSeguridad = page.locator('[data-cola] .afirmacion', {
-  has: page.locator('.chip[data-disparador="seguridad"]'),
-});
-ok((await deSeguridad.count()) === 1, 'hay una afirmación de seguridad en el laboratorio');
-const botonSeguridad = deSeguridad.locator('button').last();
-ok(await botonSeguridad.isDisabled(), 'y otro revisor no la puede firmar');
-ok(
-  (await botonSeguridad.innerText()).includes(medico),
-  `el botón dice quién la firma: "${await botonSeguridad.innerText()}"`,
-);
-
-await primera.locator('button:has-text("la revisé")').click();
-await esperarA(() => Object.keys(leer(EDICION).revisiones ?? {}).length > 0);
-ok(
-  (await page.locator('.afirmacion[data-revisada]').count()) === 1,
-  'queda marcada como revisada',
-);
-const guardadas = leer(EDICION).revisiones ?? {};
-const unaRevision = Object.values(guardadas)[0] ?? {};
-ok(Object.keys(guardadas).length === 1, 'y se guarda en el JSON, por huella');
-ok(
-  unaRevision.revisadaPor && unaRevision.fecha && unaRevision.texto && !('estado' in unaRevision),
-  `guarda quién y cuándo, no un "verificada": ${JSON.stringify(unaRevision).slice(0, 90)}`,
-);
-ok(
-  unaRevision.revisadaPor === 'Quien Revisa',
-  `firma quien revisó, no el médico: "${unaRevision.revisadaPor}"`,
-);
-
-// Cambiar el texto revisado la devuelve a la cola: es lo que sostiene todo.
-const tarjetaTexto = await abrirTarjeta(page, 1);
-await tarjetaTexto.locator('textarea').first().fill('Un slide **con foto** y una coma,');
-await espera(1800);
-ok(
-  (await page.locator('.afirmacion[data-revisada]').count()) === 1,
-  'la revisión de otro bloque sigue en pie',
-);
+ok((await page.locator('[data-cola], .afirmacion').count()) === 0, 'el editor no tiene cola de afirmaciones');
 
 /* ── buscar la foto en el banco ──────────────────────────────────────────── */
 console.log('\nBanco de imágenes');
@@ -423,7 +378,7 @@ ok(
   'un solo clic busca y deja la foto puesta',
 );
 ok(
-  (await tarjetaBanco.locator('input').first().inputValue()).length > 0,
+  (await tarjetaBanco.locator('.banco input').first().inputValue()).length > 0,
   'y la consulta queda editable, para volver a buscar sin gastar modelo',
 );
 ok(
@@ -446,7 +401,7 @@ ok(
 );
 
 const dePexels = leer(EDICION).slides[1].visual;
-ok(dePexels.src.includes('/media/laboratorio-edicion/pexels-'), `se descargó a ${dePexels.src}`);
+ok(dePexels.src.includes(`/proyectos/${PROYECTO}/media/laboratorio-edicion/pexels-`), `se descargó a ${dePexels.src}`);
 ok(dePexels.credito?.fuente === 'Pexels', 'con la fuente escrita');
 ok(dePexels.credito?.licencia === 'Pexels License', 'y la licencia');
 ok(
@@ -477,14 +432,16 @@ ok((await bancoPortada.count()) === 1, 'la portada tiene el buscador de banco');
 
 const fotoAntes = leer(EDICION).slides[0].foto;
 await bancoPortada.locator('button:has-text("Buscar foto en el banco")').click();
-await esperarA(() => leer(EDICION).slides[0].fotoCredito !== undefined);
+// Se espera a la fuente y no a que haya crédito: la portada ya trae el de la
+// cuenta, de cuando se subió a mano más arriba.
+await esperarA(() => leer(EDICION).slides[0].fotoCredito?.fuente === 'Pexels');
 
 const portada = leer(EDICION).slides[0];
 ok(portada.foto !== fotoAntes, `la foto de portada cambió a ${portada.foto?.split('/').pop()}`);
 ok(portada.fotoCredito?.fuente === 'Pexels', 'con su fuente');
 ok(Boolean(portada.fotoCredito?.autor), `y su autor: ${portada.fotoCredito?.autor}`);
 ok(
-  portada.foto?.startsWith('/media/laboratorio-edicion/'),
+  portada.foto?.startsWith(`/proyectos/${PROYECTO}/media/laboratorio-edicion/`),
   'guardada en la carpeta del post, no enlazada',
 );
 
@@ -506,93 +463,29 @@ ok(
 
 await panelClinico.locator('.foto-opcion').first().click();
 await espera(300);
-const firma = panelClinico.locator('.clinico__firma');
-ok((await firma.count()) === 1, 'al elegir una, pide la firma');
-
-// El sistema propone; el médico inserta. Sin su nombre no hay botón.
-const botonFirmar = firma.locator('button:has-text("firma"), button:has-text("Aprobar")');
-ok(await botonFirmar.isDisabled(), 'sin el nombre del médico no se puede aprobar');
-ok(
-  (await botonFirmar.innerText()).includes(medico),
-  `el botón dice quién firma: "${await botonFirmar.innerText()}"`,
-);
-
-// Y el servidor lo comprueba también, no solo el botón: lo que se escribe en el
-// JSON es la firma de alguien con cédula.
-const conOtroNombre = await (
-  await fetch(`${base}/api/fotos/aprobar`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      slug: soloLaboratorio(EDICION),
-      candidato: { id: 'x', descarga: 'https://ejemplo.test/x.jpg', credito: { fuente: 'a', licencia: 'b' } },
-      aprobadaPor: 'Quien Revisa',
-    }),
-  })
-).json();
-ok(
-  /solo la puede aprobar/.test(conOtroNombre.error ?? ''),
-  'y el servidor rechaza otra firma aunque el botón se saltara',
-);
-
-await firma.locator('input').first().fill(medico);
-await espera(200);
-ok(!(await botonFirmar.isDisabled()), 'con su nombre, sí');
-await botonFirmar.click();
-await esperarA(() => leer(EDICION).slides[1].visual.aprobacion !== undefined);
+const elegida = panelClinico.locator('.clinico__elegida');
+ok((await elegida.count()) === 1, 'al elegir una, enseña su licencia y el botón para ponerla');
+ok((await elegida.locator('input').count()) === 0, 'sin pedir firma ni nombre de nadie');
+await elegida.locator('button:has-text("Poner en el slide")').click();
+await esperarA(() => leer(EDICION).slides[1].visual.credito?.fuente === 'Wikimedia Commons');
 
 const clinica = leer(EDICION).slides[1].visual;
-ok(clinica.clinica === true, 'la foto queda marcada como clínica');
-ok(clinica.aprobacion?.aprobadaPor === medico, `firmada por ${clinica.aprobacion?.aprobadaPor}`);
-ok(Boolean(clinica.aprobacion?.fecha), `con fecha ${clinica.aprobacion?.fecha}`);
-ok(
-  (clinica.aprobacion?.huella ?? '').length === 32,
-  'y la huella de los bytes de la imagen, no de la ruta',
-);
-ok(clinica.credito?.fuente === 'Wikimedia Commons', 'con su crédito del archivo');
-
-// Lo que sostiene la firma: si el archivo cambia, se cae. Se simula mandando el
-// post con la huella cambiada, que es lo que pasaría si alguien sustituyera el
-// JPEG por otro con el mismo nombre.
-const conHuellaVieja = conTodoRevisado('aprobado');
-conHuellaVieja.slides[1].visual.aprobacion.huella = 'huelladeotracosa'.padEnd(32, '0');
-for (const slide of conHuellaVieja.slides) {
-  const credito = { fuente: 'Consultorio', licencia: 'propia' };
-  if (slide.tipo === 'portada' && slide.foto) slide.fotoCredito = credito;
-}
-const caida = await guardar(conHuellaVieja);
-ok(caida.estado === 400, 'con la imagen cambiada, el carrusel no se aprueba');
-ok(
-  /cambió después de que/.test(caida.cuerpo.error ?? ''),
-  `y lo dice: "${(caida.cuerpo.error ?? '').split('\n').pop()?.trim()}"`,
-);
+ok(clinica.credito?.fuente === 'Wikimedia Commons', 'queda puesta con su crédito del archivo');
+ok(clinica.aprobacion === undefined && clinica.clinica === undefined, 'y sin aprobación ni marca de revisión');
 
 /* ── la barrera de licencia ──────────────────────────────────────────────── */
 console.log('\nBarrera de licencia');
 
-/** El post de laboratorio con todo revisado, para aislar la barrera de fotos. */
-function conTodoRevisado(estado) {
+/** El post de laboratorio en otro estado, para medir la barrera de fotos. */
+function conEstado(estado) {
   const post = leer(EDICION);
   post.estado = estado;
-  post.revisiones = Object.fromEntries(
-    afirmacionesDe(post).map((a) => [
-      a.huella,
-      {
-        revisadaPor: medico,
-        fecha: '2026-01-01',
-        texto: a.texto,
-        ...(a.exigeEnlace ? { enlace: 'https://ejemplo.test/fuente' } : {}),
-      },
-    ]),
-  );
   return post;
 }
 
-// Declaración y no `const`: se usa desde la sección del archivo clínico, que
-// va antes en el archivo, y una función declarada se iza.
 async function guardar(post) {
   soloLaboratorio(post.slug);
-  const r = await fetch(`${base}/api/post`, {
+  const r = await fetch(`${base}/api/${PROYECTO}/post`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ post }),
@@ -600,14 +493,14 @@ async function guardar(post) {
   return { estado: r.status, cuerpo: await r.json() };
 }
 
-const comoBorrador = await guardar(conTodoRevisado('borrador'));
+const comoBorrador = await guardar(conEstado('borrador'));
 ok(comoBorrador.estado === 200, 'como borrador se guarda aunque falte la licencia');
 
 // La condición se monta aquí y no se hereda de las secciones de arriba: antes
 // dependía de que quedara alguna foto sin acreditar por casualidad, y el día
 // que el buscador de portada las acreditó todas, esta prueba pasó a medir otra
 // cosa sin que nadie lo pidiera.
-const aMedias = conTodoRevisado('aprobado');
+const aMedias = conEstado('aprobado');
 delete aMedias.slides[0].fotoCredito;
 
 const sinLicencia = await guardar(aMedias);
@@ -623,11 +516,9 @@ ok(
 
 // Y con la procedencia puesta, sí. Una barrera que no deja pasar nada tampoco
 // sirve: lo que tiene que impedir es publicar sin saber de dónde salió la foto.
-const conLicencia = conTodoRevisado('aprobado');
+const conLicencia = conEstado('aprobado');
 for (const slide of conLicencia.slides) {
-  // Se rellena solo lo que falta. La foto clínica de la sección anterior ya
-  // trae el suyo de Wikimedia Commons, y pisarlo con "Consultorio" le pediría
-  // además la referencia del consentimiento: sería probar otra cosa.
+  // Se rellena solo lo que falta: la foto del archivo clínico ya trae el suyo.
   const credito = { fuente: 'Banco de prueba', licencia: 'de prueba' };
   if (slide.tipo === 'portada' && slide.foto && !slide.fotoCredito) slide.fotoCredito = credito;
   if (slide.visual?.clase === 'foto' && !slide.visual.credito) slide.visual.credito = credito;
@@ -642,13 +533,13 @@ console.log('\nAcciones de la lista');
 /*
  * Lo que se comprueba aquí es **que el botón no sea un atajo alrededor de la
  * barrera**. Cambiar el estado desde la lista es cómodo, y esa comodidad es
- * exactamente la que podría acabar aprobando un carrusel con once afirmaciones
- * sin revisar si alguien un día decidiera "simplificar" el guardado. El botón
+ * exactamente la que podría acabar aprobando un carrusel con fotos sin
+ * licencia si alguien un día decidiera "simplificar" el guardado. El botón
  * manda el post y el servidor decide; si eso deja de ser cierto, esto falla.
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 1400, height: 1000 } });
-  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}`, { waitUntil: 'domcontentloaded' });
   await pagina.waitForSelector('.lista-posts > li', { timeout: 20_000 });
 
   const conAcciones = await pagina.locator('.lista-posts > li:first-child .cuadrado').count();
@@ -686,7 +577,7 @@ console.log('\nAcciones de la lista');
   // el texto, que la tarjeta muestra el tema y no el slug.
   const interruptor = pagina.locator('.filtros__lab input[type="checkbox"]');
   if (!(await interruptor.isChecked())) await interruptor.check();
-  const lab = pagina.locator('.lista-posts > li[data-laboratorio]:has(a[href="/post/laboratorio-paletas"])').first();
+  const lab = pagina.locator(`.lista-posts > li[data-laboratorio]:has(a[href="/${PROYECTO}/post/laboratorio-paletas"])`).first();
   await lab.waitFor({ timeout: 10_000 }).catch(() => {});
 
   if ((await lab.count()) === 0) {
@@ -723,11 +614,11 @@ console.log('\nAcciones de la lista');
           '  y lo que se enseña es el motivo, no el envoltorio de la validación',
         );
       } else {
-        // Pasar también es correcto: este carrusel no tiene afirmaciones
-        // pendientes. Lo que no puede pasar es avanzar sin que el servidor
+        // Pasar también es correcto: este carrusel no tiene fotos sin
+        // licencia. Lo que no puede pasar es avanzar sin que el servidor
         // lo haya aceptado, así que se comprueba contra el disco.
         const guardado = JSON.parse(
-          readFileSync(join(process.cwd(), 'content', 'posts', 'laboratorio-paletas.json'), 'utf8'),
+          readFileSync(RUTAS.post('laboratorio-paletas'), 'utf8'),
         );
         ok(ahora !== antes, `sin nada pendiente, el estado avanzó de ${antes} a ${ahora}`);
         ok(guardado.estado === ahora, '  y quedó guardado en el disco, no solo en la pantalla');
@@ -735,6 +626,24 @@ console.log('\nAcciones de la lista');
     }
   }
 
+  await pagina.close();
+}
+
+/* ── la identidad de la cuenta ───────────────────────────────────────────── */
+console.log('\nIdentidad');
+{
+  // Solo se mira: aquí no se guarda nada, porque los textos son los de la
+  // cuenta de verdad y una prueba no los toca.
+  const pagina = await navegador.newPage({ viewport: { width: 1400, height: 1000 } });
+  await pagina.goto(`${base}/${PROYECTO}/identidad`, { waitUntil: 'domcontentloaded' });
+  await pagina.waitForSelector('[data-textos]', { timeout: 60_000 });
+  ok((await pagina.locator('[data-cuestionario], [data-materiales], [data-textos]').count()) === 3, 'cuestionario, materiales y textos en una pantalla');
+  const voz = await pagina.locator('[data-textos] .identidad__pieza textarea').first().inputValue();
+  ok(voz.startsWith(readFileSync(RUTAS.voz, 'utf8').slice(0, 40)), 'los textos que ya tiene la cuenta se cargan para editarlos');
+  ok(await pagina.locator('[data-guardar-textos]').isDisabled(), 'y guardar está apagado hasta que algo cambie');
+  await pagina.goto(`${base}/${PROYECTO}`, { waitUntil: 'domcontentloaded' });
+  ok((await pagina.locator(`a[href="/${PROYECTO}/identidad"]`).count()) === 1, 'la lista lleva a la identidad');
+  ok((await pagina.locator('a[href="/nuevo"]').count()) === 1, 'y al alta de un proyecto nuevo');
   await pagina.close();
 }
 
@@ -750,7 +659,7 @@ console.log('\nDescargas');
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-  await pagina.goto(`${base}/descargas`, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}/descargas`, { waitUntil: 'domcontentloaded' });
   await pagina.waitForLoadState('networkidle');
 
   const slides = await pagina.locator('.descargas__slides li').count();
@@ -763,7 +672,12 @@ console.log('\nDescargas');
     // Fotos», y eso necesita una imagen servida, no un botón con JavaScript.
     const enlace = pagina.locator('.descargas__slides a').first();
     const href = await enlace.getAttribute('href');
-    ok(/^\/descargas\/[a-z0-9-]+\/\d+\.png$/.test(href ?? ''), `cada slide es un enlace a su PNG (${href})`);
+    // En Vercel va por /archivo, que lee del repositorio y no del build, con
+    // la versión en la URL. Ver lib/almacen.ts, urlServida.
+    ok(
+      new RegExp(`^(/archivo)?/proyectos/${PROYECTO}/descargas/[a-z0-9-]+/\\d+\\.png(\\?v=[a-z0-9]+)?$`).test(href ?? ''),
+      `cada slide es un enlace a su PNG (${href})`,
+    );
 
     const png = await pagina.request.get(base + href);
     ok(png.status() === 200, '  y el PNG se sirve de verdad');
@@ -773,14 +687,14 @@ console.log('\nDescargas');
     ok(ancho === 1080, `  a 1080 de ancho, el tamaño nativo de Instagram (mide ${ancho})`);
 
     // El aviso de caducado: se falsea la huella y tiene que aparecer.
-    const ruta = join(process.cwd(), 'public', 'descargas', 'indice.json');
+    const ruta = RUTAS.indiceDescargas;
     const antes = await readFile(ruta, 'utf8');
     try {
       const indice = JSON.parse(antes);
       indice[0].huella = 'huellafalsa0';
       await writeFile(ruta, `${JSON.stringify(indice, null, 2)}\n`, 'utf8');
 
-      await pagina.goto(`${base}/descargas`, { waitUntil: 'networkidle' });
+      await pagina.goto(`${base}/${PROYECTO}/descargas`, { waitUntil: 'networkidle' });
       ok(
         (await pagina.locator('.descargas__viejo').count()) > 0,
         'si el carrusel cambió después de exportarse, la página lo dice',
@@ -810,19 +724,19 @@ console.log('\nDescargas');
     '  y avisa de que hace falta un push, que es lo que no se adivina',
   );
 
-  const puesto = await pagina.request.post(`${base}/api/celular`, { data: { slug: 'laboratorio-paletas' } });
+  const puesto = await pagina.request.post(`${base}/api/${PROYECTO}/celular`, { data: { slug: 'laboratorio-paletas' } });
   ok(puesto.ok(), `la ruta prepara un carrusel (${puesto.status()})`);
   if (puesto.ok()) {
     const c = await puesto.json();
     ok(c.slides > 0, `  con sus ${c.slides} slides, ${c.pesoMB} MB`);
-    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 200,
+    ok((await pagina.request.get(`${base}/proyectos/${PROYECTO}/descargas/laboratorio-paletas/01.png`)).status() === 200,
       '  y el PNG queda servido');
 
-    const fuera = await pagina.request.post(`${base}/api/celular`, {
+    const fuera = await pagina.request.post(`${base}/api/${PROYECTO}/celular`, {
       data: { slug: 'laboratorio-paletas', quitar: true },
     });
     ok(fuera.ok(), '  y se puede quitar');
-    ok((await pagina.request.get(`${base}/descargas/laboratorio-paletas/01.png`)).status() === 404,
+    ok((await pagina.request.get(`${base}/proyectos/${PROYECTO}/descargas/laboratorio-paletas/01.png`)).status() === 404,
       '  y entonces ya no está');
   }
 
@@ -834,22 +748,22 @@ console.log('\nPanel del calendario');
 
 /*
  * Solo lectura: **no se sube nada**. `POST /api/calendario` reemplaza
- * content/calendario.tsv, y una prueba que pise el calendario editorial de
+ * proyectos/<id>/calendario.tsv, y una prueba que pise el calendario editorial de
  * verdad haría más daño que el fallo que busca. Lo que se comprueba aquí es lo
  * que la ruta ya devuelve y cómo se pinta.
  */
 {
   const pagina = await navegador.newPage({ viewport: { width: 1200, height: 1400 } });
-  await pagina.goto(base, { waitUntil: 'domcontentloaded' });
+  await pagina.goto(`${base}/${PROYECTO}`, { waitUntil: 'domcontentloaded' });
 
   const panel = pagina.locator('details[data-calendario]');
   ok((await panel.count()) === 1, 'el panel está en la portada');
   await panel.locator('summary').click();
 
-  const hoja = await (await fetch(`${base}/api/calendario`)).json();
+  const hoja = await (await fetch(`${base}/api/${PROYECTO}/calendario`)).json();
 
   if (!hoja.hay || !hoja.filas?.length) {
-    console.log('  —    no hay content/calendario.tsv, así que esta parte se salta');
+    console.log('  —    no hay proyectos/<id>/calendario.tsv, así que esta parte se salta');
   } else {
     await pagina.waitForSelector('.calendario > li', { timeout: 20_000 });
     const filas = await pagina.locator('.calendario > li').count();

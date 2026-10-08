@@ -1,7 +1,7 @@
 /* app/globals.css — el cromo de la aplicación.
  *
  * Ojo: aquí no va nada del diseño del slide. El slide se estiliza en
- * template/plantilla.css y solo ahí. Si un día metes el color de un título en
+ * plantillas/clinica/plantilla.css y solo ahí. Si un día metes el color de un título en
  * este archivo, la separación se rompió.
  */
 
@@ -604,56 +604,12 @@ select:focus {
   vertical-align: middle;
 }
 
-/* ── cola de revisión de afirmaciones ── */
-
-.afirmacion {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border: 1px solid var(--ui-line);
-  border-left: 3px solid #e5a94b;
-  border-radius: 10px;
-  background: #12161d;
-}
-
-.afirmacion[data-revisada] {
-  border-left-color: #46c07a;
-  opacity: 0.72;
-}
-
-.afirmacion__cabecera {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 8px;
-}
-
-.afirmacion__cabecera .chip[data-disparador='cifra'] {
-  border-color: #7a4a4a;
-  color: #ffa8a8;
-}
-
-.afirmacion__cabecera .chip[data-disparador='seguridad'] {
-  border-color: #6b5220;
-  color: #e5a94b;
-}
-
-.afirmacion__texto {
+.clinico__texto {
   margin: 0;
   font-size: 12px;
   line-height: 1.65;
   color: var(--ui-txt);
   white-space: pre-wrap;
-}
-
-.afirmacion mark {
-  background: #4a3413;
-  color: #ffd79a;
-  padding: 0 2px;
-  border-radius: 3px;
-}
-
-.afirmacion a {
-  color: var(--ui-acc);
 }
 
 /* ── redactar ── */
@@ -813,7 +769,7 @@ select:focus {
   color: #e79ab8;
 }
 
-.clinico__firma {
+.clinico__elegida {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1460,8 +1416,9 @@ select:focus {
  * ellos. Aquí se apila: el panel arriba a lo ancho, el carrusel debajo, y el
  * scroll vuelve a ser el de la página.
  *
- * No es que el editor se use en el teléfono; es que si se abre por error, se
- * pueda leer y salir.
+ * Desde que la app corre en Vercel, el editor sí se usa en el teléfono: el
+ * post urgente que sale sin computadora. El zoom del lienzo se ajusta al ancho
+ * al abrirlo (ver Editor.tsx).
  */
 @media (max-width: 860px) {
   .editor {
@@ -1477,6 +1434,17 @@ select:focus {
     overflow-y: visible;
     border-right: 0;
     border-bottom: 1px solid var(--ui-line);
+  }
+
+  /* Un solo scroll, el de la página: dos anidados en el teléfono hacen que el
+     dedo mueva el que no era. */
+  .lienzo {
+    height: auto;
+    overflow: visible;
+  }
+
+  .lienzo .mazo {
+    padding: 12px;
   }
 
   /* El lienzo se escala con `transform`, que no encoge su caja: sin esto el
@@ -1498,4 +1466,270 @@ select:focus {
     position: static;
     margin: 8px 0 0;
   }
+}
+
+/* ── / · elegir proyecto ───────────────────────────────────────────────── */
+
+.proyectos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.proyectos > li {
+  background: var(--ui-panel);
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.proyectos > li > a {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.proyectos > li:hover {
+  border-color: var(--ui-acc);
+}
+
+.proyectos__accesos {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--ui-line);
+}
+
+.proyectos__accesos a {
+  flex: 1 1 auto;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ui-acc);
+  text-decoration: none;
+}
+
+.proyectos__accesos a + a {
+  border-left: 1px solid var(--ui-line);
+}
+
+@media (max-width: 520px) {
+  .proyectos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.proyectos__hueco {
+  flex: none;
+  width: 120px;
+  height: 150px;
+  border: 1px dashed var(--ui-line);
+  border-radius: 6px;
+}
+
+.proyectos__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.proyectos__texto strong {
+  font-size: 15px;
+}
+
+.proyectos__texto span {
+  color: var(--ui-dim);
+  font-size: 12.5px;
+}
+
+.proyectos__texto em {
+  margin-top: 6px;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--ui-acc);
+}
+
+.proyectos__vacio {
+  color: var(--ui-dim);
+}
+
+/* ── subir una imagen propia al slide ── */
+
+.subir-propia {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 4px;
+}
+
+.subir-propia .pista {
+  margin: 0;
+}
+
+/* ── identidad de la cuenta ── */
+
+.identidad {
+  max-width: 860px;
+}
+
+.identidad__intro {
+  margin: 0 0 14px;
+  line-height: 1.6;
+  color: var(--ui-txt);
+}
+
+.identidad__seccion {
+  margin: 14px 0 0;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+}
+
+.identidad__seccion legend {
+  padding: 0 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.identidad__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.identidad__materiales {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+}
+
+.identidad__materiales li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--ui-line);
+}
+
+.identidad__materiales li > span:first-child {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.identidad__md {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.identidad__pieza {
+  margin-top: 10px;
+}
+
+.identidad__pieza > summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.identidad__preguntas {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border: 1px solid #6b5220;
+  border-radius: 10px;
+}
+
+.identidad__preguntas ol {
+  margin: 8px 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.chip--aviso {
+  border-color: #6b5220;
+  color: #e5a94b;
+}
+
+.pista--ok {
+  color: #46c07a;
+}
+
+/* ── explorador de archivos ── */
+
+.migas {
+  margin: 0 0 12px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.migas a {
+  color: var(--ui-acc);
+}
+
+.archivos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 860px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+}
+
+.archivos li + li {
+  border-top: 1px solid var(--ui-line);
+}
+
+.archivos a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  padding: 12px 14px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.archivos a:hover {
+  background: var(--ui-panel);
+}
+
+.archivos strong {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.archivos .pista {
+  margin: 0;
+}
+
+.archivo {
+  max-width: 860px;
+}
+
+.archivo a {
+  color: var(--ui-acc);
+}
+
+.archivo__imagen {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.archivo__texto {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--ui-line);
+  border-radius: 10px;
+  background: var(--ui-panel);
+  font-size: 12.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { AccionesPost } from '@/app/_componentes/AccionesPost';
 import { Miniatura } from '@/app/_componentes/Miniatura';
-import type { Marca, Post } from '@/template/tipos';
+import type { Post, Proyecto } from '@/plantillas/clinica/tipos';
+import { useProyecto } from './proyecto';
 
 /**
  * La lista de carruseles, con qué enseñar y en qué orden.
@@ -37,7 +38,8 @@ const ORDENES: { valor: Orden; texto: string }[] = [
 
 const LLAVE = 'lista-posts';
 
-export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Marca }) {
+export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Proyecto }) {
+  const proyecto = useProyecto();
   const [orden, setOrden] = useState<Orden>('recientes');
   const [estado, setEstado] = useState<Estado>('todos');
   const [busca, setBusca] = useState('');
@@ -112,7 +114,7 @@ export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Marca }) {
   if (posts.length === 0) {
     return (
       <p>
-        Todavía no hay carruseles. Un post es un archivo JSON en <code>content/posts/</code>.
+        Todavía no hay carruseles. Un post es un archivo JSON en <code>proyectos/{proyecto}/posts/</code>.
       </p>
     );
   }
@@ -186,7 +188,7 @@ export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Marca }) {
               {/* El `title` porque el tema se recorta a tres líneas: en una
                   rejilla de cinco columnas no cabe entero y perderlo del todo
                   sería peor que tener que pasar el ratón por encima. */}
-              <Link href={`/post/${post.slug}`} title={post.tema}>
+              <Link href={`/${proyecto}/post/${post.slug}`} title={post.tema}>
                 <Miniatura post={post} marca={marca} ancho={84} />
                 <div>
                   <strong>

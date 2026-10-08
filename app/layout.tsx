@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import '@/template/plantilla.css';
+import '@/plantillas/clinica/plantilla.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Carruseles · @alergo_derma',
-  description: 'Generador de carruseles de Instagram con la plantilla de la cuenta.',
+  title: 'Carruseles',
+  description: 'Generador de carruseles de Instagram, una plantilla por cuenta.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,7 +1,8 @@
 import 'server-only';
 
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { almacen } from '../almacen';
+import { COMPARTIDO } from '../proyecto';
 import sharp from 'sharp';
 import { esSignoClinico } from './clinico';
 import { orillaOpaca, proporcionDeFondo, quitarCroma } from './croma';
@@ -44,9 +45,10 @@ export type IconoGenerado = {
  */
 const ORILLA_MAXIMA = 0.02;
 
-/** El estilo congelado, que se antepone a cada concepto. Ver content/estilo-iconos.md. */
+/** El estilo congelado, que se antepone a cada concepto. Ver compartido/estilo-iconos.md. */
 export async function leerEstilo(): Promise<string> {
-  const texto = await readFile(join(process.cwd(), 'content', 'estilo-iconos.md'), 'utf8');
+  const texto = await almacen.leerTexto(join(process.cwd(), COMPARTIDO, 'estilo-iconos.md'));
+  if (texto === null) throw new Error('Falta compartido/estilo-iconos.md.');
   // Solo la parte de arriba: lo que va después del separador explica el archivo
   // a quien lo edite, no al modelo.
   return texto.split('\n---\n')[0].trim();
@@ -61,13 +63,13 @@ export async function generar(
   if (!llave) throw new Error('Falta GEMINI_API_KEY en .env.local.');
 
   // Antes de gastar nada. La instrucción de no dibujar signos clínicos está en
-  // content/estilo-iconos.md y el modelo la sigue en cuanto al estilo, pero
+  // compartido/estilo-iconos.md y el modelo la sigue en cuanto al estilo, pero
   // seguía dibujando lo que se le pedía. Lo que faltaba era negarse a pedirlo.
   const clinico = esSignoClinico(concepto);
   if (clinico) {
     throw new Error(
       `"${concepto}" no se genera: ${clinico}. Las imágenes de lesiones salen ` +
-        'del archivo clínico y las aprueba el médico.',
+        'del archivo clínico o se suben a mano.',
     );
   }
 

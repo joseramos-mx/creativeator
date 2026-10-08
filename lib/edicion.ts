@@ -1,4 +1,4 @@
-import type { Aprobacion, Credito, Overrides, Post, Slide } from '@/template/tipos';
+import type { Credito, Overrides, Post, Slide } from '@/plantillas/clinica/tipos';
 
 /**
  * lib/edicion.ts — las operaciones del editor, sin React.
@@ -111,7 +111,18 @@ export function aceptaImagen(slide: Slide): boolean {
 }
 
 /**
- * Dónde va la imagen que se soltó, según el tipo de slide.
+ * El crédito de una imagen que subió quien edita: una foto del consultorio, una
+ * de un libro o estudio que la cuenta puede usar, una que mandaron por
+ * WhatsApp. Lo que se sabe es que la puso la cuenta, y eso dice. Basta para
+ * que el carrusel pueda pasar a aprobado; si se quiere precisar, se edita.
+ */
+export const CREDITO_PROPIO: Credito = {
+  fuente: 'Proporcionada por la cuenta',
+  licencia: 'Uso autorizado por la cuenta',
+};
+
+/**
+ * Dónde va la imagen que se subió, según el tipo de slide.
  *
  * Dos campos se comportan al revés al cambiar la foto, y el motivo es el mismo
  * en los dos casos:
@@ -119,15 +130,16 @@ export function aceptaImagen(slide: Slide): boolean {
  *  · `ideaImagen` **se conserva**. Dice qué debería mostrar el slide, y soltar
  *    una foto es justamente el gesto de intentar cumplirlo. Borrarla ahí es
  *    perder el criterio en el momento exacto en que sirve para comprobarlo.
- *  · `credito` **se borra**. Describe de dónde salió la foto anterior. Dejarlo
- *    puesto le atribuiría a la nueva una procedencia que no es la suya, y un
- *    crédito falso es peor que ninguno: parece registrado.
+ *  · `credito` **se cambia**. El de la foto anterior describe otra foto. La
+ *    nueva la subió quien edita, así que lleva `CREDITO_PROPIO`, que dice eso
+ *    y nada más; si se sabe más —el libro, el estudio, quién la tomó— se
+ *    escribe en la tarjeta del slide.
  */
 export function ponerImagen(post: Post, i: number, ruta: string): Post {
   const slide = post.slides[i];
 
   if (slide.tipo === 'portada') {
-    return cambiarSlide(post, i, { foto: ruta, fotoCredito: undefined } as Partial<Slide>);
+    return cambiarSlide(post, i, { foto: ruta, fotoCredito: CREDITO_PROPIO } as Partial<Slide>);
   }
 
   if (slide.tipo === 'contenido') {
@@ -136,6 +148,7 @@ export function ponerImagen(post: Post, i: number, ruta: string): Post {
       visual: {
         clase: 'foto',
         src: ruta,
+        credito: CREDITO_PROPIO,
         ...(antes?.alto ? { alto: antes.alto } : {}),
         ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
       },
@@ -169,38 +182,6 @@ export function ponerFotoDeBanco(
       clase: 'foto',
       src: ruta,
       credito,
-      ...(antes?.alto ? { alto: antes.alto } : {}),
-      ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
-    },
-  } as Partial<Slide>);
-}
-
-/**
- * La imagen clínica aprobada, con su crédito y su firma, de una vez.
- *
- * Se marca `clinica: true` aquí y no en el esquema por omisión: una foto es
- * clínica porque alguien la puso por la cola clínica, y esa marca es lo que
- * hace que la barrera de guardado le exija firma. Si se pierde, la foto de una
- * lesión pasaría por la puerta de las fotos de aula.
- */
-export function ponerClinica(
-  post: Post,
-  i: number,
-  ruta: string,
-  credito: Credito,
-  aprobacion: Aprobacion,
-): Post {
-  const slide = post.slides[i];
-  if (slide.tipo !== 'contenido') return post;
-
-  const antes = slide.visual.clase === 'foto' ? slide.visual : undefined;
-  return cambiarSlide(post, i, {
-    visual: {
-      clase: 'foto',
-      src: ruta,
-      credito,
-      clinica: true,
-      aprobacion,
       ...(antes?.alto ? { alto: antes.alto } : {}),
       ...(antes?.ideaImagen ? { ideaImagen: antes.ideaImagen } : {}),
     },
