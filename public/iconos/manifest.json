@@ -495,6 +495,26 @@
   "bytes": 1414167
  },
  {
+  "slug": "knitted-baby-hat",
+  "nombre": "knitted baby hat",
+  "etiquetas": [
+   "knitted",
+   "baby",
+   "hat",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#8FD1F4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 259841,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "knitted baby hat",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
