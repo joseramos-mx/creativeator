@@ -59,6 +59,7 @@
       "cuerpo": "Un niño de 3 años mastica, sí. Pero también corre, se ríe y habla con el dulce en la boca, y ahí es donde se va por donde no debe. La regla no es cuántos dientes tiene: es comer sentado, quieto y con alguien enfrente.",
       "visual": {
         "clase": "icono",
+        "slug": "small-kids-chair-with-plate-on-table",
         "iconoSugerido": "small kids chair with plate on table"
       }
     },
