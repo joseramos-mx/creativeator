@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, sep } from 'node:path';
 
 /**
@@ -97,7 +97,13 @@ const disco: Almacen = {
         await rm(ruta, { recursive: true, force: true });
       } else {
         await mkdir(dirname(ruta), { recursive: true });
-        await writeFile(ruta, datos);
+        // A un temporal y luego renombrar: dos escrituras a la vez del mismo
+        // archivo se intercalaban y dejaban un JSON con basura al final —pasó
+        // con proyecto.json al usar varios íconos seguidos—. Renombrar es
+        // atómico: gana una de las dos, entera.
+        const temporal = `${ruta}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
+        await writeFile(temporal, datos);
+        await rename(temporal, ruta);
       }
     }
   },

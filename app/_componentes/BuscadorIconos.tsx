@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { SEPARACION_MINIMA, buscar, crearBuscador, separacion, type Icono } from '@/lib/iconos';
 import { paletaDe, type NombrePaleta } from '@/plantillas/clinica/tokens';
+import { guardarVariante, variantesDe, type Variante } from './generarIcono';
 
 /**
  * El buscador de íconos: un modal con campo de búsqueda y rejilla de
@@ -21,6 +22,11 @@ function cargarManifiesto() {
     .then((r) => (r.ok ? r.json() : []))
     .catch(() => [] as Icono[]);
   return cache;
+}
+
+/** Después de guardar un ícono nuevo: que el próximo modal lo vea. */
+export function olvidarManifiesto() {
+  cache = null;
 }
 
 export function BuscadorIconos({
@@ -83,6 +89,45 @@ export function BuscadorIconos({
       : { resultados: todos, sinCoincidencias: true };
   }, [manifiesto, fuse, consulta, recientes]);
 
+  // Generar: para lo que la librería no tiene. Es la librería de todas las
+  // cuentas, así que lo que se genere aquí lo encuentran las demás.
+  const [generando, setGenerando] = useState(false);
+  const [guardando, setGuardando] = useState<number | null>(null);
+  const [generados, setGenerados] = useState<{ concepto: string; modelo: string; variantes: Variante[] } | null>(null);
+  const [errorGenerar, setErrorGenerar] = useState<string>();
+
+  async function generar() {
+    const concepto = consulta.trim() || sugerencia?.trim() || '';
+    if (concepto.length < 3) {
+      setErrorGenerar('Escribe qué ícono quieres, mejor en inglés: «knitted baby bootie», «saline nasal spray».');
+      return;
+    }
+    setGenerando(true);
+    setErrorGenerar(undefined);
+    try {
+      setGenerados({ concepto, ...(await variantesDe(concepto, 2)) });
+    } catch (e) {
+      setErrorGenerar(e instanceof Error ? e.message : 'No se pudo generar.');
+    } finally {
+      setGenerando(false);
+    }
+  }
+
+  async function usarGenerado(i: number) {
+    if (!generados) return;
+    setGuardando(i);
+    setErrorGenerar(undefined);
+    try {
+      const slug = await guardarVariante(generados.variantes[i].png, generados.concepto, generados.modelo);
+      olvidarManifiesto();
+      onElegir(slug);
+    } catch (e) {
+      setErrorGenerar(e instanceof Error ? e.message : 'No se pudo guardar.');
+    } finally {
+      setGuardando(null);
+    }
+  }
+
   const hayRecientes = (!consulta.trim() || sinCoincidencias) && recientes.length > 0;
 
   return (
@@ -98,6 +143,33 @@ export function BuscadorIconos({
           <button className="boton" onClick={onCerrar}>
             cerrar
           </button>
+        </div>
+
+        <div className="generar-icono" data-generar-icono>
+          <button className="boton" onClick={() => void generar()} disabled={generando || guardando !== null}>
+            {generando ? 'Generando… (unos 20 s)' : `Generar con IA${consulta.trim() ? ` «${consulta.trim()}»` : ''}`}
+          </button>
+          <span className="pista">Dos opciones con el estilo de la librería; la que elijas se queda para todas las cuentas.</span>
+          {errorGenerar ? <p className="aviso">{errorGenerar}</p> : null}
+          {generados ? (
+            <div className="rejilla-iconos">
+              {generados.variantes.map((v, i) => (
+                <button
+                  key={i}
+                  className="icono-opcion"
+                  disabled={guardando !== null}
+                  title={v.aviso}
+                  onClick={() => void usarGenerado(i)}
+                >
+                  <span className="icono-opcion__fondo" style={{ background: fondo }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={`data:image/png;base64,${v.png}`} alt="" />
+                  </span>
+                  <span>{guardando === i ? 'guardando…' : 'usar esta'}</span>
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         {sugerencia && consulta === sugerencia ? (

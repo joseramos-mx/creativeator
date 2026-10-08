@@ -13,6 +13,18 @@ import { avisoDeSoloLectura, soloLectura } from '@/lib/soloLectura';
  */
 const CUANTOS = 12;
 
+/**
+ * Leer, cambiar y escribir, de uno en uno. Usar varios íconos seguidos —el
+ * botón de generar los que faltan— manda varias peticiones a la vez, y en
+ * paralelo cada una leería el archivo antes de que escribiera la anterior.
+ */
+let fila: Promise<unknown> = Promise.resolve();
+const enFila = <T,>(tarea: () => Promise<T>): Promise<T> => {
+  const resultado = fila.then(tarea, tarea);
+  fila = resultado.catch(() => {});
+  return resultado;
+};
+
 export async function POST(req: Request, ctx: ConProyecto) {
   if (soloLectura) return avisoDeSoloLectura();
   const proyecto = await proyectoDe(ctx);
@@ -25,18 +37,21 @@ export async function POST(req: Request, ctx: ConProyecto) {
     }
 
     const ruta = rutasDe(proyecto).config;
-    const crudo = JSON.parse((await almacen.leerTexto(ruta)) ?? '{}');
-    const marca = validar(Proyecto, crudo, `proyectos/${proyecto}/proyecto.json`);
-    const recientes = [slug, ...marca.iconosRecientes.filter((s) => s !== slug)].slice(0, CUANTOS);
+    const recientes = await enFila(async () => {
+      const crudo = JSON.parse((await almacen.leerTexto(ruta)) ?? '{}');
+      const marca = validar(Proyecto, crudo, `proyectos/${proyecto}/proyecto.json`);
+      const recientes = [slug, ...marca.iconosRecientes.filter((s) => s !== slug)].slice(0, CUANTOS);
 
-    // Se escribe sobre lo que había en el archivo, no sobre lo validado: así un
-    // valor por omisión del esquema no aparece escrito en proyecto.json por
-    // haber usado un ícono.
-    await guardar(
-      ruta,
-      `${JSON.stringify({ ...crudo, iconosRecientes: recientes }, null, 2)}\n`,
-      `${proyecto}: ícono reciente`,
-    );
+      // Se escribe sobre lo que había en el archivo, no sobre lo validado: así un
+      // valor por omisión del esquema no aparece escrito en proyecto.json por
+      // haber usado un ícono.
+      await guardar(
+        ruta,
+        `${JSON.stringify({ ...crudo, iconosRecientes: recientes }, null, 2)}\n`,
+        `${proyecto}: ícono reciente`,
+      );
+      return recientes;
+    });
     return Response.json({ recientes });
   } catch (e) {
     return Response.json({ error: e instanceof Error ? e.message : 'Error' }, { status: 400 });

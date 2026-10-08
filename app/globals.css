@@ -1790,3 +1790,21 @@ select:focus {
   gap: 6px;
   margin-top: 12px;
 }
+
+.generar-icono {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--linea, rgba(255, 255, 255, 0.12));
+}
+
+.generar-icono .rejilla-iconos {
+  width: 100%;
+}
+
+.faltan-iconos {
+  padding: 10px 12px;
+}
