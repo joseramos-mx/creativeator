@@ -548,8 +548,20 @@ prompt.
 
 ### Generar un ícono a mano
 
-Además del relleno automático, se puede generar a mano y elegir entre tres
-variantes — para cuando el concepto importa y quieres verlo antes:
+**Desde el editor.** El buscador de íconos tiene **«Generar con IA»**: con lo
+que esté escrito en la búsqueda (mejor en inglés) genera dos opciones con el
+estilo de la librería, y la que se elige entra en la librería compartida —la
+encuentran las demás cuentas—. Y si un carrusel se quedó con slides sin ícono,
+arriba del panel aparece **«Generar los íconos que faltan»**, que los genera uno
+por uno con el concepto que sugirió el redactor.
+
+Al redactar, los íconos se generan solos, pero dentro de la misma petición y
+con su límite de tiempo (240 s desde que empieza la redacción, de los 300 que da
+Vercel): lo que no alcance queda para ese botón, en vez de perder el carrusel
+entero. Un 429 de Gemini (límite por minuto) o un 503 se reintentan solos con la
+espera que pide Gemini; una cuota diaria agotada se dice tal cual.
+
+Desde la terminal, para elegir entre tres variantes:
 
 ```bash
 curl -X POST localhost:3001/api/icono   -H 'Content-Type: application/json'   -d '{"concepto":"Una lupa clásica, con mango y aro metálico","n":3}'

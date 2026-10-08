@@ -132,6 +132,7 @@ export async function redactar(
   slug: string,
   opciones: OpcionesRedaccion = {},
 ): Promise<ResultadoRedaccion> {
+  const inicio = Date.now();
   // La identidad va detrás de la voz, en el mismo system prompt: la voz dice
   // cómo escribir, la identidad quién es la cuenta. Sin identidad.md el prompt
   // queda como estaba.
@@ -248,7 +249,7 @@ export async function redactar(
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
     rellenarFotos(proyecto, post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
-    rellenarIconos(post, avisos, marca),
+    rellenarIconos(post, avisos, marca, inicio + PLAZO_DE_ICONOS),
   ]);
   return {
     post,
@@ -281,7 +282,22 @@ export async function redactar(
  * Y como con las fotos, ningún fallo interrumpe la redacción: el slide se queda
  * sin ícono, el editor lo marca, y se resuelve con un clic.
  */
-async function rellenarIconos(post: TPost, avisos: string[], marca: Parameters<typeof paletaDelPost>[0]): Promise<void> {
+/**
+ * Hasta cuándo, desde que empezó la redacción, se generan íconos. La petición
+ * entera tiene 300 s en Vercel y la redacción se lleva la mitad: si se pasa,
+ * se pierde el carrusel completo, no solo un ícono. Lo que no alcance queda
+ * para «Generar los íconos que faltan» en el editor.
+ */
+const PLAZO_DE_ICONOS = 240_000;
+/** Lo que tarda un ícono, más o menos: no se empieza uno que no va a terminar. */
+const UN_ICONO = 30_000;
+
+async function rellenarIconos(
+  post: TPost,
+  avisos: string[],
+  marca: Parameters<typeof paletaDelPost>[0],
+  hasta: number,
+): Promise<void> {
   if (!process.env.GEMINI_API_KEY) return;
 
   // En serie: cada ícono nuevo entra en el manifiesto, y el siguiente slide
@@ -300,7 +316,11 @@ async function rellenarIconos(post: TPost, avisos: string[], marca: Parameters<t
         continue;
       }
 
-      const [variante] = await generarIcono(concepto, 1);
+      if (Date.now() + UN_ICONO > hasta) {
+        avisos.push(`Sin tiempo para generar el ícono "${concepto}": genéralo desde el editor.`);
+        continue;
+      }
+      const [variante] = await generarIcono(concepto, 1, undefined, hasta - UN_ICONO);
       if (!variante) throw new Error('el modelo no devolvió imagen');
       if (variante.aviso) avisos.push(`Ícono "${concepto}": ${variante.aviso}`);
 
