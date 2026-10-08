@@ -82,6 +82,7 @@
       "cuerpo": "Hoy, a las 7 de la noche, se enciende una vela durante una hora. Como cada zona horaria la prende a su hora, la luz no se apaga en todo el día. No arregla nada. Solo deja claro, en voz alta, que ese bebé existió y que su mamá no está sola.",
       "visual": {
         "clase": "icono",
+        "slug": "lit-candle-on-windowsill",
         "iconoSugerido": "lit candle on windowsill"
       }
     }
