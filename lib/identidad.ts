@@ -6,7 +6,7 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import sharp from 'sharp';
 import { z } from 'zod';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, respuestasComoTexto, type Respuestas } from './cuestionario';
-import { MODELO_REDACCION } from './modelo';
+import { MODELO_PROPUESTA, MODELO_REDACCION } from './modelo';
 import { almacen, guardar, type Cambio } from './almacen';
 import { hayProyecto } from './posts';
 import { PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
@@ -423,6 +423,22 @@ ${JSON.stringify(t.marca, null, 2)}
 </ejemplo>`;
 }
 
+/** Qué es cada campo del diseño. Lo leen la identidad completa y la del diseño solo. */
+const CAMPOS_DEL_DISENO = `  · \`fondo\` — el color de fondo más usado, en hex (#RRGGBB).
+  · \`tinta\` — el color del texto sobre ese fondo.
+  · \`tituloFuente\`, \`textoFuente\`, \`numeroFuente\` — **nombres exactos de
+    familias de Google Fonts**, porque de ahí se cargan. Si la de la marca no
+    está en Google Fonts o no la reconoces, la más parecida que sí esté (una
+    redondeada y gruesa como «Bagel Fat One» o «Fredoka»; una sans limpia como
+    «Figtree» o «Poppins»; una serif como «Playfair Display»).
+  · \`tituloMayusculas\` — si los títulos van en mayúsculas.
+  · \`paletas\` — los fondos que usa la cuenta, de uno a seis. El primero es
+    el de siempre. \`nombre\` es el nombre de color más cercano de la lista
+    (azul, rosa, amarillo, verde…), sin repetir; \`color\` el hex real;
+    \`tinta\` el del texto si cambia en ese fondo (vacío si es el mismo); y
+    \`cuando\` para qué temas va, o «El color de la cuenta.» si no hay regla.
+`;
+
 function instrucciones(respuestas: Respuestas, materiales: Material[], actual: TTextos, ejemplo: string): string {
   const contestado = respuestasComoTexto(respuestas);
   return `Vas a conocer una cuenta de Instagram y Facebook para la que una agencia
@@ -514,20 +530,7 @@ manual si dice colores y tipografías, y si no, **de los posts publicados**, que
 son lo que la cuenta reconoce como suyo:`
   }
 
-  · \`fondo\` — el color de fondo más usado, en hex (#RRGGBB).
-  · \`tinta\` — el color del texto sobre ese fondo.
-  · \`tituloFuente\`, \`textoFuente\`, \`numeroFuente\` — **nombres exactos de
-    familias de Google Fonts**, porque de ahí se cargan. Si la de la marca no
-    está en Google Fonts o no la reconoces, la más parecida que sí esté (una
-    redondeada y gruesa como «Bagel Fat One» o «Fredoka»; una sans limpia como
-    «Figtree» o «Poppins»; una serif como «Playfair Display»).
-  · \`tituloMayusculas\` — si los títulos van en mayúsculas.
-  · \`paletas\` — los fondos que usa la cuenta, de uno a seis. El primero es
-    el de siempre. \`nombre\` es el nombre de color más cercano de la lista
-    (azul, rosa, amarillo, verde…), sin repetir; \`color\` el hex real;
-    \`tinta\` el del texto si cambia en ese fondo (vacío si es el mismo); y
-    \`cuando\` para qué temas va, o «El color de la cuenta.» si no hay regla.
-
+${CAMPOS_DEL_DISENO}
 <diseno_actual>
 ${JSON.stringify(actual.diseno, null, 2)}
 </diseno_actual>
@@ -589,4 +592,112 @@ export async function proponerTextos(proyecto: string): Promise<TPropuesta> {
   const propuesta = respuesta.parsed_output;
   if (!propuesta) throw new Error('El modelo no devolvió la estructura esperada.');
   return propuesta;
+}
+
+/* ── solo el diseño ──────────────────────────────────────────────────────── */
+
+/**
+ * Guardar el diseño sin tocar los textos: solo `plantilla` y `diseno` de
+ * proyecto.json.
+ */
+export async function guardarDiseno(proyecto: string, diseno: TDisenoEditable): Promise<void> {
+  const r = rutasDe(proyecto);
+  const limpio = DisenoEditable.parse(diseno);
+  const { diseno: _anterior, ...config } = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
+  await guardar(
+    r.config,
+    `${JSON.stringify({ ...config, ...disenoParaGuardar(limpio) }, null, 2)}\n`,
+    `${proyecto}: diseño`,
+  );
+}
+
+/** Lado largo de una referencia para el diseño: el color y la letra se ven igual a 768. */
+const LADO_REFERENCIA = 768;
+/** Las referencias que se miran como mucho. Más no cambian los colores. */
+const MAX_REFERENCIAS = 6;
+
+const PropuestaDeDiseno = z.object({
+  diseno: DisenoEditable,
+  /** Qué cambió y por qué, en una o dos frases. */
+  porque: z.string(),
+});
+
+export type TPropuestaDeDiseno = z.infer<typeof PropuestaDeDiseno> & { tokens: number };
+
+/**
+ * Solo el diseño, sin reescribir la identidad. Es para iterar barato:
+ *
+ *  · **Con `pedido` y sin referencias** («el rosa más fuerte, títulos en
+ *    mayúsculas»): solo texto, unos cientos de tokens.
+ *  · **Con referencias**: las imágenes de los materiales, chicas (768 px) y
+ *    como mucho seis. Los PDF no van: el manual pesa diez veces más y los
+ *    posts publicados enseñan el diseño mejor.
+ *
+ * Con el modelo auxiliar y sin pensamiento extendido: es elegir colores y
+ * tipografías, no escribir una voz. No escribe nada; se guarda aparte.
+ */
+export async function proponerDiseno(
+  proyecto: string,
+  { actual, pedido, conReferencias }: { actual: TDisenoEditable; pedido: string; conReferencias: boolean },
+): Promise<TPropuestaDeDiseno> {
+  const contenido: Anthropic.ContentBlockParam[] = [];
+  if (conReferencias) {
+    const dir = rutasDe(proyecto).materiales;
+    const imagenes = (await listarMateriales(proyecto)).filter((m) => TIPO_IMAGEN[extname(m.nombre).toLowerCase()]);
+    if (!imagenes.length) {
+      throw new Error('No hay imágenes en los materiales. Sube capturas de posts publicados o de la plantilla.');
+    }
+    for (const m of imagenes.slice(0, MAX_REFERENCIAS)) {
+      const datos = await almacen.leer(join(dir, m.nombre));
+      if (!datos) continue;
+      const chica = await sharp(datos)
+        .resize({ width: LADO_REFERENCIA, height: LADO_REFERENCIA, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+      contenido.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: chica.toString('base64') } });
+    }
+  } else if (!pedido.trim()) {
+    throw new Error('Escribe qué cambiar, o marca «mirar las referencias».');
+  }
+
+  contenido.push({
+    type: 'text',
+    text: `Ajusta el diseño de los slides de una cuenta de Instagram. La plantilla es
+\`plana\`: fondo de un color, el logo arriba a la izquierda, el número del slide
+arriba a la derecha, el título grande al centro, el texto debajo y un ícono o
+una foto.
+
+${conReferencias ? 'Arriba van posts publicados o la plantilla de la cuenta: **el diseño tiene que parecerse a eso**.\n\n' : ''}Los campos:
+
+${CAMPOS_DEL_DISENO}
+<diseno_actual>
+${JSON.stringify({ ...actual, plantilla: 'plana' }, null, 2)}
+</diseno_actual>
+
+${
+  pedido.trim()
+    ? `Lo que pide quien lleva la cuenta:\n\n<pedido>\n${pedido.trim()}\n</pedido>\n\nCambia solo lo que pide${conReferencias ? ' y lo que no se parezca a las referencias' : ''}; lo demás déjalo igual.`
+    : 'Corrige lo que no se parezca a las referencias; lo que ya se parece, déjalo igual.'
+}
+Devuelve \`plantilla: "plana"\`. En \`porque\`, una o dos frases de qué cambiaste. Español de México.`,
+  });
+
+  const cliente = new Anthropic();
+  let respuesta;
+  try {
+    respuesta = await cliente.messages.parse({
+      model: MODELO_PROPUESTA,
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: contenido }],
+      output_config: { format: zodOutputFormat(PropuestaDeDiseno) },
+    });
+  } catch (e) {
+    if (e instanceof Anthropic.AuthenticationError) throw new Error('La llave de Anthropic no es válida. Revisa ANTHROPIC_API_KEY.');
+    if (e instanceof Anthropic.RateLimitError) throw new Error('Demasiadas peticiones seguidas. Espera un minuto.');
+    if (e instanceof Anthropic.APIError) throw new Error(`La API respondió ${e.status}: ${e.message}`);
+    throw e;
+  }
+  const propuesta = respuesta.parsed_output;
+  if (!propuesta) throw new Error('El modelo no devolvió el diseño.');
+  return { ...propuesta, tokens: respuesta.usage.input_tokens + respuesta.usage.output_tokens };
 }

@@ -293,6 +293,13 @@ Hay dos:
   títulos más tranquilos. Todo esto lo propone Claude en la identidad y se
   corrige ahí mismo.
 
+  **Iterar el diseño sin reescribir la identidad.** En «Diseño de los slides»:
+  cambiar a mano y ver la vista previa no gasta tokens; «Ajustar el diseño con
+  Claude» manda solo el diseño actual y lo que pidas («el rosa más fuerte»),
+  unos mil tokens con el modelo auxiliar; marcando «mirar las imágenes» añade
+  hasta seis referencias a 768 px (unos 800 tokens cada una), sin los PDF.
+  «Guardar diseño» escribe solo `plantilla` y `diseno` en `proyecto.json`.
+
 Lo que pinta un slide —la ruta que captura Playwright, el editor, la
 lista— la pide por su nombre a `plantillas/index.ts`, así que dos cuentas pueden
 verse completamente distintas con la misma app.

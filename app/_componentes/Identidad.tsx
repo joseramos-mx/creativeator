@@ -112,6 +112,12 @@ export function Identidad({
   const entrada = useRef<HTMLInputElement>(null);
   const [logo, setLogo] = useState(proyectoInicial.logo);
   const [subiendoLogo, setSubiendoLogo] = useState(false);
+  const [disenoSinGuardar, setDisenoSinGuardar] = useState(false);
+  const [pedidoDiseno, setPedidoDiseno] = useState('');
+  const [conReferencias, setConReferencias] = useState(false);
+  const [ajustando, setAjustando] = useState(false);
+  const [guardandoDiseno, setGuardandoDiseno] = useState(false);
+  const [ajuste, setAjuste] = useState<{ tipo: 'error' | 'ok'; texto: string }>();
 
   useEffect(() => {
     if (proponiendo === null) return;
@@ -121,11 +127,11 @@ export function Identidad({
 
   // Avisar antes de salir con una propuesta sin guardar: costó una llamada larga.
   useEffect(() => {
-    if (!sinGuardar) return;
+    if (!sinGuardar && !disenoSinGuardar) return;
     const avisar = (e: BeforeUnloadEvent) => e.preventDefault();
     window.addEventListener('beforeunload', avisar);
     return () => window.removeEventListener('beforeunload', avisar);
-  }, [sinGuardar]);
+  }, [sinGuardar, disenoSinGuardar]);
 
   const fallo = (e: unknown, porDefecto: string) =>
     setAviso({ tipo: 'error', texto: e instanceof Error ? e.message : porDefecto });
@@ -214,6 +220,7 @@ export function Identidad({
         body: JSON.stringify({ textos }),
       });
       setSinGuardar(false);
+      setDisenoSinGuardar(false);
       setAviso({ tipo: 'ok', texto: 'Guardado. Lo que se redacte de aquí en adelante sale con esta identidad.' });
     } catch (e) {
       fallo(e, 'No se pudo guardar.');
@@ -240,8 +247,45 @@ export function Identidad({
 
   const cambiarDiseno = (cambio: Partial<Diseno>) => {
     setTextos((t) => ({ ...t, diseno: { ...t.diseno, ...cambio } }));
-    setSinGuardar(true);
+    setDisenoSinGuardar(true);
   };
+
+  /** Solo el diseño: no reescribe la identidad ni toca los textos. */
+  async function ajustarDiseno() {
+    setAjustando(true);
+    setAjuste(undefined);
+    try {
+      const r = await pedir('/identidad/diseno', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diseno: textos.diseno, pedido: pedidoDiseno, conReferencias }),
+      });
+      cambiarDiseno(r.diseno);
+      setAjuste({ tipo: 'ok', texto: `${r.porque} (${r.tokens.toLocaleString('es-MX')} tokens)` });
+    } catch (e) {
+      setAjuste({ tipo: 'error', texto: e instanceof Error ? e.message : 'No se pudo ajustar.' });
+    } finally {
+      setAjustando(false);
+    }
+  }
+
+  async function guardarDiseno() {
+    setGuardandoDiseno(true);
+    setAjuste(undefined);
+    try {
+      await pedir('/identidad/diseno', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diseno: textos.diseno }),
+      });
+      setDisenoSinGuardar(false);
+      setAjuste({ tipo: 'ok', texto: 'Diseño guardado. Los carruseles de la cuenta ya salen así.' });
+    } catch (e) {
+      setAjuste({ tipo: 'error', texto: e instanceof Error ? e.message : 'No se pudo guardar.' });
+    } finally {
+      setGuardandoDiseno(false);
+    }
+  }
   const cambiarPaleta = (i: number, cambio: Partial<Diseno['paletas'][number]>) =>
     cambiarDiseno({ paletas: textos.diseno.paletas.map((p, j) => (j === i ? { ...p, ...cambio } : p)) });
 
@@ -491,8 +535,8 @@ export function Identidad({
           <fieldset className="identidad__seccion" data-diseno>
             <legend>Diseño de los slides</legend>
             <p className="pista">
-              Claude lo saca de los materiales —el manual o los posts publicados— al escribir la identidad. Aquí se
-              corrige: los colores en hex y las tipografías con su nombre de Google Fonts.
+              Claude lo saca de los materiales al escribir la identidad. Aquí se corrige a mano —no gasta tokens— o se
+              le pide solo el diseño, sin volver a escribir lo demás.
             </p>
             <div className="fila">
               <div>
@@ -604,6 +648,45 @@ export function Identidad({
 
             <VistaPrevia proyecto={proyectoInicial} textos={textos} logo={logo} />
             <p className="pista">La vista previa cambia al momento; los slides de verdad, al guardar.</p>
+
+            {textos.diseno.plantilla === 'plana' ? (
+              <div className="identidad__ajuste" data-ajuste>
+                <label htmlFor="pedido-diseno">Pedirle a Claude solo el diseño</label>
+                <textarea
+                  id="pedido-diseno"
+                  rows={2}
+                  value={pedidoDiseno}
+                  placeholder="El rosa más fuerte, títulos en mayúsculas, una letra menos redonda…"
+                  onChange={(e) => setPedidoDiseno(e.target.value)}
+                />
+                <label>
+                  <input type="checkbox" checked={conReferencias} onChange={(e) => setConReferencias(e.target.checked)} />{' '}
+                  Mirar otra vez las imágenes de los materiales{' '}
+                  <span className="pista">(más tokens; sin marcar, solo lee lo que escribiste)</span>
+                </label>
+              </div>
+            ) : null}
+            <div className="identidad__acciones">
+              {textos.diseno.plantilla === 'plana' ? (
+                <button
+                  className="boton"
+                  data-ajustar-diseno
+                  disabled={ajustando || (!conReferencias && !pedidoDiseno.trim())}
+                  onClick={() => void ajustarDiseno()}
+                >
+                  {ajustando ? 'Claude está ajustando…' : 'Ajustar el diseño con Claude'}
+                </button>
+              ) : null}
+              <button
+                className="boton"
+                data-guardar-diseno
+                disabled={guardandoDiseno || !disenoSinGuardar}
+                onClick={() => void guardarDiseno()}
+              >
+                {guardandoDiseno ? 'Guardando…' : disenoSinGuardar ? 'Guardar diseño' : 'Diseño guardado'}
+              </button>
+            </div>
+            {ajuste ? <p className={ajuste.tipo === 'error' ? 'aviso' : 'pista pista--ok'}>{ajuste.texto}</p> : null}
           </fieldset>
 
           {PIEZAS.map((p) => (
