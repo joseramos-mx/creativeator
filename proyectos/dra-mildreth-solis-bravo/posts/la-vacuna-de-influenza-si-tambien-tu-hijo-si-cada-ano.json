@@ -1,0 +1,100 @@
+{
+  "slug": "la-vacuna-de-influenza-si-tambien-tu-hijo-si-cada-ano",
+  "tema": "La vacuna de influenza: sí, también tu hijo, sí, cada año",
+  "creado": "2026-10-13",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "La vacuna de influenza: sí, también tu hijo, y sí, cada año ❄️\n\nYa pasó octubre y la vacuna de influenza sigue en la lista de pendientes, junto a la cita del dentista y la ropa de invierno que hay que bajar. El año pasado sí fuiste, hiciste fila con él en brazos, y este año no se ha enfermado, así que no urge. Nos ha pasado a todas. La campaña nacional ya arrancó y esta es la mejor ventana del año para ponerla.\n\n🌡️ Qué dice la evidencia: se aplica desde los 6 meses y se repite cada temporada, porque el virus cambia de un año a otro y la protección va bajando con los meses. Si es la primera vez que se vacuna y tiene menos de 9 años, pueden ser dos dosis separadas por al menos cuatro semanas (AAP).\n\n✔️ \"Es que la vacuna le da gripa\": la vacuna inyectada no lleva virus capaz de enfermarlo. Brazo adolorido, un día flojo o algo de temperatura sí puede haber, y dura poco. Si se enferma a los tres días, se cruzó con otro virus: la protección tarda unas dos semanas en armarse (Mayo Clinic).\n\n❄️ Por qué pesa tanto antes de los 5 años: en los más chiquitos, sobre todo antes de los 2, la influenza es de las infecciones respiratorias que con más frecuencia terminan en hospitalización. Vacunarlo no promete que nunca se enferme; baja el riesgo de que se complique. Y protege al bebé de casa que todavía no alcanza la edad para vacunarse (AAP).\n\n📅 Dónde conseguirla en Durango: durante la campaña se aplica sin costo en centros de salud, IMSS e ISSSTE. Pregunta por el módulo más cercano a tu colonia y lleva la cartilla para que quede registrada (Esquema Nacional de Vacunación de México).\n\n💙 Si este año se te pasó, no llegaste tarde a nada: la temporada apenas empieza y todavía estás a tiempo. Vacunar no es desconfiar de tu hijo ni de su sistema inmune, es quitarle carga a un invierno que ya viene con suficientes mocos. No estás sola en esto.\n\n💬 ¿Cuál fue tu última duda antes de ponérsela? Te leo abajo y la contesto.\n\n🔖 Guarda la lámina de influenza vs catarro: en enero, a las tres de la mañana, con un niño caliente y tú media dormida, esa comparación se agradece. Y mándasela a la mamá que este año sigue dudando.\n\n📲 ¿No sabes si a tu hijo le toca una dosis o dos este año, o quieres revisar cómo va su cartilla completa? Eso se resuelve en consulta en Durango. Agenda por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp si quieres preguntar antes.",
+  "pilar": "vacunas",
+  "objetivo": "agendar",
+  "nota": "7 láminas. Arranca la campaña nacional en octubre. Responder las 3 dudas clásicas, tabla influenza vs catarro y dónde conseguirla gratis en Durango.",
+  "hashtags": [
+    "#VacunaDeInfluenza",
+    "#TemporadaDeFrio",
+    "#PediatriaPreventiva",
+    "#VacunasAlDia",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La vacuna de influenza:*\n**sí, cada año**",
+      "pregunta": "Ya arrancó la campaña",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/la-vacuna-de-influenza-si-tambien-tu-hijo-si-cada-ano/pexels-5967649.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Marina Abrosimova",
+        "url": "https://www.pexels.com/photo/smiling-woman-hugging-daughter-against-autumn-tree-5967649/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Es que el año pasado* **ya se la puse\"**",
+      "bajada": "Esta vacuna no se guarda para el siguiente año.",
+      "cuerpo": "El año pasado hiciste fila con él en brazos. Este año pasó octubre, no se enfermó, y la vacuna se quedó en la lista de pendientes. Nos ha pasado a todas. No es descuido: es que nadie te explicó por qué esta vacuna se repite cada temporada.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "wall calendar october page"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Desde los 6 meses, una dosis cada temporada.",
+      "cuerpo": "La vacuna de influenza se aplica cada año a partir de los 6 meses de edad. Dos razones: el virus cambia de una temporada a otra y la protección baja con los meses. La primera vez, los menores de 9 años pueden necesitar dos dosis separadas por al menos cuatro semanas.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "vaccine vial"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Es que la vacuna* **le da gripa\"**",
+      "bajada": "No es influenza: es el cuerpo aprendiendo.",
+      "cuerpo": "La vacuna inyectada no contiene virus capaz de enfermar a tu hijo. Lo que sí puede pasar: brazo adolorido, un día flojo, un poco de temperatura. Y si se enferma a los tres días, se cruzó con otro virus: la protección tarda unas dos semanas en armarse.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "adhesive bandage"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Por qué pesa tanto **antes de los 5**",
+      "bajada": "No evita todo: evita que se complique.",
+      "cuerpo": "En menores de 5 años, y sobre todo antes de los 2, la influenza es de las infecciones respiratorias que con más frecuencia terminan en hospitalización. Vacunarlo no garantiza que no se enferme: baja el riesgo de que se ponga grave. Y protege al bebé de casa que todavía no puede vacunarse.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "baby crib"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Dónde y cuándo **vacunarlo**",
+      "puntos": [
+        "→ **Desde los 6 meses** Antes de esa edad no se aplica; al bebé se le protege vacunando a quienes lo cargan.",
+        "→ **De octubre en adelante** La campaña nacional arranca en otoño. Mejor temprano: tarda unas dos semanas en hacer efecto.",
+        "→ **Toda la casa** Papás, abuelos, embarazadas y quien lo cuida. La influenza llega de afuera, no sale de él.",
+        "→ **Gratis en Durango** En centros de salud, IMSS e ISSSTE durante la campaña. Pregunta por el módulo más cercano y lleva la cartilla.",
+        "→ **La primera vez, dos dosis** Menores de 9 años que nunca se han vacunado necesitan la segunda a las cuatro semanas."
+      ],
+      "fuente": "Esquema Nacional de Vacunación de México"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Influenza* **o catarro**",
+      "bajada": "La influenza no avisa: llega de golpe.",
+      "cuerpo": "Catarro: empieza despacio, muchos mocos, fiebre baja o nada, el niño sigue jugando. Influenza: pega de golpe, fiebre alta, dolor de cuerpo y de cabeza, tos seca, y el niño no quiere ni levantarse del sillón. Si no distingues cuál es, eso se valora, no se adivina en casa.",
+      "visual": {
+        "clase": "icono",
+        "slug": "tissue-box",
+        "iconoSugerido": "tissue box"
+      },
+      "fuente": "Cleveland Clinic"
+    }
+  ]
+}
