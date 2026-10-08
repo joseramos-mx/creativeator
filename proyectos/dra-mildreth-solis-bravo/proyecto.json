@@ -1,0 +1,24 @@
+{
+  "nombre": "Dra. Mildreth Solis Bravo",
+  "usuario": "@POR ESCRIBIR",
+  "especialidad": "POR ESCRIBIR",
+  "ciudad": "POR ESCRIBIR",
+  "plataforma": "POR ESCRIBIR",
+  "logo": "/proyectos/dra-mildreth-solis-bravo/marca/logo-blanco.png",
+  "retrato": "",
+  "cierre": {
+    "lugar": "*Consulta en* **{ciudad}**",
+    "invitacion": "Agenda tu cita desde"
+  },
+  "plantilla": "clinica",
+  "giro": "POR ESCRIBIR",
+  "fuentes": [
+    "Mayo Clinic",
+    "Cleveland Clinic",
+    "AAP",
+    "AAD",
+    "KidsHealth",
+    "StatPearls"
+  ],
+  "iconosRecientes": []
+}
