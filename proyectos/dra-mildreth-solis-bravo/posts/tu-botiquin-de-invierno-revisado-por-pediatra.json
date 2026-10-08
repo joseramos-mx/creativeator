@@ -48,6 +48,7 @@
       "cuerpo": "Los jarabes de venta libre para tos y gripa no se recomiendan en niños pequeños: no acortan el resfriado y sí pueden causar efectos no deseados. Lo que sí ayuda es simple: suero fisiológico en la nariz, líquidos, aire húmedo y tiempo. El resfriado común se va solo en unos días.",
       "visual": {
         "clase": "icono",
+        "slug": "antibiotic-syrup-bottle",
         "iconoSugerido": "saline nasal spray bottle"
       },
       "fuente": "AAP · Mayo Clinic"
