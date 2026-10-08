@@ -190,7 +190,7 @@ export function ListaPosts({ posts, marca }: { posts: Post[]; marca: Proyecto })
                   sería peor que tener que pasar el ratón por encima. */}
               <Link href={`/${proyecto}/post/${post.slug}`} title={post.tema}>
                 <Miniatura post={post} marca={marca} ancho={84} />
-                <div>
+                <div className="lista-posts__texto">
                   <strong>
                     {post.tema}
                     {esLab(post) ? <em className="chip-lab">laboratorio</em> : null}

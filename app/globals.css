@@ -192,7 +192,7 @@ body {
   background: #12161d;
 }
 
-.lista-posts strong {
+.lista-posts__texto strong {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -202,7 +202,7 @@ body {
   line-height: 1.35;
 }
 
-.lista-posts span {
+.lista-posts__texto span {
   display: block;
   color: var(--ui-dim);
   font-size: 11px;
@@ -210,21 +210,25 @@ body {
 }
 
 /* Que el texto pueda encogerse dentro de la tarjeta: sin esto un tema largo
-   sin espacios empujaría la tarjeta y rompería la rejilla. */
-.lista-posts a > div {
+   sin espacios empujaría la tarjeta y rompería la rejilla.
+
+   Y el texto con su clase, no `.lista-posts span`: esas reglas alcanzaban
+   también a la miniatura, que es el slide de verdad, y le ponían 11 px y gris
+   a los <span> de la plantilla plana —el título entero, el usuario—. */
+.lista-posts__texto {
   min-width: 0;
 }
 
-.lista-posts em {
+.lista-posts__texto em {
   font-style: normal;
   color: var(--ui-txt);
 }
 
-.lista-posts em[data-estado='borrador'] {
+.lista-posts__texto em[data-estado='borrador'] {
   color: #e5a94b;
 }
 
-.lista-posts em[data-estado='publicado'] {
+.lista-posts__texto em[data-estado='publicado'] {
   color: #46c07a;
 }
 
@@ -1120,12 +1124,12 @@ select:focus {
 
 /* ── los dos botones de cada tarjeta ── */
 
-.lista-posts li {
+.lista-posts > li {
   position: relative;
 }
 
 /* Sitio para los botones, para que no se echen encima de la última línea. */
-.lista-posts span:last-of-type {
+.lista-posts__texto span:last-of-type {
   padding-right: 66px;
 }
 
@@ -1458,7 +1462,7 @@ select:focus {
 /* En el teléfono los dos botones de cada tarjeta quedan al alcance del pulgar y
    la última línea ya no necesita hacerles hueco a la derecha. */
 @media (max-width: 520px) {
-  .lista-posts span:last-of-type {
+  .lista-posts__texto span:last-of-type {
     padding-right: 0;
   }
 
