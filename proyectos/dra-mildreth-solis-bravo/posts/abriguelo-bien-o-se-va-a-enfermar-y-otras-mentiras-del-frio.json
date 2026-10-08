@@ -1,0 +1,100 @@
+{
+  "slug": "abriguelo-bien-o-se-va-a-enfermar-y-otras-mentiras-del-frio",
+  "tema": "Mitos del frío: abrigarlo de más no previene infecciones respiratorias",
+  "creado": "2026-10-21",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "\"Abrígalo bien o se va a enfermar\" ❄️\n\nLlega la temporada de frío en Durango y con ella la misma conversación en la puerta de la casa: el gorro, la cobija extra, la mirada de alguien que opina que le falta ropa. Y si el niño amanece con mocos, ya sabes de quién va a ser la culpa. Antes de seguir: los resfriados en invierno no los causa la temperatura. Los causan virus, y eso cambia por completo lo que sí vale la pena hacer.\n\n🌡️ Qué dice la ciencia: un niño se resfría cuando un virus llega a su nariz, por una mano, un estornudo o un juguete compartido. Hay más resfriados en invierno porque pasamos más horas encerrados y juntos, no porque haga frío afuera (Mayo Clinic, KidsHealth).\n\n❄️ \"Le pegó el sereno\": el sereno no existe como enfermedad. Es el nombre que le pusimos a algo que no entendíamos. Cuando el niño sale de noche y amanece con tos, ese virus ya venía incubando dos o tres días antes.\n\n😴 Lo que sí cuesta abrigar de más: un bebé muy abrigado para dormir se sobrecalienta, y eso sí importa en el primer año. La referencia es sencilla: una capa más de la que tú traes puesta (AAP).\n\n✔️ Lo que de verdad funciona: lavado de manos al llegar a casa, vacuna anual de influenza desde los 6 meses (y los adultos de la casa también), ventilar 10 minutos aunque haga frío, capas delgadas en vez de bultos, y suero fisiológico para la nariz tapada (AAP, OMS).\n\n💙 Si este invierno tu hijo se enferma, no va a ser porque te faltó una cobija. Ninguna mamá provoca un catarro por dejar salir a su hijo al patio. Esa culpa la cargamos por generaciones y nadie nos la pidió. Mándale este post a la abuela que te dice lo del sereno, a tu suegra, a la vecina, a la amiga que ya no sabe cómo defenderse en la comida del domingo. Compartirlo es más fácil que discutirlo.\n\n💬 ¿Cuál es la frase del frío que más te repiten en tu familia? Déjamela aquí abajo, las voy leyendo todas.\n\n🔖 Guarda la última lámina: es la que vas a querer tener a la mano en diciembre, cuando empiecen las posadas y las visitas.\n\n📲 ¿Tu peque lleva varias semanas con mocos, tos que no cede o se enferma más de lo que esperabas? Eso ya se valora. Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp.",
+  "pilar": "mitos",
+  "objetivo": "compartir",
+  "nota": "7 láminas. Mito vs realidad con humor: el frío no enferma, el sereno no existe. Cierre con lo que sí funciona. Compartible con abuelas.",
+  "hashtags": [
+    "#ResfriadoInfantil",
+    "#TemporadaDeFrio",
+    "#PediatriaParaMamas",
+    "#MitosDeCrianza",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*\"Abrígalo bien o* **se va a enfermar\"**",
+      "pregunta": "Y otras mentiras del frío",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/abriguelo-bien-o-se-va-a-enfermar-y-otras-mentiras-del-frio/pexels-4260394.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Viacheslav Stopkevich",
+        "url": "https://www.pexels.com/photo/photo-of-a-cute-kid-wearing-a-blue-jacket-4260394/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Ya le puse* **otro suéter\"**",
+      "bajada": "Todas hemos salido con tres capas de más.",
+      "cuerpo": "Antes de abrir la puerta ya le pusiste calcetines, chamarra, gorro y una cobija encima. Por si acaso. Y si al día siguiente estornuda, lo primero que piensas es que le faltó ropa. Nadie te está juzgando: a todas nos enseñaron que el frío enferma.",
+      "visual": {
+        "clase": "icono",
+        "slug": "knitted-baby-hat",
+        "iconoSugerido": "knitted baby hat"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Los resfriados los causan virus, no la temperatura.",
+      "cuerpo": "Un niño se resfría porque un virus llegó a su nariz: una mano, un estornudo, un juguete compartido. No por salir despeinado. En invierno hay más resfriados porque pasamos más horas encerrados y juntos, respirando el mismo aire. El frío no infecta; la cercanía sí contagia.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "closed house window"
+      },
+      "fuente": "Mayo Clinic · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Le pegó* **el sereno\"**",
+      "bajada": "El sereno no es un agente infeccioso.",
+      "cuerpo": "El sereno no existe como enfermedad. Es el nombre que le pusimos a algo que no entendíamos: el niño salió de noche y amaneció con tos. Lo que pasó es que el virus ya venía incubando desde dos o tres días antes. La salida nocturna solo fue el testigo.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "crescent moon night sky"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que cuesta **abrigar de más**",
+      "bajada": "El sobreabrigo sí tiene consecuencias; el aire frío no.",
+      "cuerpo": "Un bebé demasiado abrigado para dormir se sobrecalienta, y eso sí importa en el primer año. La recomendación es una capa más de la que tú traes puesta, nada más. Y mientras discutimos la chamarra, se nos olvida lo único que de verdad corta contagios: manos limpias y vacunas al día.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "stack of folded blankets"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Lo que sí **funciona en invierno**",
+      "puntos": [
+        "→ **Lavarse las manos** Al llegar a casa y antes de comer. Es lo más barato y lo que más sirve.",
+        "→ **Vacuna de influenza** Cada año, desde los 6 meses de edad. Los adultos de la casa también.",
+        "→ **Ventilar 10 minutos** Abrir ventanas aunque haga frío renueva el aire que todos están respirando.",
+        "→ **Capas, no bultos** Varias prendas delgadas que puedas quitarle adentro, en vez de una chamarra gigante.",
+        "→ **Suero y líquidos** Los lavados nasales no curan el virus, pero hacen el catarro mucho más llevadero."
+      ],
+      "fuente": "AAP · OMS"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Para reenviar* **a la abuela**",
+      "bajada": "Con cariño, pero con datos.",
+      "cuerpo": "El frío no enferma: enferman los virus. El pelo mojado no da gripa. El sereno no existe. Salir al patio no causa neumonía. Abrigarlo está bien; abrigarlo de más no lo protege de nada. Lo que protege son manos limpias, vacunas al día y una casa ventilada.",
+      "visual": {
+        "clase": "icono",
+        "slug": "knitted-winter-scarf",
+        "iconoSugerido": "knitted winter scarf"
+      },
+      "fuente": "Mayo Clinic · AAP"
+    }
+  ]
+}
