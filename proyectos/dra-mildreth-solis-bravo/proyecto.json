@@ -10,7 +10,7 @@
     "lugar": "*Consulta en* **{ciudad}**",
     "invitacion": "Agenda tu cita desde"
   },
-  "plantilla": "clinica",
+  "plantilla": "plana",
   "giro": "una pediatra",
   "fuentes": [
     "AAP",
@@ -21,5 +21,14 @@
     "StatPearls",
     "Esquema Nacional de Vacunación de México"
   ],
-  "iconosRecientes": []
+  "iconosRecientes": [],
+  "diseno": {
+    "fondo": "#4FA0FB",
+    "tinta": "#FFFFFF",
+    "tituloFuente": "Bagel Fat One",
+    "tituloMayusculas": true,
+    "textoFuente": "Figtree",
+    "numeroFuente": "Fredoka",
+    "paletas": []
+  }
 }
