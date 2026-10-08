@@ -339,6 +339,23 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "empty-picture-frame",
+  "nombre": "empty picture frame",
+  "etiquetas": [
+   "empty",
+   "picture",
+   "frame"
+  ],
+  "color": "#6A91D4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 489651,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "empty picture frame",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "face-paint-palette-with-brush",
   "nombre": "face paint palette with brush",
   "etiquetas": [
