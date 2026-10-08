@@ -257,6 +257,30 @@
   "bytes": 1463796
  },
  {
+  "slug": "day-of-the-dead-altar-with-marigolds-and-photo-frame",
+  "nombre": "day of the dead altar with marigolds and photo frame",
+  "etiquetas": [
+   "day",
+   "of",
+   "the",
+   "dead",
+   "altar",
+   "with",
+   "marigolds",
+   "and",
+   "photo",
+   "frame"
+  ],
+  "color": "#D2912B",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1169349,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "day of the dead altar with marigolds and photo frame",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "dinner-plate-with-a-clock",
   "nombre": "dinner plate with a clock",
   "etiquetas": [
