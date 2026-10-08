@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, type Respuestas } from '@/lib/cuestionario';
+import { plantillaDe } from '@/plantillas';
+import { NOMBRES_PALETA, paletas as delaClinica, type NombrePaleta } from '@/plantillas/clinica/tokens';
+import type { Proyecto, Slide } from '@/plantillas/clinica/tipos';
 import { useApi, useProyecto } from './proyecto';
 import { reducirImagen, TOPE_SUBIDA } from './reducirImagen';
 
@@ -36,6 +39,17 @@ type Marca = {
   cierre: { lugar: string; invitacion: string };
 };
 
+type Diseno = {
+  plantilla: 'clinica' | 'plana';
+  fondo: string;
+  tinta: string;
+  tituloFuente: string;
+  tituloMayusculas: boolean;
+  textoFuente: string;
+  numeroFuente: string;
+  paletas: { nombre: NombrePaleta; color: string; tinta: string; cuando: string }[];
+};
+
 export type Textos = {
   identidad: string;
   voz: string;
@@ -45,9 +59,10 @@ export type Textos = {
   fotos: string;
   fotosBanco: string;
   marca: Marca;
+  diseno: Diseno;
 };
 
-const PIEZAS: { clave: keyof Omit<Textos, 'marca' | 'identidad'>; titulo: string; que: string }[] = [
+const PIEZAS: { clave: keyof Omit<Textos, 'marca' | 'identidad' | 'diseno'>; titulo: string; que: string }[] = [
   { clave: 'voz', titulo: 'voz.md', que: 'El system prompt de la redacción: a quién le habla, cómo suena, la fórmula del copy.' },
   { clave: 'alcance', titulo: 'prompts/alcance.md', que: 'Qué temas son de la cuenta y cuáles no. Va justo después de la especialidad.' },
   { clave: 'estructura', titulo: 'prompts/estructura.md', que: 'Cuántos slides y qué va en cada uno. El cierre se añade solo.' },
@@ -62,12 +77,15 @@ const reloj = (s: number) => (s < 60 ? `${Math.round(s)} s` : `${Math.floor(s / 
 const peso = (b: number) => (b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1024))} KB`);
 
 export function Identidad({
+  proyectoInicial,
   respuestasIniciales,
   materialesIniciales,
   textosIniciales,
   nuevo,
   remoto = false,
 }: {
+  /** proyecto.json como está: la vista previa del diseño parte de aquí. */
+  proyectoInicial: Proyecto;
   respuestasIniciales: Respuestas;
   materialesIniciales: Material[];
   textosIniciales: Textos;
@@ -92,6 +110,14 @@ export function Identidad({
   const [guardando, setGuardando] = useState(false);
   const [aviso, setAviso] = useState<{ tipo: 'error' | 'ok'; texto: string }>();
   const entrada = useRef<HTMLInputElement>(null);
+  const [logo, setLogo] = useState(proyectoInicial.logo);
+  const [subiendoLogo, setSubiendoLogo] = useState(false);
+  const [disenoSinGuardar, setDisenoSinGuardar] = useState(false);
+  const [pedidoDiseno, setPedidoDiseno] = useState('');
+  const [conReferencias, setConReferencias] = useState(false);
+  const [ajustando, setAjustando] = useState(false);
+  const [guardandoDiseno, setGuardandoDiseno] = useState(false);
+  const [ajuste, setAjuste] = useState<{ tipo: 'error' | 'ok'; texto: string }>();
 
   useEffect(() => {
     if (proponiendo === null) return;
@@ -101,11 +127,11 @@ export function Identidad({
 
   // Avisar antes de salir con una propuesta sin guardar: costó una llamada larga.
   useEffect(() => {
-    if (!sinGuardar) return;
+    if (!sinGuardar && !disenoSinGuardar) return;
     const avisar = (e: BeforeUnloadEvent) => e.preventDefault();
     window.addEventListener('beforeunload', avisar);
     return () => window.removeEventListener('beforeunload', avisar);
-  }, [sinGuardar]);
+  }, [sinGuardar, disenoSinGuardar]);
 
   const fallo = (e: unknown, porDefecto: string) =>
     setAviso({ tipo: 'error', texto: e instanceof Error ? e.message : porDefecto });
@@ -194,6 +220,7 @@ export function Identidad({
         body: JSON.stringify({ textos }),
       });
       setSinGuardar(false);
+      setDisenoSinGuardar(false);
       setAviso({ tipo: 'ok', texto: 'Guardado. Lo que se redacte de aquí en adelante sale con esta identidad.' });
     } catch (e) {
       fallo(e, 'No se pudo guardar.');
@@ -202,7 +229,67 @@ export function Identidad({
     }
   }
 
-  const cambiarTexto = (clave: keyof Omit<Textos, 'marca'>, valor: string) => {
+  async function subirLogo(archivo: File | undefined) {
+    if (!archivo) return;
+    setSubiendoLogo(true);
+    setAviso(undefined);
+    try {
+      const form = new FormData();
+      form.append('logo', await reducirImagen(archivo));
+      const cuerpo = await pedir('/identidad/logo', { method: 'POST', body: form });
+      setLogo(cuerpo.logo);
+    } catch (e) {
+      fallo(e, 'No se pudo subir el logo.');
+    } finally {
+      setSubiendoLogo(false);
+    }
+  }
+
+  const cambiarDiseno = (cambio: Partial<Diseno>) => {
+    setTextos((t) => ({ ...t, diseno: { ...t.diseno, ...cambio } }));
+    setDisenoSinGuardar(true);
+  };
+
+  /** Solo el diseño: no reescribe la identidad ni toca los textos. */
+  async function ajustarDiseno() {
+    setAjustando(true);
+    setAjuste(undefined);
+    try {
+      const r = await pedir('/identidad/diseno', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diseno: textos.diseno, pedido: pedidoDiseno, conReferencias }),
+      });
+      cambiarDiseno(r.diseno);
+      setAjuste({ tipo: 'ok', texto: `${r.porque} (${r.tokens.toLocaleString('es-MX')} tokens)` });
+    } catch (e) {
+      setAjuste({ tipo: 'error', texto: e instanceof Error ? e.message : 'No se pudo ajustar.' });
+    } finally {
+      setAjustando(false);
+    }
+  }
+
+  async function guardarDiseno() {
+    setGuardandoDiseno(true);
+    setAjuste(undefined);
+    try {
+      await pedir('/identidad/diseno', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ diseno: textos.diseno }),
+      });
+      setDisenoSinGuardar(false);
+      setAjuste({ tipo: 'ok', texto: 'Diseño guardado. Los carruseles de la cuenta ya salen así.' });
+    } catch (e) {
+      setAjuste({ tipo: 'error', texto: e instanceof Error ? e.message : 'No se pudo guardar.' });
+    } finally {
+      setGuardandoDiseno(false);
+    }
+  }
+  const cambiarPaleta = (i: number, cambio: Partial<Diseno['paletas'][number]>) =>
+    cambiarDiseno({ paletas: textos.diseno.paletas.map((p, j) => (j === i ? { ...p, ...cambio } : p)) });
+
+  const cambiarTexto = (clave: keyof Omit<Textos, 'marca' | 'diseno'>, valor: string) => {
     setTextos((t) => ({ ...t, [clave]: valor }));
     setSinGuardar(true);
   };
@@ -443,9 +530,163 @@ export function Identidad({
               value={textos.marca.fuentes.join(', ')}
               onChange={(e) => cambiarMarca({ fuentes: e.target.value.split(',').map((f) => f.trimStart()) })}
             />
+          </fieldset>
+
+          <fieldset className="identidad__seccion" data-diseno>
+            <legend>Diseño de los slides</legend>
             <p className="pista">
-              El logo va en <code>public/proyectos/{proyecto}/marca/logo-blanco.png</code>.
+              Claude lo saca de los materiales al escribir la identidad. Aquí se corrige a mano —no gasta tokens— o se
+              le pide solo el diseño, sin volver a escribir lo demás.
             </p>
+            <div className="fila">
+              <div>
+                <label>Plantilla</label>
+                <select
+                  value={textos.diseno.plantilla}
+                  onChange={(e) => cambiarDiseno({ plantilla: e.target.value as Diseno['plantilla'] })}
+                >
+                  <option value="plana">plana — el diseño de esta cuenta</option>
+                  <option value="clinica">clinica — la del Dr. Edwin, medida a mano</option>
+                </select>
+              </div>
+              <div>
+                <label>Logo</label>
+                <label className="boton sm">
+                  {subiendoLogo ? 'Subiendo…' : logo ? 'Cambiar logo' : 'Subir logo'}
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                    data-logo
+                    onChange={(e) => void subirLogo(e.target.files?.[0])}
+                  />
+                </label>
+              </div>
+            </div>
+            {textos.diseno.plantilla === 'plana' ? (
+              <>
+                <div className="fila">
+                  <Color etiqueta="Fondo" valor={textos.diseno.fondo} onCambio={(fondo) => cambiarDiseno({ fondo })} />
+                  <Color etiqueta="Texto" valor={textos.diseno.tinta} onCambio={(tinta) => cambiarDiseno({ tinta })} />
+                </div>
+                <div className="fila">
+                  <div>
+                    <label>Tipografía de títulos</label>
+                    <input
+                      value={textos.diseno.tituloFuente}
+                      onChange={(e) => cambiarDiseno({ tituloFuente: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label>Tipografía del texto</label>
+                    <input value={textos.diseno.textoFuente} onChange={(e) => cambiarDiseno({ textoFuente: e.target.value })} />
+                  </div>
+                </div>
+                <div className="fila">
+                  <div>
+                    <label>Tipografía del número</label>
+                    <input
+                      value={textos.diseno.numeroFuente}
+                      onChange={(e) => cambiarDiseno({ numeroFuente: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={textos.diseno.tituloMayusculas}
+                        onChange={(e) => cambiarDiseno({ tituloMayusculas: e.target.checked })}
+                      />{' '}
+                      Títulos en mayúsculas
+                    </label>
+                  </div>
+                </div>
+
+                <label>Colores de fondo que usa la cuenta — el primero es el de siempre</label>
+                {textos.diseno.paletas.map((p, i) => (
+                  <div className="fila identidad__paleta" key={i}>
+                    <select
+                      value={p.nombre}
+                      onChange={(e) => cambiarPaleta(i, { nombre: e.target.value as NombrePaleta })}
+                    >
+                      {NOMBRES_PALETA.map((n) => (
+                        <option key={n} value={n}>
+                          {delaClinica[n].nombre}
+                        </option>
+                      ))}
+                    </select>
+                    <Color valor={p.color} onCambio={(color) => cambiarPaleta(i, { color })} />
+                    <input
+                      value={p.cuando}
+                      placeholder="para qué temas va"
+                      onChange={(e) => cambiarPaleta(i, { cuando: e.target.value })}
+                    />
+                    <button
+                      className="boton sm"
+                      onClick={() => cambiarDiseno({ paletas: textos.diseno.paletas.filter((_, j) => j !== i) })}
+                    >
+                      quitar
+                    </button>
+                  </div>
+                ))}
+                <button
+                  className="boton sm"
+                  onClick={() => {
+                    const libre = NOMBRES_PALETA.find((n) => !textos.diseno.paletas.some((p) => p.nombre === n)) ?? 'azul';
+                    cambiarDiseno({
+                      paletas: [
+                        ...textos.diseno.paletas,
+                        { nombre: libre, color: textos.diseno.fondo, tinta: '', cuando: 'El color de la cuenta.' },
+                      ],
+                    });
+                  }}
+                >
+                  + otro color
+                </button>
+              </>
+            ) : null}
+
+            <VistaPrevia proyecto={proyectoInicial} textos={textos} logo={logo} />
+            <p className="pista">La vista previa cambia al momento; los slides de verdad, al guardar.</p>
+
+            {textos.diseno.plantilla === 'plana' ? (
+              <div className="identidad__ajuste" data-ajuste>
+                <label htmlFor="pedido-diseno">Pedirle a Claude solo el diseño</label>
+                <textarea
+                  id="pedido-diseno"
+                  rows={2}
+                  value={pedidoDiseno}
+                  placeholder="El rosa más fuerte, títulos en mayúsculas, una letra menos redonda…"
+                  onChange={(e) => setPedidoDiseno(e.target.value)}
+                />
+                <label>
+                  <input type="checkbox" checked={conReferencias} onChange={(e) => setConReferencias(e.target.checked)} />{' '}
+                  Mirar otra vez las imágenes de los materiales{' '}
+                  <span className="pista">(más tokens; sin marcar, solo lee lo que escribiste)</span>
+                </label>
+              </div>
+            ) : null}
+            <div className="identidad__acciones">
+              {textos.diseno.plantilla === 'plana' ? (
+                <button
+                  className="boton"
+                  data-ajustar-diseno
+                  disabled={ajustando || (!conReferencias && !pedidoDiseno.trim())}
+                  onClick={() => void ajustarDiseno()}
+                >
+                  {ajustando ? 'Claude está ajustando…' : 'Ajustar el diseño con Claude'}
+                </button>
+              ) : null}
+              <button
+                className="boton"
+                data-guardar-diseno
+                disabled={guardandoDiseno || !disenoSinGuardar}
+                onClick={() => void guardarDiseno()}
+              >
+                {guardandoDiseno ? 'Guardando…' : disenoSinGuardar ? 'Guardar diseño' : 'Diseño guardado'}
+              </button>
+            </div>
+            {ajuste ? <p className={ajuste.tipo === 'error' ? 'aviso' : 'pista pista--ok'}>{ajuste.texto}</p> : null}
           </fieldset>
 
           {PIEZAS.map((p) => (
@@ -467,6 +708,84 @@ export function Identidad({
           </p>
         </div>
       </details>
+    </div>
+  );
+}
+
+function Color({ etiqueta, valor, onCambio }: { etiqueta?: string; valor: string; onCambio: (v: string) => void }) {
+  const valido = /^#[0-9a-fA-F]{6}$/.test(valor);
+  return (
+    <div className="identidad__color">
+      {etiqueta ? <label>{etiqueta}</label> : null}
+      <span>
+        <input type="color" value={valido ? valor : '#000000'} onChange={(e) => onCambio(e.target.value.toUpperCase())} />
+        <input value={valor} onChange={(e) => onCambio(e.target.value)} aria-invalid={!valido} />
+      </span>
+    </div>
+  );
+}
+
+const ANCHO_PREVIA = 220;
+
+/** Unos slides de muestra con el diseño como va quedando, antes de guardarlo. */
+function VistaPrevia({ proyecto, textos, logo }: { proyecto: Proyecto; textos: Textos; logo: string }) {
+  const hex = (c: string, otro: string) => (/^#[0-9a-fA-F]{6}$/.test(c) ? c : otro);
+  const d = textos.diseno;
+  const fondo = hex(d.fondo, '#4FA0FB');
+  const tinta = hex(d.tinta, '#FFFFFF');
+  const marca: Proyecto = {
+    ...proyecto,
+    nombre: textos.marca.nombre,
+    usuario: textos.marca.usuario,
+    ciudad: textos.marca.ciudad,
+    plataforma: textos.marca.plataforma,
+    cierre: textos.marca.cierre,
+    logo,
+    plantilla: d.plantilla,
+    ...(d.plantilla === 'plana'
+      ? {
+          diseno: {
+            fondo,
+            tinta,
+            tituloFuente: d.tituloFuente || 'Bagel Fat One',
+            tituloMayusculas: d.tituloMayusculas,
+            textoFuente: d.textoFuente || 'Figtree',
+            numeroFuente: d.numeroFuente || 'Fredoka',
+            paletas: d.paletas
+              .filter((p) => /^#[0-9a-fA-F]{6}$/.test(p.color))
+              .map((p) => ({ nombre: p.nombre, color: p.color, cuando: p.cuando, ...(p.tinta ? { tinta: hex(p.tinta, tinta) } : {}) })),
+          },
+        }
+      : {}),
+  };
+  const { Slide } = plantillaDe(marca.plantilla);
+  const slides: Slide[] = [
+    { tipo: 'portada', titulo: 'La **portada**', pregunta: '¿Así se ve?' } as Slide,
+    {
+      tipo: 'contenido',
+      titulo: 'Un título de muestra',
+      bajada: '',
+      cuerpo: 'Así se ve el texto de un slide con el diseño de la cuenta, con sus colores y sus tipografías.',
+      visual: { clase: 'icono', slug: 'appointment-calendar' },
+    } as Slide,
+    { tipo: 'lista', titulo: '*Tres cosas que sí:*', puntos: ['La primera.', 'La **segunda**.', 'La tercera.'] } as Slide,
+    { tipo: 'cierre', frase: 'Una frase de **cierre**' } as Slide,
+  ];
+  const zoom = ANCHO_PREVIA / 1080;
+  const colores = d.plantilla === 'plana' && d.paletas.length ? d.paletas.map((p) => p.nombre) : [undefined];
+  return (
+    <div className="identidad__previa" data-previa>
+      {colores.slice(0, 3).map((paleta, k) =>
+        slides.map((_, i) =>
+          k > 0 && i !== 1 ? null : (
+            <div key={`${k}-${i}`} className="miniatura" style={{ width: ANCHO_PREVIA, height: Math.round(1350 * zoom) }}>
+              <div style={{ transform: `scale(${zoom})`, transformOrigin: 'top left', width: 1080 }}>
+                <Slide slides={slides} indice={i} marca={marca} paleta={paleta} />
+              </div>
+            </div>
+          ),
+        ),
+      )}
     </div>
   );
 }

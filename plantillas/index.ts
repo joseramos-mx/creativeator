@@ -6,10 +6,12 @@
  * pide aquí en vez de importar una plantilla concreta. Así dos cuentas pueden
  * verse completamente distintas con la misma app.
  *
- * Hoy hay una, `clinica`, la del Dr. Edwin. Para dar de alta otra, ver el
- * README («Una plantilla nueva»).
+ * Hay dos: `clinica`, la medida sobre el carrusel publicado del Dr. Edwin, y
+ * `plana`, de fondo de un color y configurable por cuenta con `diseno` en su
+ * proyecto.json. Para dar de alta otra, ver el README («Una plantilla nueva»).
  */
 import { Slide as SlideClinica, type PropsSlide } from './clinica/Slide';
+import { Slide as SlidePlana } from './plana/Slide';
 import type { NombrePlantilla } from './nombres';
 
 export type { NombrePlantilla } from './nombres';
@@ -22,6 +24,7 @@ export type Plantilla = {
 
 const PLANTILLAS: Record<NombrePlantilla, Plantilla> = {
   clinica: { Slide: SlideClinica },
+  plana: { Slide: SlidePlana },
 };
 
 export function plantillaDe(nombre: NombrePlantilla): Plantilla {

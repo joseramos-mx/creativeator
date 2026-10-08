@@ -1733,3 +1733,60 @@ select:focus {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* ── el diseño, en la identidad ── */
+
+/* Un fieldset mide lo que su contenido más ancho; la vista previa se desplaza. */
+.identidad__seccion {
+  min-width: 0;
+}
+
+.identidad__color span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.identidad__color input[type='color'] {
+  width: 44px;
+  height: 36px;
+  padding: 2px;
+  flex: none;
+}
+
+.identidad__color input[aria-invalid='true'] {
+  outline: 2px solid #d9822b;
+}
+
+.identidad__paleta {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.identidad__paleta .identidad__color {
+  flex: 1 1 150px;
+}
+
+.identidad__paleta > input {
+  flex: 2 1 160px;
+}
+
+.identidad__previa {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.identidad__previa .miniatura {
+  flex: none;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.identidad__ajuste {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}

@@ -1,0 +1,230 @@
+/* plantillas/plana/plana.css
+ *
+ * Todo bajo .plana, para que conviva con la plantilla clínica en la misma app.
+ * Los colores y las tipografías llegan como variables desde Slide.tsx (el
+ * diseño de la cuenta); aquí solo va la forma. Medidas sobre 1080 × 1350,
+ * escaladas de las referencias de 1280 × 1600 (× 0,84).
+ */
+
+.plana {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  background: var(--plana-fondo);
+  color: var(--plana-tinta);
+  font-family: var(--plana-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+.plana__logo {
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  width: 190px;
+  height: auto;
+  z-index: 2;
+}
+
+.plana__logo--texto {
+  width: auto;
+  font-family: var(--plana-titulo);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.plana__numero {
+  position: absolute;
+  top: 34px;
+  right: 40px;
+  font-family: var(--plana-numero);
+  font-weight: 600;
+  font-size: 66px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  z-index: 2;
+}
+
+.plana__usuario {
+  position: absolute;
+  left: 40px;
+  bottom: 36px;
+  font-size: 34px;
+  font-weight: 400;
+  z-index: 2;
+}
+
+.plana__fuente {
+  position: absolute;
+  right: 40px;
+  bottom: 44px;
+  max-width: 420px;
+  font-size: 18px;
+  opacity: 0.8;
+  text-align: right;
+  z-index: 2;
+}
+
+/* ── el bloque de contenido ── */
+
+.plana__area {
+  position: absolute;
+  top: 170px;
+  bottom: 130px;
+  left: 90px;
+  right: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 24px;
+  text-align: center;
+  zoom: var(--escala, 1);
+}
+
+.plana__titulo {
+  margin: 0;
+  max-width: 900px;
+  font-family: var(--plana-titulo);
+  font-weight: 400;
+  font-size: 84px;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-transform: var(--plana-mayusculas);
+  text-wrap: balance;
+}
+
+/* *así* en el título: la tipografía del texto, en negrita, más chica. */
+.plana__suave {
+  font-family: var(--plana-texto);
+  font-weight: 700;
+  font-size: 0.62em;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.plana__bajada {
+  margin: 0;
+  max-width: 860px;
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.plana__cuerpo {
+  margin: 0;
+  max-width: 900px;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.plana__cuerpo b,
+.plana__puntos b,
+.plana__bajada b {
+  font-weight: 700;
+}
+
+.plana__puntos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-size: 29px;
+  line-height: 1.4;
+}
+
+.plana__icono {
+  width: 340px;
+  height: auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.12));
+}
+
+.plana__media {
+  width: 760px;
+  height: 420px;
+  border-radius: 28px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ── portada ── */
+
+.plana__foto {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+}
+
+/* La foto se funde en el color de la cuenta hacia abajo, donde va el título. */
+.plana--portada .plana__foto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, var(--plana-fondo) 78%);
+}
+
+.plana__area--portada {
+  top: auto;
+  bottom: 140px;
+  height: 520px;
+  justify-content: flex-end;
+}
+
+.plana--portada .plana__titulo {
+  font-size: 104px;
+}
+
+.plana__pregunta {
+  margin: 0;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: var(--plana-tinta);
+  color: var(--plana-fondo);
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* ── cierre ── */
+
+.plana__area--cierre {
+  justify-content: center;
+  gap: 30px;
+}
+
+.plana__lugar {
+  margin: 0;
+  font-family: var(--plana-titulo);
+  font-size: 64px;
+  line-height: 1.05;
+}
+
+.plana__invitacion {
+  margin: 0;
+  font-size: 32px;
+}
+
+.plana__plataforma {
+  max-width: 420px;
+  max-height: 120px;
+}
+
+.plana__plataforma--texto {
+  margin: 0;
+  font-size: 44px;
+  font-weight: 700;
+}
+
+/* La lista va pegada a su título, como en las referencias: los puntos se leen
+   como continuación, no como otro bloque. */
+.plana--lista .plana__area {
+  justify-content: flex-start;
+  gap: 44px;
+  padding-top: 30px;
+}

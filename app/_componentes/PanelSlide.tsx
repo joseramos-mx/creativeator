@@ -35,6 +35,8 @@ type Props = {
   recientes: string[];
   /** La paleta del post: decide qué íconos se funden con el fondo. */
   paleta: NombrePaleta;
+  /** El color de ese fondo en esta cuenta: en la plantilla plana es el suyo. */
+  fondo?: string;
   onUsarIcono: (slug: string) => void;
   indice: number;
   total: number;
@@ -53,6 +55,7 @@ export function PanelSlide({
   subiendo,
   recientes,
   paleta,
+  fondo,
   onUsarIcono,
   indice,
   total,
@@ -257,6 +260,7 @@ export function PanelSlide({
                     sugerencia={slide.visual.iconoSugerido}
                     recientes={recientes}
                     paleta={paleta}
+                    fondo={fondo}
                     onElegir={elegirIcono}
                     onCerrar={() => setBuscando(false)}
                   />

@@ -6,10 +6,14 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import sharp from 'sharp';
 import { z } from 'zod';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, respuestasComoTexto, type Respuestas } from './cuestionario';
-import { MODELO_REDACCION } from './modelo';
+import { MODELO_PROPUESTA, MODELO_REDACCION } from './modelo';
 import { almacen, guardar, type Cambio } from './almacen';
 import { hayProyecto } from './posts';
 import { PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
+import { Diseno } from './schema';
+import { NOMBRES_PALETA } from '@/plantillas/clinica/tokens';
+import { NOMBRES_PLANTILLA } from '@/plantillas/nombres';
+import { disenoDe } from '@/plantillas/paletas';
 
 /**
  * lib/identidad.ts — quién es la cuenta, por escrito.
@@ -22,6 +26,9 @@ import { PROYECTO_DE_PRUEBAS, rutasDe } from './proyecto';
  *  · `identidad.md` — el documento de la cuenta, para personas y para la IA;
  *  · `voz.md` y las piezas de `prompts/` — adaptados de esa identidad;
  *  · los campos de `proyecto.json` que salen de ahí: nombre, ciudad, cierre…;
+ *  · el **diseño** de los slides —colores, tipografías— sacado de las
+ *    referencias, para que el carrusel se parezca al de la cuenta y no al de
+ *    otra;
  *  · y las **preguntas** que le faltan, en vez de inventar las respuestas.
  *
  * **Nada se escribe sin que alguien lo vea.** `proponerTextos` solo devuelve
@@ -175,6 +182,31 @@ const Marca = z.object({
   cierre: z.object({ lugar: z.string(), invitacion: z.string() }),
 });
 
+/**
+ * El diseño, como lo propone Claude y como se edita en la página. Los colores
+ * van como texto y se validan al guardar (`Diseno`, de lib/schema.ts): así una
+ * propuesta con un hex mal escrito se puede corregir en vez de perderse.
+ */
+const DisenoEditable = z.object({
+  plantilla: z.enum(NOMBRES_PLANTILLA),
+  fondo: z.string(),
+  tinta: z.string(),
+  tituloFuente: z.string(),
+  tituloMayusculas: z.boolean(),
+  textoFuente: z.string(),
+  numeroFuente: z.string(),
+  paletas: z.array(
+    z.object({
+      nombre: z.enum(NOMBRES_PALETA),
+      color: z.string(),
+      tinta: z.string(),
+      cuando: z.string(),
+    }),
+  ),
+});
+
+export type TDisenoEditable = z.infer<typeof DisenoEditable>;
+
 /** Todo lo que sale de la identidad, con el nombre del archivo donde va. */
 export const Textos = z.object({
   identidad: z.string(),
@@ -185,6 +217,7 @@ export const Textos = z.object({
   fotos: z.string(),
   fotosBanco: z.string(),
   marca: Marca,
+  diseno: DisenoEditable,
 });
 
 export type TTextos = z.infer<typeof Textos>;
@@ -223,12 +256,63 @@ export async function leerTextos(proyecto: string): Promise<TTextos> {
       fuentes: Array.isArray(config.fuentes) ? config.fuentes : [],
       cierre: config.cierre ?? { lugar: '', invitacion: '' },
     },
+    diseno: disenoEditableDe(config),
+  };
+}
+
+function disenoEditableDe(config: { plantilla?: string; diseno?: z.infer<typeof Diseno> }): TDisenoEditable {
+  const d = disenoDe(config);
+  return {
+    plantilla: config.plantilla === 'clinica' ? 'clinica' : 'plana',
+    fondo: d.fondo,
+    tinta: d.tinta,
+    tituloFuente: d.tituloFuente,
+    tituloMayusculas: d.tituloMayusculas,
+    textoFuente: d.textoFuente,
+    numeroFuente: d.numeroFuente,
+    paletas: d.paletas.map((p) => ({ ...p, tinta: p.tinta ?? '' })),
   };
 }
 
 /**
+ * El diseño revisado, listo para proyecto.json. Una cuenta `clinica` no lleva
+ * `diseno`: su diseño está medido en la plantilla y no se configura.
+ */
+function disenoParaGuardar(d: TDisenoEditable): { plantilla: string; diseno?: z.infer<typeof Diseno> } {
+  if (d.plantilla === 'clinica') return { plantilla: 'clinica' };
+  const hex = (c: string) => {
+    const t = c.trim();
+    return /^[0-9a-fA-F]{6}$/.test(t) ? `#${t}` : t;
+  };
+  const resultado = Diseno.safeParse({
+    fondo: hex(d.fondo),
+    tinta: hex(d.tinta) || undefined,
+    tituloFuente: d.tituloFuente.trim() || undefined,
+    tituloMayusculas: d.tituloMayusculas,
+    textoFuente: d.textoFuente.trim() || undefined,
+    numeroFuente: d.numeroFuente.trim() || undefined,
+    paletas: d.paletas
+      .filter((p) => p.color.trim())
+      .map((p) => ({
+        nombre: p.nombre,
+        color: hex(p.color),
+        ...(p.tinta.trim() ? { tinta: hex(p.tinta) } : {}),
+        cuando: p.cuando.trim(),
+      })),
+  });
+  if (!resultado.success) {
+    const problema = resultado.error.issues[0];
+    throw new Error(`El diseño no se puede guardar: ${problema.path.join('.')} — ${problema.message}.`);
+  }
+  // Dos paletas con el mismo nombre serían la misma para el post: gana la primera.
+  const vistas = new Set<string>();
+  resultado.data.paletas = resultado.data.paletas.filter((p) => !vistas.has(p.nombre) && vistas.add(p.nombre));
+  return { plantilla: 'plana', diseno: resultado.data };
+}
+
+/**
  * Escribe los textos que se revisaron en la página. `proyecto.json` se edita
- * sobre lo que ya tenía: logo, plantilla e íconos recientes no son de aquí.
+ * sobre lo que ya tenía: el logo y los íconos recientes no son de aquí.
  */
 export async function guardarTextos(proyecto: string, textos: TTextos): Promise<void> {
   const r = rutasDe(proyecto);
@@ -246,11 +330,13 @@ export async function guardarTextos(proyecto: string, textos: TTextos): Promise<
 
   const config = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
   const { fuentes, cierre, ...resto } = limpio.marca;
+  const { diseno: _anterior, ...sinDiseno } = config;
   cambios.push({
     ruta: r.config,
     datos: `${JSON.stringify(
       {
-        ...config,
+        ...sinDiseno,
+        ...disenoParaGuardar(limpio.diseno),
         ...Object.fromEntries(Object.entries(resto).map(([k, v]) => [k, v.trim()])),
         fuentes: fuentes.map((f) => f.trim()).filter(Boolean),
         cierre: { lugar: cierre.lugar.trim(), invitacion: cierre.invitacion.trim() },
@@ -261,6 +347,37 @@ export async function guardarTextos(proyecto: string, textos: TTextos): Promise<
   });
   // Todo en un commit: la identidad, la voz y la marca cambian juntas.
   await almacen.escribir(cambios, `${proyecto}: identidad y textos de la IA`);
+}
+
+/**
+ * El logo de la cuenta: va en public/proyectos/<id>/marca/ y proyecto.json lo
+ * nombra, en el mismo commit. El nombre lleva la fecha para que el navegador
+ * no se quede con el anterior; el anterior se borra si era de esta carpeta.
+ */
+export async function guardarLogo(proyecto: string, nombre: string, datos: Buffer): Promise<string> {
+  const ext = extname(nombre).toLowerCase();
+  if (!['.png', '.jpg', '.jpeg', '.webp', '.svg'].includes(ext)) {
+    throw new Error('El logo tiene que ser PNG, JPG, WebP o SVG. Mejor PNG con fondo transparente.');
+  }
+  const r = rutasDe(proyecto);
+  // Un logo no necesita más de 800 px: en el slide mide 190.
+  const bytes =
+    ext === '.svg' ? datos : await sharp(datos).resize({ width: 800, height: 800, fit: 'inside', withoutEnlargement: true }).png().toBuffer();
+  const archivo = `logo-${Date.now().toString(36)}${ext === '.svg' ? '.svg' : '.png'}`;
+  const url = `/proyectos/${proyecto}/marca/${archivo}`;
+
+  const config = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
+  const anterior = typeof config.logo === 'string' ? config.logo : '';
+  const cambios: Cambio[] = [
+    { ruta: join(r.marca, archivo), datos: bytes },
+    { ruta: r.config, datos: `${JSON.stringify({ ...config, logo: url }, null, 2)}\n` },
+  ];
+  const prefijo = `/proyectos/${proyecto}/marca/logo-`;
+  if (anterior.startsWith(prefijo) && !anterior.slice(prefijo.length).includes('/')) {
+    cambios.push({ ruta: join(r.marca, anterior.slice(`/proyectos/${proyecto}/marca/`.length)), datos: null });
+  }
+  await almacen.escribir(cambios, `${proyecto}: logo`);
+  return url;
 }
 
 /** La identidad de la cuenta, si ya tiene. La redacción la lee con la voz. */
@@ -305,6 +422,22 @@ ${bloque('fotosBanco (con su encabezado)', t.fotosBanco)}
 ${JSON.stringify(t.marca, null, 2)}
 </ejemplo>`;
 }
+
+/** Qué es cada campo del diseño. Lo leen la identidad completa y la del diseño solo. */
+const CAMPOS_DEL_DISENO = `  · \`fondo\` — el color de fondo más usado, en hex (#RRGGBB).
+  · \`tinta\` — el color del texto sobre ese fondo.
+  · \`tituloFuente\`, \`textoFuente\`, \`numeroFuente\` — **nombres exactos de
+    familias de Google Fonts**, porque de ahí se cargan. Si la de la marca no
+    está en Google Fonts o no la reconoces, la más parecida que sí esté (una
+    redondeada y gruesa como «Bagel Fat One» o «Fredoka»; una sans limpia como
+    «Figtree» o «Poppins»; una serif como «Playfair Display»).
+  · \`tituloMayusculas\` — si los títulos van en mayúsculas.
+  · \`paletas\` — los fondos que usa la cuenta, de uno a seis. El primero es
+    el de siempre. \`nombre\` es el nombre de color más cercano de la lista
+    (azul, rosa, amarillo, verde…), sin repetir; \`color\` el hex real;
+    \`tinta\` el del texto si cambia en ese fondo (vacío si es el mismo); y
+    \`cuando\` para qué temas va, o «El color de la cuenta.» si no hay regla.
+`;
 
 function instrucciones(respuestas: Respuestas, materiales: Material[], actual: TTextos, ejemplo: string): string {
   const contestado = respuestasComoTexto(respuestas);
@@ -385,6 +518,23 @@ rama) y cierre: dos líneas cortas para el último slide, \`lugar\` y
 \`invitacion\` ("*Consulta en* **{ciudad}**", "Agenda tu cita desde"). Aceptan
 *itálica* y **negrita**; {ciudad} y {plataforma} se sustituyen solos.
 
+**diseno** — cómo se ven sus slides, para que el carrusel salga con el diseño
+de esta cuenta y no con el de otra. ${
+    actual.diseno.plantilla === 'clinica'
+      ? `Esta cuenta usa la plantilla \`clinica\`, un diseño medido a mano: deja
+\`plantilla: "clinica"\` y copia el resto tal como está abajo.`
+      : `\`plantilla\` es \`"plana"\`: fondo de un color, el logo arriba a la
+izquierda, el número del slide arriba a la derecha, el título grande al centro,
+el texto debajo y un ícono o una foto. Lo demás sale de los materiales —del
+manual si dice colores y tipografías, y si no, **de los posts publicados**, que
+son lo que la cuenta reconoce como suyo:`
+  }
+
+${CAMPOS_DEL_DISENO}
+<diseno_actual>
+${JSON.stringify(actual.diseno, null, 2)}
+</diseno_actual>
+
 **preguntas** — lo que te falta saber para que todo lo anterior sea de verdad
 de esta cuenta. Como mucho ocho, concretas, contestables en una línea. Si con lo
 que hay alcanza, déjala vacía.
@@ -442,4 +592,112 @@ export async function proponerTextos(proyecto: string): Promise<TPropuesta> {
   const propuesta = respuesta.parsed_output;
   if (!propuesta) throw new Error('El modelo no devolvió la estructura esperada.');
   return propuesta;
+}
+
+/* ── solo el diseño ──────────────────────────────────────────────────────── */
+
+/**
+ * Guardar el diseño sin tocar los textos: solo `plantilla` y `diseno` de
+ * proyecto.json.
+ */
+export async function guardarDiseno(proyecto: string, diseno: TDisenoEditable): Promise<void> {
+  const r = rutasDe(proyecto);
+  const limpio = DisenoEditable.parse(diseno);
+  const { diseno: _anterior, ...config } = JSON.parse((await almacen.leerTexto(r.config)) ?? '{}');
+  await guardar(
+    r.config,
+    `${JSON.stringify({ ...config, ...disenoParaGuardar(limpio) }, null, 2)}\n`,
+    `${proyecto}: diseño`,
+  );
+}
+
+/** Lado largo de una referencia para el diseño: el color y la letra se ven igual a 768. */
+const LADO_REFERENCIA = 768;
+/** Las referencias que se miran como mucho. Más no cambian los colores. */
+const MAX_REFERENCIAS = 6;
+
+const PropuestaDeDiseno = z.object({
+  diseno: DisenoEditable,
+  /** Qué cambió y por qué, en una o dos frases. */
+  porque: z.string(),
+});
+
+export type TPropuestaDeDiseno = z.infer<typeof PropuestaDeDiseno> & { tokens: number };
+
+/**
+ * Solo el diseño, sin reescribir la identidad. Es para iterar barato:
+ *
+ *  · **Con `pedido` y sin referencias** («el rosa más fuerte, títulos en
+ *    mayúsculas»): solo texto, unos cientos de tokens.
+ *  · **Con referencias**: las imágenes de los materiales, chicas (768 px) y
+ *    como mucho seis. Los PDF no van: el manual pesa diez veces más y los
+ *    posts publicados enseñan el diseño mejor.
+ *
+ * Con el modelo auxiliar y sin pensamiento extendido: es elegir colores y
+ * tipografías, no escribir una voz. No escribe nada; se guarda aparte.
+ */
+export async function proponerDiseno(
+  proyecto: string,
+  { actual, pedido, conReferencias }: { actual: TDisenoEditable; pedido: string; conReferencias: boolean },
+): Promise<TPropuestaDeDiseno> {
+  const contenido: Anthropic.ContentBlockParam[] = [];
+  if (conReferencias) {
+    const dir = rutasDe(proyecto).materiales;
+    const imagenes = (await listarMateriales(proyecto)).filter((m) => TIPO_IMAGEN[extname(m.nombre).toLowerCase()]);
+    if (!imagenes.length) {
+      throw new Error('No hay imágenes en los materiales. Sube capturas de posts publicados o de la plantilla.');
+    }
+    for (const m of imagenes.slice(0, MAX_REFERENCIAS)) {
+      const datos = await almacen.leer(join(dir, m.nombre));
+      if (!datos) continue;
+      const chica = await sharp(datos)
+        .resize({ width: LADO_REFERENCIA, height: LADO_REFERENCIA, fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 80 })
+        .toBuffer();
+      contenido.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: chica.toString('base64') } });
+    }
+  } else if (!pedido.trim()) {
+    throw new Error('Escribe qué cambiar, o marca «mirar las referencias».');
+  }
+
+  contenido.push({
+    type: 'text',
+    text: `Ajusta el diseño de los slides de una cuenta de Instagram. La plantilla es
+\`plana\`: fondo de un color, el logo arriba a la izquierda, el número del slide
+arriba a la derecha, el título grande al centro, el texto debajo y un ícono o
+una foto.
+
+${conReferencias ? 'Arriba van posts publicados o la plantilla de la cuenta: **el diseño tiene que parecerse a eso**.\n\n' : ''}Los campos:
+
+${CAMPOS_DEL_DISENO}
+<diseno_actual>
+${JSON.stringify({ ...actual, plantilla: 'plana' }, null, 2)}
+</diseno_actual>
+
+${
+  pedido.trim()
+    ? `Lo que pide quien lleva la cuenta:\n\n<pedido>\n${pedido.trim()}\n</pedido>\n\nCambia solo lo que pide${conReferencias ? ' y lo que no se parezca a las referencias' : ''}; lo demás déjalo igual.`
+    : 'Corrige lo que no se parezca a las referencias; lo que ya se parece, déjalo igual.'
+}
+Devuelve \`plantilla: "plana"\`. En \`porque\`, una o dos frases de qué cambiaste. Español de México.`,
+  });
+
+  const cliente = new Anthropic();
+  let respuesta;
+  try {
+    respuesta = await cliente.messages.parse({
+      model: MODELO_PROPUESTA,
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: contenido }],
+      output_config: { format: zodOutputFormat(PropuestaDeDiseno) },
+    });
+  } catch (e) {
+    if (e instanceof Anthropic.AuthenticationError) throw new Error('La llave de Anthropic no es válida. Revisa ANTHROPIC_API_KEY.');
+    if (e instanceof Anthropic.RateLimitError) throw new Error('Demasiadas peticiones seguidas. Espera un minuto.');
+    if (e instanceof Anthropic.APIError) throw new Error(`La API respondió ${e.status}: ${e.message}`);
+    throw e;
+  }
+  const propuesta = respuesta.parsed_output;
+  if (!propuesta) throw new Error('El modelo no devolvió el diseño.');
+  return { ...propuesta, tokens: respuesta.usage.input_tokens + respuesta.usage.output_tokens };
 }

@@ -187,7 +187,8 @@ try {
   const config = JSON.parse(readFileSync(nueva.config, 'utf8'));
   ok(config.nombre === 'Dra. Nueva', 'el nombre que se dio queda escrito');
   ok(config.ciudad === POR_ESCRIBIR && config.giro === POR_ESCRIBIR, `lo que no se sabe dice ${POR_ESCRIBIR}`);
-  ok(config.logo === '/proyectos/dra-nueva/marca/logo-blanco.png', 'el logo apunta a su carpeta, no a la de la otra cuenta');
+  ok(config.logo === '', 'nace sin logo: no hereda el de la otra cuenta, y se sube en la identidad');
+  ok(config.plantilla === 'plana', 'nace con la plantilla plana, no con el diseño de la otra cuenta');
   ok(
     [nueva.voz, nueva.prompt('alcance'), nueva.prompt('fotos-banco')].every((f) => readFileSync(f, 'utf8').startsWith(`<!-- ${POR_ESCRIBIR}`)),
     'los textos de ejemplo llegan marcados, para que no se redacte con ellos',

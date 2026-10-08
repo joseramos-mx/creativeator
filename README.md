@@ -224,8 +224,9 @@ proyecto: preguntar lo que debería saber.
    Canva se exportan a PDF). Los posts publicados son lo que más enseña del
    tono.
 3. **Escribir la identidad con Claude.** Lee todo y propone `identidad.md`, la
-   voz, las cinco piezas de los prompts y los datos de la marca —nombre, ciudad,
-   cierre, fuentes—, más **las preguntas que le faltan** en vez de inventar las
+   voz, las cinco piezas de los prompts, los datos de la marca —nombre, ciudad,
+   cierre, fuentes— y **el diseño de los slides** —colores, tipografías,
+   títulos en mayúsculas o no— sacado de las referencias, más **las preguntas que le faltan** en vez de inventar las
    respuestas. Se lee, se corrige y se guarda; **hasta que se guarda no cambia
    nada**, así que pedirla en una cuenta con la voz afinada a mano no la pisa.
 
@@ -239,8 +240,10 @@ marca siga, la app no redacta con ellos** y dice qué falta: es la barrera contr
 el error que no avisa, una pediatra escribiendo con el alcance de un
 dermatólogo. Guardar la identidad los reemplaza.
 
-Falta a mano solo el logo en blanco: `public/proyectos/<id>/marca/logo-blanco.png`.
-Desde la terminal hace lo mismo `npm run proyecto:nuevo -- dra-mildreth`.
+El logo se sube en la misma página, en «Diseño de los slides», que además
+enseña unos slides de muestra con el diseño como va quedando. Una cuenta nueva
+nace con la plantilla `plana`, nunca con el diseño de la cuenta de la que se
+copiaron los textos. Desde la terminal hace lo mismo `npm run proyecto:nuevo -- dra-mildreth`.
 
 ### Con más de un proyecto
 
@@ -258,23 +261,58 @@ un consentimiento quiere saber dónde está esa foto.
 ### Una plantilla nueva
 
 Una plantilla es un diseño completo: sus tipos de slide, su CSS y sus tokens.
-Hoy hay una, `plantillas/clinica/`, la medida sobre el carrusel publicado del Dr.
-Edwin. Lo que pinta un slide —la ruta que captura Playwright, el editor, la
+Hay dos:
+
+- **`clinica`** — la medida al píxel sobre el carrusel publicado del Dr. Edwin.
+  No se configura: es suya.
+- **`plana`** — fondo de un color, logo arriba a la izquierda, número arriba a
+  la derecha, título grande, texto centrado con flechas, ícono o foto, usuario
+  abajo. Salió de las referencias de la Dra. Mildreth, y **lo que cambia de una
+  cuenta a otra va en `diseno`** de su `proyecto.json`:
+
+  ```json
+  "plantilla": "plana",
+  "diseno": {
+    "fondo": "#50A1FD",
+    "tinta": "#FFFFFF",
+    "tituloFuente": "Bagel Fat One",
+    "tituloMayusculas": false,
+    "textoFuente": "Figtree",
+    "numeroFuente": "Fredoka",
+    "paletas": [
+      { "nombre": "azul", "color": "#50A1FD", "cuando": "El color de la cuenta." },
+      { "nombre": "rosa", "color": "#F7A1C4", "tinta": "#3A1030", "cuando": "Temas de niñas." }
+    ]
+  }
+  ```
+
+  Las tipografías son nombres de Google Fonts. `paletas` son los fondos que
+  puede llevar un carrusel de la cuenta: el post guarda el `nombre` y el
+  selector del editor, la redacción y el reparto de color solo ofrecen esos.
+  En el título, `*así*` va con la tipografía del texto en negrita, para
+  títulos más tranquilos. Todo esto lo propone Claude en la identidad y se
+  corrige ahí mismo.
+
+  **Iterar el diseño sin reescribir la identidad.** En «Diseño de los slides»:
+  cambiar a mano y ver la vista previa no gasta tokens; «Ajustar el diseño con
+  Claude» manda solo el diseño actual y lo que pidas («el rosa más fuerte»),
+  unos mil tokens con el modelo auxiliar; marcando «mirar las imágenes» añade
+  hasta seis referencias a 768 px (unos 800 tokens cada una), sin los PDF.
+  «Guardar diseño» escribe solo `plantilla` y `diseno` en `proyecto.json`.
+
+Lo que pinta un slide —la ruta que captura Playwright, el editor, la
 lista— la pide por su nombre a `plantillas/index.ts`, así que dos cuentas pueden
 verse completamente distintas con la misma app.
 
-Hoy, si una cuenta nueva usa `clinica`, cambia todo lo que es de la marca
-—nombre, logo, cierre, ciudad— y conserva el diseño. Para un diseño propio:
+Para un diseño que ni `plana` configurada alcanza:
 
 1. Copiar `plantillas/clinica/` a `plantillas/<nombre>/` y cambiar lo que haga falta.
 2. Añadir el nombre en `plantillas/nombres.ts` y su `Slide` en `plantillas/index.ts`.
 3. Poner `"plantilla": "<nombre>"` en el `proyecto.json` de la cuenta.
 
-Lo que todavía no está separado, y es lo siguiente: el CSS de `clinica` se carga
-para toda la app (`app/layout.tsx`), y las paletas y los tamaños que usan el
-editor y el esquema salen de `plantillas/clinica/tokens.ts`. Una segunda
-plantilla tiene que ir con sus clases bajo su propio prefijo y, mientras no se
-generalice eso, usar los mismos nombres de paleta.
+El CSS de todas se carga para toda la app (`app/layout.tsx`), así que cada una
+lleva sus clases bajo su propio prefijo (`.plana__…`). Los colores que ofrece
+cada cuenta salen de `plantillas/paletas.ts`.
 
 ---
 

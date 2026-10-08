@@ -9,6 +9,6 @@
  * tokens. Cada proyecto dice cuál usa en el campo `plantilla`. Para añadir una
  * nueva, ver el README («Una plantilla nueva»).
  */
-export const NOMBRES_PLANTILLA = ['clinica'] as const;
+export const NOMBRES_PLANTILLA = ['clinica', 'plana'] as const;
 
 export type NombrePlantilla = (typeof NOMBRES_PLANTILLA)[number];

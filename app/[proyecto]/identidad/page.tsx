@@ -41,6 +41,7 @@ export default async function PaginaIdentidad({
       </header>
       <main className="banco">
         <Identidad
+          proyectoInicial={marca}
           respuestasIniciales={respuestas}
           materialesIniciales={materiales}
           textosIniciales={textos}

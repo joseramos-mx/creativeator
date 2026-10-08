@@ -225,6 +225,45 @@ export const PostGuardable = Post.superRefine((post, ctx) => {
   }
 });
 
+const Color = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'un color en hex, como #4FA0FB');
+
+/**
+ * El diseño de una cuenta que no usa la plantilla medida del Dr. Edwin:
+ * colores, tipografías y unas pocas decisiones de forma. Lo propone Claude
+ * mirando las referencias que se suben en la identidad, y se corrige a mano en
+ * esa misma pantalla. Las tipografías son nombres de Google Fonts.
+ */
+export const Diseno = z.object({
+  /** El fondo cuando el post no pide otro color. */
+  fondo: Color,
+  /** El color del texto sobre el fondo. */
+  tinta: Color.default('#FFFFFF'),
+  tituloFuente: z.string().min(2).default('Bagel Fat One'),
+  /** Los títulos en mayúsculas, como «CONFIESA». */
+  tituloMayusculas: z.boolean().default(false),
+  textoFuente: z.string().min(2).default('Figtree'),
+  /** El número de la esquina. */
+  numeroFuente: z.string().min(2).default('Fredoka'),
+  /**
+   * Los colores que puede llevar un carrusel de esta cuenta. El nombre es uno
+   * de los de siempre —azul, amarillo, rosa…— para que el post lo guarde igual
+   * que en cualquier cuenta; el color es el de esta.
+   */
+  paletas: z
+    .array(
+      z.object({
+        nombre: z.enum(NOMBRES_PALETA),
+        color: Color,
+        /** Si el fondo es claro, el texto va oscuro. */
+        tinta: Color.optional(),
+        cuando: z.string(),
+      }),
+    )
+    .default([]),
+});
+
+export type TDiseno = z.infer<typeof Diseno>;
+
 export const Marca = z.object({
   nombre: z.string(),
   usuario: z.string(),
@@ -233,7 +272,8 @@ export const Marca = z.object({
   plataforma: z.string(),
   /** Logotipo de la plataforma de citas. Si falta, se escribe el nombre. */
   plataformaLogo: RutaLocal.optional(),
-  logo: RutaLocal,
+  /** Vacío mientras no se suba: la plantilla plana escribe el nombre. */
+  logo: RutaLocal.or(z.literal('')),
   /** Puede ir vacío mientras no exista la foto del cierre. */
   retrato: z.string(),
   iconosRecientes: z.array(z.string()).default([]),
@@ -247,6 +287,11 @@ export const Marca = z.object({
     lugar: TextoMarcado,
     invitacion: TextoMarcado,
   }),
+  /**
+   * El diseño de la cuenta, para las plantillas que se configuran
+   * (`plana`). La `clinica` no lo lee: sus valores están medidos en sus tokens.
+   */
+  diseno: Diseno.optional(),
 });
 
 /**
