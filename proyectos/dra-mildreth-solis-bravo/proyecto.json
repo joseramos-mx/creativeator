@@ -1,17 +1,17 @@
 {
   "nombre": "Dra. Mildreth Solis Bravo",
-  "usuario": "@POR ESCRIBIR",
-  "especialidad": "POR ESCRIBIR",
-  "ciudad": "POR ESCRIBIR",
-  "plataforma": "POR ESCRIBIR",
+  "usuario": "@dramildrethsolisbravo",
+  "especialidad": "Pediatría · Neonatología · Lactancia",
+  "ciudad": "Durango",
+  "plataforma": "Doctoralia y whatsapp",
   "logo": "/proyectos/dra-mildreth-solis-bravo/marca/logo-blanco.png",
   "retrato": "",
   "cierre": {
     "lugar": "*Consulta en* **{ciudad}**",
-    "invitacion": "Agenda tu cita desde"
+    "invitacion": "Agenda tu cita desde Doctoralia"
   },
   "plantilla": "clinica",
-  "giro": "POR ESCRIBIR",
+  "giro": "Pediatra y neonatóloga, consultora internacional de lactancia materna",
   "fuentes": [
     "Mayo Clinic",
     "Cleveland Clinic",
