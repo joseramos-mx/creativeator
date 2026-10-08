@@ -10,7 +10,7 @@
     "lugar": "*Consulta en* **{ciudad}**",
     "invitacion": "Agenda tu cita desde"
   },
-  "plantilla": "clinica",
+  "plantilla": "plana",
   "giro": "una pediatra",
   "fuentes": [
     "AAP",
@@ -27,5 +27,14 @@
     "cough-syrup-bottle-with-measuring-spoon",
     "antibiotic-syrup-bottle",
     "open-medicine-drawer-with-boxes"
-  ]
+  ],
+  "diseno": {
+    "fondo": "#4FA0FB",
+    "tinta": "#FFFFFF",
+    "tituloFuente": "Bagel Fat One",
+    "tituloMayusculas": false,
+    "textoFuente": "Figtree",
+    "numeroFuente": "Fredoka",
+    "paletas": []
+  }
 }
