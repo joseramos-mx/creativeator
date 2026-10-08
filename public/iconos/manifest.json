@@ -515,6 +515,23 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "knitted-winter-scarf",
+  "nombre": "knitted winter scarf",
+  "etiquetas": [
+   "knitted",
+   "winter",
+   "scarf"
+  ],
+  "color": "#DAA453",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 139748,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "knitted winter scarf",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
