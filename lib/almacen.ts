@@ -163,7 +163,18 @@ function github(config: NonNullable<ReturnType<typeof configDeGithub>>): Almacen
     });
     if (!r.ok) {
       const texto = await r.text().catch(() => '');
-      const error = new Error(`GitHub respondió ${r.status} en ${metodo} ${url}: ${texto.slice(0, 200)}`);
+      // Leer funciona y escribir no: es el permiso del token, no la app. Se
+      // dice qué tocar en vez de enseñar la respuesta de GitHub en crudo.
+      const mensaje =
+        r.status === 403 || r.status === 404
+          ? `GitHub no deja escribir en ${repo} con este token (${r.status}). En GitHub → Settings → ` +
+            'Developer settings → Fine-grained tokens → el token → Edit: que «Repository access» incluya este ' +
+            'repositorio y que «Contents» sea «Read and write». Si el repositorio es de una organización, un ' +
+            'dueño tiene que aprobar el token en la organización → Settings → Personal access tokens.'
+          : r.status === 401
+            ? 'GitHub no reconoce el token (401): caducó o se copió mal. Crea otro y actualiza GITHUB_TOKEN en Vercel.'
+            : `GitHub respondió ${r.status} en ${metodo} ${url}: ${texto.slice(0, 200)}`;
+      const error = new Error(mensaje);
       (error as Error & { estado?: number }).estado = r.status;
       throw error;
     }
