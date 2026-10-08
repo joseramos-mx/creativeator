@@ -514,6 +514,26 @@
   "bytes": 1414167
  },
  {
+  "slug": "jigsaw-puzzle-with-one-missing-piece",
+  "nombre": "jigsaw puzzle with one missing piece",
+  "etiquetas": [
+   "jigsaw",
+   "puzzle",
+   "with",
+   "one",
+   "missing",
+   "piece"
+  ],
+  "color": "#4B6AA8",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 544763,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "jigsaw puzzle with one missing piece",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "knitted-baby-hat",
   "nombre": "knitted baby hat",
   "etiquetas": [
