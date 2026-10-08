@@ -70,6 +70,7 @@
       "cuerpo": "Los dulces de bolsa llegan sin lista de ingredientes a la vista, y muchos chocolates se hacen en líneas donde también pasan cacahuate, nuez o leche. Si tu hijo tiene alergia, un dulce suelto es una incógnita. Las reacciones pueden empezar minutos después de la primera mordida.",
       "visual": {
         "clase": "icono",
+        "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
         "iconoSugerido": "peanut next to candy wrapper with ingredient label"
       },
       "fuente": "KidsHealth (AAP)"
