@@ -75,6 +75,7 @@
       "cuerpo": "Dar antibiótico por si acaso no acorta un catarro: los virus no responden a él. Lo que sí puede dejar es diarrea, reacciones y bacterias más resistentes para cuando de verdad haga falta. Y mientras tanto se deja de hacer lo que sí ayuda: lavados nasales, líquidos y descanso.",
       "visual": {
         "clase": "icono",
+        "slug": "3d-medicine-bottle",
         "iconoSugerido": "3d medicine bottle"
       },
       "fuente": "OMS · AAP"
