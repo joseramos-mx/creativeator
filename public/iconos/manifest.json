@@ -677,10 +677,10 @@
    "winter",
    "scarf"
   ],
-  "color": "#072935",
+  "color": "#46948C",
   "w": 1024,
   "h": 1024,
-  "bytes": 1013098,
+  "bytes": 1061168,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "knitted winter scarf",
