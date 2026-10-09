@@ -677,14 +677,14 @@
    "winter",
    "scarf"
   ],
-  "color": "#DAA453",
+  "color": "#D3AE51",
   "w": 1024,
   "h": 1024,
-  "bytes": 139748,
+  "bytes": 1229775,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "knitted winter scarf",
-  "fecha": "2026-10-08"
+  "fecha": "2026-10-09"
  },
  {
   "slug": "leftover-pill-bottle-with-child-proof-cap",
