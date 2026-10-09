@@ -1812,3 +1812,61 @@ select:focus {
 .faltan-iconos {
   padding: 10px 12px;
 }
+
+/* ── los colores de un post (plantilla plana) ── */
+
+.colores__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.colores__muestra {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  border-radius: 4px;
+  vertical-align: -2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.colores__rejilla {
+  display: grid;
+  grid-template-columns: 70px repeat(11, minmax(0, 1fr));
+  gap: 3px;
+  margin-top: 8px;
+  max-width: 420px;
+}
+
+/* Cada familia ocupa una fila de la rejilla: sus hijos entran directo. */
+.colores__familia {
+  display: contents;
+}
+
+.colores__tono,
+.colores__nombre {
+  font-size: 9px;
+  color: var(--ui-dim);
+  align-self: center;
+}
+
+.colores__tono {
+  text-align: center;
+}
+
+.colores__celda {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.colores__celda:hover,
+.colores__celda[aria-selected='true'] {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}

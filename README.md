@@ -290,7 +290,14 @@ Hay dos:
   puede llevar un carrusel de la cuenta: el post guarda el `nombre` y el
   selector del editor, la redacción y el reparto de color solo ofrecen esos.
   En el título, `*así*` va con la tipografía del texto en negrita, para
-  títulos más tranquilos. Todo esto lo propone Claude en la identidad y se
+  títulos más tranquilos.
+
+  **Cada post, su color.** En la ficha del editor, «Colores de este post» abre
+  la paleta de Tailwind (la de uicolors.app: 22 colores × 11 tonos) para el
+  fondo y para el color en que se funde la foto de la portada. Se guarda en el
+  post como `colores: { fondo, degradado?, tinta? }`; el texto se pone blanco u
+  oscuro según el contraste —en la portada, contra el degradado— y se puede
+  forzar. Sin elegir nada, el post usa el color de la cuenta. Todo esto lo propone Claude en la identidad y se
   corrige ahí mismo.
 
   **Iterar el diseño sin reescribir la identidad.** En «Diseño de los slides»:

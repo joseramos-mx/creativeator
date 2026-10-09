@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BotonExportar } from './BotonExportar';
+import { ColoresDelPost } from './ColoresDelPost';
 import { olvidarManifiesto } from './BuscadorIconos';
 import { generarYGuardar } from './generarIcono';
 import { ImportarBrief } from './ImportarBrief';
@@ -264,7 +265,7 @@ export function Editor({
             onSubir={(archivo) => void subirImagen(i, archivo)}
             subiendo={subiendo === i}
             paleta={post.paleta}
-            fondo={paletaDelPost(marca, post.paleta).color}
+            fondo={post.colores?.fondo ?? paletaDelPost(marca, post.paleta).color}
             onUsarIcono={usarIcono}
             indice={i}
             total={post.slides.length}
@@ -351,6 +352,7 @@ export function Editor({
                     indice={i}
                     marca={marca}
                     paleta={post.paleta}
+                    colores={post.colores}
                     ayudas={{ rejilla, overlay: overlay ? capturas?.[i] : undefined }}
                   />
                 </div>
@@ -496,6 +498,19 @@ function Ficha({
         ) : null}
 
         <p className="pista">{paletaDelPost(marca, post.paleta).cuando}</p>
+
+        {marca.plantilla === 'plana' ? (
+          <ColoresDelPost
+            colores={post.colores}
+            fondoDeLaCuenta={paletaDelPost(marca, post.paleta).color}
+            onCambio={(colores) =>
+              setPost((p) => {
+                const { colores: _anteriores, ...resto } = p;
+                return colores ? { ...resto, colores } : resto;
+              })
+            }
+          />
+        ) : null}
 
         <label>Objetivo — la acción buscada</label>
         <input

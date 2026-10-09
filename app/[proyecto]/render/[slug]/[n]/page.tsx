@@ -37,7 +37,7 @@ export default async function Render({
 
   return (
     <>
-      <Slide slides={post.slides} indice={indice} marca={marca} paleta={post.paleta} id="slide" />
+      <Slide slides={post.slides} indice={indice} marca={marca} paleta={post.paleta} colores={post.colores} id="slide" />
       <Listo />
     </>
   );
