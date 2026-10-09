@@ -5,6 +5,7 @@
 # ellos, no nuestra. La lista sale del campo `origen` del manifiesto, así
 # que el siguiente generado aparece aquí solo.
 !.gitignore
+!3d-wall-calendar.png
 !allergy-skin-prick-test.png
 !antibiotic-syrup-bottle.png
 !appointment-calendar.png
@@ -61,6 +62,7 @@
 !tissue-box.png
 !thumbs/
 thumbs/*
+!thumbs/3d-wall-calendar.png
 !thumbs/allergy-skin-prick-test.png
 !thumbs/antibiotic-syrup-bottle.png
 !thumbs/appointment-calendar.png

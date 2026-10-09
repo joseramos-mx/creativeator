@@ -1,5 +1,25 @@
 [
  {
+  "slug": "3d-wall-calendar",
+  "nombre": "3d wall calendar",
+  "etiquetas": [
+   "3d",
+   "wall",
+   "calendar",
+   "calendario",
+   "cita",
+   "fecha"
+  ],
+  "color": "#F2B56D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1125838,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d wall calendar",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "adn",
   "nombre": "adn",
   "etiquetas": [
