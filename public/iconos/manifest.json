@@ -1,5 +1,22 @@
 [
  {
+  "slug": "3d-crumpled-tissue",
+  "nombre": "3d crumpled tissue",
+  "etiquetas": [
+   "3d",
+   "crumpled",
+   "tissue"
+  ],
+  "color": "#EBEAF0",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 631169,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d crumpled tissue",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "3d-wall-calendar",
   "nombre": "3d wall calendar",
   "etiquetas": [
