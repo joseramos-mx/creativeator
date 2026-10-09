@@ -173,6 +173,23 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "closed-house-window",
+  "nombre": "closed house window",
+  "etiquetas": [
+   "closed",
+   "house",
+   "window"
+  ],
+  "color": "#B4DCE3",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1097057,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "closed house window",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "cold-compress-cloth",
   "nombre": "cold compress cloth",
   "etiquetas": [
