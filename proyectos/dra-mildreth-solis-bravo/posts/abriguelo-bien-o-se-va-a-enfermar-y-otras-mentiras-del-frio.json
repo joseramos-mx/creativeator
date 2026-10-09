@@ -70,6 +70,7 @@
       "cuerpo": "Un bebé demasiado abrigado para dormir se sobrecalienta, y eso sí importa en el primer año. La recomendación es una capa más de la que tú traes puesta, nada más. Y mientras discutimos la chamarra, se nos olvida lo único que de verdad corta contagios: manos limpias y vacunas al día.",
       "visual": {
         "clase": "icono",
+        "slug": "stack-of-folded-blankets",
         "iconoSugerido": "stack of folded blankets"
       },
       "fuente": "AAP"
