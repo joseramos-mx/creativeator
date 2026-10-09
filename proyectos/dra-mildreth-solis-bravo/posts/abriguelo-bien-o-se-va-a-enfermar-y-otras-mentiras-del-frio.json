@@ -59,6 +59,7 @@
       "cuerpo": "El sereno no existe como enfermedad. Es el nombre que le pusimos a algo que no entendíamos: el niño salió de noche y amaneció con tos. Lo que pasó es que el virus ya venía incubando desde dos o tres días antes. La salida nocturna solo fue el testigo.",
       "visual": {
         "clase": "icono",
+        "slug": "crescent-moon-night-sky",
         "iconoSugerido": "crescent moon night sky"
       }
     },
