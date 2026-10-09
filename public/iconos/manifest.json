@@ -17,6 +17,23 @@
   "fecha": "2026-10-09"
  },
  {
+  "slug": "3d-medicine-bottle",
+  "nombre": "3d medicine bottle",
+  "etiquetas": [
+   "3d",
+   "medicine",
+   "bottle"
+  ],
+  "color": "#488F98",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 762075,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d medicine bottle",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "3d-wall-calendar",
   "nombre": "3d wall calendar",
   "etiquetas": [
