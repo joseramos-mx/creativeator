@@ -47,6 +47,7 @@
       "cuerpo": "Un niño se resfría porque un virus llegó a su nariz: una mano, un estornudo, un juguete compartido. No por salir despeinado. En invierno hay más resfriados porque pasamos más horas encerrados y juntos, respirando el mismo aire. El frío no infecta; la cercanía sí contagia.",
       "visual": {
         "clase": "icono",
+        "slug": "closed-house-window",
         "iconoSugerido": "closed house window"
       },
       "fuente": "Mayo Clinic · KidsHealth"
