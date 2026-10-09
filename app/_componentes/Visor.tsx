@@ -152,6 +152,7 @@ function Mazo({
               indice={i}
               marca={marca}
               paleta={paleta}
+              colores={post.colores}
               ayudas={{ rejilla, overlay: capturas?.[i], overlayOpacidad: opacidad }}
             />
           </div>

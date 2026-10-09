@@ -162,12 +162,19 @@
   background-position: center top;
 }
 
-/* La foto se funde en el color de la cuenta hacia abajo, donde va el título. */
+/* La foto se funde hacia abajo, donde va el título: primero en el color del
+   degradado y al final en el del fondo. Si el post no elige degradado, los dos
+   son el mismo y queda como siempre. */
 .plana--portada .plana__foto::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 30%, var(--plana-fondo) 78%);
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    var(--plana-degradado, var(--plana-fondo)) 78%,
+    var(--plana-fondo) 92%
+  );
 }
 
 .plana__area--portada {

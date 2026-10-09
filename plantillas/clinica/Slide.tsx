@@ -17,6 +17,8 @@ export type PropsSlide = {
   id?: string;
   /** La paleta del post. Sin ella, la del token por defecto. */
   paleta?: NombrePaleta;
+  /** Los colores propios del post. Solo los usa la plantilla plana. */
+  colores?: { fondo: string; degradado?: string; tinta?: string };
 };
 
 /**

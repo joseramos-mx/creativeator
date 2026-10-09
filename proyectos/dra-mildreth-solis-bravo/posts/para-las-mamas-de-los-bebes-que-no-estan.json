@@ -19,14 +19,14 @@
     {
       "tipo": "portada",
       "titulo": "*También eres* **su mamá**",
-      "pregunta": "Hoy, 15 de octubre",
-      "foto": "/proyectos/dra-mildreth-solis-bravo/media/para-las-mamas-de-los-bebes-que-no-estan/pexels-6037381.jpg",
+      "pregunta": "15 de octubre día Mundial de la Pérdida Gestacional y Neonatal",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/para-las-mamas-de-los-bebes-que-no-estan/pexels-11191039.jpg",
       "fotoCredito": {
         "fuente": "Pexels",
         "licencia": "Pexels License",
         "licenciaUrl": "https://www.pexels.com/license/",
-        "autor": "cottonbro studio",
-        "url": "https://www.pexels.com/photo/lighted-candles-on-table-near-curtains-6037381/"
+        "autor": "André Henrique",
+        "url": "https://www.pexels.com/photo/woman-in-shirt-11191039/"
       }
     },
     {
@@ -36,6 +36,7 @@
       "cuerpo": "Lo preguntan en la fila del súper, en una fiesta, en la consulta. Y tú haces la cuenta rápida: si digo dos, me van a preguntar por el otro. Si digo uno, siento que lo dejo fuera. No hay respuesta correcta. Nadie te avisó que esa pregunta iba a doler tanto.",
       "visual": {
         "clase": "icono",
+        "slug": "empty-picture-frame",
         "iconoSugerido": "empty picture frame"
       }
     },
@@ -46,6 +47,7 @@
       "cuerpo": "Al menos 1 de cada 10 embarazos confirmados termina en una pérdida temprana. La causa más frecuente son alteraciones cromosómicas que ocurren al azar desde el inicio. Trabajar, cargar, hacer ejercicio o un susto no provocan una pérdida. No se previene con reposo ni cuidándote más.",
       "visual": {
         "clase": "icono",
+        "slug": "small-knitted-baby-bootie",
         "iconoSugerido": "small knitted baby bootie"
       },
       "fuente": "Mayo Clinic"
@@ -57,6 +59,7 @@
       "cuerpo": "Lo dicen para consolar y aterriza como una resta. Pasa igual con \"eres joven, vas a tener otro\" y con \"todo pasa por algo\". Un hijo no se reemplaza con el siguiente. El duelo por una pérdida gestacional o neonatal es un duelo real y no tiene calendario.",
       "visual": {
         "clase": "icono",
+        "slug": "speech-bubble",
         "iconoSugerido": "speech bubble"
       },
       "fuente": "Cleveland Clinic"
@@ -79,6 +82,7 @@
       "cuerpo": "Hoy, a las 7 de la noche, se enciende una vela durante una hora. Como cada zona horaria la prende a su hora, la luz no se apaga en todo el día. No arregla nada. Solo deja claro, en voz alta, que ese bebé existió y que su mamá no está sola.",
       "visual": {
         "clase": "icono",
+        "slug": "lit-candle-on-windowsill",
         "iconoSugerido": "lit candle on windowsill"
       }
     }

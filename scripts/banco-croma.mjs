@@ -247,5 +247,44 @@ ok(
   '  y entonces no se recorta nada, en vez de adivinar',
 );
 
+/* ── la orilla suave ──────────────────────────────────────────────────── */
+console.log('\nUn objeto claro con la orilla suave');
+
+/*
+ * El cajón de medicinas que salió vacío: Gemini dibujó el cajón blanco con la
+ * orilla en rampa —del verde al blanco en una docena de píxeles— y la
+ * inundación, que avanzaba por parecido entre vecinos, subió por la rampa y se
+ * comió el cajón entero. Quedaron solo las cajitas de color de dentro.
+ */
+{
+  const L = 120;
+  const FONDO = [76, 195, 70];
+  const mezcla = (a, b, t) => a.map((v, k) => Math.round(v * (1 - t) + b[k] * t));
+  for (const [rampa, color, nombre] of [
+    [16, [230, 236, 230], 'blanco con una rampa de 16 px'],
+    [20, [215, 232, 214], 'gris con reflejo verde y una rampa de 20 px'],
+  ]) {
+    const img = lienzo(L, (x, y) => {
+      const fuera = Math.max(0, 30 - x, x - 90, 30 - y, y - 90);
+      return fuera === 0 ? color : fuera >= rampa ? FONDO : mezcla(color, FONDO, fuera / rampa);
+    });
+    const r = quitarCroma(img);
+    let opacos = 0;
+    for (let y = 35; y < 85; y++) for (let x = 35; x < 85; x++) if (pixel(r, L, x, y)[3] === 255) opacos++;
+    ok(opacos === 50 * 50, `${nombre}: el objeto se queda entero (${Math.round((opacos / 2500) * 100)} %)`);
+    ok(pixel(r, L, 2, 2)[3] === 0, '  y el fondo se va');
+  }
+
+  // Y lo que el paso grande cuidaba: un fondo con degradado, blanco al centro
+  // y verde en las orillas, se sigue recorriendo entero.
+  const deg = lienzo(L, (x, y) => {
+    const h = Math.hypot(x - 60, y - 60);
+    return h < 12 ? ROJO : mezcla([196, 255, 205], [73, 216, 96], Math.min(1, h / 85));
+  });
+  const r = quitarCroma(deg);
+  ok(pixel(r, L, 60, 30)[3] === 0, 'un fondo con degradado se va también en su parte clara');
+  ok(pixel(r, L, 60, 60)[3] === 255, '  y el objeto del centro se queda');
+}
+
 console.log(fallos === 0 ? '\nTodo en pie.' : `\n${fallos} comprobaciones fallaron.`);
 if (fallos > 0) process.exitCode = 1;

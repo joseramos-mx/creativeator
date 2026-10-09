@@ -192,7 +192,7 @@ body {
   background: #12161d;
 }
 
-.lista-posts strong {
+.lista-posts__texto strong {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -202,7 +202,7 @@ body {
   line-height: 1.35;
 }
 
-.lista-posts span {
+.lista-posts__texto span {
   display: block;
   color: var(--ui-dim);
   font-size: 11px;
@@ -210,21 +210,25 @@ body {
 }
 
 /* Que el texto pueda encogerse dentro de la tarjeta: sin esto un tema largo
-   sin espacios empujaría la tarjeta y rompería la rejilla. */
-.lista-posts a > div {
+   sin espacios empujaría la tarjeta y rompería la rejilla.
+
+   Y el texto con su clase, no `.lista-posts span`: esas reglas alcanzaban
+   también a la miniatura, que es el slide de verdad, y le ponían 11 px y gris
+   a los <span> de la plantilla plana —el título entero, el usuario—. */
+.lista-posts__texto {
   min-width: 0;
 }
 
-.lista-posts em {
+.lista-posts__texto em {
   font-style: normal;
   color: var(--ui-txt);
 }
 
-.lista-posts em[data-estado='borrador'] {
+.lista-posts__texto em[data-estado='borrador'] {
   color: #e5a94b;
 }
 
-.lista-posts em[data-estado='publicado'] {
+.lista-posts__texto em[data-estado='publicado'] {
   color: #46c07a;
 }
 
@@ -1120,12 +1124,12 @@ select:focus {
 
 /* ── los dos botones de cada tarjeta ── */
 
-.lista-posts li {
+.lista-posts > li {
   position: relative;
 }
 
 /* Sitio para los botones, para que no se echen encima de la última línea. */
-.lista-posts span:last-of-type {
+.lista-posts__texto span:last-of-type {
   padding-right: 66px;
 }
 
@@ -1458,7 +1462,7 @@ select:focus {
 /* En el teléfono los dos botones de cada tarjeta quedan al alcance del pulgar y
    la última línea ya no necesita hacerles hueco a la derecha. */
 @media (max-width: 520px) {
-  .lista-posts span:last-of-type {
+  .lista-posts__texto span:last-of-type {
     padding-right: 0;
   }
 
@@ -1789,4 +1793,80 @@ select:focus {
   flex-direction: column;
   gap: 6px;
   margin-top: 12px;
+}
+
+.generar-icono {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--linea, rgba(255, 255, 255, 0.12));
+}
+
+.generar-icono .rejilla-iconos {
+  width: 100%;
+}
+
+.faltan-iconos {
+  padding: 10px 12px;
+}
+
+/* ── los colores de un post (plantilla plana) ── */
+
+.colores__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.colores__muestra {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  border-radius: 4px;
+  vertical-align: -2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.colores__rejilla {
+  display: grid;
+  grid-template-columns: 70px repeat(11, minmax(0, 1fr));
+  gap: 3px;
+  margin-top: 8px;
+  max-width: 420px;
+}
+
+/* Cada familia ocupa una fila de la rejilla: sus hijos entran directo. */
+.colores__familia {
+  display: contents;
+}
+
+.colores__tono,
+.colores__nombre {
+  font-size: 9px;
+  color: var(--ui-dim);
+  align-self: center;
+}
+
+.colores__tono {
+  text-align: center;
+}
+
+.colores__celda {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.colores__celda:hover,
+.colores__celda[aria-selected='true'] {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
 }

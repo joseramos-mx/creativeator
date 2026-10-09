@@ -78,12 +78,32 @@ function useCabe(deps: unknown[]) {
   return { area, escala };
 }
 
-function variables(marca: Marca, paleta?: string): CSSProperties {
+/**
+ * El texto sobre un fondo que no viene de la cuenta: blanco o casi negro, el
+ * que más contraste dé. Sobre un amarillo 300 el blanco no se lee.
+ */
+function tintaPara(fondo: string): string {
+  const canal = (i: number) => {
+    const c = parseInt(fondo.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+  const l = 0.2126 * canal(1) + 0.7152 * canal(3) + 0.0722 * canal(5);
+  const contraBlanco = 1.05 / (l + 0.05);
+  const contraOscuro = (l + 0.05) / (0.0302 + 0.05); // #1F2937
+  return contraBlanco >= contraOscuro ? '#FFFFFF' : '#1F2937';
+}
+
+function variables(marca: Marca, paleta?: string, colores?: PropsSlide['colores'], portada = false): CSSProperties {
   const d = disenoDe(marca);
   const p = paletaDelPost(marca, paleta);
+  const fondo = colores?.fondo ?? p.color;
+  const degradado = colores?.degradado ?? fondo;
   return {
-    '--plana-fondo': p.color,
-    '--plana-tinta': p.tinta,
+    '--plana-fondo': fondo,
+    '--plana-degradado': degradado,
+    // En la portada el título va encima del degradado, no del fondo: el texto
+    // se elige contra ese color.
+    '--plana-tinta': colores?.tinta ?? (colores ? tintaPara(portada ? degradado : fondo) : p.tinta),
     '--plana-titulo': `'${d.tituloFuente}', system-ui, sans-serif`,
     '--plana-texto': `'${d.textoFuente}', system-ui, sans-serif`,
     '--plana-numero': `'${d.numeroFuente}', system-ui, sans-serif`,
@@ -94,6 +114,7 @@ function variables(marca: Marca, paleta?: string): CSSProperties {
 function Marco({
   marca,
   paleta,
+  colores,
   id,
   numero,
   clase,
@@ -102,6 +123,7 @@ function Marco({
 }: {
   marca: Marca;
   paleta?: string;
+  colores?: PropsSlide['colores'];
   id?: string;
   numero: string | null;
   clase: string;
@@ -120,7 +142,7 @@ function Marco({
     if (el && el.complete && el.naturalWidth === 0) setSinLogo(logo);
   }, [logo]);
   return (
-    <div id={id} className={`plana plana--${clase}`} style={variables(marca, paleta)}>
+    <div id={id} className={`plana plana--${clase}`} style={variables(marca, paleta, colores, clase === 'portada')}>
       <Fuentes familias={[d.tituloFuente, d.textoFuente, d.numeroFuente]} />
       {logo ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -139,12 +161,12 @@ function Marco({
 const desplazado = (ov: Overrides | undefined): CSSProperties | undefined =>
   ov?.offsetY ? { transform: `translateY(${ov.offsetY}px)` } : undefined;
 
-export function Slide({ slides, indice, marca, ayudas, id, paleta }: PropsSlide) {
+export function Slide({ slides, indice, marca, ayudas, id, paleta, colores }: PropsSlide) {
   const slide: TSlide = slides[indice];
   const numero = numeroDeSlide(slides, indice);
   const ov = 'overrides' in slide ? slide.overrides : undefined;
   const { area, escala } = useCabe([slide]);
-  const comun = { marca, paleta, id, ayudas };
+  const comun = { marca, paleta, colores, id, ayudas };
 
   if (slide.tipo === 'portada') {
     return (

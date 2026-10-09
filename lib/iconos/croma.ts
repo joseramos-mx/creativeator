@@ -77,8 +77,27 @@ const TOLERANCIA = 70;
  *
  * Por parecido local sí: un degradado se recorre paso a paso. Y el borde de un
  * objeto no, porque en estos renders 3D es un salto mucho mayor que esto.
+ *
+ * **Era 16, y se comía objetos claros.** Un cajón blanco con la orilla suave
+ * —una rampa de doce píxeles del verde al blanco, que Gemini dibuja así a
+ * menudo— avanza unos 15 por píxel: la inundación subía por la rampa y vaciaba
+ * el objeto entero, y quedaban solo las piezas de color de encima. Un fondo con
+ * degradado de verdad cambia mucho más despacio —el de `cold-compress-cloth`
+ * recorre 170 en cientos de píxeles—, así que bajar el paso no lo pierde.
  */
-const PASO = 16;
+const PASO = 6;
+
+/**
+ * Lo que le queda del tono del fondo a un píxel para que el avance por
+ * parecido local siga por él: una fracción de lo que el canal dominante del
+ * fondo le saca a los otros dos (en el verde de Gemini, 195 − 76 = 119).
+ *
+ * Es el otro freno de lo mismo. El degradado de fondo sigue siendo verdoso
+ * hasta su parte más clara —`(196,255,205)` le saca 50 al resto—; un objeto
+ * blanco o gris con un reflejo verde encima se queda muy por debajo, así que
+ * por ahí la inundación ya no entra aunque la orilla sea suave.
+ */
+const TONO = 0.3;
 
 /**
  * Lo cerca del fondo que tiene que estar un hueco encerrado para irse.
@@ -241,6 +260,14 @@ export function quitarCroma({ datos, ancho, alto }: Mapa): Uint8ClampedArray {
   const esFondo = new Uint8Array(n);
   const pila: number[] = [];
 
+  // El canal que manda en el fondo y cuánto le saca a los otros dos. Con un
+  // fondo neutro —blanco, gris— no hay tono que seguir y el freno no aplica.
+  const dominante = fondo.indexOf(Math.max(...fondo));
+  const exceso = (i: number) =>
+    datos[i + dominante] - Math.max(...[0, 1, 2].filter((c) => c !== dominante).map((c) => datos[i + c]));
+  const excesoDelFondo = fondo[dominante] - Math.max(...fondo.filter((_, c) => c !== dominante));
+  const conTono = (i: number) => excesoDelFondo < 40 || exceso(i) >= TONO * excesoDelFondo;
+
   const meter = (p: number, desde: number | null) => {
     if (esFondo[p]) return;
     const i = p * 4;
@@ -262,11 +289,12 @@ export function quitarCroma({ datos, ancho, alto }: Mapa): Uint8ClampedArray {
       desde === null
         ? distancia(datos, i, fondo) <= TOLERANCIA
         : distancia(datos, i, fondo) <= TOLERANCIA ||
-          Math.hypot(
-            datos[i] - datos[desde * 4],
-            datos[i + 1] - datos[desde * 4 + 1],
-            datos[i + 2] - datos[desde * 4 + 2],
-          ) <= PASO;
+          (conTono(i) &&
+            Math.hypot(
+              datos[i] - datos[desde * 4],
+              datos[i + 1] - datos[desde * 4 + 1],
+              datos[i + 2] - datos[desde * 4 + 2],
+            ) <= PASO);
 
     if (!vale) return;
     esFondo[p] = 1;

@@ -24,7 +24,8 @@ import { orillaOpaca, proporcionDeFondo, quitarCroma } from './croma';
  * correcto: la pieza es generada y eso debe poder comprobarse.
  */
 
-const API = 'https://generativelanguage.googleapis.com/v1beta/models';
+// GEMINI_API_URL solo para pruebas: apunta a un Gemini simulado.
+const API = process.env.GEMINI_API_URL?.trim() || 'https://generativelanguage.googleapis.com/v1beta/models';
 
 /** El versátil. `-lite` es más barato y `gemini-3-pro-image` da más calidad. */
 export const MODELO = 'gemini-3.1-flash-image';
@@ -58,6 +59,8 @@ export async function generar(
   concepto: string,
   cuantos = 3,
   modelo = MODELO,
+  /** Hasta cuándo se puede esperar para reintentar (ms de época). */
+  hasta = Infinity,
 ): Promise<IconoGenerado[]> {
   const llave = process.env.GEMINI_API_KEY;
   if (!llave) throw new Error('Falta GEMINI_API_KEY en .env.local.');
@@ -80,25 +83,62 @@ export async function generar(
   // no se lleva las tres por delante.
   const salidas: IconoGenerado[] = [];
   for (let i = 0; i < cuantos; i++) {
-    salidas.push(await unaImagen(prompt, llave, modelo));
+    salidas.push(await unaImagen(prompt, llave, modelo, hasta));
   }
   return salidas;
 }
 
-async function unaImagen(prompt: string, llave: string, modelo: string): Promise<IconoGenerado> {
-  const r = await fetch(`${API}/${modelo}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': llave },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseModalities: ['IMAGE'] },
-    }),
-  });
+/** Los intentos ante un 429 o un 503, y lo más que se espera entre uno y otro. */
+const INTENTOS = 4;
+const ESPERA_MAXIMA = 45_000;
 
-  if (!r.ok) {
+/**
+ * Cuánto pide Gemini que se espere. Un 429 trae `RetryInfo` con
+ * `retryDelay: "23s"`; si no, se dobla: 5, 10, 20 s.
+ */
+function esperaDe(detalle: string, intento: number): number {
+  const pedido = detalle.match(/"retryDelay":\s*"(\d+(?:\.\d+)?)s"/);
+  const ms = pedido ? Number(pedido[1]) * 1000 + 500 : 5000 * 2 ** intento;
+  return Math.min(ms, ESPERA_MAXIMA);
+}
+
+/**
+ * Una llamada, reintentando lo que es de esperar: el límite de peticiones por
+ * minuto (429) y la sobrecarga (503). Antes, un 429 dejaba el slide sin ícono
+ * en silencio, y con varios íconos seguidos era lo normal. Una cuota diaria
+ * agotada no se arregla esperando: ese error sí sube, con su mensaje.
+ */
+async function llamar(prompt: string, llave: string, modelo: string, hasta: number): Promise<Response> {
+  for (let intento = 0; ; intento++) {
+    const r = await fetch(`${API}/${modelo}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': llave },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseModalities: ['IMAGE'] },
+      }),
+    });
+    if (r.ok) return r;
     const detalle = await r.text();
+    const diaria = /PerDay|per day/i.test(detalle);
+    const espera = esperaDe(detalle, intento);
+    if ((r.status === 429 || r.status === 503) && !diaria && intento < INTENTOS - 1 && Date.now() + espera < hasta) {
+      await new Promise((listo) => setTimeout(listo, espera));
+      continue;
+    }
+    if (r.status === 429) {
+      throw new Error(
+        diaria
+          ? 'Se acabó la cuota diaria de Gemini para generar imágenes. Mañana se repone, o sube de plan la llave.'
+          : 'Gemini sigue limitando las peticiones. Espera un minuto y vuelve a intentar.',
+      );
+    }
     throw new Error(`Gemini respondió ${r.status}: ${detalle.slice(0, 200)}`);
   }
+}
+
+async function unaImagen(prompt: string, llave: string, modelo: string, hasta: number): Promise<IconoGenerado> {
+  const r = await llamar(prompt, llave, modelo, hasta);
 
   const cuerpo = await r.json();
   const partes = cuerpo?.candidates?.[0]?.content?.parts ?? [];

@@ -163,10 +163,10 @@
    "of",
    "wrapped"
   ],
-  "color": "#4B92A7",
+  "color": "#AD4F1B",
   "w": 1024,
   "h": 1024,
-  "bytes": 316272,
+  "bytes": 1084590,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "candy bucket full of wrapped candy",
@@ -233,10 +233,10 @@
    "measuring",
    "spoon"
   ],
-  "color": "#A691D1",
+  "color": "#C85157",
   "w": 1024,
   "h": 1024,
-  "bytes": 221225,
+  "bytes": 798709,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "cough syrup bottle with measuring spoon",
@@ -339,6 +339,23 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "empty-picture-frame",
+  "nombre": "empty picture frame",
+  "etiquetas": [
+   "empty",
+   "picture",
+   "frame"
+  ],
+  "color": "#6A91D4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 489651,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "empty picture frame",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "face-paint-palette-with-brush",
   "nombre": "face paint palette with brush",
   "etiquetas": [
@@ -391,6 +408,26 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "fork with clock",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "fridge-with-magnet-holding-a-note",
+  "nombre": "fridge with magnet holding a note",
+  "etiquetas": [
+   "fridge",
+   "with",
+   "magnet",
+   "holding",
+   "a",
+   "note"
+  ],
+  "color": "#5471A3",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 908111,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "fridge with magnet holding a note",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "glass-of-milk-next-to-a-peanut",
@@ -615,6 +652,51 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "leftover-pill-bottle-with-child-proof-cap",
+  "nombre": "leftover pill bottle with child-proof cap",
+  "etiquetas": [
+   "leftover",
+   "pill",
+   "bottle",
+   "with",
+   "child",
+   "proof",
+   "cap",
+   "pastilla",
+   "medicamento",
+   "antibiotico",
+   "nino",
+   "peque",
+   "hijo"
+  ],
+  "color": "#A45C18",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 839589,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "leftover pill bottle with child-proof cap",
+  "fecha": "2026-10-08"
+ },
+ {
+  "slug": "lit-candle-on-windowsill",
+  "nombre": "lit candle on windowsill",
+  "etiquetas": [
+   "lit",
+   "candle",
+   "on",
+   "windowsill"
+  ],
+  "color": "#EFCF6E",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 574722,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "lit candle on windowsill",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "llanto",
   "nombre": "llanto",
   "etiquetas": [
@@ -703,6 +785,25 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "open-medicine-drawer-with-boxes",
+  "nombre": "open medicine drawer with boxes",
+  "etiquetas": [
+   "open",
+   "medicine",
+   "drawer",
+   "with",
+   "boxes"
+  ],
+  "color": "#95B5DA",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 849592,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "open medicine drawer with boxes",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "palomita-verde",
   "nombre": "palomita-verde",
   "etiquetas": [
@@ -717,6 +818,31 @@
   "w": 1024,
   "h": 1024,
   "bytes": 1370661
+ },
+ {
+  "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
+  "nombre": "peanut next to candy wrapper with ingredient label",
+  "etiquetas": [
+   "peanut",
+   "next",
+   "to",
+   "candy",
+   "wrapper",
+   "with",
+   "ingredient",
+   "label",
+   "cacahuate",
+   "alergia",
+   "frutos-secos"
+  ],
+  "color": "#D8B48D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 796977,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "peanut next to candy wrapper with ingredient label",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "preservativo",
@@ -806,6 +932,48 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "small-kids-chair-with-plate-on-table",
+  "nombre": "small kids chair with plate on table",
+  "etiquetas": [
+   "small",
+   "kids",
+   "chair",
+   "with",
+   "plate",
+   "on",
+   "table"
+  ],
+  "color": "#D6B767",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 855678,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small kids chair with plate on table",
+  "fecha": "2026-10-08"
+ },
+ {
+  "slug": "small-knitted-baby-bootie",
+  "nombre": "small knitted baby bootie",
+  "etiquetas": [
+   "small",
+   "knitted",
+   "baby",
+   "bootie",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#B05747",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1133091,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small knitted baby bootie",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "snowflake",
   "nombre": "snowflake",
   "etiquetas": [
@@ -819,6 +987,22 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "snowflake",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "speech-bubble",
+  "nombre": "speech bubble",
+  "etiquetas": [
+   "speech",
+   "bubble"
+  ],
+  "color": "#85BEF5",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 715122,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "speech bubble",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "stack-of-research-papers",

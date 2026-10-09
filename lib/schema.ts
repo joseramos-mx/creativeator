@@ -19,6 +19,8 @@ import { fotosSinCredito } from './fotos';
 /** Texto con el marcado de la plantilla: *serif itálica*, **negrita**, saltos. */
 const TextoMarcado = z.string();
 
+const Color = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'un color en hex, como #4FA0FB');
+
 /** Ruta dentro de public/. Nunca una URL externa: Pinterest no es un CDN. */
 const RutaLocal = z
   .string()
@@ -170,6 +172,20 @@ export const Post = z.object({
    */
   paleta: z.enum(NOMBRES_PALETA).default(PALETA_POR_DEFECTO),
 
+  /**
+   * Los colores propios de este post, encima de la paleta: el fondo, el color
+   * en que se funde la foto de la portada y, si hace falta, el del texto. Solo
+   * los usa la plantilla plana, y se eligen en el editor de la paleta de
+   * Tailwind para que cada carrusel no salga del mismo azul.
+   */
+  colores: z
+    .object({
+      fondo: Color,
+      degradado: Color.optional(),
+      tinta: Color.optional(),
+    })
+    .optional(),
+
   /** El texto que va debajo del carrusel en Instagram. Ver proyectos/<id>/voz.md. */
   copy: z.string().optional(),
 
@@ -225,7 +241,6 @@ export const PostGuardable = Post.superRefine((post, ctx) => {
   }
 });
 
-const Color = z.string().regex(/^#[0-9a-fA-F]{6}$/, 'un color en hex, como #4FA0FB');
 
 /**
  * El diseño de una cuenta que no usa la plantilla medida del Dr. Edwin:

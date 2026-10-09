@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BotonExportar } from './BotonExportar';
+import { ColoresDelPost } from './ColoresDelPost';
+import { olvidarManifiesto } from './BuscadorIconos';
+import { generarYGuardar } from './generarIcono';
 import { ImportarBrief } from './ImportarBrief';
 import { PanelSlide, type Seleccion } from './PanelSlide';
 import {
@@ -251,6 +254,7 @@ export function Editor({
 
         <Ficha post={post} setPost={setPost} marca={marca} />
         <ImportarBrief slug={post.slug} onImportar={(nuevo) => setPost(nuevo)} />
+        <IconosQueFaltan post={post} setPost={setPost} onUsar={usarIcono} />
 
         {post.slides.map((slide, i) => (
           <PanelSlide
@@ -261,7 +265,7 @@ export function Editor({
             onSubir={(archivo) => void subirImagen(i, archivo)}
             subiendo={subiendo === i}
             paleta={post.paleta}
-            fondo={paletaDelPost(marca, post.paleta).color}
+            fondo={post.colores?.fondo ?? paletaDelPost(marca, post.paleta).color}
             onUsarIcono={usarIcono}
             indice={i}
             total={post.slides.length}
@@ -348,6 +352,7 @@ export function Editor({
                     indice={i}
                     marca={marca}
                     paleta={post.paleta}
+                    colores={post.colores}
                     ayudas={{ rejilla, overlay: overlay ? capturas?.[i] : undefined }}
                   />
                 </div>
@@ -494,6 +499,19 @@ function Ficha({
 
         <p className="pista">{paletaDelPost(marca, post.paleta).cuando}</p>
 
+        {marca.plantilla === 'plana' ? (
+          <ColoresDelPost
+            colores={post.colores}
+            fondoDeLaCuenta={paletaDelPost(marca, post.paleta).color}
+            onCambio={(colores) =>
+              setPost((p) => {
+                const { colores: _anteriores, ...resto } = p;
+                return colores ? { ...resto, colores } : resto;
+              })
+            }
+          />
+        ) : null}
+
         <label>Objetivo — la acción buscada</label>
         <input
           value={post.objetivo ?? ''}
@@ -535,5 +553,76 @@ function Ficha({
         </button>
       </div>
     </details>
+  );
+}
+
+/**
+ * Los slides que se quedaron sin ícono, generados de una vez.
+ *
+ * Al redactar se generan solos, pero dentro de la misma petición que la
+ * redacción y con un límite de tiempo y de peticiones a Gemini: los que
+ * fallan quedan vacíos. Aquí va uno por petición, en serie, con el concepto
+ * que sugirió el redactor, y cada uno entra en la librería compartida.
+ */
+function IconosQueFaltan({
+  post,
+  setPost,
+  onUsar,
+}: {
+  post: Post;
+  setPost: (f: (p: Post) => Post) => void;
+  onUsar: (slug: string) => void;
+}) {
+  const [haciendo, setHaciendo] = useState<string | null>(null);
+  const [errores, setErrores] = useState<string[]>([]);
+  const faltan = post.slides.flatMap((s, i) =>
+    s.tipo === 'contenido' && s.visual.clase === 'icono' && !s.visual.slug && s.visual.iconoSugerido
+      ? [{ i, concepto: s.visual.iconoSugerido }]
+      : [],
+  );
+  if (!faltan.length && !errores.length) return null;
+
+  async function generarTodos() {
+    setErrores([]);
+    for (const { i, concepto } of faltan) {
+      setHaciendo(concepto);
+      try {
+        const slug = await generarYGuardar(concepto);
+        olvidarManifiesto();
+        onUsar(slug);
+        setPost((p) => ({
+          ...p,
+          slides: p.slides.map((s, j) =>
+            j === i && s.tipo === 'contenido' && s.visual.clase === 'icono' ? { ...s, visual: { ...s.visual, slug } } : s,
+          ),
+        }));
+      } catch (e) {
+        setErrores((prev) => [...prev, `${String(i).padStart(2, '0')} «${concepto}»: ${e instanceof Error ? e.message : 'falló'}`]);
+      }
+    }
+    setHaciendo(null);
+  }
+
+  return (
+    <div className="tarjeta faltan-iconos" data-faltan-iconos>
+      {faltan.length ? (
+        <>
+          <p className="pista">
+            {faltan.length === 1 ? 'Un slide se quedó' : `${faltan.length} slides se quedaron`} sin ícono:{' '}
+            {faltan.map((f) => `«${f.concepto}»`).join(', ')}.
+          </p>
+          <button className="boton" disabled={haciendo !== null} onClick={() => void generarTodos()}>
+            {haciendo ? `Generando «${haciendo}»…` : 'Generar los íconos que faltan'}
+          </button>
+        </>
+      ) : null}
+      {errores.length ? (
+        <div className="aviso">
+          {errores.map((e) => (
+            <p key={e}>{e}</p>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }

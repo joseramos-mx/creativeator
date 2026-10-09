@@ -59,6 +59,7 @@
       "cuerpo": "Un niño de 3 años mastica, sí. Pero también corre, se ríe y habla con el dulce en la boca, y ahí es donde se va por donde no debe. La regla no es cuántos dientes tiene: es comer sentado, quieto y con alguien enfrente.",
       "visual": {
         "clase": "icono",
+        "slug": "small-kids-chair-with-plate-on-table",
         "iconoSugerido": "small kids chair with plate on table"
       }
     },
@@ -69,6 +70,7 @@
       "cuerpo": "Los dulces de bolsa llegan sin lista de ingredientes a la vista, y muchos chocolates se hacen en líneas donde también pasan cacahuate, nuez o leche. Si tu hijo tiene alergia, un dulce suelto es una incógnita. Las reacciones pueden empezar minutos después de la primera mordida.",
       "visual": {
         "clase": "icono",
+        "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
         "iconoSugerido": "peanut next to candy wrapper with ingredient label"
       },
       "fuente": "KidsHealth (AAP)"
@@ -91,6 +93,7 @@
       "cuerpo": "Menores de 4: nada duro, nada redondo, nada pegajoso. Siempre sentados, siempre acompañados. La bolsa se queda fuera de su alcance y la repartes tú. Si después de un dulce aparecen ronchas, vómito, tos que no cede o la voz le cambia, es motivo de valoración ese mismo día.",
       "visual": {
         "clase": "icono",
+        "slug": "fridge-with-magnet-holding-a-note",
         "iconoSugerido": "fridge with magnet holding a note"
       },
       "fuente": "AAP y KidsHealth"
