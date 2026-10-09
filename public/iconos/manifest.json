@@ -1040,6 +1040,24 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "stack-of-folded-blankets",
+  "nombre": "stack of folded blankets",
+  "etiquetas": [
+   "stack",
+   "of",
+   "folded",
+   "blankets"
+  ],
+  "color": "#D78A8D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1156486,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "stack of folded blankets",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "stack-of-research-papers",
   "nombre": "stack of research papers",
   "etiquetas": [
