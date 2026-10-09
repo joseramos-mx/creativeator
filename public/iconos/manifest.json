@@ -260,6 +260,24 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "crescent-moon-night-sky",
+  "nombre": "crescent moon night sky",
+  "etiquetas": [
+   "crescent",
+   "moon",
+   "night",
+   "sky"
+  ],
+  "color": "#E5C870",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 827047,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "crescent moon night sky",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "cuidado-de-piel",
   "nombre": "cuidado-de-piel",
   "etiquetas": [
