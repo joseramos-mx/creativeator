@@ -163,10 +163,10 @@
    "of",
    "wrapped"
   ],
-  "color": "#4B92A7",
+  "color": "#AD4F1B",
   "w": 1024,
   "h": 1024,
-  "bytes": 316272,
+  "bytes": 1084590,
   "origen": "generado",
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "candy bucket full of wrapped candy",
@@ -408,6 +408,26 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "fork with clock",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "fridge-with-magnet-holding-a-note",
+  "nombre": "fridge with magnet holding a note",
+  "etiquetas": [
+   "fridge",
+   "with",
+   "magnet",
+   "holding",
+   "a",
+   "note"
+  ],
+  "color": "#5471A3",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 908111,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "fridge with magnet holding a note",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "glass-of-milk-next-to-a-peanut",
@@ -800,6 +820,31 @@
   "bytes": 1370661
  },
  {
+  "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
+  "nombre": "peanut next to candy wrapper with ingredient label",
+  "etiquetas": [
+   "peanut",
+   "next",
+   "to",
+   "candy",
+   "wrapper",
+   "with",
+   "ingredient",
+   "label",
+   "cacahuate",
+   "alergia",
+   "frutos-secos"
+  ],
+  "color": "#D8B48D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 796977,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "peanut next to candy wrapper with ingredient label",
+  "fecha": "2026-10-08"
+ },
+ {
   "slug": "preservativo",
   "nombre": "preservativo",
   "etiquetas": [
@@ -885,6 +930,27 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "skin layers cross section",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "small-kids-chair-with-plate-on-table",
+  "nombre": "small kids chair with plate on table",
+  "etiquetas": [
+   "small",
+   "kids",
+   "chair",
+   "with",
+   "plate",
+   "on",
+   "table"
+  ],
+  "color": "#D6B767",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 855678,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small kids chair with plate on table",
+  "fecha": "2026-10-08"
  },
  {
   "slug": "small-knitted-baby-bootie",
