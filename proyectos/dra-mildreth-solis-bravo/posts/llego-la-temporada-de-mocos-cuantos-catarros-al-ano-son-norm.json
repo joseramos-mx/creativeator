@@ -99,6 +99,7 @@
       "cuerpo": "De 0 a 6 meses: pocos, porque sale menos. De 6 meses a 3 años: el pico, hasta 8 a 12 al año si va a guardería. De 3 a 6 años: entre 6 y 8. En escolares bajan solos. Cada cuadro dura de 7 a 10 días y la tos puede seguir dos semanas más.",
       "visual": {
         "clase": "icono",
+        "slug": "3d-notepad-and-pencil",
         "iconoSugerido": "3d notepad and pencil"
       },
       "fuente": "AAP · KidsHealth"
