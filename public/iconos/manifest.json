@@ -34,6 +34,24 @@
   "fecha": "2026-10-09"
  },
  {
+  "slug": "3d-notepad-and-pencil",
+  "nombre": "3d notepad and pencil",
+  "etiquetas": [
+   "3d",
+   "notepad",
+   "and",
+   "pencil"
+  ],
+  "color": "#F9EFD5",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 754062,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d notepad and pencil",
+  "fecha": "2026-10-09"
+ },
+ {
   "slug": "3d-wall-calendar",
   "nombre": "3d wall calendar",
   "etiquetas": [
