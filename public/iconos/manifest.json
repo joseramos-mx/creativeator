@@ -177,6 +177,25 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "baby-crib",
+  "nombre": "baby crib",
+  "etiquetas": [
+   "baby",
+   "crib",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#5376A9",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1012111,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "baby crib",
+  "fecha": "2026-10-17"
+ },
+ {
   "slug": "bed-with-pillow-at-night",
   "nombre": "bed with pillow at night",
   "etiquetas": [
