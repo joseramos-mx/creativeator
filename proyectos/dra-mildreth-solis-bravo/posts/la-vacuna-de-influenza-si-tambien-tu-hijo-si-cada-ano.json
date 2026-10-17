@@ -63,6 +63,7 @@
       "cuerpo": "La vacuna inyectada no contiene virus capaz de enfermar a tu hijo. Lo que sí puede pasar: brazo adolorido, un día flojo, un poco de temperatura. Y si se enferma a los tres días, se cruzó con otro virus: la protección tarda unas dos semanas en armarse.",
       "visual": {
         "clase": "icono",
+        "slug": "adhesive-bandage",
         "iconoSugerido": "adhesive bandage"
       },
       "fuente": "Mayo Clinic"
