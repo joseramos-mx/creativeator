@@ -22,6 +22,7 @@
     "Esquema Nacional de Vacunación de México"
   ],
   "iconosRecientes": [
+    "calendar-with-appointment-check",
     "baby-crib",
     "adhesive-bandage",
     "vaccine-vial",
@@ -32,8 +33,7 @@
     "knitted-winter-scarf",
     "small-knitted-baby-bootie",
     "stack-of-folded-blankets",
-    "crescent-moon-night-sky",
-    "closed-house-window"
+    "crescent-moon-night-sky"
   ],
   "diseno": {
     "fondo": "#4FA0FB",
