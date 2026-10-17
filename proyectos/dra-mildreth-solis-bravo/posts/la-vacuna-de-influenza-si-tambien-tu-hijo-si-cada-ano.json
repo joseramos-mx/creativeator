@@ -51,6 +51,7 @@
       "cuerpo": "La vacuna de influenza se aplica cada año a partir de los 6 meses de edad. Dos razones: el virus cambia de una temporada a otra y la protección baja con los meses. La primera vez, los menores de 9 años pueden necesitar dos dosis separadas por al menos cuatro semanas.",
       "visual": {
         "clase": "icono",
+        "slug": "vaccine-vial",
         "iconoSugerido": "vaccine vial"
       },
       "fuente": "AAP"
