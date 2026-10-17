@@ -75,6 +75,7 @@
       "cuerpo": "En menores de 5 años, y sobre todo antes de los 2, la influenza es de las infecciones respiratorias que con más frecuencia terminan en hospitalización. Vacunarlo no garantiza que no se enferme: baja el riesgo de que se ponga grave. Y protege al bebé de casa que todavía no puede vacunarse.",
       "visual": {
         "clase": "icono",
+        "slug": "baby-crib",
         "iconoSugerido": "baby crib"
       },
       "fuente": "AAP"
