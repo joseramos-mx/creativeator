@@ -72,6 +72,25 @@
   "fecha": "2026-10-09"
  },
  {
+  "slug": "adhesive-bandage",
+  "nombre": "adhesive bandage",
+  "etiquetas": [
+   "adhesive",
+   "bandage",
+   "curita",
+   "venda",
+   "herida"
+  ],
+  "color": "#D7B28C",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 617008,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "adhesive bandage",
+  "fecha": "2026-10-17"
+ },
+ {
   "slug": "adn",
   "nombre": "adn",
   "etiquetas": [
