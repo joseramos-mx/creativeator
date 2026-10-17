@@ -1260,5 +1260,21 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "tissue box",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "vaccine-vial",
+  "nombre": "vaccine vial",
+  "etiquetas": [
+   "vaccine",
+   "vial"
+  ],
+  "color": "#698894",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 739301,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "vaccine vial",
+  "fecha": "2026-10-17"
  }
 ]
