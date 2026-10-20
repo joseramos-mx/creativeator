@@ -90,7 +90,7 @@
       "cuerpo": "Si pasado un mes sigue el ardor, o aparece comezón con ronchas e hinchazón, ya no es adaptación: puede ser dermatitis de contacto, una reacción alérgica de la piel. Consulta también antes de empezar si tienes rosácea o dermatitis atópica, o si estás embarazada o buscando embarazo.",
       "visual": {
         "clase": "icono",
-        "slug": "appointment-calendar",
+        "slug": "calendar-with-appointment-check",
         "iconoSugerido": "appointment calendar"
       },
       "fuente": "AAD, Cleveland Clinic"
