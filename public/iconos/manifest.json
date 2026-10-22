@@ -1360,6 +1360,22 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "traffic-light",
+  "nombre": "traffic light",
+  "etiquetas": [
+   "traffic",
+   "light"
+  ],
+  "color": "#B0AFB4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 928018,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "traffic light",
+  "fecha": "2026-10-22"
+ },
+ {
   "slug": "vaccine-vial",
   "nombre": "vaccine vial",
   "etiquetas": [
