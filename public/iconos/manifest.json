@@ -1335,5 +1335,22 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "vaccine vial",
   "fecha": "2026-10-17"
+ },
+ {
+  "slug": "virus-particle-3d",
+  "nombre": "virus particle 3d",
+  "etiquetas": [
+   "virus",
+   "particle",
+   "3d"
+  ],
+  "color": "#CC6D90",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1171386,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "virus particle 3d",
+  "fecha": "2026-10-22"
  }
 ]
