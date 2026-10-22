@@ -71,6 +71,7 @@
       "cuerpo": "Un bebé con bronquiolitis puede tener poca fiebre y aun así estar trabajando de más para meter aire. Lo que orienta es el esfuerzo: las costillas que se marcan al respirar, la nariz que se abre, el quejido al soltar el aire. Por eso se revisa el pecho descubierto y no solo el número del termómetro.",
       "visual": {
         "clase": "icono",
+        "slug": "digital-thermometer",
         "iconoSugerido": "digital thermometer"
       },
       "fuente": "KidsHealth"
