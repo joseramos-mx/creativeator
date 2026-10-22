@@ -196,6 +196,27 @@
   "fecha": "2026-10-17"
  },
  {
+  "slug": "baby-crib-at-night",
+  "nombre": "baby crib at night",
+  "etiquetas": [
+   "baby",
+   "crib",
+   "at",
+   "night",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#0A2D36",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1158625,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "baby crib at night",
+  "fecha": "2026-10-22"
+ },
+ {
   "slug": "bed-with-pillow-at-night",
   "nombre": "bed with pillow at night",
   "etiquetas": [
