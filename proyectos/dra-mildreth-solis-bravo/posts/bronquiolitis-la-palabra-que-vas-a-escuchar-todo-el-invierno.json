@@ -59,6 +59,7 @@
       "cuerpo": "Ojalá fuera así. Los antibióticos actúan contra bacterias y esto es un virus: no acortan nada. Las guías tampoco recomiendan de rutina broncodilatadores ni cortisona en la bronquiolitis típica. No es que te estén negando tratamiento. Es que el que sirve es otro: hidratación, nariz despejada y vigilancia de cómo respira.",
       "visual": {
         "clase": "icono",
+        "slug": "antibiotic-pill-bottle",
         "iconoSugerido": "antibiotic pill bottle"
       },
       "fuente": "AAP"
