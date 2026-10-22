@@ -36,6 +36,7 @@
       "cuerpo": "Son las tres de la mañana. Tiene mocos desde el lunes y hoy tose distinto. Le cuentas las respiraciones mientras duerme y buscas en el celular con el brillo al mínimo para no despertarlo. Esa sensación de \"algo cambió\" no es paranoia. Es información y vale la pena atenderla.",
       "visual": {
         "clase": "icono",
+        "slug": "baby-crib-at-night",
         "iconoSugerido": "baby crib at night"
       }
     },
