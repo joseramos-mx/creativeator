@@ -487,6 +487,25 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "digital-thermometer",
+  "nombre": "digital thermometer",
+  "etiquetas": [
+   "digital",
+   "thermometer",
+   "termometro",
+   "fiebre",
+   "temperatura"
+  ],
+  "color": "#D56F53",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 327451,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "digital thermometer",
+  "fecha": "2026-10-22"
+ },
+ {
   "slug": "dinner-plate-with-a-clock",
   "nombre": "dinner plate with a clock",
   "etiquetas": [
