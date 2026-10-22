@@ -92,7 +92,7 @@
       "tipo": "contenido",
       "titulo": "*Semáforo:* **cuándo acudir**",
       "bajada": "Guárdala. A las tres de la mañana no se piensa igual.",
-      "cuerpo": "Verde: come, moja pañales y respira tranquilo entre tos y tos. Vigila en casa.\n Amarillo: respira más rápido, come menos de la mitad, duerme inquieto. Consulta ese mismo día. Rojo: se le marcan las costillas, se le abre la nariz, hace quejido, hace pausas al respirar o se ve pálido. Valoración ya.",
+      "cuerpo": "Verde: come, moja pañales y respira tranquilo entre tos y tos. Vigila en casa.\n\nAmarillo: respira más rápido, come menos de la mitad, duerme inquieto. Consulta ese mismo día. Rojo: se le marcan las costillas, se le abre la nariz, hace quejido, hace pausas al respirar o se ve pálido. Valoración ya.",
       "visual": {
         "clase": "icono",
         "slug": "traffic-light",
