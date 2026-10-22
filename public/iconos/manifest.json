@@ -141,6 +141,26 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "antibiotic-pill-bottle",
+  "nombre": "antibiotic pill bottle",
+  "etiquetas": [
+   "antibiotic",
+   "pill",
+   "bottle",
+   "pastilla",
+   "medicamento",
+   "antibiotico"
+  ],
+  "color": "#E9EAE9",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 792239,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "antibiotic pill bottle",
+  "fecha": "2026-10-22"
+ },
+ {
   "slug": "antibiotic-syrup-bottle",
   "nombre": "antibiotic syrup bottle",
   "etiquetas": [
