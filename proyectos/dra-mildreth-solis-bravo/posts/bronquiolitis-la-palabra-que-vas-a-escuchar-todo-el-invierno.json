@@ -47,6 +47,7 @@
       "cuerpo": "Es una infección de las vías respiratorias más pequeñas. Casi siempre la causa el VSR: virus sincicial respiratorio, el que circula cada invierno. Casi todos los niños lo contraen antes de los 2 años. En un niño grande se queda en catarro. En un bebé de meses esas vías son angostas y se tapan con moco.",
       "visual": {
         "clase": "icono",
+        "slug": "virus-particle-3d",
         "iconoSugerido": "virus particle 3d"
       },
       "fuente": "AAP"
