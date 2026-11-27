@@ -9,6 +9,15 @@
  * tokens. Cada proyecto dice cuál usa en el campo `plantilla`. Para añadir una
  * nueva, ver el README («Una plantilla nueva»).
  */
-export const NOMBRES_PLANTILLA = ['clinica', 'plana'] as const;
+export const NOMBRES_PLANTILLA = ['clinica', 'plana', 'foto'] as const;
 
 export type NombrePlantilla = (typeof NOMBRES_PLANTILLA)[number];
+
+/**
+ * Si la plantilla toma su diseño de `diseno` en proyecto.json. Todas menos
+ * `clinica`, que está medida a mano. Es la pregunta que antes se hacía como
+ * `plantilla === 'plana'`, cuando no había otra configurable.
+ */
+export function conDiseno(plantilla: string | undefined): boolean {
+  return plantilla !== undefined && plantilla !== 'clinica';
+}

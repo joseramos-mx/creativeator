@@ -37,6 +37,10 @@ export type ContextoDeRedaccion = {
   /** Las paletas con su regla, de la plantilla. */
   paletas: Record<string, { cuando: string }>;
   paletaPorDefecto: string;
+  /** La plantilla `foto`: cada slide de contenido es una foto a sangre. */
+  todoFoto?: boolean;
+  /** El catálogo de fotos propias, una línea por foto. Ver lib/bancos/propio.ts. */
+  fotosPropias?: string;
 };
 
 export type Editorial = { pilar?: string; objetivo?: string; nota?: string; fecha?: string };
@@ -79,7 +83,7 @@ function envolver(texto: string, ancho = 78): string {
 
 export function instruccionesDeRedaccion(
   tema: string,
-  { marca, piezas, paletas, paletaPorDefecto }: ContextoDeRedaccion,
+  { marca, piezas, paletas, paletaPorDefecto, todoFoto, fotosPropias }: ContextoDeRedaccion,
   editorial?: Editorial,
 ) {
   const opciones = Object.entries(paletas)
@@ -112,7 +116,29 @@ Si el tema no tiene un color obvio —impétigo, dermatitis atópica— la respu
 es "${paletaPorDefecto}". Es la respuesta, no un relleno: no fuerces una
 asociación de color que no está.
 
-## El elemento visual
+${
+    todoFoto
+      ? `## El elemento visual
+
+En esta cuenta **cada slide de contenido es una foto a sangre**, entera y sin
+nada encima más que el texto: "visual" siempre es "foto" e "iconoSugerido" va
+vacío. En "ideaImagen" escribe qué debe mostrar la foto, en una frase concreta
+y en español.
+
+Cada slide, la portada incluida, lleva un "estilo":
+
+  · frase  — dos renglones grandes al centro, en "titulo", separados por un
+    salto de línea. Es el de siempre.
+  · texto  — un título corto en "titulo" y, en "cuerpo", de 15 a 30 palabras
+    que expliquen algo. Para los tips, los pasos, lo que nadie te dice.
+  · imagen — casi solo la foto. "titulo" es un pie de cinco palabras o menos
+    ("Madrid, octubre") o va vacío, y "cuerpo" vacío. Es el que da el toque
+    personal: úsalo con las fotos propias más bonitas.
+
+**Mézclalos dentro del carrusel** según lo que pida la estructura: un
+carrusel donde todos los slides tienen el mismo estilo se siente plantilla, y
+uno que alterna se siente de una persona.`
+      : `## El elemento visual
 
 En cada slide de contenido elige "foto", "icono" o "ninguno", y llena:
 
@@ -133,9 +159,10 @@ En cada slide de contenido elige "foto", "icono" o "ninguno", y llena:
     íconos son la lupa y el triángulo de alerta no dice nada de su tema.
 
     Y no te limites a lo que creas que existe: si el concepto no está en la
-    librería se fabrica, así que pide lo que de verdad ilustra el slide.
+    librería se fabrica, así que pide lo que de verdad ilustra el slide.`
+  }
 
-${piezas.iconos}
+${todoFoto ? '' : piezas.iconos}
 
 ## La búsqueda de la foto
 
@@ -159,7 +186,12 @@ infección en la escuela se publicó una vez con la foto de un gimnasio: encajab
 con "niños juntos" y no enseñaba nada de lo que decía el texto. Piensa qué
 buscaría alguien con tu consulta y saldría mal.
 
-**La de la portada es distinta.** Va a sangre, con un velo encima que la
+${
+    todoFoto
+      ? `**Todas van a sangre**, la portada y las de dentro, sin velo y con la frase
+blanca a media altura. Que la foto tenga el centro despejado —un piso, una
+pared, un cielo— y que la escena sea un momento real, no una postal.`
+      : `**La de la portada es distinta.** Va a sangre, con un velo encima que la
 oscurece arriba y termina fundida en el color plano abajo, y el título grande
 cae a media altura.
 
@@ -170,10 +202,54 @@ arriba**, porque el tercio inferior se lo come el fundido. Y que la escena
 tenga aire: una foto llena de detalle fino compite con el título.
 
 Busca la escena donde ocurre el tema —la recámara de noche, el patio de la
-escuela, el parque en otoño—, no el síntoma.
+escuela, el parque en otoño—, no el síntoma.`
+  }
 
 ${piezas.fotos}
+${
+    fotosPropias
+      ? `
+## Las fotos de la cuenta
 
+La cuenta tiene sus propias fotos y **van antes que cualquier foto de banco**:
+son las que hacen que el carrusel sea de una persona y no de una agencia.
+Para la portada y para cada slide con "foto", busca en esta lista la que mejor
+acompañe lo que dice el slide y pon su id —lo que va antes del primer «·»— en
+"fotoPropia". No repitas una foto dentro del carrusel.
+
+**Una foto nunca se hace pasar por otro lugar.** Antes de elegir, mira si el
+lugar o la cosa de la que habla el post está en la lista —cada línea dice la
+ciudad—. Si el post es de Disney y no hay ninguna de Disney, una foto de Las
+Vegas no es Disney aunque sea de Estados Unidos: quien sigue la cuenta lo nota y
+se siente engañado. Entonces hay dos salidas buenas, y puedes mezclarlas:
+
+- una foto **neutra** de la cuenta, donde no se reconoce ningún lugar: un
+  desayuno, una maleta, un pasaporte, quien lleva la cuenta en un plano cerrado
+  sin monumentos ni letreros detrás. Esas acompañan cualquier tema;
+- el banco: "fotoPropia" vacío y "busqueda" con lo que sí se tiene que ver.
+
+Cuando el lugar sí está en la lista, usa las de aquí para la portada y la
+mayoría de los slides.
+Para los estilos "frase" y "texto" prefiere las que no dicen «centro
+ocupado»; para "imagen" da igual. Las que dicen «con rostro» tienen a alguien
+de frente: si la descripción dice que es una mujer posando, una selfie o
+alguien mirando a cámara, es casi siempre quien lleva la cuenta, y en uno o dos
+slides de estilo "imagen" son las que más se sienten en primera persona. Si
+son turistas al fondo, trátala como cualquier otra.
+
+Si ninguna sirve de verdad —el lugar no está, el tema no se ve en ninguna—, deja
+"fotoPropia" vacío y llena "busqueda" y "descartar" como arriba: entonces se
+busca en el banco. Llena "busqueda" siempre, por si la elegida ya la usó otro
+carrusel.
+
+<fotos_de_la_cuenta>
+${fotosPropias}
+</fotos_de_la_cuenta>
+`
+      : `
+Deja "fotoPropia" vacío: esta cuenta no tiene fotos propias.
+`
+  }
 ## Las cifras y las fuentes — lo más importante
 
 Una cifra plausible con una institución al lado es el error más difícil de

@@ -1,0 +1,110 @@
+{
+  "slug": "buen-fin-los-juguetes-que-si-y-los-que-no-por-edad",
+  "tema": "Buen Fin: qué juguetes sí y cuáles no, por edad",
+  "creado": "2026-11-11",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#DB2777"
+  },
+  "copy": "Buen Fin: el juguete que sí y el que mejor no 🧸\n\nSon las once de la noche, el descuento se acaba en dos horas y el carrito ya tiene tres cosas. Nadie lee la caja en ese momento, y está bien. Por eso dejo aquí la guía de juguetes seguros por edad antes del Buen Fin: para que decidas en diez segundos, en la tienda o en el celular, sin tener que investigar nada.\n\n🔋 Pilas de botón: si se tragan, pueden quemar el esófago en un par de horas aunque el niño se vea tranquilo. Busca que el compartimento vaya atornillado (AAP).\n\n🧲 Imanes potentes: si traga dos o más, se atraen entre sí a través de la pared del intestino y pueden perforarlo. Es valoración el mismo día (AAP · Mayo Clinic).\n\n🧠 El \"3+\" no mide inteligencia: mide tamaño de pieza y qué tanto se lleva todo a la boca. Un niño de 2 años muy despierto sigue teniendo una vía aérea de 2 años (KidsHealth).\n\n✔️ La prueba del tubo de papel de baño: si la pieza entra completa, no es para un menor de 3 años. Ahí caen ojos de peluche, ruedas, canicas y las figuritas de regalo (AAP · KidsHealth).\n\n📦 Qué sí por edad: sonajas y mordederas de una pieza en los primeros meses; pelotas blandas y libros de cartón cerca del año; cubos grandes y juguetes de empujar entre 1 y 2; rompecabezas y triciclo con casco de 3 a 5. Y en todas las edades: cordón corto y volumen que no truene.\n\n💙 Si tu hijo ya juega con algo de esta lista, no corras a tirarlo ni te sientas mala mamá. Revisa, ajusta lo que se pueda y guarda el resto para cuando crezca. Nadie compra pensando en hacerle daño; compramos cansadas y con prisa. Eso no es descuido, es vida real.\n\n🔖 Guarda este post y ábrelo en la tienda o con el carrito lleno: en un minuto revisas pila, imanes, piezas chicas, cordón y ruido. Te va a servir otra vez en diciembre, en cumpleaños y cuando lleguen los regalos de la familia. Y mándaselo a la abuela o a la tía que ya anda viendo ofertas: así compran bonito y seguro sin que nadie tenga que corregir a nadie.\n\n💬 ¿Cuál ha sido el juguete que más le ha durado a tu hijo? Te leo abajo.\n\n📲 ¿Tienes dudas sobre qué le toca a tu hijo para su edad, o sobre su desarrollo, su sueño o su alimentación? Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp. La atención es presencial.",
+  "pilar": "prevención",
+  "objetivo": "guardar",
+  "nota": "7 láminas. Publicar antes del Buen Fin. Ancla: pilas de botón (pueden quemar el esófago en un par de horas) e imanes potentes (si traga dos pueden perforar el intestino). Prueba del tubo de papel de baño para piezas pequeñas en menores de 3 años. Cordones largos y juguetes con ruido muy fuerte. Lámina central: tabla de juguetes por edad.",
+  "hashtags": [
+    "#JuguetesSeguros",
+    "#BuenFin",
+    "#PrevenciónDeAccidentes",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Buen Fin:* **el juguete correcto**",
+      "pregunta": "Antes de darle clic",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/buen-fin-los-juguetes-que-si-y-los-que-no-por-edad/pexels-5997675.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Polesie Toys",
+        "url": "https://www.pexels.com/photo/a-young-girl-pushing-a-cart-toy-5997675/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100,
+        "fotoZoom": 1
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Está en oferta* **y le va a encantar\"**",
+      "bajada": "Todas hemos comprado así. No pasa nada.",
+      "cuerpo": "Es Buen Fin, viste el juguete a mitad de precio y lo metiste al carrito en tres segundos. Nadie lee la caja a las once de la noche. Yo tampoco. Esto no es para que te sientas mal por comprar: es para que sepas qué mirar antes de pagar.",
+      "visual": {
+        "clase": "icono",
+        "slug": "smartphone-with-shopping-cart-full-of-toy-boxes",
+        "iconoSugerido": "smartphone with shopping cart full of toy boxes"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Dos piezas* **que sí preocupan**",
+      "bajada": "Pila de botón e imán potente.",
+      "cuerpo": "Una pila de botón tragada puede quemar el esófago en un par de horas, aunque el niño se vea bien y siga jugando. Dos imanes potentes se atraen entre sí a través de la pared del intestino y pueden perforarlo. En los dos casos se valora el mismo día, no al siguiente.",
+      "visual": {
+        "clase": "icono",
+        "slug": "button-battery-next-to-two-magnetic-balls",
+        "iconoSugerido": "button battery next to two magnetic balls"
+      },
+      "fuente": "AAP · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"El 3+ es* **solo sugerencia\"**",
+      "bajada": "No mide qué tan listo es tu hijo.",
+      "cuerpo": "La edad de la caja no mide inteligencia. Mide tamaño de pieza, fuerza de mordida y qué tanto se lleva todo a la boca. Un niño de 2 años muy despierto sigue teniendo una vía aérea de 2 años. El 3+ habla del cuerpo, no del cerebro.",
+      "visual": {
+        "clase": "icono",
+        "slug": "toy-box-label-tag-with-3-age-mark",
+        "iconoSugerido": "toy box label tag with 3+ age mark"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La prueba* **del tubo de papel**",
+      "bajada": "Si la pieza pasa por ahí, todavía no.",
+      "cuerpo": "Toma un tubo de papel de baño. Si la pieza entra completa, también cabe en la garganta de un menor de 3 años. Ahí entran ojos de peluche, ruedas, canicas y esas mini figuras de regalo. Y revisa el ruido: lo que truena a un brazo de distancia molesta oídos pequeños.",
+      "visual": {
+        "clase": "icono",
+        "slug": "toilet-paper-tube-with-small-toy-pieces-beside-it",
+        "iconoSugerido": "toilet paper tube with small toy pieces beside it"
+      },
+      "fuente": "AAP · KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Qué sí, **por edad**",
+      "puntos": [
+        "→ **0 a 6 meses** Sonajas ligeras, mordederas de una sola pieza, móviles fuera de su alcance. Nada con costuras que se abran.",
+        "→ **6 a 12 meses** Pelotas blandas grandes, libros de tela o cartón grueso, aros apilables. Nada que pase por el tubo.",
+        "→ **1 a 2 años** Cubos grandes, juguetes de empujar o jalar, instrumentos simples. Sin imanes sueltos ni pilas accesibles.",
+        "→ **3 a 5 años** Rompecabezas de pocas piezas, disfraces, triciclo con casco. Ojo si hay un hermanito menor en casa.",
+        "→ **Cualquier edad** Compartimento de pila atornillado, cordón corto y volumen que no truene de cerca."
+      ],
+      "fuente": "AAP · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Antes de pagar,* **revisa cinco cosas**",
+      "bajada": "Guarda esta lámina y ábrela en la tienda.",
+      "cuerpo": "¿La pieza pasa por el tubo de papel? No, si tiene menos de 3 años. ¿Trae pila de botón? Solo si el compartimento va atornillado. ¿Imanes sueltos y brillantes? No. ¿Cordón más largo que tu palma? Tampoco. ¿Truena fuerte de cerca? Bájale el volumen o déjalo.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "wrapped toy gift box with a checklist tag"
+      }
+    }
+  ]
+}

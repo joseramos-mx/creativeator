@@ -1130,7 +1130,7 @@ select:focus {
 
 /* Sitio para los botones, para que no se echen encima de la última línea. */
 .lista-posts__texto span:last-of-type {
-  padding-right: 66px;
+  padding-right: 97px;
 }
 
 .acciones {
@@ -1176,6 +1176,35 @@ select:focus {
   stroke-linejoin: round;
 }
 
+.cuadrado--peligro:hover:not(:disabled) {
+  border-color: #e08a6a;
+  color: #e08a6a;
+  background: #2a1a16;
+}
+
+/* La confirmación ocupa el pie de la tarjeta en lugar de los botones. */
+.acciones--confirma {
+  left: 9px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  border: 1px solid #e08a6a;
+  border-radius: 8px;
+  background: #1a1210;
+  font-size: 12px;
+}
+
+.acciones--confirma span {
+  flex: 1;
+  color: var(--ui-txt);
+}
+
+.boton.peligro {
+  border-color: #e08a6a;
+  background: #c4573a;
+  color: #fff;
+}
+
 /* El de estado se tiñe de lo que ya es, con los mismos colores de la lista. */
 .cuadrado[data-estado='aprobado'] { color: #7fb2ff; }
 .cuadrado[data-estado='publicado'] { color: #46c07a; }
@@ -1190,6 +1219,27 @@ select:focus {
 
 @media (prefers-reduced-motion: reduce) {
   .cuadrado .gira { animation: none; }
+}
+
+.encuadre {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.encuadre__fila {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 11px;
+  color: var(--ui-dim);
+}
+
+.encuadre__fila input {
+  width: 100%;
 }
 
 .acciones__error {

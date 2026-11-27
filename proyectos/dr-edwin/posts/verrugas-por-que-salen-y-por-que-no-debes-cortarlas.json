@@ -1,0 +1,101 @@
+{
+  "slug": "verrugas-por-que-salen-y-por-que-no-debes-cortarlas",
+  "tema": "Verrugas en niños: por qué salen y por qué no hay que cortarlas",
+  "creado": "2026-12-07",
+  "estado": "borrador",
+  "paleta": "turquesa",
+  "copy": "La verruga que no debes cortar ✋\n\nSi tu hijo tiene un bultito áspero en un dedo o en la planta del pie, lo más probable es que sea una verruga: una infección de la piel causada por el virus del papiloma humano. Y entre las clases de natación, las regaderas compartidas y los pies descalzos en el vestidor, es justo la época en que más se pasan de un niño a otro.\n\n🦠 Qué es: un virus que entra por una cortadita o un padrastro y hace que la piel crezca de más. Hay más de cien tipos, y los que salen en manos y pies no son los mismos de otras zonas (AAD).\n\n🔍 Cómo reconocerla: áspera al tacto, como una coliflor pequeña, del color de la piel y muchas veces con puntitos negros, que son vasos diminutos y no tierra. En la planta del pie crece hacia adentro, duele al pisar e interrumpe las líneas de la huella (Mayo Clinic).\n\n⚠️ Cómo se extiende: de piel a piel y por el piso mojado de regaderas, vestidores y albercas. Pero también de un dedo a otro del mismo niño cuando se la muerde, se la rasca o se la corta. Por eso una sola termina siendo cinco (AAD).\n\n✅ Qué hacer mientras tanto: cúbrela con una curita cuando juegue o nade, no la cortes ni la limes, que la lima, el cortaúñas y la toalla sean solo suyos, y que use sandalias en regaderas y vestidores (AAD).\n\n⚡ Ojo: la verruga plantar se confunde mucho con un callo. El callo conserva las líneas de la piel y no tiene puntitos negros; la verruga las corta y duele más al apretar de lado que al pisar de frente. Y las perlitas lisas con un hoyito en el centro no son verrugas: eso es molusco contagioso, otra cosa.\n\n💬 ¿A tu hijo le salió una sola o ya se le hicieron varias? Cuéntame en dónde las tiene.\n\n🔖 Guarda este carrusel: no es un tema que se resuelva el mismo día. Las verrugas tardan semanas o meses, y lo que decide el resultado es lo que se hace en casa todos los días mientras tanto. Tenerlo guardado te sirve el día que tu hijo empiece a picarse una en el salón o antes de la clase de natación. Y mándaselo a la mamá o al papá que ya anda buscando cómo cortársela: ese paso es el que hace que aparezcan más.\n\n📲 ¿Tu hijo ya tiene varias, o le duele al caminar? Esa ya es para revisar. Agenda tu cita conmigo en Doctoralia, el enlace está en la biografía.\n\n#Verrugas #VirusDelPapiloma #DermatologíaPediátrica #CuidadoDeLaPiel #DermatólogoDurango",
+  "pilar": "Soluciones reales",
+  "objetivo": "guardar",
+  "nota": "Tema nuevo. Virus del papiloma; se contagian y se extienden al manipularlas; opciones de tratamiento según el caso. Fuente sugerida: AAD",
+  "hashtags": [
+    "#Verrugas",
+    "#VirusDelPapiloma",
+    "#DermatologíaPediátrica",
+    "#CuidadoDeLaPiel",
+    "#DermatólogoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La verruga que*\n**no debes cortar**",
+      "pregunta": "¿Por qué le salen?",
+      "foto": "/proyectos/dr-edwin/media/verrugas-por-que-salen-y-por-que-no-debes-cortarlas/pexels-8443281.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Nikita Nikitin",
+        "url": "https://www.pexels.com/photo/parent-and-child-hands-8443281/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **una verruga?**",
+      "bajada": "No es suciedad: es un virus de la piel.",
+      "cuerpo": "Una verruga es un bultito de piel endurecida que provoca un virus: el papiloma humano. Hay más de cien tipos, y los que salen en manos o pies no son los mismos de otras zonas. El virus entra por una cortadita o un padrastro y la piel crece de más.",
+      "visual": {
+        "clase": "icono",
+        "slug": "virus-particle-3d",
+        "iconoSugerido": "virus particle"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo* **se ve?**",
+      "bajada": "Áspera, del color de la piel y con puntitos negros.",
+      "cuerpo": "Se siente áspera al tocarla, como una coliflor pequeña, y es del color de la piel. Muchas tienen puntitos negros: son vasos diminutos, no tierra. En la planta del pie crece hacia adentro, duele al pisar y corta las líneas de la huella.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se extienden** *si las picas.*",
+      "bajada": "Cada vez que la manipula, siembra una nueva.",
+      "cuerpo": "El virus pasa de piel a piel y también por el piso mojado: regaderas, vestidores, la orilla de la alberca. Y se pasa de un dedo a otro del mismo niño cuando la muerde, la rasca o se la corta. Así una sola termina siendo cinco.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/verrugas-por-que-salen-y-por-que-no-debes-cortarlas/pexels-6779250.jpg",
+        "ideaImagen": "Pies descalzos de niños caminando sobre el piso mojado de la orilla de una alberca, tomados desde arriba.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Milada Vigerova",
+          "url": "https://www.pexels.com/photo/woman-standing-on-edge-of-swimming-pool-6779250/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué sí* **puedes hacer**",
+      "puntos": [
+        "Cúbrela con una curita cuando juegue, nade o haga deporte.",
+        "No la cortes, no la limes ni dejes que se la muerda: así se siembran nuevas.",
+        "Lima, cortaúñas y toalla de uso solo suyo, sin compartir.",
+        "Sandalias en regaderas y vestidores, sobre todo si está en la planta del pie."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **ir a consulta?**",
+      "bajada": "Hay tratamiento, y se elige según el caso.",
+      "cuerpo": "Ve a valoración si duele al caminar, sangra, cambia de color o crece rápido. También si se multiplican, si están en la cara o en los genitales, o si tu hijo tiene las defensas bajas. Hay varias opciones de tratamiento y se eligen según la edad y dónde están.",
+      "visual": {
+        "clase": "icono",
+        "slug": "liquid-nitrogen-canister",
+        "iconoSugerido": "liquid nitrogen canister"
+      },
+      "fuente": "AAD"
+    }
+  ]
+}

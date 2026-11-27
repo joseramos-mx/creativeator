@@ -1,0 +1,107 @@
+{
+  "slug": "cuanto-cuesta-europa-para-una-familia-de-4",
+  "tema": "Cuánto cuesta Europa para una familia de 4",
+  "creado": "2026-11-18",
+  "estado": "borrador",
+  "paleta": "ambar",
+  "copy": "¿Cuánto cuesta Europa para una familia de cuatro? Depende de estas cosas.\n\nArmé el presupuesto de una familia real (sin nombres, con su permiso) y el vuelo no fue lo que más pesó: fueron las noches de hotel y las comidas de cuatro personas, tres veces al día.\nEn Europa casi no hay habitaciones para cuatro: o son dos cuartos o es un departamento, y ahí se decide la mitad del gasto.\nEl tren se ve barato hasta que lo multiplicas por cuatro; a veces conviene auto o bus nocturno.\nY sí hay entradas que no pagas: en el Louvre los menores de 18 entran gratis (Museo del Louvre).\nViajes a Europa a la medida desde [PRECIO] por persona, sujeto a disponibilidad.\n\nViví en Francia y recorrí Europa con presupuesto de mochilera: sé dónde sí vale la pena pagar y dónde no.\n\nAgenda una videollamada conmigo por WhatsApp (link en bio) y armamos el presupuesto real de tu familia ✈️\n\n#ViajarEnFamilia #EuropaConNiños #PresupuestoDeViaje #AhimsaTravel #EuropaDesdeCDMX",
+  "pilar": "Europa con criterio",
+  "objetivo": "agendar",
+  "nota": "Formato B, carrusel de tips. Necesita un presupuesto real anonimizado de Fátima; precios solo en el copy y como desde. Si no llega, cambiar de fecha con el del 19.",
+  "hashtags": [
+    "#ViajarEnFamilia",
+    "#EuropaConNiños",
+    "#PresupuestoDeViaje",
+    "#AhimsaTravel",
+    "#EuropaDesdeCDMX"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "Cuánto cuesta Europa\npara cuatro",
+      "pregunta": "",
+      "foto": "/proyectos/ahimsatravel/fotos/francia/paris/f20d1779.jpg",
+      "fotoCredito": {
+        "fuente": "Proporcionada por la cuenta",
+        "licencia": "Uso autorizado por la cuenta"
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "El vuelo no es lo caro",
+      "cuerpo": "Casi todos arman el presupuesto pensando solo en los boletos de avión. En un viaje familiar las noches de hotel y las comidas terminan pesando más.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/belgica/bruselas/dbf9fdbc.jpg",
+        "ideaImagen": "Sala de embarque real con pasajeros esperando y maletas, luz natural de ventanal",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "El cuarto para cuatro casi no existe",
+      "cuerpo": "En Europa el estándar es doble o triple. Con cuatro muchas veces son dos habitaciones o un departamento, y eso mueve el presupuesto más que el vuelo.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/italia/florencia/877adb90.jpg",
+        "ideaImagen": "Mesa de desayuno con café y pan en una terraza con el Duomo de Florencia al fondo",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "El tren no siempre gana",
+      "cuerpo": "Multiplica el boleto por cuatro y a veces conviene más un auto rentado o un bus nocturno. Y el tren barato se compra con meses de anticipación.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/belgica/brujas/83859a0d.jpg",
+        "ideaImagen": "Andén de estación europea con viajeros y maletas esperando un tren, piso despejado al centro",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Las entradas, con criterio",
+      "cuerpo": "No todo museo se paga por cuatro: en el Louvre los menores de 18 años entran gratis. Saber dónde sí vale la pena pagar te ahorra varias noches de hotel.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/99339b79.jpg",
+        "ideaImagen": "Vista desde el interior de la pirámide de vidrio del Louvre hacia el cielo azul, centro limpio",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "fuente": "Museo del Louvre",
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "No es cuánto cuesta\nes cómo se arma",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/adf68b00.jpg",
+        "ideaImagen": "Bancas vacías de un parque al atardecer con la Torre Eiffel al fondo",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    }
+  ]
+}

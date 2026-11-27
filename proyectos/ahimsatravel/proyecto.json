@@ -1,0 +1,54 @@
+{
+  "nombre": "Ahimsa Travel by Fátima Nieto",
+  "usuario": "@ahimsa.travel",
+  "especialidad": "Agente de viajes especializada en Europa a la medida",
+  "ciudad": "Ciudad de México",
+  "plataforma": "WhatsApp",
+  "logo": "/proyectos/ahimsatravel/marca/logo-mw1m4y4m.svg",
+  "retrato": "",
+  "cierre": {
+    "lugar": "*Desde* **{ciudad}**, *para todo México*",
+    "invitacion": "Cotiza tu viaje por"
+  },
+  "plantilla": "foto",
+  "giro": "una agente de viajes",
+  "fuentes": [
+    "Sitios oficiales de turismo de cada país",
+    "Secretaría de Relaciones Exteriores",
+    "Comisión Europea",
+    "Sitios oficiales de aerolíneas",
+    "Museo del Louvre",
+    "Disney",
+    "Universal"
+  ],
+  "iconosRecientes": [],
+  "diseno": {
+    "fondo": "#F7F3EC",
+    "tinta": "#0F5C63",
+    "tituloFuente": "Fraunces",
+    "tituloMayusculas": false,
+    "textoFuente": "Figtree",
+    "numeroFuente": "Fredoka",
+    "paletas": [
+      {
+        "nombre": "niebla",
+        "color": "#F7F3EC",
+        "tinta": "#0F5C63",
+        "cuando": "El color de la cuenta: crema de fondo con tinta turquesa."
+      },
+      {
+        "nombre": "turquesa",
+        "color": "#0F5C63",
+        "tinta": "#F7F3EC",
+        "cuando": "Portadas y slides de cierre, cuando se quiere peso."
+      },
+      {
+        "nombre": "ambar",
+        "color": "#C9A15A",
+        "tinta": "#F7F3EC",
+        "cuando": "Slides de precio «desde», resorts, bodas y lunas de miel."
+      }
+    ]
+  },
+  "fotosConRostro": true
+}

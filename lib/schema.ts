@@ -38,6 +38,15 @@ export const Overrides = z
     cuerpoPx: z.number().positive(),
     mediaAncho: z.number().positive(),
     mediaAlto: z.number().positive(),
+    /**
+     * El encuadre de la foto de fondo: qué punto de la foto queda a la vista,
+     * en % como `background-position` (50 = centrado), y cuánto se acerca. Lo
+     * pone el botón «Automático» del editor o quien mueve los deslizadores.
+     * Ver plantillas/encuadre.ts.
+     */
+    fotoX: z.number().min(0).max(100),
+    fotoY: z.number().min(0).max(100),
+    fotoZoom: z.number().min(1).max(3),
   })
   .partial();
 
@@ -112,6 +121,19 @@ export const Emblema = z.object({
   tam: z.number().positive().optional(),
 });
 
+/**
+ * Cómo va el texto sobre la foto en la plantilla `foto`. Las demás lo ignoran.
+ *
+ *   frase  → dos renglones grandes al centro ("WTF" / "Zona de confort");
+ *   texto  → título y un párrafo corto, para los slides que explican algo;
+ *   imagen → casi solo la foto: el título, si hay, como pie chico abajo.
+ *
+ * Sin él, `frase`. Va por slide y no por post porque lo que da el toque
+ * personal es justo mezclarlos dentro del mismo carrusel.
+ */
+export const ESTILOS_FOTO = ['frase', 'texto', 'imagen'] as const;
+const EstiloFoto = z.enum(ESTILOS_FOTO);
+
 const Portada = z.object({
   tipo: z.literal('portada'),
   titulo: TextoMarcado,
@@ -124,6 +146,7 @@ const Portada = z.object({
    */
   foto: RutaLocal.optional(),
   fotoCredito: Credito.optional(),
+  estilo: EstiloFoto.optional(),
   overrides: Overrides.optional(),
 });
 
@@ -135,6 +158,7 @@ const Contenido = z.object({
   emblema: Emblema.optional(),
   visual: Visual.default({ clase: 'ninguno' }),
   fuente: z.string().optional(),
+  estilo: EstiloFoto.optional(),
   overrides: Overrides.optional(),
 });
 
@@ -330,6 +354,14 @@ export const Proyecto = Marca.extend({
    * no lleva respaldo, y el prompt se lo dice así.
    */
   fuentes: z.array(z.string().min(1)).min(1),
+  /**
+   * Si la redacción puede poner sola las fotos propias donde se reconoce una
+   * cara. Para una marca personal es lo que se quiere —la cara es la de quien
+   * firma—, pero desde el catálogo no se distingue a la dueña de un cliente,
+   * así que cada slide que lleve una sale con aviso para confirmarlo. Sin él,
+   * esas fotos solo se eligen a mano. Ver lib/bancos/propio.ts.
+   */
+  fotosConRostro: z.boolean().optional(),
 });
 
 export type TCredito = z.infer<typeof Credito>;

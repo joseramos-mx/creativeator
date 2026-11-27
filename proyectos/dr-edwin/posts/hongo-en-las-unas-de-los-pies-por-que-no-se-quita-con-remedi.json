@@ -1,0 +1,100 @@
+{
+  "slug": "hongo-en-las-unas-de-los-pies-por-que-no-se-quita-con-remedi",
+  "tema": "Hongo en las uñas de los pies: por qué no se quita con remedios",
+  "creado": "2026-12-28",
+  "estado": "borrador",
+  "paleta": "esmeralda",
+  "copy": "La uña amarilla que no se quita 🦶\n\nSi llevas meses con una uña del pie gruesa, amarillenta y quebradiza, seguramente es onicomicosis: hongo en la uña. Y no se quita con remedios por una razón simple: el hongo vive debajo de la uña, y la uña es una pared que el vinagre, el cloro y el aceite de árbol de té no atraviesan. Lo otro que casi nadie te dice es que esto va lento. La uña del pie tarda muchos meses en renovarse por completo, así que lo que empieces hoy se va a ver bien entrado el año. Por eso vale la pena empezar bien y no empezar otra vez.\n\n🔍 Cómo reconocerlo: empieza como una manchita blanca o amarilla en la punta de una sola uña, casi siempre la del dedo gordo. Después se engrosa, se vuelve quebradiza, se desmorona al cortarla y se levanta del dedo (Mayo Clinic).\n\n⚠️ Dónde se pega: del piso mojado de regaderas, vestidores y orillas de alberca, y dentro de casa con el cortaúñas compartido y los zapatos que nunca terminan de secar. El pie encerrado y húmedo es donde el hongo se instala mejor (Cleveland Clinic).\n\n✅ Qué hacer: confirmar primero que sí es hongo, secar entre los dedos después del baño, sandalias en regaderas públicas, alternar zapatos para que cada par seque y no compartir cortaúñas ni calcetines (AAD).\n\n⚡ Ojo con esto: no toda uña gruesa y amarilla es hongo. Se confunde con la uña golpeada —un pisotón o un zapato apretado—, que suele ser una sola, con historia del golpe, y que mejora conforme crece. También con la psoriasis de la uña, que suele traer hoyitos como de alfiler y placas en codos o rodillas. Tratar meses un hongo que no era hongo es el error más caro de todos.\n\n💬 ¿Cuántos remedios te han recomendado ya para esa uña? Dime cuál te dijeron que era infalible.\n\n🔖 Guarda este post. No es un tema de leer y cerrar: es de volver. Guárdalo para cuando estés frente a la farmacia a punto de comprar el tercer frasquito, para cuando te toque decidir si confirmas o tratas a ciegas, y para revisar la lista de los cuatro cuidados cada vez que la uña parezca que va mejorando. Y mándalo a quien lleva un año tapando esa uña con esmalte: le va a ahorrar meses.\n\n📲 ¿Tu uña lleva meses gruesa y amarilla y ya probaste de todo? Antes de seguir gastando, vale la pena confirmar qué es. Agenda tu valoración en Doctoralia, con el enlace en la biografía.",
+  "pilar": "Soluciones reales",
+  "objetivo": "guardar",
+  "nota": "Tema nuevo (distinto al de pie de atleta). Uña gruesa y amarillenta; confirmar que sí es hongo antes de tratar; el tratamiento es largo. Fuente sugerida: AAD",
+  "hashtags": [
+    "#Onicomicosis",
+    "#TemporadaDeAlberca",
+    "#DermatologiaParaFamilias",
+    "#SaludDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La uña amarilla*\nque **no se quita**",
+      "pregunta": "¿Por qué no se quita?",
+      "foto": "/proyectos/dr-edwin/media/hongo-en-las-unas-de-los-pies-por-que-no-se-quita-con-remedi/pexels-6661044.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "kaboompics",
+        "url": "https://www.pexels.com/photo/a-woman-wearing-a-sock-6661044/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **la onicomicosis?**",
+      "bajada": "**La uña funciona como una pared.**",
+      "cuerpo": "La onicomicosis es una infección de la uña por hongos. Los mismos que viven en pisos húmedos y en el zapato cerrado. El hongo crece debajo de la uña, y la uña lo protege. Por eso el vinagre, el cloro o el aceite de árbol de té no llegan hasta él.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "vinegar bottle"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Gruesa, amarilla** *y quebradiza.*",
+      "bajada": "**Empieza en la punta, no en toda la uña.**",
+      "cuerpo": "Empieza como una manchita blanca o amarilla en la punta. Con los meses la uña se engrosa, se vuelve quebradiza y se levanta del dedo. Puede desmoronarse al cortarla. Casi siempre empieza en un solo dedo, y el más común es el dedo gordo.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "toenail clipper"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se pega** *en el piso mojado.*",
+      "bajada": "**Del piso al zapato, y del zapato a la uña.**",
+      "cuerpo": "El hongo se recoge del piso mojado: regaderas, vestidores y la orilla de la alberca. También se pasa en casa, con el cortaúñas compartido y los zapatos que nunca terminan de secar. El pie que vive encerrado y húmedo es donde más fácil se instala.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/hongo-en-las-unas-de-los-pies-por-que-no-se-quita-con-remedi/pexels-9376098.jpg",
+        "ideaImagen": "Piso de azulejo mojado de una regadera o vestidor público, con agua y una sandalia de hule a un lado; sin piel enferma a cuadro.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "cottonbro studio",
+          "url": "https://www.pexels.com/photo/a-man-in-a-shower-9376098/"
+        }
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué sí* **puedes hacer**",
+      "puntos": [
+        "Antes de tratar, pide que confirmen que sí es hongo: no toda uña gruesa lo es.",
+        "Seca entre los dedos después de bañarte, no solo por encima.",
+        "Usa sandalias en regaderas y vestidores públicos.",
+        "Alterna zapatos cada día y no compartas cortaúñas ni calcetines."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo **ir a consulta?**",
+      "bajada": "**Confirmar primero, tratar después.**",
+      "cuerpo": "Agenda valoración si la uña duele al caminar o con el zapato, si ya son varias uñas, o si llevas meses con remedios y sigue igual. También si hay diabetes o defensas bajas. En consulta se confirma si de verdad es hongo y se decide el tratamiento, que dura meses.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "appointment calendar with check"
+      },
+      "fuente": "AAD"
+    }
+  ]
+}

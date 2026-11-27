@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { CUESTIONARIO, EXTENSIONES_MATERIAL, type Respuestas } from '@/lib/cuestionario';
-import { plantillaDe } from '@/plantillas';
+import { conDiseno, plantillaDe } from '@/plantillas';
 import { NOMBRES_PALETA, paletas as delaClinica, type NombrePaleta } from '@/plantillas/clinica/tokens';
 import type { Proyecto, Slide } from '@/plantillas/clinica/tipos';
 import { useApi, useProyecto } from './proyecto';
@@ -40,7 +40,7 @@ type Marca = {
 };
 
 type Diseno = {
-  plantilla: 'clinica' | 'plana';
+  plantilla: 'clinica' | 'plana' | 'foto';
   fondo: string;
   tinta: string;
   tituloFuente: string;
@@ -546,6 +546,7 @@ export function Identidad({
                   onChange={(e) => cambiarDiseno({ plantilla: e.target.value as Diseno['plantilla'] })}
                 >
                   <option value="plana">plana — el diseño de esta cuenta</option>
+                  <option value="foto">foto — la foto a sangre con una frase encima</option>
                   <option value="clinica">clinica — la del Dr. Edwin, medida a mano</option>
                 </select>
               </div>
@@ -563,7 +564,7 @@ export function Identidad({
                 </label>
               </div>
             </div>
-            {textos.diseno.plantilla === 'plana' ? (
+            {conDiseno(textos.diseno.plantilla) ? (
               <>
                 <div className="fila">
                   <Color etiqueta="Fondo" valor={textos.diseno.fondo} onCambio={(fondo) => cambiarDiseno({ fondo })} />
@@ -649,7 +650,7 @@ export function Identidad({
             <VistaPrevia proyecto={proyectoInicial} textos={textos} logo={logo} />
             <p className="pista">La vista previa cambia al momento; los slides de verdad, al guardar.</p>
 
-            {textos.diseno.plantilla === 'plana' ? (
+            {conDiseno(textos.diseno.plantilla) ? (
               <div className="identidad__ajuste" data-ajuste>
                 <label htmlFor="pedido-diseno">Pedirle a Claude solo el diseño</label>
                 <textarea
@@ -667,7 +668,7 @@ export function Identidad({
               </div>
             ) : null}
             <div className="identidad__acciones">
-              {textos.diseno.plantilla === 'plana' ? (
+              {conDiseno(textos.diseno.plantilla) ? (
                 <button
                   className="boton"
                   data-ajustar-diseno
@@ -742,7 +743,7 @@ function VistaPrevia({ proyecto, textos, logo }: { proyecto: Proyecto; textos: T
     cierre: textos.marca.cierre,
     logo,
     plantilla: d.plantilla,
-    ...(d.plantilla === 'plana'
+    ...(conDiseno(d.plantilla)
       ? {
           diseno: {
             fondo,
@@ -772,7 +773,7 @@ function VistaPrevia({ proyecto, textos, logo }: { proyecto: Proyecto; textos: T
     { tipo: 'cierre', frase: 'Una frase de **cierre**' } as Slide,
   ];
   const zoom = ANCHO_PREVIA / 1080;
-  const colores = d.plantilla === 'plana' && d.paletas.length ? d.paletas.map((p) => p.nombre) : [undefined];
+  const colores = conDiseno(d.plantilla) && d.paletas.length ? d.paletas.map((p) => p.nombre) : [undefined];
   return (
     <div className="identidad__previa" data-previa>
       {colores.slice(0, 3).map((paleta, k) =>

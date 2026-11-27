@@ -261,7 +261,7 @@ un consentimiento quiere saber dónde está esa foto.
 ### Una plantilla nueva
 
 Una plantilla es un diseño completo: sus tipos de slide, su CSS y sus tokens.
-Hay dos:
+Hay tres:
 
 - **`clinica`** — la medida al píxel sobre el carrusel publicado del Dr. Edwin.
   No se configura: es suya.
@@ -306,6 +306,21 @@ Hay dos:
   unos mil tokens con el modelo auxiliar; marcando «mirar las imágenes» añade
   hasta seis referencias a 768 px (unos 800 tokens cada una), sin los PDF.
   «Guardar diseño» escribe solo `plantilla` y `diseno` en `proyecto.json`.
+
+- **`foto`** — cada slide es una foto a sangre, con el logo chico abajo al
+  centro y una frase de dos renglones en serif blanca a media altura
+  ("WTF" / "Zona de confort"). Sin número, usuario ni ícono. Salió de los posts
+  de Ahimsa Travel. Usa el mismo `diseno` que `plana`: la tipografía de título
+  es la de la frase, y los slides sin foto propia —el cierre, una lista— van
+  sobre la foto de la portada, oscurecida. La frase se escribe con un salto de
+  línea entre los dos renglones; los asteriscos no cambian de tipografía. Con
+  esta plantilla la redacción pone foto en todos los slides de contenido.
+
+  La foto va entera, sin velo ni degradado: el texto se lee por su sombra.
+  **Cada slide lleva su `estilo`**, que se cambia en su tarjeta del editor:
+  `frase` (dos renglones grandes al centro), `texto` (título y un párrafo corto
+  en la mitad de abajo) o `imagen` (casi solo la foto, con un pie chico). La
+  redacción los mezcla dentro del carrusel según la estructura de la cuenta.
 
 Lo que pinta un slide —la ruta que captura Playwright, el editor, la
 lista— la pide por su nombre a `plantillas/index.ts`, así que dos cuentas pueden
@@ -927,6 +942,36 @@ imagen**, o se arrastra la foto encima del slide. Funciona aunque el slide lleve
 
 Lo que sugirió el algoritmo no estorba: los buscadores siguen debajo, para volver
 a una foto de banco cuando se quiera.
+
+### Las fotos de la cuenta
+
+Una cuenta puede tener su propio banco: sus fotos, ordenadas por país y ciudad,
+con un catálogo que dice qué se ve en cada una.
+
+```
+npm run fotos:propias -- --proyecto ahimsatravel "Fotografías Ahimsa.zip"
+```
+
+Acepta la carpeta o el .zip que baja Drive. Endereza cada foto, la baja a
+1440 × 1800 como mucho, la guarda en `public/proyectos/<id>/fotos/<país>/<ciudad>/`
+y le pide al modelo auxiliar qué se ve, si sale alguien y si el centro está
+libre para la frase; todo eso va a `fotos/catalogo.json`. Volver a correrlo
+solo procesa las fotos nuevas. Cuesta poco: unas 600 fichas de entrada por foto.
+
+Con catálogo:
+
+- **Al redactar**, el catálogo entero va en el prompt y el modelo elige el id de
+  la foto de cada slide (`fotoPropia`). Si no hay una que sirva, o ya la usó
+  otro carrusel de la tanda, se busca en Pexels como siempre.
+- **En el editor**, «Buscar foto en el banco» enseña primero las de la cuenta
+  y detrás las de Pexels, en la misma rejilla.
+- Las fotos con una **cara que se reconoce** no se ponen solas —puede ser un
+  cliente—: salen en el buscador con un aviso y se eligen a mano. Una cuenta de
+  marca personal puede poner `"fotosConRostro": true` en su `proyecto.json`:
+  entonces la redacción también las usa, y cada slide que lleve una sale con
+  aviso para confirmar quién es.
+- Una foto propia no se copia al carrusel: el slide apunta al archivo del
+  catálogo. El crédito queda como el de una imagen subida a mano.
 
 ### El archivo clínico
 

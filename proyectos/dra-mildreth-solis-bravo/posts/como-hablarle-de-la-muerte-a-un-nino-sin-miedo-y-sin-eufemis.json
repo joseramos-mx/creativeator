@@ -1,0 +1,107 @@
+{
+  "slug": "como-hablarle-de-la-muerte-a-un-nino-sin-miedo-y-sin-eufemis",
+  "tema": "Cómo hablarle de la muerte a un niño, sin miedo y sin eufemismos",
+  "creado": "2026-11-25",
+  "estado": "borrador",
+  "paleta": "azul",
+  "copy": "🕯️ Cómo hablarle de la muerte a un niño: sin miedo y sin eufemismos.\n\nEste año muchas familias van a sentarse a la mesa con una silla menos. Y en medio de la cena, cuando nadie lo espera, un niño de cuatro años pregunta dónde está el abuelo. Hablarle de la muerte a un niño no es una conversación que alguien te haya enseñado a tener, y menos mientras tú apenas la estás digiriendo. Si ya dijiste \"se fue de viaje\" porque fue lo único que te salió, no pasa nada: siempre se puede volver a contar la historia bien.\n\n🧠 Antes de los 5 no existe el \"para siempre\": por eso va a preguntar lo mismo una y otra vez. No es que no te escuchó, es que su cerebro está acomodando una idea enorme de poquito en poquito (KidsHealth).\n\n😴 \"Se durmió\" no: murió. Un niño pequeño lo entiende literal, y si dormirse es morirse, dormir empieza a dar miedo. Lo mismo con \"se fue\" o \"se lo llevaron\". Lo que sí se entiende es que su cuerpo dejó de funcionar y no va a volver (AAP).\n\n🧩 Lo que no se explica, se inventa: cuando nadie le cuenta, el niño rellena el hueco solo y muchas veces se pone de culpable. Dejarlo fuera de la despedida \"para protegerlo\" lo deja sin el cierre que todos los demás sí tuvieron (KidsHealth).\n\n✔️ Qué sí funciona: usar la palabra murió, contestar corto y repetir las veces que haga falta, dejarlo ir al funeral si lo preparas antes y le asignas un adulto solo para él, y permitirte llorar enfrente (AAP).\n\n🖼️ Formas de recordarlo juntos: su foto a la vista, una vela y una anécdota chistosa, una carta o un dibujo para él, un adorno con su nombre en el árbol. Las primeras fiestas sin alguien se sostienen mejor nombrándolo que fingiendo que no falta.\n\n💙 Nadie llega preparado a esto. Vas a decir frases que después te gustaría cambiar, vas a llorar enfrente de tu hijo sin planearlo y vas a sentir que lo estás haciendo mal: no lo estás haciendo mal, lo estás haciendo mientras te duele. Hay una mamá en tu teléfono que este mes va a tener esta plática y no sabe cómo empezarla. Mándaselo. A veces lo único que falta es que alguien te diga qué palabras usar.\n\n💬 ¿Qué te dijeron a ti cuando eras niña y murió alguien de tu familia? Te leo abajo.\n\n🔖 Guarda este post para el día que llegue la pregunta, porque llega sin avisar y casi nunca en buen momento. Y compártelo con quien esté pasando sus primeras fiestas sin alguien, con las abuelas que todavía dicen \"se durmió\" y con la maestra del kínder: ella también sostiene esa conversación.\n\n📲 ¿Notas que tu hijo cambió el sueño, el apetito o la conducta después de una pérdida en la familia? Eso se puede valorar con calma. Agenda tu consulta en Durango por Doctoralia, con el enlace en la biografía, o escríbeme por WhatsApp.",
+  "pilar": "crianza",
+  "objetivo": "compartir",
+  "nota": "7 láminas. Gancho: se acercan las primeras fiestas sin alguien para muchas familias. Evitar 'se durmió' o 'se fue de viaje'; la palabra correcta es murió. Menores de 5 no entienden que es permanente y van a preguntar varias veces. Pueden ir a funerales si se les prepara. Lámina de rituales para recordar: una foto, una vela, una carta, un adorno con su nombre en el árbol. Sin mencionar Día de Muertos.",
+  "hashtags": [
+    "#DueloInfantil",
+    "#PrimerasFiestasSinÉl",
+    "#PediatriaParaMamas",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Cómo hablarle* **de la muerte**",
+      "pregunta": "Sin miedo y sin eufemismos",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/como-hablarle-de-la-muerte-a-un-nino-sin-miedo-y-sin-eufemis/pexels-6274966.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "https://kaboompics.com/",
+        "url": "https://www.pexels.com/photo/woman-talking-to-the-blonde-girl-eating-6274966/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Le dije que* **se fue de viaje\"**",
+      "bajada": "Nadie te enseñó a tener esa plática.",
+      "cuerpo": "Murió alguien de la casa y le dijiste que se fue lejos. O que está dormidito. Tenías que sostener tu propia tristeza y la de él al mismo tiempo, y saliste como pudiste. Todos hemos suavizado la verdad para no verlo llorar. No lo hiciste mal.",
+      "visual": {
+        "clase": "icono",
+        "slug": "empty-dining-chair",
+        "iconoSugerido": "empty dining chair"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Antes de los 5,* **no es para siempre**",
+      "bajada": "Va a preguntar lo mismo muchas veces.",
+      "cuerpo": "Antes de los 5 años el cerebro todavía no entiende que la muerte es permanente. Por eso tu hijo va a volver a preguntar \"¿y cuándo regresa?\". No es que no te escuchó. Es que está acomodando una idea enorme, de poquito en poquito, a su ritmo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "wooden-hourglass",
+        "iconoSugerido": "wooden hourglass"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Mejor* **no le digas\"**",
+      "bajada": "La palabra que sí se entiende es murió.",
+      "cuerpo": "No es que decir \"se durmió\" sea cruel. Es que un niño pequeño lo entiende literal: si dormirse es morirse, dormir da miedo. Pasa igual con \"se fue\" o \"se lo llevaron\". Lo que sí se entiende: murió, su cuerpo dejó de funcionar y no va a volver.",
+      "visual": {
+        "clase": "icono",
+        "slug": "small-bed-with-pillow",
+        "iconoSugerido": "small bed with pillow"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que **no se explica,** *se inventa*",
+      "bajada": "El silencio no protege: deja al niño solo.",
+      "cuerpo": "Cuando nadie explica, el niño rellena el hueco por su cuenta. Y muchas veces se pone de culpable: se murió porque me porté mal. También se le deja fuera de la despedida \"para protegerlo\", y se queda sin el cierre que todos los demás de la casa sí tuvieron.",
+      "visual": {
+        "clase": "icono",
+        "slug": "jigsaw-puzzle-with-one-missing-piece",
+        "iconoSugerido": "puzzle missing piece"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "5 cosas que **sí ayudan**",
+      "puntos": [
+        "→ **Usa la palabra murió.** Claro y en voz tranquila: \"el abuelo murió, su cuerpo dejó de funcionar\".",
+        "→ **Contesta corto y repite.** La misma respuesta, las veces que pregunte. Repetir es cómo lo procesa.",
+        "→ **Puede ir al funeral, si lo preparas.** Cuéntale antes qué va a ver y quién va a llorar, dale la opción y asígnale un adulto solo para él.",
+        "→ **Deja que pregunte lo incómodo.** \"¿Tú también te vas a morir?\" se responde con honestidad simple, no con promesas.",
+        "→ **Que te vea triste.** Verte llorar le enseña que la tristeza se muestra y que luego se puede seguir el día."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Formas de **recordarlo** *juntos*",
+      "bajada": "Nombrarlo no abre la herida: la acompaña.",
+      "cuerpo": "Pongan su foto donde se vea. Prendan una vela y cuenten algo chistoso que hacía. Que tu hijo le escriba o le dibuje una carta. Cuelguen un adorno con su nombre en el árbol. Las primeras fiestas sin alguien se sostienen mejor nombrándolo que fingiendo que no falta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "framed-photo-with-candle",
+        "iconoSugerido": "framed photo with candle"
+      }
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "slug": "sabanones-dedos-rojos-e-hinchados-que-pican-con-el-frio",
+  "tema": "Sabañones (perniosis) en niños: dedos rojos e hinchados que pican con el frío",
+  "creado": "2026-11-27",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "Dedos rojos que pican con el frío 🥶\n\nSi a tu hijo se le hinchan y se le ponen rojos o morados los dedos de las manos o de los pies cuando baja la temperatura, y le pican justo al entrar a un lugar caliente, lo más probable es que sean sabañones (perniosis). Con las mañanas frías de esta temporada en Durango es de lo que más llega al consultorio, y casi siempre después de varios días seguidos de frío.\n\n🔍 Cómo reconocerlo: manchas rojas o moradas, hinchadas, en varios dedos a la vez, que pican y arden; aparecen horas después de la exposición al frío y suelen durar de una a tres semanas (Mayo Clinic).\n\n⚠️ Qué lo empeora: calentar los dedos de golpe. Agua caliente, calentón o manos pegadas al radiador inflaman más la zona. Entrar en calor despacio, con ropa seca y a temperatura ambiente, es parte del tratamiento (AAD).\n\n✅ Qué hacer en casa: mantener manos y pies secos, cambiar calcetines y guantes apenas se mojen, usar calcetín de lana y zapato que no apriete, y evitar que se rasque (AAD).\n\n⚡ Con qué se confunde: con urticaria por frío, que da ronchas en minutos y se van en una hora; y con una congelación, que es otra cosa y requiere atención inmediata. Los sabañones tardan horas en salir, se quedan en los dedos y duran semanas.\n\n🔖 Guárdalo: no es un dato que necesites hoy, es el que vas a buscar la primera mañana de verdad fría, cuando llegue de la escuela con los dedos hinchados y tú estés a punto de meterle las manos al agua caliente. Tenerlo guardado te ahorra ese error. Y mándaselo a quien lleva a los niños al camión temprano o a quien ya te dijo \"a mi hija le pasa cada invierno\": es el mismo cuadro y tiene solución.\n\n💬 ¿A tu hijo le pasa cada invierno o es la primera vez que lo ves? Cuéntame en qué dedos le sale.\n\n📲 ¿Ya llevan más de dos semanas así, o la piel se abrió? Eso sí necesita revisión. Agenda conmigo en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Soluciones reales",
+  "objetivo": "guardar",
+  "nota": "Temporada de frío. Qué son (perniosis); no calentar de golpe; cuándo revisar si no ceden. Fuente sugerida: AAD y DermNet",
+  "hashtags": [
+    "#Sabañones",
+    "#TemporadaDeFrío",
+    "#DermatologíaPediátrica",
+    "#PielDeNiños",
+    "#DermatólogoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Dedos rojos que*\n**pican con el frío**",
+      "pregunta": "¿Qué son los sabañones?",
+      "foto": "/proyectos/dr-edwin/media/sabanones-dedos-rojos-e-hinchados-que-pican-con-el-frio/pexels-19522590.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Darya Grey_Owl",
+        "url": "https://www.pexels.com/photo/showing-woolen-knitted-mittens-19522590/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **un sabañón?**",
+      "bajada": "No es alergia ni congelación: es frío húmedo.",
+      "cuerpo": "Los sabañones (perniosis) son la reacción exagerada de los vasos pequeños de la piel al frío húmedo. La piel se enfría, se vuelve a calentar mal y se inflama. Salen en dedos de manos y pies, y a veces en orejas o nariz. Aparecen horas después de la exposición.",
+      "visual": {
+        "clase": "icono",
+        "slug": "wool-mitten",
+        "iconoSugerido": "wool mitten"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Cómo se ve**\n*y qué se siente*",
+      "bajada": "Pican más al pasar del frío al calor.",
+      "cuerpo": "Manchas rojas o moradas e hinchadas, en varios dedos a la vez. Pican y arden, sobre todo al entrar a un lugar caliente. A veces duelen o se sienten dormidos. En los casos más marcados la piel se ampolla. Suelen durar de una a tres semanas.",
+      "visual": {
+        "clase": "icono",
+        "slug": "wool-sock",
+        "iconoSugerido": "wool sock"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El error más común:*\n**calentar de golpe**",
+      "bajada": "El cambio brusco inflama más y hace que pique más.",
+      "cuerpo": "Aquí no hace falta nieve: el aire seco y las mañanas frías de la temporada bastan. Y lo que más empeora el cuadro es calentar rápido los dedos: agua caliente, calentón, manos pegadas al radiador. Mejor entrar en calor despacio, con ropa seca y temperatura ambiente.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/sabanones-dedos-rojos-e-hinchados-que-pican-con-el-frio/pexels-12932635.jpg",
+        "ideaImagen": "Un niño en casa acercando las manos a un calefactor o radiador en una mañana fría de invierno.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Atlantic Ambience",
+          "url": "https://www.pexels.com/photo/a-boy-getting-warm-ear-a-fireplace-12932635/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué sí* **ayuda en casa**",
+      "puntos": [
+        "Calienta despacio: ropa seca y temperatura ambiente, nunca agua caliente ni calentón directo.",
+        "Cambia calcetines y guantes apenas se mojen. El frío húmedo es el que daña.",
+        "Capas holgadas: calcetín de lana y zapato que no apriete los dedos.",
+        "Uñas cortas y manos tapadas: rascar abre la piel y alarga el cuadro."
+      ],
+      "fuente": "AAD, Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo hay que **revisarlo?**",
+      "bajada": "Dos semanas sin mejorar ya es motivo de consulta.",
+      "cuerpo": "Agenda valoración si no mejoran en dos semanas, si la piel se abre, se ampolla o supura, si duele tanto que no apoya el pie, o si le vuelven cada invierno. Cuando se repiten o siguen fuera de la temporada de frío, conviene descartar otras causas.",
+      "visual": {
+        "clase": "icono",
+        "slug": "two-week-calendar",
+        "iconoSugerido": "two week calendar"
+      },
+      "fuente": "Mayo Clinic, Cleveland Clinic"
+    }
+  ]
+}

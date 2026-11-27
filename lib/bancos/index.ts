@@ -1,6 +1,7 @@
 import { archivoLaboratorio, laboratorio } from './laboratorio';
 import { commons } from './commons';
 import { pexels } from './pexels';
+import { bancoPropio, combinado, leerCatalogo } from './propio';
 import type { Banco } from './tipos';
 
 export type { Banco, Candidato } from './tipos';
@@ -8,6 +9,7 @@ export { cribar, type Apartado, type Cribado } from './descartar';
 export {
   CAJA_CONTENIDO,
   CAJA_PORTADA,
+  cajaDe,
   porEncuadre,
   visibleTrasRecorte,
   type Caja,
@@ -23,6 +25,17 @@ export {
  */
 export function bancoDe(slug: string): Banco {
   return slug.startsWith('laboratorio-') ? laboratorio : pexels;
+}
+
+/**
+ * Lo mismo, contando con las fotos propias de la cuenta: si tiene catálogo,
+ * salen primero y Pexels detrás. Ver lib/bancos/propio.ts.
+ */
+export async function bancoDelProyecto(proyecto: string, slug: string): Promise<Banco> {
+  const banco = bancoDe(slug);
+  if (banco !== pexels) return banco;
+  const catalogo = await leerCatalogo(proyecto);
+  return catalogo.length ? combinado(bancoPropio(proyecto, catalogo), pexels) : pexels;
 }
 
 /**

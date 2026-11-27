@@ -1,0 +1,100 @@
+{
+  "slug": "sarna-escabiosis-la-comezon-nocturna-que-se-contagia-en-casa",
+  "tema": "Sarna (escabiosis): la comezón nocturna que se contagia en casa",
+  "creado": "2026-12-18",
+  "estado": "borrador",
+  "paleta": "purpura",
+  "copy": "La comezón que no deja dormir 🌙\n\nSi tu hijo se rasca toda la noche y de día casi ni se acuerda, seguramente es sarna (escabiosis). Y la temporada de reuniones familiares es su mejor momento: casa llena, primos durmiendo en el mismo colchón y maletas que van de un hogar a otro.\n\n🔍 Cómo reconocerlo: granitos pequeños y rojos, a veces alineados en trazos finos, entre los dedos, en muñecas, cintura, axilas y ombligo; en bebés también palmas, plantas y cuero cabelludo. Lo que más orienta no es cómo se ve, es a qué hora pica (AAD).\n\n⚠️ Cómo se contagia: con contacto piel con piel prolongado, como cargar al bebé, dormir juntos o los abrazos largos; y a veces por sábanas y toallas compartidas. Un saludo de mano no alcanza (Mayo Clinic).\n\n✅ Qué hacer: tratar a toda la familia el mismo día aunque solo uno tenga comezón; lavar ropa de cama y toallas con agua caliente y secadora caliente; y lo que no se pueda lavar, en una bolsa cerrada una semana (AAD).\n\n⚡ Ojo: se confunde con dermatitis atópica, piquetes de mosco y urticaria. Tres diferencias que sirven: la sarna empeora al acostarse, se repite siempre en los mismos pliegues y casi nunca viene sola. Si en la misma casa hay dos o tres rascándose, ya no parece alergia. Y algo que despista mucho: la comezón puede seguir dos a cuatro semanas después del tratamiento, y eso no significa que falló.\n\n💬 ¿En tu casa se rasca uno solo o ya van varios? Dime cuántos.\n\n🔖 Guárdalo. Este post no se lee el día que te late: se lee a las dos de la mañana, cuando el niño lleva una hora rascándose y estás decidiendo si esperas a mañana. Tenerlo guardado te ahorra media hora de búsquedas raras y te deja la lista de lavado a la mano. Y mándaselo a quien recibió visitas estos días o a quien anda con el mismo síntoma: esto se resuelve en bola o no se resuelve.\n\n📲 ¿Tu hijo lleva varias noches sin dormir por la comezón? La sarna necesita diagnóstico y tratamiento indicado para toda la casa. Agenda valoración en Doctoralia, con el enlace en la biografía.",
+  "pilar": "Diagnóstico que salva",
+  "objetivo": "guardar",
+  "nota": "Reuniones familiares. Comezón que empeora de noche; se trata a toda la familia a la vez; lavar ropa de cama. Fuente sugerida: CDC y AAD",
+  "hashtags": [
+    "#Escabiosis",
+    "#ReunionesFamiliares",
+    "#DermatologiaPediatrica",
+    "#CuidadoDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La comezón que*\nno **deja dormir**",
+      "pregunta": "¿Y si es sarna?",
+      "foto": "/proyectos/dr-edwin/media/sarna-escabiosis-la-comezon-nocturna-que-se-contagia-en-casa/pexels-5331103.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Monstera Production",
+        "url": "https://www.pexels.com/photo/woman-looking-at-smartphone-screen-with-alarm-in-morning-5331103/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **la sarna?**",
+      "bajada": "No tiene nada que ver con la falta de higiene.",
+      "cuerpo": "La sarna, o escabiosis, es una infestación: un ácaro diminuto, imposible de ver a simple vista, se mete bajo la capa más superficial de la piel y deja ahí sus huevos. La comezón no viene de una mordida, sino de la reacción alérgica a ese ácaro. Por eso tarda semanas en aparecer.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "burrowing mite"
+      },
+      "fuente": "Mayo Clinic, KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La pista está*\n**en el horario**",
+      "bajada": "De día se aguanta; de noche no.",
+      "cuerpo": "Granitos pequeños y rojos, a veces alineados en trazos finos, entre los dedos, en muñecas, cintura, axilas y alrededor del ombligo. En bebés también en palmas, plantas y cuero cabelludo. Lo más característico no es cómo se ve: es que la comezón se vuelve insoportable al acostarse.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "open hand with fingers spread"
+      },
+      "fuente": "AAD, KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se pasa**\n*de piel a piel*",
+      "bajada": "Un abrazo largo sí; un saludo de mano no.",
+      "cuerpo": "Se contagia con contacto piel con piel prolongado: cargar al bebé, dormir juntos, los primos revueltos en un colchón. También puede viajar en sábanas y toallas compartidas. Por eso en una reunión familiar de varios días se contagia media casa antes de que alguien note la comezón.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/sarna-escabiosis-la-comezon-nocturna-que-se-contagia-en-casa/pexels-27178054.jpg",
+        "ideaImagen": "Una reunión familiar en la sala de una casa: la abuela carga a un niño pequeño y otros parientes están cerca, en contacto cercano.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Helena Lopes",
+          "url": "https://www.pexels.com/photo/warm-family-gathering-in-cozy-living-room-27178054/"
+        }
+      },
+      "fuente": "AAD, Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué hacer*\n**en casa hoy**",
+      "puntos": [
+        "Traten a toda la familia el mismo día, aunque solo uno tenga comezón.",
+        "Lava sábanas, toallas y ropa de los últimos tres días con agua caliente y secadora caliente.",
+        "Lo que no se pueda lavar, guárdalo en una bolsa cerrada durante una semana.",
+        "No uses remedios caseros ni productos para animales: irritan la piel y retrasan el diagnóstico."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo hay que\n**ir a consulta?**",
+      "bajada": "La sarna necesita tratamiento indicado, no crema de mostrador.",
+      "cuerpo": "Agenda valoración si la comezón lleva varias noches, si hay más de un contagiado en casa, si los granitos tienen costra o la piel se ve caliente y roja, o si la comezón sigue cuatro semanas después del tratamiento. En bebés, consulta desde el primer día.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "crescent moon and alarm clock"
+      },
+      "fuente": "AAD, Mayo Clinic"
+    }
+  ]
+}

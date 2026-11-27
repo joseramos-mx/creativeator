@@ -90,13 +90,47 @@ export function cambiarTamIcono(post: Post, i: number, delta: number): Post {
   return cambiarSlide(post, i, { visual: { ...slide.visual, tam } } as Partial<Slide>);
 }
 
+/**
+ * El encuadre de la foto vive en los overrides pero no es un ajuste de
+ * maquetación: no habla de un valor de la plantilla que esté mal, sino de esta
+ * foto. No cuenta para el aviso de "demasiados ajustes" ni se va al quitarlos.
+ */
+const ENCUADRE = new Set(['fotoX', 'fotoY', 'fotoZoom']);
+
+/** Los ajustes a mano del slide, sin el encuadre de la foto. */
+export function ajustesDe(slide: Slide): [string, number][] {
+  if (slide.tipo === 'cierre' || !slide.overrides) return [];
+  return Object.entries(slide.overrides).filter(
+    (e): e is [string, number] => e[1] !== undefined && !ENCUADRE.has(e[0]),
+  );
+}
+
 export function limpiarOverrides(post: Post, i: number): Post {
-  return cambiarSlide(post, i, { overrides: undefined } as Partial<Slide>);
+  const slide = post.slides[i];
+  const ov = slide.tipo === 'cierre' ? undefined : slide.overrides;
+  const encuadre = ov ? Object.fromEntries(Object.entries(ov).filter(([k]) => ENCUADRE.has(k))) : {};
+  return cambiarSlide(post, i, {
+    overrides: Object.keys(encuadre).length ? encuadre : undefined,
+  } as Partial<Slide>);
 }
 
 export function contarOverrides(slide: Slide): number {
-  if (slide.tipo === 'cierre' || !slide.overrides) return 0;
-  return Object.values(slide.overrides).filter((v) => v !== undefined).length;
+  return ajustesDe(slide).length;
+}
+
+/** Cambia el encuadre de la foto de fondo; `undefined` lo devuelve a la plantilla. */
+export function ponerEncuadre(
+  post: Post,
+  i: number,
+  encuadre: { fotoX?: number; fotoY?: number; fotoZoom?: number } | undefined,
+): Post {
+  const slide = post.slides[i];
+  if (slide.tipo === 'cierre') return post;
+  const resto = Object.fromEntries(Object.entries(slide.overrides ?? {}).filter(([k]) => !ENCUADRE.has(k)));
+  const overrides = { ...resto, ...(encuadre ?? {}) };
+  return cambiarSlide(post, i, {
+    overrides: Object.keys(overrides).length ? overrides : undefined,
+  } as Partial<Slide>);
 }
 
 /**

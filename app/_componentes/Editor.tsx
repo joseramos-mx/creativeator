@@ -15,7 +15,7 @@ import {
   empujarOverride,
   ponerImagen,
 } from '@/lib/edicion';
-import { plantillaDe } from '@/plantillas';
+import { conDiseno, plantillaDe } from '@/plantillas';
 import { ProveedorDeAvisos } from '@/plantillas/clinica/avisos';
 import { fotosSinCredito } from '@/lib/fotos';
 import { bloque, lienzo, tipo } from '@/plantillas/clinica/tokens';
@@ -260,6 +260,7 @@ export function Editor({
           <PanelSlide
             key={i}
             slide={slide}
+            conEstilos={marca.plantilla === 'foto'}
             slug={post.slug}
             recientes={recientes}
             onSubir={(archivo) => void subirImagen(i, archivo)}
@@ -499,7 +500,7 @@ function Ficha({
 
         <p className="pista">{paletaDelPost(marca, post.paleta).cuando}</p>
 
-        {marca.plantilla === 'plana' ? (
+        {conDiseno(marca.plantilla) ? (
           <ColoresDelPost
             colores={post.colores}
             fondoDeLaCuenta={paletaDelPost(marca, post.paleta).color}

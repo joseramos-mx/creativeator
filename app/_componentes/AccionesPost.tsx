@@ -6,7 +6,8 @@ import type { Post } from '@/plantillas/clinica/tipos';
 import { useApi } from './proyecto';
 
 /**
- * Los dos botones de cada tarjeta de la lista: avanzar el estado y exportar.
+ * Los botones de cada tarjeta de la lista: avanzar el estado, exportar y
+ * eliminar.
  *
  * ── Por qué no llevan texto ─────────────────────────────────────────────────
  * Porque la lista es una rejilla de cinco columnas y una etiqueta partiría la
@@ -87,6 +88,13 @@ const Bajar = () => (
   </svg>
 );
 
+/** Bote de basura: eliminar. */
+const Basura = () => (
+  <svg viewBox="0 0 16 16" aria-hidden focusable="false">
+    <path d="M2.8 4.3h10.4M6.3 4.3V2.8h3.4v1.5M4.2 4.3l.7 8.9h6.2l.7-8.9M6.7 6.8v4M9.3 6.8v4" />
+  </svg>
+);
+
 /** Reloj de arena mientras trabaja. */
 const Esperando = () => (
   <svg viewBox="0 0 16 16" aria-hidden focusable="false" className="gira">
@@ -100,7 +108,10 @@ export function AccionesPost({ post }: { post: Post }) {
   // El estado local hace que la tarjeta responda al instante. `router.refresh()`
   // trae la verdad del disco un momento después y los dos coinciden.
   const [estado, setEstado] = useState(post.estado);
-  const [trabajando, setTrabajando] = useState<'estado' | 'exportar' | null>(null);
+  const [trabajando, setTrabajando] = useState<'estado' | 'exportar' | 'eliminar' | null>(null);
+  // Eliminar pide un segundo clic en la misma tarjeta: no se deshace, y un
+  // `confirm()` del navegador se acepta con Enter sin leerlo.
+  const [confirmando, setConfirmando] = useState(false);
   const [error, setError] = useState<string>();
 
   const siguiente = SIGUIENTE[estado];
@@ -152,6 +163,41 @@ export function AccionesPost({ post }: { post: Post }) {
     }
   }
 
+  async function eliminar() {
+    setTrabajando('eliminar');
+    setError(undefined);
+    try {
+      const r = await fetch(api(`/post?slug=${encodeURIComponent(post.slug)}`), { method: 'DELETE' });
+      const c = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(c.error ?? 'No se pudo eliminar.');
+      router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudo eliminar.');
+      setConfirmando(false);
+      setTrabajando(null);
+    }
+  }
+
+  if (confirmando) {
+    return (
+      <div className="acciones acciones--confirma" role="alertdialog" aria-label="Confirmar eliminación">
+        <span>¿Eliminar este post? No se puede deshacer.</span>
+        <button
+          type="button"
+          className="boton sm"
+          disabled={trabajando !== null}
+          onClick={() => setConfirmando(false)}
+          autoFocus
+        >
+          Cancelar
+        </button>
+        <button type="button" className="boton sm peligro" disabled={trabajando !== null} onClick={eliminar}>
+          {trabajando === 'eliminar' ? 'Eliminando…' : 'Eliminar'}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="acciones">
@@ -178,6 +224,16 @@ export function AccionesPost({ post }: { post: Post }) {
           title={`Exportar los ${post.slides.length} slides en un ZIP — tarda unos segundos por slide`}
         >
           {trabajando === 'exportar' ? <Esperando /> : <Bajar />}
+        </button>
+
+        <button
+          type="button"
+          className="cuadrado cuadrado--peligro"
+          disabled={trabajando !== null}
+          onClick={() => setConfirmando(true)}
+          title="Eliminar el post y sus fotos"
+        >
+          <Basura />
         </button>
       </div>
 

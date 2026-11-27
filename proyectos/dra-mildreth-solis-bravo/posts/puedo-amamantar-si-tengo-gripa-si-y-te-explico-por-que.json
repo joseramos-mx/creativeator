@@ -1,0 +1,106 @@
+{
+  "slug": "puedo-amamantar-si-tengo-gripa-si-y-te-explico-por-que",
+  "tema": "¿Puedo amamantar si tengo gripa? Sí, y te explico por qué",
+  "creado": "2026-11-27",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#0C4A6E"
+  },
+  "copy": "Te dijeron que le pararas unos días 🤱\n\nSon las seis de la tarde, traes la garganta raspada, el bebé pidiendo pecho y alguien en la casa diciendo \"mejor dale fórmula, no lo vayas a contagiar\". Ya empezó la temporada de gripas y esta pregunta llega a consulta todas las semanas: si puedo amamantar con gripa o si mejor me espero. Te lo respondo completo, para que decidas con información y no con culpa.\n\n🤱 La ciencia dice: cuando te enfermas, tu cuerpo fabrica anticuerpos contra ese virus y los pasa a tu leche. El bebé recibe la defensa casi en tiempo real, por eso se recomienda seguir amamantando durante un resfriado común (AAP y OMS).\n\n🌡️ \"Mejor párale unos días\": para cuando aparecen los mocos, tu bebé ya estuvo conviviendo contigo dos o tres días. Parar no lo protege, solo le quita los anticuerpos. Y a ti te deja los pechos llenos, con riesgo de dolor e inflamación (Cleveland Clinic).\n\n❄️ Lo que se pierde al parar: muchas mamás que pausan \"unos días\" ya no retoman, y no era lo que querían. Si el bebé llega a enfermarse, el pecho suele ser lo que mejor tolera: hidrata, calma y a veces es lo único que acepta con la nariz tapada (KidsHealth).\n\n✔️ Qué sí hacer: lavarte las manos antes de cargarlo y después de sonarte, cubrebocas mientras tengas tos, no compartir vaso ni besos en la carita, tomar agua y descansar en pedacitos, y preguntar si tu medicamento es compatible con la lactancia antes de tomarlo. Muchos lo son; aquí no damos nombres ni dosis, eso se revisa en consulta (AAP).\n\n💙 Si esos días baja un poco la producción, no es que tu cuerpo te esté fallando: estás enferma, comiendo menos y durmiendo peor. Suele acomodarse sola cuando te recuperas. Y si en algún momento complementas con fórmula, tampoco pasa nada: tu bebé sigue comiendo y tú sigues siendo su mamá. Aquí no se juzga cómo se alimenta a un bebé.\n\n🔖 Guarda este post ahorita, no cuando lo necesites. La gripa llega de noche, con el bebé en brazos y sin ganas de buscar nada: tenerlo guardado te ahorra media hora de opiniones contradictorias en el buscador. Y mándaselo a esa amiga que está amamantando, o a la abuela que ya te dijo que le pares: esta es la conversación que se repite cada invierno.\n\n💬 ¿A ti ya te dijeron que suspendieras el pecho por estar enferma? Cuéntame quién te lo dijo y qué hiciste.\n\n📲 ¿Traes gripa, te duele un pecho o sientes que bajó la leche y no sabes si es normal? Eso se revisa viéndolas. Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp si tienes dudas de horarios. Atención presencial, pediatría, neonatología y lactancia con la misma persona.",
+  "pilar": "lactancia",
+  "objetivo": "guardar",
+  "nota": "6 láminas. Lactancia inclusiva en temporada. Seguir amamantando protege: la leche lleva anticuerpos contra lo que tiene la mamá. Lavado de manos y cubrebocas al amamantar. La mayoría de medicamentos para gripa son compatibles, consultarlo sin nombres comerciales. Cuándo la mamá necesita valoración. Sin culpa si baja la producción esos días.",
+  "hashtags": [
+    "#LactanciaMaterna",
+    "#TemporadaDeGripas",
+    "#LactanciaSinCulpa",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Sí puedes amamantar* **con gripa**",
+      "pregunta": "¿Puedo amamantar con gripa?",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/puedo-amamantar-si-tengo-gripa-si-y-te-explico-por-que/pexels-26053999.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Olya Afanasyeva",
+        "url": "https://www.pexels.com/photo/person-taking-photo-of-young-happy-mother-holding-child-26053999/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Me dijeron que* **le parara\"**",
+      "bajada": "No hiciste nada mal: te faltó información.",
+      "cuerpo": "Amaneciste con la garganta raspada y el cuerpo cortado. Alguien te dijo que mejor le dieras fórmula unos días, no vayas a contagiarlo. Te sacaste leche y la tiraste con un nudo en la panza. Todas hemos dudado ahí. Vamos con lo que sí sabemos.",
+      "visual": {
+        "clase": "icono",
+        "slug": "tissue-box",
+        "iconoSugerido": "tissue box"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Tu leche se actualiza contra el virus que traes.",
+      "cuerpo": "Cuando te da gripa, tu cuerpo fabrica anticuerpos contra ese virus y los pasa a tu leche. El bebé recibe la defensa casi en tiempo real. Por eso las guías recomiendan seguir amamantando durante un resfriado común: la leche protege, no contagia.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "milk storage bag with shield"
+      },
+      "fuente": "AAP y OMS"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Mejor párale* **unos días\"**",
+      "bajada": "Suspender no lo protege. Llega tarde.",
+      "cuerpo": "Para cuando aparecen los mocos, tu bebé ya estuvo conviviendo con el virus dos o tres días. Parar no lo protege: le quita los anticuerpos justo cuando más los necesita. Y a ti te deja los pechos llenos, con riesgo de dolor e inflamación.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "milk poured down sink drain"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que se pierde al **parar**",
+      "bajada": "Un destete de emergencia casi nunca se revierte.",
+      "cuerpo": "Muchas mamás que pausan unos días por gripa ya no retoman, y no era lo que querían. Además, si el bebé llega a enfermarse, el pecho suele ser lo que mejor tolera: hidrata, calma y a veces es lo único que acepta con la nariz tapada.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "nursing pillow"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo amamantar **sin contagiarlo**",
+      "puntos": [
+        "→ **Lávate las manos** antes de cargarlo y cada vez que te suenes. Es la medida que más sirve.",
+        "→ **Cubrebocas al amamantar** mientras tengas tos o estornudos. El bebé queda muy cerca de tu cara.",
+        "→ **No compartas** vaso, cuchara ni besos en la carita esos días. El pecho sí, lo demás espera.",
+        "→ **Agua y descanso** aunque sea en pedazos. La producción resiente más la deshidratación que el virus.",
+        "→ **Pregunta por tus medicamentos** antes de tomarlos: muchos son compatibles con la lactancia, no todos."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Guárdalo:* **gripa no es destete**",
+      "bajada": "Si baja la leche esos días, es temporal.",
+      "cuerpo": "Tener gripa no es razón para dejar de amamantar. Sigue, lávate las manos, usa cubrebocas y consulta tus medicamentos. Pide valoración si la fiebre no cede, te cuesta respirar, te duele el oído o aparece una zona roja y dolorosa en el pecho.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "OMS"
+    }
+  ]
+}

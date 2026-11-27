@@ -1,0 +1,99 @@
+{
+  "slug": "alergia-a-nueces-y-cacahuate-en-las-posadas",
+  "tema": "Alergia a nueces y cacahuate en las posadas",
+  "creado": "2026-12-16",
+  "estado": "borrador",
+  "paleta": "amarillo",
+  "copy": "El bolo de la posada trae nuez. 🥜\n\nSi tu hijo tiene alergia al cacahuate o a los frutos secos, diciembre es el mes en que más se le cruzan: bolos, mesas de postres, galletas que trajo alguien más y ninguna etiqueta a la vista. Las posadas ya empezaron y conviene resolverlo antes de la primera, no después.\n\n🔍 El cacahuate no es nuez: es una leguminosa, pariente del frijol. Son dos alergias distintas y un niño puede tener una, la otra o las dos (KidsHealth).\n\n🔍 Cómo se reconoce una reacción: ronchas, comezón, labios hinchados, vómito o tos, casi siempre dentro de las dos horas de haber comido. Si además le cuesta respirar, se le pone la voz ronca, se marea o se ve pálido, eso se atiende de inmediato (Mayo Clinic).\n\n⚠️ Por qué la posada es distinta: la comida casera no trae etiqueta y la misma cuchara pasa de un platón al otro. Con una cantidad pequeña basta; no hace falta que se coma el postre entero (KidsHealth).\n\n✅ Cuatro cosas antes de salir: pregunta qué lleva cada postre y si nadie sabe, ese no; lee la etiqueta completa aunque sea la marca de siempre, que el \"puede contener nuez\" también cuenta; manda su propio bolo y su propio plato; y dile a quien organiza y a quien lo va a cuidar dónde está su medicamento y cómo se usa (AAP).\n\n⚡ Ojo con esto, que es la confusión más común: ser alérgico al cacahuate no significa serlo a la nuez, ni al revés, porque son grupos distintos. En cambio, la nuez de la India y el pistache son parientes cercanos y quien reacciona a uno suele reaccionar al otro. Y no toda ronchita alrededor de la boca es alergia: el jugo de cítricos o el tomate irritan la piel por contacto y eso se queda ahí, sin síntomas en otra parte del cuerpo.\n\n🔖 Guárdalo, pero sobre todo mándaselo a quien organiza la posada de tu familia. Esto no lo cuida una mamá sola: lo cuida la tía que trajo la ensalada, la abuela que armó los bolos y el adulto que va a estar en la cocina esa noche. Si las tres personas que sirven la mesa saben qué lleva cada platón, el riesgo se cae solo. Compártelo en el grupo antes del fin de semana.\n\n💬 ¿Cómo le haces tú en las fiestas? Cuéntame en una línea qué te ha funcionado para que coma tranquilo fuera de casa.\n\n📲 ¿Tu hijo ya tuvo una reacción con algún postre y no saben con cuál fue? Eso se estudia y se confirma. Agenda valoración conmigo en Doctoralia, con el enlace en la biografía.",
+  "pilar": "Diagnóstico que salva",
+  "objetivo": "compartir",
+  "nota": "Inicio de posadas. Ángulo específico de frutos secos en postres y bolos; leer etiquetas; reconocer anafilaxia. No repetir el post de alergia vs intolerancia. Fuente sugerida: ACAAI",
+  "hashtags": [
+    "#AlergiaAlCacahuate",
+    "#TemporadaDePosadas",
+    "#AlergologoPediatrico",
+    "#AlergiaAlimentaria",
+    "#AlergologoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El bolo de la posada*\n**trae nuez.**",
+      "pregunta": "¿Sabes qué lleva adentro?",
+      "foto": "/proyectos/dr-edwin/media/alergia-a-nueces-y-cacahuate-en-las-posadas/pexels-5813800.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Tima Miroshnichenko",
+        "url": "https://www.pexels.com/photo/a-boy-and-girl-doing-a-toast-on-the-dinner-table-5813800/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El cacahuate* **no es nuez.**",
+      "bajada": "Son dos alergias distintas, no una sola.",
+      "cuerpo": "El cacahuate no es una nuez: es una leguminosa, pariente del frijol. Son dos alergias distintas y un niño puede tener una, la otra o las dos. Por eso \"no le des nuez\" no alcanza en una mesa de postres donde todo viene revuelto.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "peanut and walnut"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo se ve* **una reacción?**",
+      "bajada": "Casi siempre aparece en las primeras dos horas.",
+      "cuerpo": "La mayoría de las reacciones empieza en minutos y casi siempre dentro de las dos horas. Ronchas, comezón, labios hinchados, vómito o tos. Si además le cuesta respirar, se le pone la voz ronca, se marea o se ve pálido, eso se atiende de inmediato.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se repite** *en cada posada.*",
+      "bajada": "La comida casera no trae lista de ingredientes.",
+      "cuerpo": "En la posada nada trae etiqueta. El bolo, la ensalada de manzana con nuez, el mazapán, las galletas que trajo alguien más. Y la misma cuchara pasa de un platón al otro. Con poquito basta: no hace falta que se coma el postre entero.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/alergia-a-nueces-y-cacahuate-en-las-posadas/pexels-5468082.jpg",
+        "ideaImagen": "Mesa casera de postres navideños: platones de galletas, dulces y ensalada servidos con cucharas compartidas.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "kaboompics",
+          "url": "https://www.pexels.com/photo/woman-serving-homemade-cake-on-christmas-day-5468082/"
+        }
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* **antes de salir.**",
+      "puntos": [
+        "Pregunta qué lleva cada postre antes de servirlo. Si nadie sabe, ese no.",
+        "Lee la etiqueta completa, aunque sea la marca de siempre: \"puede contener nuez\" cuenta.",
+        "Manda su propio bolo y su propio plato a la posada.",
+        "Avisa a quien organiza y a quien lo va a cuidar: dónde está su medicamento y cómo se usa."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **hay que valorarlo?**",
+      "bajada": "Una reacción leve también se valora.",
+      "cuerpo": "Si ya tuvo una reacción, aunque haya sido leve, hay que estudiarla antes de la siguiente posada. También si llevan años quitándole nueces \"por si acaso\", sin que nadie lo haya confirmado. En consulta se define qué alimento es y se arma el plan por escrito.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "epinephrine auto injector"
+      },
+      "fuente": "AAP"
+    }
+  ]
+}

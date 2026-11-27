@@ -29,6 +29,7 @@
     "proyecto:nuevo": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/nuevo-proyecto.mjs",
     "banco-proyectos": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/banco-proyectos.mjs",
     "github-simulado": "node scripts/github-simulado.mjs",
+    "fotos:propias": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/fotos-propias.mjs",
     "celular": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/para-el-celular.mjs"
   },
   "dependencies": {

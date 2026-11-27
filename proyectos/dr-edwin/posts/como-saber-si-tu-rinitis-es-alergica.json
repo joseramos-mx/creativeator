@@ -1,0 +1,159 @@
+{
+  "slug": "como-saber-si-tu-rinitis-es-alergica",
+  "tema": "¿Cómo saber si tu rinitis es alérgica?",
+  "creado": "2026-11-18",
+  "estado": "borrador",
+  "paleta": "oliva",
+  "copy": "¿Tu rinitis es alérgica? 🤧\n\nEstornudar seguido, la nariz que pica, el moco transparente que no se quita. No siempre es un catarro que se alarga: muchas veces es alergia, y la pista está en cuándo y dónde te pasa.\n\n🏠 Ácaros: si estornudas al barrer, sacudir o cambiar las sábanas, o amaneces con la nariz tapada casi todo el año.\n🌳 Árboles: si cada año, por las mismas fechas, te pican los ojos y estornudas varias semanas al salir.\n🌾 Pastos: si empeoras cuando florecen después de las lluvias, sobre todo en días secos y con viento.\n🍂 Hongos: si los síntomas vuelven en un cuarto con moho o al barrer hojas húmedas.\n🐱🐶 Gatos y perros: si basta con entrar a la casa, aunque no los toques. La alergia está en su saliva y su caspa, y se queda en sillones y ropa.\n\n📝 Lo que más ayuda en la consulta: anotar dónde te pasa, en qué meses y qué estabas haciendo. Con eso se eligen las pruebas de alergia correctas y se entiende si el resultado explica lo que sientes.\n\n🔖 Guárdalo y mándaselo a quien vive estornudando y le echa la culpa al clima.\n\n📲 ¿Estornudos que se repiten cada temporada? Agenda tu cita en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "guardar",
+  "hashtags": [
+    "#RinitisAlergica",
+    "#Alergias",
+    "#Alergologo",
+    "#AlergiaAlPolen",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*¿Tu rinitis* **es alérgica?**",
+      "pregunta": "Las pistas están en tu día a día",
+      "foto": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-6865162.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "cottonbro studio",
+        "url": "https://www.pexels.com/photo/woman-having-allergy-attack-6865162/"
+      },
+      "overrides": {
+        "fotoX": 24,
+        "fotoY": 27,
+        "fotoZoom": 1.55
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cómo saber si *tu rinitis* **es alérgica?**",
+      "cuerpo": "¿Estornudas al barrer, en el parque o cuando visitas una casa con mascotas? Fíjate en qué situaciones se repite.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-7596886.jpg",
+        "ideaImagen": "Persona estornudando con un pañuelo al aire libre, en un parque.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Pavel Danilyuk",
+          "url": "https://www.pexels.com/photo/sick-man-in-white-shirt-wiping-his-nose-with-tissue-7596886/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Qué síntomas *dan* **la pista?**",
+      "cuerpo": "Comezón en la nariz, varios estornudos seguidos y moco transparente. Si también te pican y te lloran los ojos, aumenta la sospecha.",
+      "visual": {
+        "clase": "icono",
+        "slug": "tissue-box",
+        "iconoSugerido": "tissue box"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Ácaros ·* ¿Estornudas **al barrer o sacudir?**",
+      "cuerpo": "Sospecha de ácaros si también te pasa al cambiar las sábanas o si amaneces con la nariz tapada durante buena parte del año.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-9893931.jpg",
+        "ideaImagen": "Sábanas y almohadas en una cama, o polvo en el aire al sacudir.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Ofir Eliav",
+          "url": "https://www.pexels.com/photo/white-bed-linen-and-pillows-9893931/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Árboles ·* ¿Cada año **por las mismas fechas?**",
+      "cuerpo": "Si al salir te pican los ojos y estornudas durante varias semanas, podría ser polen de árboles. Muchos polinizan a finales del invierno o en primavera, según la región.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-31734841.jpg",
+        "ideaImagen": "Árbol en flor en primavera.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Marcin Manka",
+          "url": "https://www.pexels.com/photo/blooming-cherry-blossom-tree-in-spring-landscape-31734841/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Pastos ·* ¿Empeoras **en temporada de lluvias?**",
+      "cuerpo": "La lluvia favorece el crecimiento de los pastos. Cuando florecen, su polen puede darte síntomas al aire libre, sobre todo en días secos y con viento. La temporada varía según la región.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-30281619.jpg",
+        "ideaImagen": "Pasto alto con espigas en flor, a contraluz.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Regina Tommasi",
+          "url": "https://www.pexels.com/photo/close-up-of-foxtail-grasses-in-sunlight-30281619/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Hongos ·* ¿Empeoras **en lugares húmedos?**",
+      "cuerpo": "Si los síntomas vuelven al entrar a un cuarto con moho o al barrer hojas húmedas en el patio, las esporas de hongos podrían ser la causa.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-16947782.jpg",
+        "ideaImagen": "Hojas húmedas caídas en el suelo, o moho en una pared.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Sonny Sixteen",
+          "url": "https://www.pexels.com/photo/raindrops-on-autumn-leaves-lying-down-16947782/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Gatos y perros ·* ¿Basta con **entrar a la casa?**",
+      "cuerpo": "Puedes estornudar o sentir comezón en los ojos incluso antes de acariciarlos. Las proteínas que causan alergia están en su saliva y caspa, y se acumulan en sillones y ropa.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/como-saber-si-tu-rinitis-es-alergica/pexels-18459205.jpg",
+        "ideaImagen": "Un gato y un perro juntos sobre un sillón.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Jsme  MILA",
+          "url": "https://www.pexels.com/photo/seniorka-si-hladi-kocicku-na-svem-luzku-pri-zooterapii-18459205/"
+        }
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cómo saber *qué te causa* **alergia?**",
+      "cuerpo": "Anota dónde te pasa, en qué meses y qué estabas haciendo. Con esas pistas, tu alergólogo puede elegir las pruebas de alergia e interpretar si el resultado explica tus síntomas.",
+      "visual": {
+        "clase": "icono",
+        "slug": "3d-notepad-and-pencil",
+        "iconoSugerido": "notepad and pencil"
+      }
+    }
+  ]
+}

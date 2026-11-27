@@ -1,0 +1,100 @@
+{
+  "slug": "proposito-2027-tu-rutina-de-piel-en-3-pasos",
+  "tema": "Propósito 2027: la rutina de piel de tus hijos en 3 pasos",
+  "creado": "2026-12-30",
+  "estado": "borrador",
+  "paleta": "ambar",
+  "copy": "Propósito 2027: tu piel en 3 pasos ✨\n\nEste año no necesitas diez productos nuevos: necesitas una rutina de cuidado de la piel de tres pasos y hacerla todos los días. Enero es el mejor momento para empezarla, porque el frío de la calle y la calefacción de la casa resecan la piel de tus hijos justo ahora.\n\n🧴 Qué es una rutina: limpiar, hidratar y proteger del sol. Un limpiador suave, una crema espesa y protector solar en la mañana. Nada más (AAD).\n\n🔍 Cómo se nota la piel seca: áspera al pasar la mano, con escamas finas en brazos y piernas, comezón al salir de la regadera y rascado en la noche (Cleveland Clinic).\n\n⚠️ Por qué importa en enero: el aire frío y la calefacción le quitan agua a la piel, y los baños largos y calientes terminan el trabajo (Cleveland Clinic).\n\n✅ Qué hacer: baños cortos con agua tibia, crema en los primeros minutos después del baño con la piel todavía húmeda, y protector solar FPS 30 o más cada mañana, también en días nublados. Antes de los 6 meses, sombra y ropa en lugar de protector (AAD, AAP).\n\n⚡ Ojo: la piel seca mejora en dos o tres semanas con rutina constante. La dermatitis atópica no. Esa vuelve a los mismos lugares —pliegues de codos y rodillas, cachetes—, pica más de noche y a veces se agrieta. Ahí la crema sola se queda corta.\n\n💬 ¿Cuál de los tres pasos es el que se les olvida en casa? En consulta el más saltado es el protector solar en invierno.\n\n🔖 Guárdalo para tenerlo a la mano estas mañanas de enero, y mándaselo a quien ya compró tres cremas distintas sin saber cuál usar.\n\n📲 ¿La piel de tu hijo sigue áspera, con comezón o con parches que se agrietan aunque ya le pongas crema? Eso se valora. En consulta revisamos qué tiene su piel y te dejo los tres pasos con nombre y apellido para su caso: qué limpiador, qué crema y cada cuándo. Empezar el año con un plan claro sale más barato que seguir probando productos. Agenda tu cita en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Soluciones reales",
+  "objetivo": "agendar",
+  "nota": "Año nuevo. Limpieza, hidratación y protector solar; menos productos y más constancia; cierre con invitación a valoración para empezar el año.",
+  "hashtags": [
+    "#PielSeca",
+    "#RutinaDeInvierno",
+    "#DermatologiaPediatrica",
+    "#CuidadoDeLaPiel",
+    "#DermatologoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Propósito 2027:*\ntu piel en **3 pasos**",
+      "pregunta": "¿Más productos o más constancia?",
+      "foto": "/proyectos/dr-edwin/media/proposito-2027-tu-rutina-de-piel-en-3-pasos/pexels-6925528.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Mike Murray",
+        "url": "https://www.pexels.com/photo/woman-with-fresh-skin-standing-in-front-of-a-mirror-6925528/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 51.2
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es* **una rutina?**",
+      "bajada": "Tres pasos bien hechos valen más que diez productos.",
+      "cuerpo": "Una rutina de piel son tres pasos, no diez frascos. Limpiar con agua tibia y un limpiador suave. Hidratar con crema mientras la piel sigue húmeda. Y protector solar en la mañana. Eso es todo. Lo demás casi siempre es publicidad.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "three skincare products in a row: cleanser bottle, cream jar, sunscreen tube"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Así se nota* **la piel seca**",
+      "bajada": "Se siente antes de que se vea.",
+      "cuerpo": "La piel seca no siempre se ve: se siente. Áspera al pasar la mano, con escamas finas en brazos y piernas, y comezón al salir de la regadera. En los cachetes se pone roja y tirante. Si tu hijo se rasca dormido, ahí está.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/proposito-2027-tu-rutina-de-piel-en-3-pasos/pexels-8142233.jpg",
+        "ideaImagen": "Niño recién bañado envuelto en una toalla, de pie en el baño de casa, con luz de mañana y poco detalle alrededor.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Ron Lach",
+          "url": "https://www.pexels.com/photo/woman-in-white-spaghetti-strap-top-drinking-water-8142233/"
+        }
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**El frío seco** *de enero.*",
+      "bajada": "Calefacción adentro, aire seco afuera.",
+      "cuerpo": "En enero el aire frío de la calle y la calefacción de la casa le quitan agua a la piel. Los baños largos y muy calientes terminan el trabajo. Por eso la piel que aguantó todo el año empieza a picar justo ahora, sin que nada haya cambiado.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "home heater warming a room"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Los 3 pasos,* **uno por uno**",
+      "puntos": [
+        "Baños cortos y con agua tibia, no caliente. Cinco minutos bastan.",
+        "Crema en los primeros minutos después del baño, con la piel todavía húmeda.",
+        "Protector solar FPS 30 o más cada mañana, también en días nublados. Antes de los 6 meses, mejor sombra y ropa.",
+        "Menos productos y más constancia: los mismos tres, todos los días, hasta que sea costumbre."
+      ],
+      "fuente": "AAD, AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo **ver al** *dermatólogo?*",
+      "bajada": "Tres semanas de rutina y sigue igual: toca valorar.",
+      "cuerpo": "Si la piel sigue áspera y con comezón después de tres o cuatro semanas de rutina constante, ya no es solo resequedad. Lo mismo si hay parches que se agrietan, sangran o le quitan el sueño. Eso se valora en consulta: puede ser dermatitis atópica y tiene manejo.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "wall calendar with one day circled"
+      },
+      "fuente": "AAP"
+    }
+  ]
+}

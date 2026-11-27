@@ -1,0 +1,101 @@
+{
+  "slug": "vitiligo-manchas-blancas-que-no-son-hongo-ni-se-contagian",
+  "tema": "Vitíligo en niños: manchas blancas que no son hongo ni se contagian",
+  "creado": "2026-12-11",
+  "estado": "borrador",
+  "paleta": "indigo",
+  "copy": "Manchas blancas que no son hongo 🤍\n\nSi tu hijo tiene manchas blanco leche, de borde marcado, que no pican ni se descaman y que ninguna crema antimicótica ha movido, lo más probable es que sea vitíligo y no una tiña. Es un tema del que casi no se habla, y eso hace que muchas familias pasen meses tratando un hongo que nunca estuvo ahí. Importa ahora porque esa piel sin pigmento se quema primero en cuanto los niños vuelven al patio y al sol.\n\n🧬 Qué pasa en la piel: los melanocitos, las células que dan color, dejan de fabricar pigmento porque el sistema de defensas las ataca. No es infección, no es suciedad, no es algo que se haya pegado (AAD).\n\n🔍 Cómo se reconoce: mancha blanco leche, borde bien definido, sin escama, sin comezón y sin dolor. Aparece seguido alrededor de ojos y boca, en manos, codos y rodillas, y muchas veces del mismo modo en los dos lados del cuerpo. A veces el pelito de la zona también se vuelve blanco (AAD).\n\n⚠️ No se contagia: ni con abrazos, ni en la alberca, ni compartiendo toalla o cama. Lo único que sí hay que cuidar es el sol: la piel sin pigmento se quema mucho más rápido que la de alrededor (AAD).\n\n✅ Qué hacer mientras lo valoran: foto mensual con la misma luz para ver si crece, protector solar diario en la zona, suspender las cremas para hongos por cuenta propia y avisar en la escuela que no se pega (AAD).\n\n⚡ Con qué se confunde: la pitiriasis alba deja manchas claras pero no blanco total, de borde borroso y con una escamita fina, casi siempre en las mejillas de niños con piel seca o atópica. La tiña versicolor sale en espalda y pecho, descama al rascarla y aparece con el sudor. El vitíligo es distinto: blanco parejo, borde nítido, sin escama y sin picazón.\n\n💬 ¿Alguien te ha preguntado si se contagia? Cuéntame qué le contestaste.\n\n🔖 Compártelo con quien siga diciendo que es hongo: con un familiar, con la maestra, con el grupo del salón. La mitad del problema de este diagnóstico no es la mancha, es lo que la gente cree de ella, y un mensaje reenviado le cambia el recreo a un niño. Guárdalo también para tenerlo a la mano el día que alguien lo comente frente a tu hijo.\n\n📲 ¿Tu hijo tiene manchas blancas que no pican ni se descaman? Sí hay tratamiento, y responde mejor cuando se empieza pronto. Agenda valoración conmigo en Doctoralia: el enlace está en la biografía.",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Tema nuevo. Diferenciar de pitiriasis alba y tiña versicolor; enfoque sin estigma; sí hay tratamiento. Fuente sugerida: AAD y NIAMS",
+  "hashtags": [
+    "#Vitiligo",
+    "#ProteccionSolar",
+    "#DermatologiaPediatrica",
+    "#PielInfantil",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Manchas blancas que*\nno **son hongo**",
+      "pregunta": "¿Y si no es hongo?",
+      "foto": "/proyectos/dr-edwin/media/vitiligo-manchas-blancas-que-no-son-hongo-ni-se-contagian/pexels-38777031.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Soulkid Photography",
+        "url": "https://www.pexels.com/photo/young-girl-embracing-plush-toy-in-natural-light-38777031/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Por qué* **le salen?**",
+      "bajada": "No es una infección: es pérdida de pigmento.",
+      "cuerpo": "La piel tiene unas células que le dan color: los melanocitos. En el vitíligo el sistema de defensas las ataca y esa zona deja de fabricar pigmento. Por eso la mancha es blanca, no roja ni escamosa. No es falta de higiene ni un hongo que se pegó.",
+      "visual": {
+        "clase": "icono",
+        "slug": "melanin-pigment-drop-fading",
+        "iconoSugerido": "melanin pigment drop fading"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cómo se ve* **de cerca.**",
+      "bajada": "Blanco parejo, borde marcado, sin escama ni comezón.",
+      "cuerpo": "La mancha del vitíligo es blanco leche, con el borde bien definido. No pica, no duele y no tiene escama. Suele salir alrededor de ojos y boca, en manos, codos y rodillas, y muchas veces igual en los dos lados del cuerpo. A veces el pelito de la zona también pierde color.",
+      "visual": {
+        "clase": "ninguno"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**No se contagia.**\n*Ni con abrazos.*",
+      "bajada": "No se pega. Pero sí se quema con el sol.",
+      "cuerpo": "El vitíligo no se pega. Ni con abrazos, ni en la alberca, ni compartiendo toalla. Tampoco mejora con cremas para hongos, porque no hay hongo. Lo que sí pasa es que esa piel sin pigmento se quema rápido con el sol, y que hay niños a los que apartan por verla.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/vitiligo-manchas-blancas-que-no-son-hongo-ni-se-contagian/pexels-10141084.jpg",
+        "ideaImagen": "Dos niños jugando abrazados en un parque a plena luz, en contacto cercano y ambiente cotidiano, sin primer plano de la piel.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Dmitry Egorov",
+          "url": "https://www.pexels.com/photo/cheerful-kids-close-together-10141084/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué puedes* **hacer hoy**",
+      "puntos": [
+        "Toma una foto de la mancha cada mes, con la misma luz: así se ve si crece.",
+        "Ponle protector solar en la zona todos los días, aunque esté nublado.",
+        "Suspende las cremas antimicóticas por tu cuenta: no es hongo y solo retrasan el diagnóstico.",
+        "Avisa en la escuela que no se contagia: eso evita que lo aparten en el recreo."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "¿Cuándo llevarlo **a consulta?**",
+      "bajada": "Entre más pronto se trata, mejor responde.",
+      "cuerpo": "Pide valoración si salen manchas nuevas en pocas semanas, si las que ya tiene crecen, o si pierden color las pestañas, las cejas o el pelo de la zona. También si pica o se descama, porque eso apunta a otra cosa. Sí hay tratamiento para el vitíligo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "woods-lamp-ultraviolet-exam",
+        "iconoSugerido": "woods lamp ultraviolet exam"
+      },
+      "fuente": "AAD"
+    }
+  ]
+}

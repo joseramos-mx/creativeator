@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode }
 import { AyudasDeAjuste } from '../clinica/partes/Ayudas';
 import type { PropsSlide } from '../clinica/Slide';
 import { numeroDeSlide, type Marca, type Overrides, type Slide as TSlide } from '../clinica/tipos';
+import { estiloEncuadre } from '../encuadre';
 import { disenoDe, paletaDelPost } from '../paletas';
 
 /**
@@ -24,7 +25,7 @@ import { disenoDe, paletaDelPost } from '../paletas';
  */
 
 /** Las tipografías salen de Google Fonts; React 19 sube el <link> al <head>. */
-function Fuentes({ familias }: { familias: string[] }) {
+export function Fuentes({ familias }: { familias: string[] }) {
   const unicas = [...new Set(familias.filter(Boolean))];
   const url =
     'https://fonts.googleapis.com/css2?' +
@@ -34,7 +35,7 @@ function Fuentes({ familias }: { familias: string[] }) {
 }
 
 /** **negrita** en cuerpo y puntos. */
-function conNegritas(texto: string): ReactNode {
+export function conNegritas(texto: string): ReactNode {
   return texto.split(/(\*\*[\s\S]+?\*\*)/g).map((parte, i) =>
     parte.startsWith('**') && parte.endsWith('**') && parte.length > 4 ? (
       <b key={i}>{parte.slice(2, -2)}</b>
@@ -171,7 +172,12 @@ export function Slide({ slides, indice, marca, ayudas, id, paleta, colores }: Pr
   if (slide.tipo === 'portada') {
     return (
       <Marco {...comun} numero={null} clase="portada">
-        {slide.foto ? <div className="plana__foto" style={{ backgroundImage: `url(${slide.foto})` }} /> : null}
+        {slide.foto ? (
+          <>
+            <div className="plana__foto" style={{ backgroundImage: `url(${slide.foto})`, ...estiloEncuadre(ov) }} />
+            <div className="plana__funde" />
+          </>
+        ) : null}
         <div className="plana__area plana__area--portada" ref={area} style={{ ...desplazado(ov), '--escala': escala } as CSSProperties}>
           <h1 className="plana__titulo" style={ov?.tituloPx ? { fontSize: ov.tituloPx } : undefined}>
             {titulo(slide.titulo)}

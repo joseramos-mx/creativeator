@@ -1,0 +1,109 @@
+{
+  "slug": "edad-corregida-tu-bebe-prematuro-no-va-atrasado",
+  "tema": "Edad corregida: tu bebé prematuro no va atrasado",
+  "creado": "2026-11-17",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#0284C7"
+  },
+  "copy": "Tu bebé prematuro no va atrasado 🧠\n\nLo pensaste en una comida familiar, cuando alguien preguntó si ya se sentaba y tuviste que explicar por tercera vez que nació antes. Hoy, 17 de noviembre, Día Mundial del Prematuro, vengo a dejarte la herramienta que ordena todo eso: la edad corregida. No es un permiso para que vaya lento. Es la forma correcta de medir a un bebé que empezó su camino antes de tiempo.\n\n🗓️ \"¿Ya se sienta solito?\": la pregunta llega siempre de alguien que no lo dice con mala intención, y aun así te deja haciendo cuentas el resto del día. No es que tu bebé vaya atrás: lo están midiendo con el calendario equivocado.\n\n🧠 Qué es la edad corregida: a su edad se le restan las semanas que le faltaron para llegar a 40. Si nació a las 32, le faltaron 8, casi dos meses; a los seis meses de nacido su desarrollo se evalúa como el de uno de cuatro. Se usa hasta cerca de los 2 años (AAP).\n\n✔️ Las vacunas no se recorren: la edad corregida es para medir desarrollo, no para mover el esquema. Las vacunas van por edad cronológica, desde el día que nació y con las dosis completas, porque un bebé que nació antes necesita esa protección antes (AAP · Esquema Nacional de Vacunación de México).\n\n📏 Por qué importa la cuenta: medir mal falla para los dos lados. Te asusta con un atraso que no existe, o hace que todo se explique con \"es que fue prematuro\" y se posponga una valoración que sí hacía falta.\n\n💙 Si tu bebé nació antes, sabes que la pregunta incómoda no viene una vez: viene en cada cumpleaños, en cada grupo de mamás y en cada visita. No estás sola y tu bebé no va retrasado: tiene otra fecha de salida. Mándale este post a la mamá de prematuro que conoces, a la tía que compara, a la abuela que pregunta con cariño y a la amiga que todavía está contando días en la incubadora. Hoy es el día de ellos y entenderles la cuenta también es celebrarlos.\n\n💬 ¿A cuántas semanas nació tu bebé? Dime su nombre en los comentarios, los leo todos.\n\n🔖 Guarda esta publicación para cuando te toque la revisión del mes o la próxima pregunta en la reunión familiar: la lámina de la resta y la de las vacunas se entienden solas aunque no sea tu mamá quien las lea.\n\n📲 ¿Tu bebé nació antes de las 37 semanas y quieres seguimiento de crecimiento, desarrollo y lactancia con alguien que conoce neonatología? Agenda en Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp. Consulta presencial en Durango.",
+  "pilar": "neonatología",
+  "objetivo": "compartir",
+  "nota": "7 láminas. 17 de noviembre, Día Mundial del Prematuro. Voz de neonatóloga. Qué es la edad corregida, cómo se calcula, hasta cuándo se usa para medir desarrollo, y el dato que casi nadie sabe: las vacunas van por edad cronológica, no corregida. Tono de orgullo, no de lástima.",
+  "hashtags": [
+    "#EdadCorregida",
+    "#DiaMundialDelPrematuro",
+    "#NeonatologiaParaMamas",
+    "#BebePrematuro",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Tu bebé prematuro* **no va atrasado**",
+      "pregunta": "Día Mundial del Prematuro",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/edad-corregida-tu-bebe-prematuro-no-va-atrasado/pexels-39464105.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Khusen Rustamov",
+        "url": "https://www.pexels.com/photo/tender-newborn-kitten-in-gentle-hands-39464105/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"¿Ya se sienta* **solito?\"**",
+      "bajada": "La pregunta que te deja haciendo cuentas",
+      "cuerpo": "Alguien lo pregunta en la fiesta y tú contestas que no. Después haces la cuenta en la cabeza y comparas con el primo que nació el mismo mes. Buscas en Google y la lista no cuadra. No es que tu bebé vaya atrás: lo estás midiendo con el calendario equivocado.",
+      "visual": {
+        "clase": "icono",
+        "slug": "3d-wall-calendar-with-one-date-circled",
+        "iconoSugerido": "3d wall calendar with one date circled"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Qué es la **edad corregida**",
+      "bajada": "Una resta, y todo se acomoda",
+      "cuerpo": "A tu bebé le faltaron semanas para llegar a 40. Esas semanas se restan. Si nació a las 32, le faltaron 8: casi dos meses. A los seis meses de nacido, su desarrollo se evalúa como el de uno de cuatro. La AAP sugiere usarla hasta cerca de los 2 años.",
+      "visual": {
+        "clase": "icono",
+        "slug": "3d-desk-calculator-with-minus-key",
+        "iconoSugerido": "3d desk calculator with minus key"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Entonces las vacunas* **también se recorren\"**",
+      "bajada": "Esta es la parte que casi nadie sabe",
+      "cuerpo": "No. La edad corregida sirve para medir desarrollo: cuándo sonríe, cuándo se sienta, cuándo camina. Las vacunas van por edad cronológica, contadas desde el día que nació y con las dosis completas. Un bebé que nació antes necesita esa protección antes, no después.",
+      "visual": {
+        "clase": "icono",
+        "slug": "child-health-record-booklet",
+        "iconoSugerido": "3d vaccination record booklet"
+      },
+      "fuente": "AAP · Esquema Nacional de Vacunación de México"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Por qué **sí importa** la cuenta",
+      "bajada": "Medir mal falla para los dos lados",
+      "cuerpo": "Medir con la edad equivocada falla para los dos lados. Por un lado te asusta con un atraso que no existe y llena la casa de ansiedad. Por el otro, todo se explica con \"es que fue prematuro\" y se pospone una valoración que sí hacía falta. La cuenta correcta ordena las dos cosas.",
+      "visual": {
+        "clase": "icono",
+        "slug": "3d-baby-growth-chart-paper-with-curve",
+        "iconoSugerido": "3d baby growth chart paper with curve"
+      }
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo usar la **edad corregida**",
+      "puntos": [
+        "→ **Haz la resta una vez.** 40 menos las semanas en que nació. Ese número se le resta a su edad siempre.",
+        "→ **Carga los dos números.** La edad de su acta y la corregida. En consulta se usan las dos.",
+        "→ **Mide el desarrollo con la corregida.** Sonrisa, sostener la cabeza, sentarse, gatear, primeras palabras.",
+        "→ **Vacunas, por fecha de nacimiento.** No se recorren ni se parten: van completas y a tiempo.",
+        "→ **Úsala hasta los 2 años.** Después, la diferencia casi siempre se cierra sola."
+      ],
+      "fuente": "AAP · Esquema Nacional de Vacunación de México"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No llegó tarde.* **Empezó antes**",
+      "bajada": "Guárdala para el próximo que pregunte",
+      "cuerpo": "Tu bebé no llegó tarde a nada. Empezó antes de tiempo y lleva semanas de trabajo que nadie le contó. La edad corregida no es excusa ni consuelo: es la forma correcta de medir. Cuando la usas, casi siempre resulta que va justo donde tiene que ir.",
+      "visual": {
+        "clase": "icono",
+        "slug": "3d-purple-awareness-ribbon-knot",
+        "iconoSugerido": "3d purple awareness ribbon knot"
+      }
+    }
+  ]
+}

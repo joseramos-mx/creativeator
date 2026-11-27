@@ -10,6 +10,7 @@ import type { Marca, SlidePortada } from '../tipos';
 import { usarAjuste } from '../usarAjuste';
 import { useReportarAjuste } from '../avisos';
 import { variablesDePlantilla } from '../variables';
+import { estiloEncuadre } from '../../encuadre';
 
 /**
  * Portada: foto a sangre, velo que termina fundido en el azul plano (para que
@@ -40,7 +41,7 @@ export function Portada({
   return (
     <div id={id} className="slide slide--portada" style={variablesDePlantilla(paleta)}>
       {slide.foto ? (
-        <div className="slide__foto" style={{ backgroundImage: `url(${slide.foto})` }} />
+        <div className="slide__foto" style={{ backgroundImage: `url(${slide.foto})`, ...estiloEncuadre(ov) }} />
       ) : null}
       <div className="slide__velo" style={{ background: 'var(--velo-portada)' }} />
 

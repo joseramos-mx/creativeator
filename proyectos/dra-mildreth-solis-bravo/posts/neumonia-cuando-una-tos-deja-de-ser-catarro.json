@@ -1,0 +1,109 @@
+{
+  "slug": "neumonia-cuando-una-tos-deja-de-ser-catarro",
+  "tema": "Neumonía: cuándo una tos deja de ser catarro",
+  "creado": "2026-11-12",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#C2410C"
+  },
+  "copy": "La señal no es la tos. Es cómo respira ❄️\n\nLlevas días contando toses. Le pones vapor, lo duermes medio sentado, y cada quien que lo oye toser te dice algo distinto. Hoy 12 de noviembre es el Día Mundial contra la Neumonía, y vale la pena decirlo claro: la neumonía en niños no se detecta por el tipo de tos. Se detecta mirando cómo respira. Y eso lo puedes ver tú, en casa, en un minuto.\n\n🌡️ La ciencia cuenta respiraciones: la respiración rápida estando en reposo es el signo más útil para sospechar neumonía en casa. En niños de 1 a 5 años, más de 40 respiraciones por minuto se considera respiración rápida (OMS, AAP).\n\n❄️ \"Se le bajó al pecho\": el frío no causa neumonía. La causan un virus o una bacteria que llegaron al pulmón. El invierno solo nos tiene encerrados y juntos más horas, que es donde los microbios pasan de un niño a otro (Cleveland Clinic).\n\n⏱️ Lo que se pierde al esperar: un niño con neumonía puede seguir jugando, y eso tranquiliza. Vista a tiempo, la mayoría se maneja en casa. Lo que suele cambiar las cosas es cuántos días pasaron mirando solamente la tos.\n\n✔️ El semáforo, en corto: cuenta un minuto de respiraciones con el pecho descubierto → mira si se hunden las costillas o el huequito del cuello → escucha si hay quejido al soltar el aire → revisa si la fiebre regresó después de días de mejoría → si deja de tomar líquidos o está muy decaído, consulta el mismo día (OMS, AAP).\n\n🔖 Guarda este post hoy, aunque en tu casa nadie esté tosiendo. Estas cosas no se buscan con calma: se buscan a las once de la noche, con el niño caliente y el celular en una mano. Tenerlo guardado te ahorra veinte minutos de foros contradictorios y te deja contar respiraciones en vez de leer opiniones. La última lámina se entiende sola: recórtala y mándasela a la mamá que lleva una semana diciendo \"es que trae mucha tos\", y a la abuela que todavía cree que fue por salir descalzo.\n\n💙 No estás exagerando por revisar, y no fuiste negligente por no haberlo revisado antes. A ninguna nos enseñaron a contar respiraciones. Ya sabes qué mirar, y con eso basta.\n\n💬 ¿Cuántos días llevan con tos en tu casa este invierno? Cuéntame abajo.\n\n📲 ¿Lleva varios días con tos, le volvió la fiebre y no sabes si ya hay que revisarle los pulmones? Eso se ve en consulta, no en Google. Agenda en Doctoralia, el enlace está en mi biografía, o escríbeme por WhatsApp. Consulta en Durango.",
+  "pilar": "temporada invernal",
+  "objetivo": "guardar",
+  "nota": "7 láminas. 12 de noviembre, Día Mundial contra la Neumonía. La señal clave no es la tos sino cómo respira: respiración rápida, costillas que se hunden, quejido, fiebre que no cede o regresa tras días de mejoría. Semáforo de cuándo acudir. Foco en niños de 2 a 6 años, no repetir bronquiolitis.",
+  "hashtags": [
+    "#NeumoníaInfantil",
+    "#TemporadaInvernal",
+    "#PediatríaParaMamás",
+    "#SaludInfantil",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La señal* **no es la tos**",
+      "pregunta": "Es cómo respira",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/neumonia-cuando-una-tos-deja-de-ser-catarro/pexels-8910408.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "https://kaboompics.com/",
+        "url": "https://www.pexels.com/photo/woman-carrying-her-baby-8910408/"
+      },
+      "overrides": {
+        "fotoX": 55,
+        "fotoY": 100,
+        "fotoZoom": 1.3
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Lleva una semana* **tosiendo\"**",
+      "bajada": "Toser mucho no es el dato que importa.",
+      "cuerpo": "Ya probaste el vapor del baño, el té de siempre, dormirlo medio sentado. Unos días mejoró y anoche volvió la fiebre. Nadie te dijo en qué fijarte, porque en invierno todo el mundo habla de la tos. Y la tos, en diciembre, es el ruido de fondo de la casa.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "mug of hot tea with steam"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **cuenta respiraciones**",
+      "bajada": "Respiración rápida en reposo: el signo más útil.",
+      "cuerpo": "La neumonía es una infección dentro del pulmón, casi siempre después de un catarro común. No se sospecha por cómo suena la tos, sino por cómo entra y sale el aire. Respiración rápida estando en reposo es el signo más útil para detectarla en casa, y el más fácil de pasar por alto.",
+      "visual": {
+        "clase": "icono",
+        "slug": "pair-of-lungs-3d-render",
+        "iconoSugerido": "pair of lungs 3D render"
+      },
+      "fuente": "OMS, AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Se le bajó* **al pecho\"**",
+      "bajada": "El frío no la causa. El contagio sí.",
+      "cuerpo": "La neumonía no es un catarro que se bajó por andar descalzo ni por el aire frío. Es un virus o una bacteria que llegó al pulmón. El invierno no enferma: lo que hace es tenernos encerrados y juntos más horas, que es justo donde los microbios pasan de un niño a otro.",
+      "visual": {
+        "clase": "icono",
+        "slug": "folded-wool-scarf-3d-render",
+        "iconoSugerido": "folded wool scarf 3D render"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Lo que se pierde* **al esperar**",
+      "bajada": "Vista a tiempo, casi siempre se maneja en casa.",
+      "cuerpo": "Un niño con neumonía puede seguir jugando, y eso tranquiliza. Mientras tanto respira más rápido para compensar, come menos y duerme peor. Lo que suele cambiar el desenlace no es qué tan fuerte empezó, sino cuántos días pasaron mirando solamente la tos en vez de mirar el pecho.",
+      "visual": {
+        "clase": "icono",
+        "slug": "hourglass-3d-render",
+        "iconoSugerido": "hourglass 3D render"
+      }
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*El semáforo* **de la respiración**",
+      "puntos": [
+        "→ **Cuenta, no adivines**: con el pecho descubierto y en reposo, cuenta las respiraciones de un minuto. Entre 1 y 5 años, más de 40 por minuto es respiración rápida.",
+        "→ **Mira las costillas**: si al jalar aire se le hunden las costillas o el huequito del cuello, está haciendo esfuerzo extra para respirar.",
+        "→ **Escucha el quejido**: un sonidito corto cada vez que suelta el aire no es normal, aunque esté dormido y se vea tranquilo.",
+        "→ **Fiebre que regresa**: iba mejorando y al cuarto o quinto día vuelve la fiebre. Eso amerita revisión, no esperar otra semana.",
+        "→ **Come y juega**: si deja de tomar líquidos, no quiere jugar o lo notas muy decaído, es consulta el mismo día."
+      ],
+      "fuente": "OMS, AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Se revisa* **en 60 segundos**",
+      "bajada": "La tos engaña. La respiración no.",
+      "cuerpo": "Destápale el pecho. Cuenta las respiraciones un minuto. Mira si se le hunden las costillas. Escucha si hay quejido. Checa si la fiebre regresó. Si algo de eso aparece, no esperes a que la tos cambie: la tos puede durar dos semanas y no te dice nada. La respiración sí.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "stopwatch 3D render"
+      },
+      "fuente": "OMS"
+    }
+  ]
+}

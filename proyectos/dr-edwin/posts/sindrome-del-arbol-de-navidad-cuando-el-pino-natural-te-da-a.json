@@ -1,0 +1,101 @@
+{
+  "slug": "sindrome-del-arbol-de-navidad-cuando-el-pino-natural-te-da-a",
+  "tema": "Síndrome del árbol de Navidad: cuando el pino natural te da alergia",
+  "creado": "2026-12-04",
+  "estado": "borrador",
+  "paleta": "esmeralda",
+  "copy": "El árbol que te hace estornudar 🎄\n\nSi tu hijo lleva días con estornudos, nariz escurriendo y ojos rojos justo desde que pusieron el pino natural en la sala, puede ser síndrome del árbol de Navidad. Y no es alergia al pino: es al moho y al polvo que el árbol trae encima. Toca ahora, en estas semanas en que el árbol lleva días adentro con la casa cerrada.\n\n🔍 Cómo reconocerlo: estornudos en serie, nariz que escurre, ojos rojos y con comezón, a veces tos seca de noche. Sin fiebre y sin dolor de cuerpo (Mayo Clinic).\n\n⚠️ Por qué empeora cada día: en la corteza húmeda del pino crece moho, un hongo que suelta esporas al aire. Encerrado y con calefacción, se multiplica, y el polvo de los adornos guardados todo el año se suma (Cleveland Clinic).\n\n✅ Qué hacer antes de meterlo: sacudirlo afuera, enjuagarlo con manguera y dejarlo secar uno o dos días. Limpiar adornos y series con un trapo húmedo. Ventilar la sala a diario y no estirar de más los días que el árbol pasa adentro (Cleveland Clinic).\n\n⚡ Con qué se confunde: con la gripa de diciembre. La diferencia está en el patrón: la gripa trae fiebre, dolor de cuerpo y va de más a menos en unos días. Esto no da fiebre, mejora cuando salen de casa y regresa al volver. Y en vez de irse, va subiendo mientras el árbol siga en la sala.\n\n💬 ¿En tu casa ponen pino natural o artificial? Cuéntame si alguien amanece con los ojos rojos cuando lo arman.\n\n🔖 Compártelo con el grupo de la familia antes de que armen el árbol: es de esas cosas que sirven cuando todavía estás a tiempo de sacudirlo y dejarlo secar afuera. Mándaselo a quien ya tiene el pino puesto y lleva una semana diciendo que le dio gripa. Guárdalo tú para tenerlo a la mano cuando toque desempacar los adornos.\n\n📲 ¿Tu hijo lleva días así desde que pusieron el árbol? Agenda valoración conmigo en Doctoralia, con el enlace en la biografía.\n\n#AlergiaAlMoho #NavidadSinAlergias #AlergologíaPediátrica #SaludInfantil #AlergólogoEnDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Temporada navideña. El culpable suele ser el moho y el polvo, no el pino; sacudir y dejar secar antes de meterlo; adornos guardados con polvo. Fuente sugerida: ACAAI",
+  "hashtags": [
+    "#AlergiaAlMoho",
+    "#NavidadSinAlergias",
+    "#AlergologíaPediátrica",
+    "#SaludInfantil",
+    "#AlergólogoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El árbol que*\nte hace **estornudar**",
+      "pregunta": "¿Y si no es gripa?",
+      "foto": "/proyectos/dr-edwin/media/sindrome-del-arbol-de-navidad-cuando-el-pino-natural-te-da-a/pexels-10842459.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Roman Tymochko",
+        "url": "https://www.pexels.com/photo/woman-smiling-while-hanging-lights-on-christmas-tree-10842459/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No es el pino:*\nes lo que **trae encima**",
+      "bajada": "Al árbol le viaja moho y polvo pegados.",
+      "cuerpo": "El pino natural pasa semanas a la intemperie. En su corteza húmeda crece moho: un hongo que suelta esporas al aire. Cuando el árbol entra a la sala, con calefacción y ventanas cerradas, esas esporas se liberan adentro. A eso se le llama síndrome del árbol de Navidad.",
+      "visual": {
+        "clase": "icono"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo sé* que **es eso?**",
+      "bajada": "Arranca en casa y cede al salir a la calle.",
+      "cuerpo": "Estornudos en serie, nariz que escurre, ojos rojos y con comezón. A veces tos seca de noche, o ronchas en los brazos de quien cargó el árbol. No hay fiebre ni dolor de cuerpo, y eso es lo que lo separa de un resfriado de diciembre.",
+      "visual": {
+        "clase": "icono",
+        "slug": "tissue-box",
+        "iconoSugerido": "tissue box"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se pone peor** *cada día que pasa.*",
+      "bajada": "La segunda semana suele ser la más pesada.",
+      "cuerpo": "Casi nunca empieza el primer día. Va subiendo conforme el árbol lleva días adentro: el moho se multiplica en lo húmedo y encerrado, y el polvo de los adornos guardados todo el año se suma. Por eso muchos niños amanecen peor con el árbol ya puesto.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/sindrome-del-arbol-de-navidad-cuando-el-pino-natural-te-da-a/pexels-34804404.jpg",
+        "ideaImagen": "Un pino natural ya decorado en la sala de una casa, de día, con la ventana cerrada y la habitación ordenada y con poco detalle fino.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Olga Solo",
+          "url": "https://www.pexels.com/photo/cozy-festive-living-room-with-decorated-christmas-tree-34804404/"
+        }
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* **antes de meterlo**",
+      "puntos": [
+        "Sacude el árbol afuera y déjalo secar uno o dos días antes de entrarlo.",
+        "Enjuágalo con manguera y espera a que seque bien: el moho vive en lo húmedo.",
+        "Limpia adornos y series con un trapo húmedo: llevan un año guardados con polvo.",
+        "Ventila la sala a diario y reduce los días que el árbol pasa adentro."
+      ],
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **lo llevo a consulta?**",
+      "bajada": "Si el pecho se mete, no esperes a enero.",
+      "cuerpo": "Si los estornudos y los ojos no ceden aunque ventiles, si aparece tos que no deja dormir, silbido en el pecho o le cuesta respirar, vale la pena valorarlo. También si tu hijo ya tiene asma: diciembre suele ser su mes más difícil en casa.",
+      "visual": {
+        "clase": "icono",
+        "slug": "pine-tree-in-a-stand",
+        "iconoSugerido": "pine tree in a stand"
+      },
+      "fuente": "AAP"
+    }
+  ]
+}

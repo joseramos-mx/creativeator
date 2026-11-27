@@ -1,0 +1,103 @@
+{
+  "slug": "urticaria-por-frio-ronchas-que-salen-con-el-aire-helado-o-el",
+  "tema": "Urticaria por frío en niños: ronchas que salen con el aire helado o el agua fría",
+  "creado": "2026-11-25",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "Ronchas que salen con el aire frío 🥶\n\nSi a tu hijo le brotan ronchas cuando sale a la mañana helada o cuando se mete al agua fría, seguramente es urticaria por frío. Arranca la temporada de frío y es justo cuando más consultas llegan por esto: el disparador está en la puerta de la casa cada mañana.\n\n🔍 Cómo reconocerlo: las ronchas no salen mientras está afuera, salen a los pocos minutos de volver al calor; pican, se ven rosadas y se van solas en menos de una hora (StatPearls).\n\n⚠️ Dónde se pone serio: el agua fría enfría el cuerpo entero, no solo una mano. Una alberca fría o un clavado pueden provocar mareo, baja de presión o desmayo dentro del agua (Mayo Clinic).\n\n✅ Qué hacer: cubrirle cara, orejas y manos antes de salir; sacar las bebidas y las paletas del congelador unos minutos antes; que no nade sin un adulto al lado; y anotar qué hacía y cuánto duró cada episodio (Cleveland Clinic).\n\n⚡ Con qué se confunde: con la piel reseca del invierno, que descama y pica pero no deja roncha; y con la urticaria que aparece con el sudor y el ejercicio, que es al revés. La clave es el momento: aquí la roncha brota cuando la piel se vuelve a calentar.\n\n💬 ¿A tu hijo le pasa al bañarse, al salir temprano a la escuela o con las paletas? Cuéntame en qué momento lo notaste tú.\n\n🔖 Guárdalo: te va a servir la mañana que amanezca helado y salga la primera roncha, y también antes de la próxima clase de natación o del viaje a la sierra. Tenerlo guardado te ahorra la duda de si taparlo y esperar o buscar valoración. Y mándaselo a quien lleva a tus hijos a la escuela temprano y a quien los cuida en la alberca: ellos van a ver la reacción antes que tú.\n\n📲 ¿A tu hijo le salen ronchas cada vez que hace frío? Lo valoramos en consulta y hacemos la prueba del cubo de hielo. Agenda en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Diagnóstico que salva",
+  "objetivo": "guardar",
+  "nota": "Temporada de frío. Ángulo alergología: prueba del cubo de hielo; riesgo al nadar en agua fría. Fuente sugerida: AAAAI y DermNet",
+  "hashtags": [
+    "#UrticariaPorFrio",
+    "#TemporadaDeFrio",
+    "#AlergologiaPediatrica",
+    "#RonchasEnLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Ronchas que salen*\ncon el **aire frío**",
+      "pregunta": "¿Le salen solo con frío?",
+      "foto": "/proyectos/dr-edwin/media/urticaria-por-frio-ronchas-que-salen-con-el-aire-helado-o-el/pexels-4173573.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Oğuzhan Çoban",
+        "url": "https://www.pexels.com/photo/boy-in-warm-clothing-in-yard-4173573/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 13.7
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es la* **urticaria por frío?**",
+      "bajada": "No es la ropa: es el cambio de temperatura.",
+      "cuerpo": "La urticaria por frío es una reacción al cambio de temperatura, no al jabón ni a la ropa. Cuando la piel se enfría y luego se recalienta, libera histamina: la sustancia que inflama y da comezón. Salen ronchas justo en la zona que estuvo expuesta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "snowflake",
+        "iconoSugerido": "snowflake"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Sale al** *volver al calor.*",
+      "bajada": "Salen al recalentarse, no en pleno frío.",
+      "cuerpo": "Aparecen a los pocos minutos de volver al calor, no mientras está afuera. Son ronchas rosadas que pican y se van solas en menos de una hora. Las ves en cara y manos después del aire helado, o alrededor de la boca tras una paleta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "popsicle",
+        "iconoSugerido": "popsicle"
+      },
+      "fuente": "StatPearls"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El agua fría* **es otra cosa.**",
+      "bajada": "El agua fría es el escenario que más preocupa.",
+      "cuerpo": "En estas semanas el disparador está en todos lados: la mañana helada, el aire acondicionado, el agua de la regadera. Lo que más preocupa es el agua fría de alberca: enfría el cuerpo entero y puede provocar mareo, baja de presión o desmayo dentro del agua.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/urticaria-por-frio-ronchas-que-salen-con-el-aire-helado-o-el/pexels-9828111.jpg",
+        "ideaImagen": "Alberca al aire libre en una mañana fría, con un niño sentado en la orilla y una toalla al lado.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Steward Masweneng",
+          "url": "https://www.pexels.com/photo/shirtless-boy-in-the-swimming-pool-9828111/"
+        }
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué puedes* **hacer hoy**",
+      "puntos": [
+        "Cúbrele cara, orejas y manos antes de salir a la mañana helada.",
+        "Que no nade en agua fría sin un adulto junto a él, nunca solo.",
+        "Saca paletas, latas y agua del congelador unos minutos antes de dárselas.",
+        "Anota fecha, qué hacía y cuánto duró la roncha: eso ordena la consulta."
+      ],
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La prueba del* **cubo de hielo**",
+      "bajada": "Hay una prueba sencilla para confirmarlo.",
+      "cuerpo": "Agenda valoración si las ronchas se repiten cada vez que hace frío. En consulta se hace la prueba del cubo de hielo: se deja un cubo sobre el antebrazo unos minutos y se observa la piel al recalentar. Consulta el mismo día si hubo hinchazón de labios, falta de aire o desmayo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "ice-cube-with-stopwatch",
+        "iconoSugerido": "ice cube with stopwatch"
+      },
+      "fuente": "Mayo Clinic"
+    }
+  ]
+}

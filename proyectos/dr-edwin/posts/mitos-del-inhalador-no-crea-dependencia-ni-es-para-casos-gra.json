@@ -1,0 +1,103 @@
+{
+  "slug": "mitos-del-inhalador-no-crea-dependencia-ni-es-para-casos-gra",
+  "tema": "Mitos del inhalador: no crea dependencia ni es para casos graves",
+  "creado": "2026-12-09",
+  "estado": "borrador",
+  "paleta": "cielo",
+  "copy": "¿El inhalador crea dependencia? 🫁\n\nLa respuesta corta es no. Si tu hijo tiene asma, el inhalador no crea dependencia ni es solo para los casos graves. Y esto toca hoy porque con el aire frío y las gripas de la temporada las crisis se disparan, que es justo cuando más familias lo suspenden porque \"ya está bien\".\n\n🫁 Son dos inhaladores distintos: el de rescate abre la vía aérea en minutos cuando ya hay tos o silbido; el de control lleva un antiinflamatorio en dosis baja y se usa diario para que la crisis no llegue (Cleveland Clinic).\n\n🔍 Cómo sabes cuál es cuál: el de rescate se siente rápido; el de control no se siente, trabaja con las semanas. Por eso el de control es el que más se abandona, y es el que sostiene el resultado (Mayo Clinic).\n\n⚠️ Dejarlo no lo hace más fuerte: al suspender el de control, el asma regresa y se necesita el de rescate más seguido. Eso parece dependencia y en realidad es asma sin controlar (Mayo Clinic).\n\n✅ Cuatro cosas que sí ayudan: marca cada caja con su nombre, usa cámara espaciadora, cuenta cuántas veces por semana se usa el de rescate y enjuaga la boca después del de control (AAP).\n\n⚡ Con qué se confunde: muchas \"bronquitis de repetición\" y esa tos que vuelve cada invierno terminan siendo asma sin diagnosticar. La pista es que la tos aparece de noche, con el ejercicio o con el frío, y cede con el inhalador de rescate. Lo otro que se confunde son los dos inhaladores entre sí: si en casa se usa el de control cuando falta el aire, no va a funcionar, porque ese no es su trabajo.\n\n🔖 Compártelo con quien te dijo que \"al rato ya no va a poder vivir sin él\". Es la frase que hace que un niño pase el invierno tosiendo, y se corrige en treinta segundos de lectura. Mándaselo a la abuela, a la maestra que guarda el inhalador en la dirección y al papá que todavía lo esconde. Y guárdalo para la próxima vez que te toque explicarlo.\n\n💬 ¿A ti también te dijeron que el inhalador crea maña? Cuéntame quién te lo dijo y qué hiciste.\n\n📲 ¿Tu hijo usa el de rescate más de dos veces por semana? Eso se revisa. Agenda conmigo en Doctoralia; el enlace está en la biografía.",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Alergología. Mito muy arraigado en México; diferencia entre inhalador de rescate y de control. Fuente sugerida: GINA y Mayo Clinic",
+  "hashtags": [
+    "#AsmaInfantil",
+    "#TemporadaDeFrio",
+    "#AlergologiaParaPapas",
+    "#MitosDeSalud",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*¿El inhalador*\n**crea dependencia?**",
+      "pregunta": "¿Mito o dato?",
+      "foto": "/proyectos/dr-edwin/media/mitos-del-inhalador-no-crea-dependencia-ni-es-para-casos-gra/pexels-5858850.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "cottonbro studio",
+        "url": "https://www.pexels.com/photo/boy-in-black-jacket-holding-green-plastic-toy-5858850/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 70.2
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Son dos* **inhaladores distintos.**",
+      "bajada": "Uno apaga el incendio. El otro evita que empiece.",
+      "cuerpo": "Hay dos tipos y no hacen lo mismo. El de rescate abre la vía aérea en minutos, cuando ya hay tos o silbido. El de control lleva un antiinflamatorio en dosis baja y se usa diario, esté bien o no, para que las crisis no lleguen.",
+      "visual": {
+        "clase": "icono",
+        "slug": "two-inhalers-side-by-side",
+        "iconoSugerido": "two inhalers side by side"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo sabes* **cuál es cuál?**",
+      "bajada": "El de control no se siente: ese es el punto.",
+      "cuerpo": "El de rescate se usa solo cuando hay síntomas y el alivio se nota rápido. El de control no se siente: no quita la tos en el momento, trabaja con las semanas. Por eso muchos papás lo suspenden cuando el niño anda bien. Justo ahí es cuando está sirviendo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "inhaler-with-daily-calendar",
+        "iconoSugerido": "inhaler with daily calendar"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Dejarlo** *no lo hace más fuerte.*",
+      "bajada": "No es dependencia: es asma sin controlar.",
+      "cuerpo": "El cuerpo no se hace adicto al inhalador. Lo que pasa es otra cosa: si se suspende el de control, el asma regresa y hay que usar el de rescate más seguido. Eso parece dependencia y no lo es. Con el aire frío y las gripas de esta temporada se nota más.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/mitos-del-inhalador-no-crea-dependencia-ni-es-para-casos-gra/pexels-37120946.jpg",
+        "ideaImagen": "Niños corriendo y jugando en el patio de la escuela en un día frío, con suéter o chamarra y el aliento visible; escena de ambiente, sin nadie enfermo.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Sushant Bista",
+          "url": "https://www.pexels.com/photo/children-playing-hopscotch-in-kathmandu-park-37120946/"
+        }
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* **que sí ayudan.**",
+      "puntos": [
+        "Pregunta en consulta cuál es de rescate y cuál de control, y escríbelo con plumón en cada caja.",
+        "Usa cámara espaciadora: así llega más medicamento al pulmón y menos se queda en la boca.",
+        "Lleva la cuenta: si el de rescate se usa más de dos veces por semana, el plan necesita ajuste.",
+        "Si es de control, que se enjuague la boca al terminar. Y no lo suspendas por tu cuenta."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **lo revisamos?**",
+      "bajada": "Son motivos de consulta, no urgencias.",
+      "cuerpo": "Agenda valoración si tu hijo usa el de rescate más de dos veces por semana, si se despierta tosiendo o con silbido, si se cansa al jugar o al hablar, o si el alivio le dura menos de unas horas. No son urgencias: son señales de que el plan hay que ajustarlo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "child-bed-at-night",
+        "iconoSugerido": "child bed at night"
+      },
+      "fuente": "Mayo Clinic"
+    }
+  ]
+}

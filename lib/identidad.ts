@@ -263,7 +263,7 @@ export async function leerTextos(proyecto: string): Promise<TTextos> {
 function disenoEditableDe(config: { plantilla?: string; diseno?: z.infer<typeof Diseno> }): TDisenoEditable {
   const d = disenoDe(config);
   return {
-    plantilla: config.plantilla === 'clinica' ? 'clinica' : 'plana',
+    plantilla: config.plantilla === 'clinica' || config.plantilla === 'foto' ? config.plantilla : 'plana',
     fondo: d.fondo,
     tinta: d.tinta,
     tituloFuente: d.tituloFuente,
@@ -307,7 +307,7 @@ function disenoParaGuardar(d: TDisenoEditable): { plantilla: string; diseno?: z.
   // Dos paletas con el mismo nombre serían la misma para el post: gana la primera.
   const vistas = new Set<string>();
   resultado.data.paletas = resultado.data.paletas.filter((p) => !vistas.has(p.nombre) && vistas.add(p.nombre));
-  return { plantilla: 'plana', diseno: resultado.data };
+  return { plantilla: d.plantilla, diseno: resultado.data };
 }
 
 /**
@@ -591,6 +591,9 @@ export async function proponerTextos(proyecto: string): Promise<TPropuesta> {
   }
   const propuesta = respuesta.parsed_output;
   if (!propuesta) throw new Error('El modelo no devolvió la estructura esperada.');
+  // La plantilla la elige una persona en el selector; el prompt solo describe
+  // la `plana`, así que si el modelo la cambia es por eso y no por criterio.
+  if (actual.diseno.plantilla !== 'plana') propuesta.diseno.plantilla = actual.diseno.plantilla;
   return propuesta;
 }
 
@@ -699,5 +702,6 @@ Devuelve \`plantilla: "plana"\`. En \`porque\`, una o dos frases de qué cambias
   }
   const propuesta = respuesta.parsed_output;
   if (!propuesta) throw new Error('El modelo no devolvió el diseño.');
+  propuesta.diseno.plantilla = actual.plantilla;
   return { ...propuesta, tokens: respuesta.usage.input_tokens + respuesta.usage.output_tokens };
 }

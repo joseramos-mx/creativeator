@@ -3,11 +3,12 @@
  *
  * El post guarda un nombre de paleta —`azul`, `amarillo`—, y el redactor elige
  * entre los que la cuenta tiene. En la plantilla `clinica` son las veinticinco
- * medidas de sus tokens; en la `plana`, las del diseño de la cuenta, con su
+ * medidas de sus tokens; en las demás, las del diseño de la cuenta, con su
  * propio color. Lo usan el editor (el selector), la redacción y la propuesta de
  * temas (qué puede elegir el modelo), así que va aparte y sin `server-only`.
  */
 import { NOMBRES_PALETA, PALETA_POR_DEFECTO, paletas as delaClinica, type NombrePaleta } from './clinica/tokens';
+import { conDiseno } from './nombres';
 import type { TDiseno } from '@/lib/schema';
 
 export type Paleta = {
@@ -43,7 +44,7 @@ export function disenoDe(marca: ConDiseno): TDiseno {
 }
 
 export function paletasDe(marca: ConDiseno): Paleta[] {
-  if (marca.plantilla !== 'plana') {
+  if (!conDiseno(marca.plantilla)) {
     return NOMBRES_PALETA.map((clave) => {
       const p = delaClinica[clave];
       return {
@@ -74,7 +75,7 @@ export function paletasDe(marca: ConDiseno): Paleta[] {
 
 /** La que toca cuando el tema no pide color: la primera de la cuenta. */
 export function paletaPorDefectoDe(marca: ConDiseno): NombrePaleta {
-  return marca.plantilla === 'plana' ? paletasDe(marca)[0].clave : PALETA_POR_DEFECTO;
+  return conDiseno(marca.plantilla) ? paletasDe(marca)[0].clave : PALETA_POR_DEFECTO;
 }
 
 /** La paleta de un post, o la de por omisión si la cuenta no tiene esa. */

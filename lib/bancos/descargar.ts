@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 import { guardar } from '../almacen';
 import { rutasDe } from '../proyecto';
+import { PROVEEDOR as PROVEEDOR_PROPIO } from './propio';
 import type { Banco, Candidato } from './tipos';
 
 /**
@@ -27,6 +28,10 @@ export async function descargarFoto(
   candidato: Candidato,
   slug: string,
 ): Promise<string> {
+  // Las fotos de la cuenta ya están en public/ y no caducan: el slide apunta
+  // al archivo del catálogo. Ver lib/bancos/propio.ts.
+  if (candidato.proveedor === PROVEEDOR_PROPIO) return candidato.descarga;
+
   const original = await banco.bajar(candidato);
 
   const entrada = sharp(original);

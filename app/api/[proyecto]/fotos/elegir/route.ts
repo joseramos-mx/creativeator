@@ -1,4 +1,4 @@
-import { archivoDe, bancoDe } from '@/lib/bancos';
+import { archivoDe, bancoDelProyecto } from '@/lib/bancos';
 import { descargarFoto } from '@/lib/bancos/descargar';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
 import { Credito, validar } from '@/lib/schema';
@@ -43,7 +43,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
     const ruta = await descargarFoto(
       proyecto,
       // `archivo` es el archivo clínico (Commons); sin él, el banco de ambiente.
-      archivo === true ? archivoDe(slug) : bancoDe(slug),
+      archivo === true ? archivoDe(slug) : await bancoDelProyecto(proyecto, slug),
       candidato,
       slug,
     );

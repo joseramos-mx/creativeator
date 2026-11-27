@@ -110,6 +110,14 @@ export function rutasDe(id: string, raiz = process.cwd()) {
     /** Y la misma foto, como la escribe el JSON del post. */
     urlMedia: (slug: string, nombre: string) => `${url}/media/${slug}/${nombre}`,
 
+    /**
+     * Las fotos propias de la cuenta, por país y ciudad, con su catálogo. Las
+     * deja `npm run fotos:propias`; ver lib/bancos/propio.ts.
+     */
+    fotos: join(publico, 'fotos'),
+    catalogoFotos: join(publico, 'fotos', 'catalogo.json'),
+    urlFotos: `${url}/fotos`,
+
     descargas: join(publico, 'descargas'),
     indiceDescargas: join(publico, 'descargas', 'indice.json'),
     urlDescargas: `${url}/descargas`,

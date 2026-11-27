@@ -1,0 +1,111 @@
+{
+  "slug": "el-calentador-que-puede-intoxicar-a-toda-la-familia",
+  "tema": "Monóxido de carbono en invierno: calentadores, braseros y anafres dentro de casa",
+  "creado": "2026-11-23",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#7F1D1D"
+  },
+  "copy": "El calentador que puede intoxicar a toda la familia ❄️\n\nLlega el frío a Durango y la casa se cierra: ventanas selladas, trapo en la puerta, el calentador prendido más tiempo del normal y, cuando de plano hace mucho frío, el anafre adentro \"nada más un rato\". Ahí es donde aparece el monóxido de carbono. No vengo a asustarte: vengo a que lo sepas reconocer, porque es de las intoxicaciones más fáciles de prevenir y de las más difíciles de identificar a tiempo.\n\n🧠 El gas que no avisa: se forma cuando el gas, el carbón o la leña se queman sin aire suficiente, y al respirarlo ocupa en la sangre el lugar del oxígeno. No huele, no se ve, no irrita. Y ojo con el mito: el olor a gas es un aditivo del gas sin quemar; el monóxido es lo que queda después de una combustión mal ventilada, y ese no huele a nada (Mayo Clinic, Cleveland Clinic).\n\n🌡️ No era gripa, era la casa: dolor de cabeza, náusea, mareo y sueño raro. En invierno todos lo leemos como gripa. La pista real es que se sienten mal varios en la casa al mismo tiempo —a veces hasta la mascota— y mejoran al salir a la calle (Mayo Clinic).\n\n😴 Si eso pasa: salgan todos al aire libre, abran puertas y ventanas y no se queden adentro buscando de dónde viene. Valoración médica el mismo día aunque afuera ya se sientan bien; si alguien está muy adormilado o confundido, es atención inmediata (AAP).\n\n✔️ Lo que sí previene: ventana entreabierta mientras usas calentador o estufa, nada de brasero ni anafre dentro de la casa, el coche nunca encendido en cochera cerrada, revisión anual del calentador y su salida de gases, y un detector de monóxido cerca de las recámaras.\n\n💙 Si ya cerraste el baño para que no se enfriara el agua, si ya metiste el anafre a la recámara, si ya calentaste el coche con la cochera cerrada: no hiciste nada raro. Lo hacemos todos, porque hace frío y porque nadie nos lo explicó. Este post no es para sentirte mal por lo de antes, es para lo de esta semana. Y es de los que de verdad sirve reenviar: mándaselo a tu mamá, a tu suegra, a la vecina que usa brasero, al grupo de WhatsApp del edificio o de la familia. Una persona que lo lea hoy puede evitar una noche muy fea.\n\n💬 ¿En tu casa usan calentador de paso, brasero o anafre en invierno? Cuéntame cómo le hacen con la ventilación.\n\n🔖 Guárdalo para la primera noche de frío de verdad, que es cuando se cierra todo y se prende todo. Y compártelo con quien vive con niños pequeños, con adultos mayores o con quien ya te dijo \"es que amanecimos todos con dolor de cabeza\".\n\n📲 ¿Tu peque estuvo en una casa sin ventilación y lo notas decaído, con dolor de cabeza o con mucho sueño, y quieres que alguien lo revise con calma? Agenda tu consulta en Durango por Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp. La atención es presencial.",
+  "pilar": "prevención",
+  "objetivo": "compartir",
+  "nota": "7 láminas. Monóxido de carbono en el invierno de Durango: calentadores de gas sin ventilación, braseros y anafres dentro de casa, coche encendido en cochera cerrada. Síntomas que se confunden con gripa (dolor de cabeza, náusea, sueño) y la pista clave: se sienten mal varios en la casa a la vez. Qué hacer y cómo prevenir.",
+  "hashtags": [
+    "#MonoxidoDeCarbono",
+    "#InviernoSeguro",
+    "#PediatriaParaMamas",
+    "#PrevencionDeAccidentes",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El calentador* **que puede\nintoxicar a toda la casa**",
+      "pregunta": "¿Gripa de toda la familia?",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/el-calentador-que-puede-intoxicar-a-toda-la-familia/pexels-6530547.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Mikhail Nilov",
+        "url": "https://www.pexels.com/photo/couple-sitting-near-fireplace-6530547/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 32.3
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Cerré el baño* **para que\nno se enfriara\"**",
+      "bajada": "Todos hemos cerrado todo para que entre menos frío.",
+      "cuerpo": "Prendiste el calentador y cerraste la puerta del baño para bañar al bebé con agua bien caliente. O metiste el anafre a la recámara porque la casa estaba helada. Lo hemos hecho. No es descuido ni falta de cuidado: es frío, y nadie nos explicó qué pasa cuando el aire no circula.",
+      "visual": {
+        "clase": "icono",
+        "slug": "gas-water-heater",
+        "iconoSugerido": "gas water heater"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El gas* **que no avisa**",
+      "bajada": "No se ve, no huele y no irrita la garganta.",
+      "cuerpo": "El monóxido de carbono se forma cuando el gas, el carbón o la leña se queman sin aire suficiente. Al respirarlo, ocupa en la sangre el lugar que le tocaba al oxígeno. Por eso el cuerpo se queda sin oxígeno sin que nada duela. Los niños respiran más rápido: a ellos les llega antes.",
+      "visual": {
+        "clase": "icono",
+        "slug": "blue-gas-stove-flame",
+        "iconoSugerido": "blue gas stove flame"
+      },
+      "fuente": "Mayo Clinic · AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Yo olería* **si hubiera fuga\"**",
+      "bajada": "El olor a gas y el monóxido no son lo mismo.",
+      "cuerpo": "Al gas le agregan ese olor a propósito, para que detectes una fuga. El monóxido es lo que queda después: aparece cuando el gas ya se quemó mal, por falta de ventilación. No tiene olor, no tiene color y no hace ruido. Una fuga se nota. Esto no.",
+      "visual": {
+        "clase": "icono",
+        "slug": "lp-gas-cylinder-tank",
+        "iconoSugerido": "lp gas cylinder tank"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No era gripa:* **era la casa**",
+      "bajada": "La pista no es el síntoma, es cuántos lo tienen.",
+      "cuerpo": "Dolor de cabeza, náusea, mareo, mucho sueño a media mañana. En invierno todos lo leemos como gripa. La pista es otra: se sienten mal varios en la casa al mismo tiempo, a veces hasta la mascota, y mejoran cuando salen a la calle y vuelven a sentirse mal al entrar.",
+      "visual": {
+        "clase": "icono",
+        "slug": "house-with-closed-windows-at-night",
+        "iconoSugerido": "house with closed windows at night"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo prevenirlo **sin pasar frío**",
+      "puntos": [
+        "→ **Deja una entrada de aire** Una ventana entreabierta mientras usas calentador, estufa o chimenea. Unos centímetros bastan.",
+        "→ **Brasero y anafre, siempre afuera** Nunca en la recámara, el baño o la cocina cerrada, ni \"nada más tantito\" para calentar.",
+        "→ **El coche no se calienta en la cochera** Si está cerrada, el humo se queda adentro y pasa a la casa.",
+        "→ **Revisión anual del calentador** Que un técnico revise la salida de gases y que el tiro no esté tapado.",
+        "→ **Detector de monóxido** Se cuelga cerca de las recámaras y avisa antes de que alguien se sienta mal."
+      ],
+      "fuente": "AAP · Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Si varios **amanecen mal**\n*en la misma casa*",
+      "bajada": "Primero salir, después investigar.",
+      "cuerpo": "Saquen a todos al aire libre, incluida la mascota. Abran puertas y ventanas y no se queden adentro buscando de dónde viene. Si pueden apagar la fuente sin demorarse, háganlo desde afuera. Busquen valoración médica el mismo día, aunque afuera ya se sientan bien. Si alguien está muy adormilado o confundido, es atención inmediata.",
+      "visual": {
+        "clase": "icono",
+        "slug": "open-window-fresh-air",
+        "iconoSugerido": "open window fresh air"
+      },
+      "fuente": "Mayo Clinic · AAP"
+    }
+  ]
+}

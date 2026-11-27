@@ -1,0 +1,103 @@
+{
+  "slug": "de-verdad-eres-alergico-a-la-penicilina",
+  "tema": "¿De verdad eres alérgico a la penicilina?",
+  "creado": "2026-11-30",
+  "estado": "borrador",
+  "paleta": "esmeralda",
+  "copy": "Alérgico a la penicilina. ¿Seguro? 🤔\n\nLa mayoría de las personas que cargan la etiqueta de alergia a la penicilina terminan tolerándola sin problema cuando por fin se les evalúa. Esa etiqueta casi siempre se puso en la infancia, por un salpullido que apareció a media infección y que nadie volvió a revisar. Y ahora entra la temporada de anginas y otitis, que es justo cuando más se receta este grupo de antibióticos.\n\n💊 No toda reacción es alergia: muchos salpullidos que salen mientras el niño toma antibiótico los causó el virus de la infección, no el medicamento. Alergia es una respuesta del sistema de defensas, no cualquier molestia (Mayo Clinic).\n\n🔍 Cómo se ve la de verdad: suele empezar en la primera hora después de la dosis, con ronchas que dan comezón, hinchazón de labios o párpados, vómito o dificultad para respirar (Cleveland Clinic).\n\n⚠️ Lo que cuesta la etiqueta: con ella puesta se receta otro antibiótico, más amplio, más caro y con más efectos secundarios. Y quien sí fue alérgico de niño muchas veces deja de serlo con los años (StatPearls).\n\n✅ Qué hacer: apunta qué medicamento fue, hace cuántos años y qué pasó exactamente. Lleva eso a la valoración. Lo que no se hace es dar una dosis de prueba en casa para salir de dudas (Cleveland Clinic).\n\n⚡ Con qué se confunde: diarrea, náusea o dolor de panza después del antibiótico son molestias digestivas, no alergia. El salpullido de un niño con infección viral se parece mucho al de una reacción, y la diferencia está en cuándo apareció y en si hubo ronchas con comezón e hinchazón. Esa diferencia no se adivina de memoria diez años después: por eso existe la evaluación.\n\n💬 ¿A ti o a tu hijo les dijeron alguna vez que son alérgicos a la penicilina? Cuéntame quién lo dijo y qué había pasado ese día.\n\n🔖 Comparte este post con quien trae la etiqueta desde niño y nunca la revisó: hermanos, tus papás, el grupo de la escuela. Es información que le cambia la receta la próxima vez que tenga anginas. Y guárdalo para tenerlo a la mano cuando un médico pregunte \"¿es alérgico a algo?\" y no sepas qué contestar.\n\n📲 ¿Traes esa etiqueta y nadie te ha explicado de dónde salió? Se puede revisar con calma, fuera de temporada de infecciones. Agenda en Doctoralia, con el enlace en la biografía.\n\n#AlergiaALaPenicilina #TemporadaDeAnginas #AlergologiaPediatrica #AntibioticosEnNinos #AlergologoEnDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Alergología. La mayoría de quienes se reportan alérgicos no lo son tras una evaluación; no hacer la prueba en casa. Verificar cifra con AAAAI y CDC",
+  "hashtags": [
+    "#AlergiaALaPenicilina",
+    "#TemporadaDeAnginas",
+    "#AlergologiaPediatrica",
+    "#AntibioticosEnNinos",
+    "#AlergologoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Alérgico a la*\n**penicilina. ¿Seguro?**",
+      "pregunta": "¿Y si no lo es?",
+      "foto": "/proyectos/dr-edwin/media/de-verdad-eres-alergico-a-la-penicilina/pexels-3873166.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Polina Tankilevitch",
+        "url": "https://www.pexels.com/photo/photo-of-person-holding-capsule-3873166/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 88.7
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*No toda reacción*\nes **alergia.**",
+      "bajada": "La etiqueta casi siempre se pone en la infancia.",
+      "cuerpo": "A muchos niños les sale un salpullido mientras toman antibiótico y ahí queda la etiqueta de por vida. Pero varios de esos salpullidos los causó el virus de la infección, no el medicamento. Alergia es una reacción del sistema de defensas, no cualquier molestia.",
+      "visual": {
+        "clase": "icono",
+        "slug": "antibiotic-capsule",
+        "iconoSugerido": "antibiotic capsule"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo se ve*\n**la de verdad?**",
+      "bajada": "La hora en que aparece dice mucho.",
+      "cuerpo": "Una alergia verdadera suele arrancar rápido, casi siempre en la primera hora después de la dosis: ronchas con comezón, hinchazón de labios o párpados, vómito, dificultad para respirar. La diarrea, la náusea o el dolor de panza son molestias del antibiótico. Incómodas, sí; alergia, no.",
+      "visual": {
+        "clase": "icono",
+        "slug": "antibiotic-syrup-bottle-with-dosing-spoon",
+        "iconoSugerido": "antibiotic syrup bottle with dosing spoon"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Esa etiqueta*\n**se queda.**",
+      "bajada": "Sin revisar, cambia el antibiótico de toda su vida.",
+      "cuerpo": "Con la etiqueta puesta, el médico receta otro antibiótico: más amplio, más caro y con más efectos secundarios. En los meses de anginas y otitis eso pasa seguido. Además, quien sí fue alérgico de niño muchas veces deja de serlo con los años.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/de-verdad-eres-alergico-a-la-penicilina/pexels-8657375.jpg",
+        "ideaImagen": "Mostrador de farmacia con cajas de antibiótico y una mamá esperando que le surtan la receta.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "cottonbro studio",
+          "url": "https://www.pexels.com/photo/adult-woman-looking-at-the-medicine-bottle-8657375/"
+        }
+      },
+      "fuente": "StatPearls"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "**Qué hacer**\n*si tienes la duda.*",
+      "puntos": [
+        "Apunta qué pasó: qué medicamento, hace cuántos años y qué reacción fue.",
+        "Pregunta en casa si alguien recuerda ronchas e hinchazón, o solo manchas.",
+        "No le des una dosis de prueba en casa para ver qué pasa.",
+        "Pide la valoración ahora, antes de que haya una infección encima."
+      ],
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo*\n**ir a valoración.**",
+      "bajada": "La prueba se hace en consultorio, con vigilancia.",
+      "cuerpo": "Si la etiqueta viene de la infancia y nadie recuerda bien qué pasó, se puede revisar. En consulta se hace la historia clínica, la prueba en piel y, cuando toca, una dosis de reto vigilada. En casa no: ahí no hay cómo atender una reacción.",
+      "visual": {
+        "clase": "icono",
+        "slug": "skin-prick-test-tray-with-allergen-droppers",
+        "iconoSugerido": "skin prick test tray with allergen droppers"
+      },
+      "fuente": "Mayo Clinic"
+    }
+  ]
+}

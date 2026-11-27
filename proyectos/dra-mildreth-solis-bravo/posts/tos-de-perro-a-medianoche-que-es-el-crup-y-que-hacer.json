@@ -1,0 +1,111 @@
+{
+  "slug": "tos-de-perro-a-medianoche-que-es-el-crup-y-que-hacer",
+  "tema": "Tos de perro a medianoche: qué es el crup y qué hacer",
+  "creado": "2026-11-30",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#A78BFA"
+  },
+  "copy": "Tos de perro a medianoche ❄️\n\nSon las dos de la mañana, tu hijo despierta con una tos ronca que nunca le habías oído y tú estás a oscuras buscando en el celular con una mano. Eso tiene nombre: crup (laringitis). Es una de las consultas que más llegan cuando empieza el frío, casi siempre en menores de 6 años, y casi siempre de noche.\n\n🌡️ Qué es el crup: un virus inflama la laringe y la tráquea. La vía aérea de un niño pequeño es estrecha, así que poca inflamación hace mucho ruido: tos de ladrido, voz ronca, peor de noche y mejor de día (Mayo Clinic, KidsHealth).\n\n❄️ \"Métela al baño con vapor\": es el consejo de todos, pero no hay evidencia de que el vapor mejore el cuadro, y el agua muy caliente agrega riesgo de quemadura. Lo que sí cambia las cosas es la valoración y el medicamento que indique tu pediatra (Cleveland Clinic).\n\n😴 Por qué lo primero es calmarlo: con el llanto respira más rápido y más fuerte, y el aire pasa con más trabajo por una vía ya inflamada. Cargarlo semisentado y hablarle bajito no es solo consuelo, es parte del manejo.\n\n✔️ Qué sí puedes hacer hoy: calmarlo, aire fresco unos minutos en la ventana, líquidos a tragos cortos, nada de jarabes para la tos en niños pequeños, y quedarte cerca escuchando cómo respira entre tos y tos (AAP).\n\n🔖 Guarda este post antes de que lo necesites. La lámina 7 es la que te va a servir a las 2 de la mañana: el silbido al respirar estando tranquilo, las costillas o el cuello que se hunden al tomar aire, el color pálido o morado alrededor de la boca, el babeo con dificultad para tragar o verlo muy decaído son motivo de acudir esa misma noche. Guardado te lo abres en diez segundos; en el buscador te tardas media hora y te asustas más. Y mándaselo a la mamá que ya te escribió una madrugada preguntando \"¿esto es normal?\".\n\n💙 Si esta noche ya le abriste la regadera caliente, no hiciste nada malo: hiciste lo que te enseñaron, y lo hiciste despierta a las tres de la mañana. Nadie espera que tú distingas ruidos respiratorios a oscuras. Para eso estamos nosotros. No estás sola.\n\n💬 ¿Te ha tocado esa tos de ladrido a medianoche? ¿Cuántos años tenía tu peque?\n\n📲 ¿Tu hijo ya repitió este cuadro más de una vez este invierno, o se enferma seguido de las vías respiratorias? Vale la pena revisarlo con calma y no solo en la crisis. Agenda tu consulta en Durango por Doctoralia, con el enlace en la biografía, o escríbenos por WhatsApp si tienes dudas de horario. La atención es presencial.",
+  "pilar": "temporada invernal",
+  "objetivo": "guardar",
+  "nota": "6 láminas. Laringitis (crup): tos ronca como ladrido, casi siempre de noche, en menores de 6 años. Lo primero es calmarlo, el llanto lo empeora. El dato que separa casa de urgencias: el silbido al respirar estando tranquilo (estridor en reposo) es para acudir ya.",
+  "hashtags": [
+    "#Crup",
+    "#TemporadaDeFrio",
+    "#PediatriaParaMamas",
+    "#SaludInfantil",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Tos de perro* **a medianoche**",
+      "pregunta": "¿Qué es el crup?",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/tos-de-perro-a-medianoche-que-es-el-crup-y-que-hacer/pexels-7938180.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Pavel Danilyuk",
+        "url": "https://www.pexels.com/photo/a-mother-changing-diaper-of-a-baby-7938180/"
+      },
+      "overrides": {
+        "offsetY": -2,
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Son las 2* **de la mañana**",
+      "bajada": "No estás exagerando: esa tos sí suena distinta.",
+      "cuerpo": "Tu hijo despierta con una tos que no habías oído nunca: ronca, hueca, como ladrido. Te sientas en la cama a buscar en el celular, a oscuras, con él encima. Casi todas hemos pasado esa noche. No la cuentas porque suena a drama, pero la viviste despierta hasta las cinco.",
+      "visual": {
+        "clase": "icono",
+        "slug": "bedside-alarm-clock-at-2-am",
+        "iconoSugerido": "bedside alarm clock at 2 am"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Qué es* **el crup**",
+      "bajada": "Un virus inflama justo por donde pasa el aire.",
+      "cuerpo": "El crup es una infección viral que inflama la laringe y la tráquea. La vía respiratoria de un niño pequeño es estrecha: un poco de inflamación hace mucho ruido. Por eso la tos suena a ladrido y la voz se oye ronca. Empeora de noche y mejora de día.",
+      "visual": {
+        "clase": "icono",
+        "slug": "pinched-drinking-straw",
+        "iconoSugerido": "pinched drinking straw"
+      },
+      "fuente": "Mayo Clinic · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Métela al baño* **con vapor\"**",
+      "bajada": "Lo repetimos todas. La evidencia no lo respalda.",
+      "cuerpo": "Es el consejo que te va a dar todo el mundo esta noche. No hay evidencia de que el vapor mejore el crup, y el agua muy caliente suma riesgo de quemadura. Lo que sí cambia el cuadro es la valoración: tu pediatra puede indicar un medicamento que desinflama la vía aérea.",
+      "visual": {
+        "clase": "icono",
+        "slug": "shower-head-with-steam",
+        "iconoSugerido": "shower head with steam"
+      },
+      "fuente": "Cleveland Clinic · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El llanto* **lo empeora**",
+      "bajada": "Calmarlo no es consuelo: es parte del manejo.",
+      "cuerpo": "Cuando llora, respira más rápido y más fuerte, y el aire pasa con más trabajo por una vía ya inflamada. El ruido sube, tú te asustas, él se asusta más. Por eso lo primero no es un frasco: es cargarlo, hablarle bajito y dejarlo semisentado en tus brazos.",
+      "visual": {
+        "clase": "icono",
+        "slug": "wooden-rocking-chair-with-cushion",
+        "iconoSugerido": "wooden rocking chair with cushion"
+      }
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Qué hacer **esta misma noche**",
+      "puntos": [
+        "→ **Cálmalo primero**: cárgalo semisentado y háblale bajito. Un niño tranquilo respira mejor que uno llorando.",
+        "→ **Aire fresco**: asómense unos minutos a la ventana o al patio. A muchas familias les ayuda y no hace daño.",
+        "→ **Líquidos a tragos**: agua o leche, poquito y seguido. La garganta seca tose más.",
+        "→ **Nada de jarabes para la tos**: no se recomiendan en niños pequeños y no desinflaman la vía aérea.",
+        "→ **Quédate cerca y escucha**: lo que orienta no es cuánto tose, sino cómo respira entre tos y tos."
+      ],
+      "fuente": "AAP · KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Cuándo **no esperar a mañana**",
+      "bajada": "Guarda esta lámina: es la que vas a abrir de noche.",
+      "cuerpo": "Busca valoración la misma noche si escuchas un silbido al respirar estando tranquilo, si se le hunden las costillas o el cuello al tomar aire, si se ve pálido o morado alrededor de la boca, si babea y no puede tragar, o si lo notas muy decaído y difícil de despertar.",
+      "visual": {
+        "clase": "icono",
+        "slug": "car-keys-on-keyring",
+        "iconoSugerido": "car keys on keyring"
+      },
+      "fuente": "Mayo Clinic · KidsHealth"
+    }
+  ]
+}

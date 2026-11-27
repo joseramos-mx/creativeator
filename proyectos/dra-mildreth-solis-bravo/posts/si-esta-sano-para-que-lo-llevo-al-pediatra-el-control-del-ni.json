@@ -1,0 +1,109 @@
+{
+  "slug": "si-esta-sano-para-que-lo-llevo-al-pediatra-el-control-del-ni",
+  "tema": "Control del niño sano: por qué llevarlo al pediatra aunque no esté enfermo",
+  "creado": "2026-11-20",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#172554"
+  },
+  "copy": "Si está sano, ¿para qué lo llevo al pediatra? 📏\n\nLo pensaste el día que moviste la cita. No tenía fiebre, no tenía tos, la mañana venía apretada y el control del niño sano se cayó de la agenda sin que pasara nada. Justo por eso no se volvió a agendar. Hoy, 20 de noviembre, Día Universal del Niño, vale la pena decirlo en voz alta: el derecho a la salud no empieza cuando se enferma, empieza con las revisiones de cuando está bien.\n\n📏 La ciencia dice: las revisiones periódicas se recomiendan desde los primeros días de vida y a lo largo de toda la infancia, con o sin síntomas. En cada una se mide, se compara con la vez anterior y se ve la tendencia, que es lo que una sola consulta nunca enseña (AAP).\n\n👀 \"Si no está enfermo, no hay nada que ver\": hay cosas que no duelen. Un oído que escucha menos de un lado, una vista que se desvía, una curva de peso plana, un lenguaje que va atrasado. Ninguna de esas levanta fiebre; todas se buscan a propósito en un control.\n\n🧠 Lo que se detecta a tiempo: entre más temprano se identifica un tema de vista, oído o lenguaje, más margen hay para trabajarlo antes de que empiece la escuela. Y es el momento de revisar el esquema de vacunación y poner al día lo que quedó pendiente (AAP · Esquema Nacional de Vacunación de México).\n\n🗓️ El calendario del niño sano: recién nacido en los primeros días; al mes y a los 2, 4, 6, 9 y 12 meses; a los 15, 18 y 24 meses; a los 30 meses y a los 3 años; y después una vez al año hasta la edad escolar (AAP).\n\n✔️ Qué se revisa: peso y talla en su curva, desarrollo, vista, oído, dientes, alimentación, sueño, vacunas y las dudas que traes anotadas en las notas del celular.\n\n💙 Si llevas tiempo sin llevarlo porque nunca se enferma, no hiciste nada mal: la mayoría de nosotras aprendimos que al pediatra se va cuando hay fiebre. Nunca es tarde para retomar el control, y aquí no se te va a regañar por los meses que pasaron.\n\n💬 ¿Cuándo fue la última revisión de control de tu peque y qué fue lo que te hizo posponerla? Te leo abajo 👇\n\n🔖 Guarda este post para tener el calendario de revisiones a la mano cuando quieras checar si ya le toca, y mándaselo a esa mamá que siempre dice \"es que mi hijo nunca se enferma\": a ella le va a servir más que a nadie.\n\n📲 ¿Tu peque lleva más de un año sin una revisión, o nunca ha tenido una consulta de control? Esa es exactamente la cita que hay que agendar: consulta de control del niño sano, con crecimiento, desarrollo, vista, oído, dientes y revisión de vacunas en una sola visita. Agenda en Doctoralia, el enlace está en mi biografía, o escríbeme por WhatsApp si tienes dudas de qué cita te toca. Consulta presencial en Durango.",
+  "pilar": "prevención",
+  "objetivo": "agendar",
+  "nota": "7 láminas. 20 de noviembre, Día Universal del Niño. El derecho a la salud empieza con revisiones aunque no esté enfermo: crecimiento, desarrollo, vista, oído, dientes, vacunas. Calendario de revisiones por edad en la lámina central. El cierre nombra la consulta de control.",
+  "hashtags": [
+    "#NiñoSano",
+    "#DíaUniversalDelNiño",
+    "#PediatríaPreventiva",
+    "#CrecimientoYDesarrollo",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Si está sano,* **¿para qué lo llevo?**",
+      "pregunta": "El control del niño sano",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/si-esta-sano-para-que-lo-llevo-al-pediatra-el-control-del-ni/pexels-7282403.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Sarah  Chai",
+        "url": "https://www.pexels.com/photo/mother-with-newborn-baby-on-couch-7282403/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**CONFIESA:** *cancelaste la cita*",
+      "bajada": "La primera cita que se cae de la agenda.",
+      "cuerpo": "Tenías el control agendado y lo moviste. Nadie tenía fiebre, nadie estaba tosiendo y la mañana ya venía apretada. Todas lo hemos hecho. La cita del niño sano es la que se cancela sin culpa, justo porque nada se ve mal. Y ahí está el punto.",
+      "visual": {
+        "clase": "icono",
+        "slug": "wall-calendar-with-a-circled-date",
+        "iconoSugerido": "wall calendar with a circled date"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Las revisiones no esperan a que haya síntomas.",
+      "cuerpo": "La AAP recomienda revisiones periódicas desde los primeros días de vida y a lo largo de toda la infancia, con o sin síntomas. No son consultas de relleno. Son el momento en que se mide, se compara con la vez pasada y se encuentra lo que todavía no da molestias.",
+      "visual": {
+        "clase": "icono",
+        "slug": "height-measuring-ruler-for-children",
+        "iconoSugerido": "height measuring ruler for children"
+      },
+      "fuente": "AAP (Bright Futures)"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Si no está enfermo,* **no hay nada que ver\"**",
+      "bajada": "Lo importante casi nunca avisa con fiebre.",
+      "cuerpo": "Hay cosas que no duelen y no se notan en casa. Un oído que escucha menos de un lado. Una vista que se está desviando. Una curva de peso que lleva tres meses plana. Un lenguaje que va atrasado. Nada de eso se queja: se busca a propósito.",
+      "visual": {
+        "clase": "icono",
+        "slug": "children-eye-test-chart-poster",
+        "iconoSugerido": "children eye test chart poster"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que se **detecta a tiempo**",
+      "bajada": "Antes de la escuela hay más margen.",
+      "cuerpo": "Entre más temprano se identifica un tema de vista, de oído o de lenguaje, más tiempo hay para trabajarlo antes de que empiece la escuela. En el control también se revisa el esquema de vacunación y se ponen al día las dosis que quedaron pendientes sin que nadie lo notara.",
+      "visual": {
+        "clase": "icono",
+        "slug": "audiometry-headphones",
+        "iconoSugerido": "audiometry headphones"
+      },
+      "fuente": "AAP · Esquema Nacional de Vacunación de México"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "El **calendario** del niño sano",
+      "puntos": [
+        "→ **Recién nacido:** en los primeros días después de salir del hospital. Peso, ictericia y cómo va la alimentación.",
+        "→ **Primer año:** revisiones al mes y a los 2, 4, 6, 9 y 12 meses, que además acompañan las vacunas.",
+        "→ **1 a 2 años:** a los 15, 18 y 24 meses. Marcha, lenguaje, alimentación y sueño.",
+        "→ **2 a 3 años:** a los 30 meses y al cumplir 3 años. Conducta, hábitos y dientes.",
+        "→ **De 3 a 6 años:** una vez al año. Vista, oído, peso, talla y refuerzos."
+      ],
+      "fuente": "AAP (Bright Futures)"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Llévalo **aunque esté sano**",
+      "bajada": "Ir al pediatra sano también es cuidarlo.",
+      "cuerpo": "Hoy, Día Universal del Niño: el derecho a la salud empieza antes de la enfermedad. En un control se revisa peso y talla, desarrollo, vista, oído, dientes, vacunas y las dudas que traes anotadas en el celular. Que salga sano del consultorio también es una respuesta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "child-health-record-booklet",
+        "iconoSugerido": "child health record booklet"
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
-import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from '@/lib/bancos';
+import { bancoDelProyecto, cajaDe, cribar, porEncuadre } from '@/lib/bancos';
 import { criteriosDe, type TCriterios } from '@/lib/criterios';
 import { proyectoDe, proyectoInexistente, type ConProyecto } from '@/lib/peticion';
-import { leerPost } from '@/lib/posts';
+import { leerPost, leerProyecto } from '@/lib/posts';
 
 /**
  * POST /api/<proyecto>/fotos/buscar
@@ -36,7 +36,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
       return Response.json({ error: 'Ese slide no lleva foto de banco.' }, { status: 400 });
     }
 
-    const banco = bancoDe(slug);
+    const banco = await bancoDelProyecto(proyecto, slug);
     if (!banco.disponible()) {
       return Response.json(
         { error: `El banco "${banco.nombre}" no está configurado. Falta la llave en .env.local.` },
@@ -68,7 +68,7 @@ export async function POST(req: Request, ctx: ConProyecto) {
 
     // La misma caja que usaría el relleno automático, para que elegir a mano y
     // dejar que elija no den fotos con encuadres distintos.
-    const caja = slide.tipo === 'portada' ? CAJA_PORTADA : CAJA_CONTENIDO;
+    const caja = cajaDe(slide.tipo, (await leerProyecto(proyecto)).plantilla);
     const orientacion = caja.ancho >= caja.alto ? 'landscape' : 'portrait';
 
     const candidatos = await banco.buscar(criterios.query, CUANTAS, orientacion);

@@ -165,8 +165,7 @@
 /* La foto se funde hacia abajo, donde va el título: primero en el color del
    degradado y al final en el del fondo. Si el post no elige degradado, los dos
    son el mismo y queda como siempre. */
-.plana--portada .plana__foto::after {
-  content: '';
+.plana__funde {
   position: absolute;
   inset: 0;
   background: linear-gradient(

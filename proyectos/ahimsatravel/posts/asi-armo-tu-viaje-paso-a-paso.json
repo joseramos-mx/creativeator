@@ -1,0 +1,121 @@
+{
+  "slug": "asi-armo-tu-viaje-paso-a-paso",
+  "tema": "Así armo tu viaje, paso a paso",
+  "creado": "2026-11-09",
+  "estado": "borrador",
+  "paleta": "turquesa",
+  "copy": "Nadie arma un viaje a Europa en un solo mensaje.\n\nAsí trabajo yo: me escribes aunque no tengas fechas; agendamos una videollamada de media hora para entender cómo viajan; te mando un itinerario día por día con tips por ciudad y dónde sí vale la pena pagar la entrada.\nSi te late, reservo vuelos, hoteles, trenes y entradas con horario. Los precios siempre van como «desde» y sujetos a disponibilidad.\nPara pasaporte, visas y requisitos de entrada te mando al sitio oficial de la SRE: ahí está lo que de verdad aplica.\nY durante el viaje me escribes a la hora que sea.\n\nViví en Francia con una beca de la SEP y recorrí Europa de mochilera: por eso el itinerario no sale de internet, sale de haber estado ahí.\n\nEscríbeme por WhatsApp y agendamos tu videollamada ✈️",
+  "pilar": "Detrás del viaje",
+  "objetivo": "agendar",
+  "nota": "Formato B, carrusel de tips. Caso real o de ejemplo: primer mensaje, videollamada, itinerario, reserva, acompañamiento y regreso. Fotos propias del mismo viaje.",
+  "hashtags": [
+    "#ViajeAEuropa",
+    "#ViajarEnFamilia",
+    "#ItinerarioAMedida",
+    "#AgenteDeViajes",
+    "#EuropaDesdeCDMX"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "Así armo tu viaje\npaso a paso",
+      "pregunta": "",
+      "foto": "/proyectos/ahimsatravel/fotos/francia/paris/3f657d7a.jpg",
+      "fotoCredito": {
+        "fuente": "Proporcionada por la cuenta",
+        "licencia": "Uso autorizado por la cuenta"
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "1. Me escribes sin tener nada claro",
+      "cuerpo": "No necesitas fechas ni presupuesto exacto. Con saber a dónde sueñas ir, con quién viajas y más o menos cuándo, ya tenemos por dónde empezar.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/f70cfa7b.jpg",
+        "ideaImagen": "Bancas vacías de un parque al atardecer con la Torre Eiffel al fondo, escena tranquila de inicio",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "2. Nos vemos en videollamada",
+      "cuerpo": "Media hora para entender cómo viajan: ritmo, museos o mercados, cuánto aguantan caminar, si van niños. De ahí sale todo lo demás del viaje.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/ec8a82d2.jpg",
+        "ideaImagen": "Vista a través de una puerta de vidrio hacia la pirámide del Louvre, como mirar algo del otro lado de una pantalla",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Paso 3: tu itinerario",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/85fa5471.jpg",
+        "ideaImagen": "Una mano sosteniendo el plano del museo sobre el piso de mármol, en plena visita",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "imagen"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "4. Reservo yo, no tú",
+      "cuerpo": "Vuelos, hoteles, trenes y entradas con horario. Tú revisas una propuesta y decides; yo me quedo con los formularios, los cortes y los horarios raros.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/48d3a086.jpg",
+        "ideaImagen": "Vista desde el interior de la pirámide de vidrio del Louvre hacia el cielo azul, con la estructura ordenada alrededor",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "5. Allá no estás sola",
+      "cuerpo": "Si el tren cambia de andén o el hotel se complica, me escribes a la hora que sea. Mis clientes ya me han escrito de madrugada desde Europa.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/0ab6b1ed.jpg",
+        "ideaImagen": "Mujer de pie en el amplio patio empedrado de un palacio francés en un día nublado, sola y pequeña en el encuadre",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Tú sueñas el viaje\nyo armo el cómo",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/c598b5cf.jpg",
+        "ideaImagen": "Mujer con abrigo y gorro frente a la Torre Eiffel al atardecer, de pie y tranquila",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    }
+  ]
+}

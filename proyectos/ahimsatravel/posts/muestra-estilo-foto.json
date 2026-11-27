@@ -1,0 +1,64 @@
+{
+  "slug": "muestra-estilo-foto",
+  "tema": "Muestra del estilo foto",
+  "creado": "2026-11-04",
+  "estado": "borrador",
+  "paleta": "niebla",
+  "copy": "Muestra para revisar la plantilla foto.",
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "WTF\nDejar Europa para algún día",
+      "pregunta": "",
+      "foto": "/proyectos/ahimsatravel/fotos/francia/paris/3f657d7a.jpg",
+      "fotoCredito": {
+        "fuente": "Proporcionada por la cuenta",
+        "licencia": "Uso autorizado por la cuenta"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Reserva el Louvre en línea",
+      "cuerpo": "La fila sin boleto puede tomarte dos horas. Con horario reservado entras en quince minutos y te queda la tarde para caminar el Sena.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/48d3a086.jpg",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "texto"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Florencia, en mayo",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/italia/florencia/0891b0f7.jpg",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "imagen"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "WTF\nRegresar sin otro viaje planeado",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/f70cfa7b.jpg",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      }
+    },
+    {
+      "tipo": "cierre"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "slug": "estrias-que-si-funciona-y-que-es-puro-marketing",
+  "tema": "Estrías: qué sí funciona y qué es puro marketing",
+  "creado": "2026-12-23",
+  "estado": "borrador",
+  "paleta": "violeta",
+  "copy": "¿Las cremas borran las estrías? 🪞\n\nLa respuesta corta es no, y conviene saberlo antes de gastar: las estrías (estrías de distensión) son cicatrices, no manchas. Lo que sí cambia el resultado es el momento en que se atienden. Si tu hijo está en el estirón de la adolescencia y apenas le están saliendo rojizas, estás justo en la etapa en la que más se puede hacer.\n\n🔍 Cómo reconocerlas: las recientes se ven rojizas o moradas, a veces algo levantadas y con comezón; con los meses se aplanan y pasan a blancas o nacaradas, como una línea hundida. Es la misma cicatriz en dos etapas, no dos problemas distintos (AAD).\n\n⚠️ Por qué importa ahora: mientras están rojas todavía hay inflamación y producción de colágeno, y esa etapa es la que mejor responde. Cuando ya son blancas, la cicatriz está madura y lo que se busca es mejorar la apariencia, no borrarla (AAD).\n\n✅ Qué sí vale la pena: hidratar a diario y con masaje, sobre todo en las recientes; no esperar que un producto de farmacia las elimine; no usar cremas con esteroide por cuenta propia, porque el uso prolongado puede provocar más estrías; y, si aparecieron sin estirón ni cambio de peso, revisarlas en vez de seguir probando frascos (AAD y Mayo Clinic).\n\n⚡ Ojo con esto: las estrías del estirón siguen líneas paralelas en espalda baja, muslos, caderas o pecho, y empiezan finas. Se confunden con marcas de rascado, que son irregulares y cruzadas, y con cicatrices de alguna lesión, que van solas y no en grupo. Las que deben hacer ruido son otras: muy anchas, muy moradas, en el abdomen y en un niño que además subió de peso rápido o usó esteroides. Ahí no se trata de la piel, se trata de buscar la causa.\n\n💬 ¿A ti te salieron en la adolescencia o en el embarazo? Cuéntame qué te dijeron que funcionaba.\n\n🔖 Mándaselo a quien lo necesita hoy: a la mamá del adolescente que acaba de pegar el estirón, a tu hermana embarazada, al grupo de la escuela donde alguien ya está vendiendo la crema milagro. Esta es de las cosas que se compran por no haberlas preguntado antes. Y guárdalo tú, porque cuando le veas la primera línea rojiza en la espalda vas a querer saber en qué etapa está.\n\n📲 ¿Tu hijo ya tiene estrías rojas y quieres saber si se puede hacer algo ahora? Agenda conmigo en Doctoralia, con el enlace en la biografía. Revisamos la causa, el momento y qué opciones reales existen.\n\n#EstriasDeDistension #EstironDeCrecimiento #DermatologiaPediatrica #CuidadoDeLaPiel #DermatologoDurango",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "compartir",
+  "nota": "Trending. Estrías rojas responden mejor que las blancas; expectativas realistas sobre cremas; opciones en consulta. Fuente sugerida: AAD",
+  "hashtags": [
+    "#EstriasDeDistension",
+    "#EstironDeCrecimiento",
+    "#DermatologiaPediatrica",
+    "#CuidadoDeLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*¿Las cremas* **borran\nlas estrías?**",
+      "pregunta": "¿Se quitan o no?",
+      "foto": "/proyectos/dr-edwin/media/estrias-que-si-funciona-y-que-es-puro-marketing/pexels-10677580.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Ron Lach",
+        "url": "https://www.pexels.com/photo/teenage-girl-stretching-her-arms-10677580/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Son cicatrices,*\nno **manchas**",
+      "bajada": "La piel se estiró más rápido de lo que aguanta.",
+      "cuerpo": "Las estrías son cicatrices. Cuando la piel se estira muy rápido —un estirón de la adolescencia, un embarazo, subir peso en poco tiempo— las fibras de la capa profunda se rompen y la marca se queda. No es falta de crema ni de higiene. Es la velocidad del estiramiento.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "stretching rubber band"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Rojas o blancas:**\n*no es lo mismo*",
+      "bajada": "Es la misma cicatriz en dos etapas distintas.",
+      "cuerpo": "Las recientes se ven rojizas o moradas, a veces algo levantadas, y pueden dar comezón. Con los meses se aplanan y pasan a blancas o nacaradas, como una línea hundida. No es que unas sean graves y otras no: lo que cambia es el tiempo que llevan ahí.",
+      "visual": {
+        "clase": "icono",
+        "slug": "hourglass",
+        "iconoSugerido": "hourglass"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Entre más nuevas,**\n*mejor responden*",
+      "bajada": "La etapa roja es la ventana que sí se aprovecha.",
+      "cuerpo": "Mientras están rojas, la piel todavía está inflamada y produciendo colágeno. Esa etapa es la que mejor responde al tratamiento. Cuando ya se volvieron blancas, la cicatriz está madura y lo que se logra es mejorar cómo se ven, no borrarlas. Si tu hijo está en pleno estirón, ese es el momento de revisarlas.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/estrias-que-si-funciona-y-que-es-puro-marketing/pexels-8188745.jpg",
+        "ideaImagen": "Adolescente midiendo su estatura contra el marco de una puerta en casa, con las marcas de lápiz visibles en la madera.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Kampus Production",
+          "url": "https://www.pexels.com/photo/father-measuring-height-of-his-son-8188745/"
+        }
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué sí* **vale la pena**",
+      "puntos": [
+        "Hidrata a diario y con masaje: rinde más en las estrías recientes que en las blancas.",
+        "Ignora el 'elimina estrías en semanas': ninguna crema de farmacia borra una cicatriz.",
+        "No uses cremas con esteroide por tu cuenta: usarlas mucho tiempo puede provocar más estrías.",
+        "Si aparecieron sin estirón, embarazo ni cambio de peso, agenda valoración en lugar de probar productos."
+      ],
+      "fuente": "AAD y Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo* **vale la\nvaloración**",
+      "bajada": "No es por estética: a veces hay una causa detrás.",
+      "cuerpo": "Agenda consulta si las estrías salieron sin estirón, embarazo ni cambio de peso; si son muchas, muy anchas o se extienden rápido; o si tu hijo usó cremas con esteroide por tiempo largo. En consulta se revisa la causa y se habla de qué opciones aplican y cuáles no.",
+      "visual": {
+        "clase": "icono",
+        "slug": "appointment-calendar",
+        "iconoSugerido": "appointment calendar"
+      },
+      "fuente": "Mayo Clinic"
+    }
+  ]
+}

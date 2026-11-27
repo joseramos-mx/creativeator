@@ -1,0 +1,103 @@
+{
+  "slug": "asma-y-frio-por-que-el-aire-helado-te-cierra-el-pecho",
+  "tema": "Asma y frío: por qué el aire helado te cierra el pecho",
+  "creado": "2026-12-02",
+  "estado": "borrador",
+  "paleta": "cian",
+  "copy": "¿Por qué el frío le cierra el pecho? 🥶\n\nSi tu hijo tose seco apenas sale a jugar en la mañana y en casa está bien, muchas veces es broncoespasmo por aire frío: los bronquios se aprietan cuando entra aire helado y seco. En diciembre y enero pasa más, porque el recreo y el entrenamiento siguen siendo afuera y adentro la calefacción reseca el ambiente.\n\n🔍 Cómo reconocerlo: tos seca a los pocos minutos de correr, silbido al sacar el aire, pecho apretado, y todo se calma al entrar a un lugar templado. Sin fiebre y sin mocos (KidsHealth).\n\n⚠️ Por qué importa ahora: el aire frío es uno de los disparadores clásicos del asma, y se junta con el ejercicio al aire libre y con el polvo que levanta la calefacción. Tres irritantes sobre el mismo bronquio (Mayo Clinic).\n\n✅ Qué hacer antes de salir: cubrirle nariz y boca con bufanda o cubrebocas, calentar diez o quince minutos antes de correr, enseñarle a respirar por la nariz y traer siempre el inhalador de rescate que le indicó su médico (AAP).\n\n⚡ Ojo: esto se confunde con gripa que \"no se le quita\" y con \"está fuera de condición\". La diferencia está en el patrón: la gripa trae fiebre y mocos y va cediendo en días; esto aparece con el esfuerzo en frío, cede al entrar en calor y regresa igualito al día siguiente.\n\n💬 ¿A tu hijo le da más tos en la mañana antes de la escuela o en la noche al acostarse? Cuéntame cuál de las dos, en una línea.\n\n🔖 Guarda este post: te va a servir la próxima mañana fría, cuando estés decidiendo si lo mandas al entrenamiento o no, y también para repasar la lista de señales que sí ameritan valoración. Y mándaselo a quien lleva a los niños a la escuela temprano o al entrenador del equipo: ellos son los que ven la tos antes que tú.\n\n📲 ¿Tu hijo tose cada vez que sale al frío o usa el inhalador de rescate casi a diario? Agenda valoración conmigo en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Soluciones reales",
+  "objetivo": "guardar",
+  "nota": "Temporada de frío. Broncoespasmo por aire frío y ejercicio; cubrir nariz y boca; señales de alarma. Fuente sugerida: GINA y AAAAI",
+  "hashtags": [
+    "#AsmaInfantil",
+    "#TemporadaDeFrio",
+    "#AlergologiaPediatrica",
+    "#SaludRespiratoria",
+    "#AlergologoEnDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*¿Por qué el frío*\n**le cierra el pecho?**",
+      "pregunta": "¿Tose más en invierno?",
+      "foto": "/proyectos/dr-edwin/media/asma-y-frio-por-que-el-aire-helado-te-cierra-el-pecho/pexels-13540485.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Alexander Popovkin",
+        "url": "https://www.pexels.com/photo/portrait-of-man-covered-with-frost-13540485/"
+      },
+      "overrides": {
+        "fotoX": 69,
+        "fotoY": 100,
+        "fotoZoom": 1.1
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*El aire frío*\n**aprieta el bronquio.**",
+      "bajada": "No se resfrió otra vez: se le cerró el paso del aire.",
+      "cuerpo": "El aire frío y seco entra de golpe y los bronquios, que son los tubos por donde pasa el aire, se aprietan. Eso es un broncoespasmo. En un niño con asma pasa en minutos: sale a jugar, respira hondo por la boca y empieza la tos.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "cold wind gust"
+      },
+      "fuente": "Cleveland Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo saber* **si es asma?**",
+      "bajada": "La tos seca al correr es la pista más clara.",
+      "cuerpo": "Tos seca a los pocos minutos de correr. Un silbido al sacar el aire. El pecho apretado. Se calma cuando entra a un lugar templado y al día siguiente vuelve igual. No hay fiebre ni mocos, y por eso casi nunca parece gripa.",
+      "visual": {
+        "clase": "icono",
+        "slug": "running-sneakers",
+        "iconoSugerido": "running sneakers"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Se descontrola** *en estos meses.*",
+      "bajada": "Tres cosas irritan el mismo bronquio al mismo tiempo.",
+      "cuerpo": "No es casualidad que ahora tosa más. El aire está frío y seco, el recreo y el futbol siguen siendo afuera, y adentro la calefacción reseca el ambiente y levanta polvo. Por eso en temporada de frío el asma se sale de control más seguido.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/asma-y-frio-por-que-el-aire-helado-te-cierra-el-pecho/pexels-11429489.jpg",
+        "ideaImagen": "Niños jugando futbol en un patio escolar al aire libre en una mañana fría, con sudaderas y aliento visible.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Mehmet Turgut  Kirkgoz",
+          "url": "https://www.pexels.com/photo/children-in-circle-formation-11429489/"
+        }
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué hacer* **antes de salir.**",
+      "puntos": [
+        "Cúbrele nariz y boca con bufanda o cubrebocas: entibia y humedece el aire antes de que entre.",
+        "Calentamiento de diez a quince minutos antes de correr o entrenar, nunca arrancar en frío.",
+        "Enséñale a respirar por la nariz mientras juega afuera, no por la boca.",
+        "El inhalador de rescate que le indicó su médico, siempre en la mochila y a la mano."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo llevarlo* **a valoración.**",
+      "bajada": "Hay señales que no se esperan a la próxima cita.",
+      "cuerpo": "Agenda valoración si tose de noche y se despierta varias veces por semana, si deja de jugar porque le falta aire, o si necesita el inhalador de rescate casi a diario. Si se le hunden las costillas al respirar o no alcanza a terminar una frase, el mismo día.",
+      "visual": {
+        "clase": "icono",
+        "slug": "rescue-inhaler",
+        "iconoSugerido": "rescue inhaler"
+      },
+      "fuente": "AAP"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "slug": "despues-del-catarro-el-dolor-de-oido-lo-que-si-y-lo-que-no",
+  "tema": "Después del catarro, el dolor de oído: lo que sí y lo que no",
+  "creado": "2026-12-02",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#022C22"
+  },
+  "copy": "Después del catarro, el dolor de oído ❄️\n\nEl catarro ya iba de salida, ya habías dormido una noche completa, y de repente a las tres de la mañana llora distinto, se toca la oreja y no quiere comer. El dolor de oído después del catarro es una de las cosas que más se repiten en estos meses, y casi siempre llega justo cuando creías que ya la habían librado.\n\n😴 La escena de las 3 am: lo acuestas y llora más, en brazos se calma un poco, duerme a ratos. No estás exagerando: acostado, el oído molesta más.\n\n🌡️ Qué pasa después del catarro: el oído medio se conecta con la nariz por un tubito que en los niños pequeños es más corto y más horizontal. Con mocos se tapa fácil, el líquido se queda atrapado y la otitis aparece unos días después del catarro (KidsHealth, AAP).\n\n❄️ \"Es que le entró aire\": esta otitis ocurre detrás del tímpano, en un espacio cerrado. No la causa el viento, ni el baño, ni dormir sin gorro: viene desde la nariz. Abrígalo porque hace frío, no para prevenir el oído (Mayo Clinic).\n\n✔️ Lo que no va dentro del oído: cotonetes, aceite tibio, ajo, gotitas de hierbas o las gotas que le sirvieron a otro niño. Si el tímpano está perforado, meter líquido empeora el cuadro. El dolor se maneja con lo que tu pediatra te indique (AAP).\n\n💙 Si ya le pusiste algo en el oído porque alguien te lo dijo con toda la seguridad del mundo, no pasa nada: casi todas lo hemos hecho o estuvimos a punto. Nadie te enseñó esto. Ahora ya lo sabes y se corrige hoy mismo.\n\n💬 Ahora sí, la pregunta del día: ¿a cuántas otitis han sobrevivido en casa? Cuéntame cuántas llevan y a qué edad fue la primera. Te leo abajo y te respondo una por una 👇 Leer que otra mamá lleva cuatro inviernos iguales le baja la ansiedad a la que va en la primera.\n\n🔖 Guarda este post para la madrugada en que el catarro ya iba de salida y empieza el llanto raro, y mándaselo a la mamá que ahorita trae a su bebé con mocos: le va a servir esta semana, no el año que entra.\n\n📲 ¿El dolor lleva más de dos días, hay fiebre alta, sale líquido del oído o tu bebé tiene menos de 6 meses? Eso se valora revisando el tímpano, no por mensaje. Agenda tu consulta en Durango por Doctoralia, con el enlace en la biografía, o escríbeme por WhatsApp si tienes dudas de horario.",
+  "pilar": "temporada invernal",
+  "objetivo": "comentar",
+  "nota": "6 láminas. Otitis como complicación frecuente del catarro. Señales en bebés que no hablan: se jala la oreja, llora al acostarse, no quiere comer. Lo que no: cotonetes, aceites o gotas caseras. Cuándo acudir: fiebre alta, secreción del oído, menor de 6 meses, dolor que no cede. Pregunta: ¿a cuántas otitis han sobrevivido en casa?",
+  "hashtags": [
+    "#OtitisMedia",
+    "#TemporadaDeCatarros",
+    "#PediatriaParaMamas",
+    "#SaludInfantil",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*Después del catarro,* **el dolor de oído**",
+      "pregunta": "Se jala la oreja",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/despues-del-catarro-el-dolor-de-oido-lo-que-si-y-lo-que-no/pexels-18795133.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Priyanka Jagga",
+        "url": "https://www.pexels.com/photo/woman-hugging-her-son-18795133/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**CONFIESA**\nque pasó *a las 3 am*",
+      "bajada": "El catarro ya iba de salida y empezó otra cosa.",
+      "cuerpo": "Son las tres de la mañana. El catarro ya iba de bajada y de repente llora distinto: lo acuestas y llora más, se toca la oreja, no quiere el pecho ni el biberón. No estás exagerando ni te lo estás inventando. Pasa muy seguido en esta temporada y tiene explicación.",
+      "visual": {
+        "clase": "icono",
+        "slug": "alarm-clock-showing-3-am",
+        "iconoSugerido": "alarm clock showing 3 am"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "El oído se tapa desde la nariz, no desde afuera.",
+      "cuerpo": "El oído medio se conecta con la nariz por un tubito. En los niños pequeños ese tubo es más corto y más horizontal: cuando hay mocos se tapa fácil y el líquido se queda ahí. Por eso la otitis suele aparecer unos días después del catarro, no antes.",
+      "visual": {
+        "clase": "icono",
+        "slug": "anatomical-ear-model-toy",
+        "iconoSugerido": "anatomical ear model toy"
+      },
+      "fuente": "KidsHealth · AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Es que* **le entró aire\"**",
+      "bajada": "El gorro abriga. No previene la infección del oído.",
+      "cuerpo": "La otitis más común de esta edad ocurre detrás del tímpano, en un espacio cerrado. No entra por fuera: no la causa el viento, ni el baño, ni dormir sin gorro. Viene por dentro, desde la nariz. Abriga a tu hijo porque hace frío, no porque eso le vaya a salvar el oído.",
+      "visual": {
+        "clase": "icono",
+        "slug": "knitted-winter-hat",
+        "iconoSugerido": "knitted winter hat"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que **no** va *dentro del oído*",
+      "bajada": "Todas hemos buscado algo que calme rápido.",
+      "cuerpo": "Cotonetes, aceite tibio, ajo, gotitas de hierbas o las gotas que le sirvieron a otro niño: nada de eso debe entrar al oído. Si el tímpano está perforado, meter líquido empeora el cuadro, y el cotonete empuja la cera y lastima. El dolor se maneja con lo que tu pediatra indique.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "cotton swabs and small dropper bottle"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Cómo se ve en un bebé **que no habla**",
+      "puntos": [
+        "→ **Se jala la oreja**: se la toca o se la frota una y otra vez, sobre todo si trae catarro.",
+        "→ **Llora al acostarse**: acostado le molesta más; erguido o en brazos se calma un poco.",
+        "→ **No quiere comer**: succionar y tragar mueven el oído, y entonces suelta el pecho o el biberón.",
+        "→ **Duerme a ratos**: se despierta varias veces aunque ya respiraba mejor que los días anteriores.",
+        "→ **Anda irritable**: está raro, pegajoso, llora distinto. Tú lo notas antes que nadie."
+      ],
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Cuándo sí **vale la consulta**",
+      "bajada": "Guarda esto: es la lámina que vas a buscar de noche.",
+      "cuerpo": "Llévalo a revisión si hay fiebre alta, si sale líquido o pus del oído, si tiene menos de 6 meses o si el dolor lleva más de un par de días y no cede. Revisar el tímpano toma menos de un minuto, y con eso se decide si necesita antibiótico o no.",
+      "visual": {
+        "clase": "icono",
+        "slug": "digital-thermometer",
+        "iconoSugerido": "digital thermometer"
+      },
+      "fuente": "AAP · Mayo Clinic"
+    }
+  ]
+}

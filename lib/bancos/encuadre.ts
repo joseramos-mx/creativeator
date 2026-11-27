@@ -30,6 +30,15 @@ export const CAJA_CONTENIDO: Caja = { ancho: 745, alto: 341 };
 export const CAJA_PORTADA: Caja = { ancho: 1080, alto: 1350 };
 
 /**
+ * La caja de un slide según su plantilla. En `foto` todos los slides son foto
+ * a sangre, así que la de contenido también es el lienzo entero: pedirle al
+ * banco una apaisada ahí es repetir el error de arriba al revés.
+ */
+export function cajaDe(tipo: string, plantilla: string | undefined): Caja {
+  return tipo === 'portada' || plantilla === 'foto' ? CAJA_PORTADA : CAJA_CONTENIDO;
+}
+
+/**
  * Por debajo de esto la foto ya no es la foto: es un fragmento suyo.
  *
  * La mitad es generoso a propósito. Recortar es normal —casi nada encaja

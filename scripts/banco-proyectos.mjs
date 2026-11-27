@@ -251,7 +251,8 @@ for (const id of listarProyectos()) {
     const post = JSON.parse(readFileSync(join(rr.posts, archivo), 'utf8'));
     const fotos = post.slides.flatMap((s) => [s.foto, s.visual?.clase === 'foto' ? s.visual.src : undefined]);
     for (const src of fotos.filter((f) => f && f !== FOTO_PENDIENTE)) {
-      if (!src.startsWith(`/proyectos/${id}/media/`)) ajenas.push(`${archivo}: ${src}`);
+      // Las de su banco propio (fotos/) tampoco se copian: también son suyas.
+      if (!src.startsWith(`/proyectos/${id}/media/`) && !src.startsWith(`/proyectos/${id}/fotos/`)) ajenas.push(`${archivo}: ${src}`);
       else if (!existsSync(join(process.cwd(), 'public', src))) perdidas.push(`${archivo}: ${src}`);
     }
   }

@@ -1,0 +1,101 @@
+{
+  "slug": "pitiriasis-rosada-la-mancha-heraldo-que-avisa",
+  "tema": "Pitiriasis rosada: la mancha heraldo que avisa",
+  "creado": "2026-12-21",
+  "estado": "borrador",
+  "paleta": "fucsia",
+  "copy": "Una mancha grande primero. Después, muchas chiquitas 🔍\n\nSi a tu hijo le salió una sola mancha ovalada en el tronco y una o dos semanas más tarde se le llenó la espalda de manchitas, seguramente es pitiriasis rosada. Es de esas cosas que asustan por cómo se ven, no por lo que son. Y ahora, entre sudaderas, cobijas y baños calientes, la comezón se nota más: por eso es cuando los papás llegan a consulta.\n\n🔍 Cómo reconocerla: empieza con la mancha heraldo, ovalada, de dos a diez centímetros, rosada o café y con el borde un poco escamoso. Días o semanas después salen manchas pequeñas en el tronco, que en la espalda se acomodan en diagonal, como las ramas de un pino (AAD).\n\n⚠️ ¿Se le pega a los demás?: no se considera contagiosa. No hace falta aislar al niño ni sacarlo de la escuela, y el cuadro suele irse solo en unas seis a ocho semanas (AAD y StatPearls).\n\n✅ Qué hacer mientras se va: baños cortos con agua tibia, humectante sin perfume con la piel todavía húmeda y ropa de algodón holgada. El calor y el sudor suben la comezón. Y no le pongas cremas para hongos por tu cuenta: no es hongo (AAD).\n\n⚡ Ojo con esto: la tiña suele ser una sola placa con borde elevado que crece en forma de anillo, sin decenas de manchitas alrededor. El eccema pica mucho más y no respeta esa forma ovalada tan pareja. En adolescentes, el médico a veces pide estudios para descartar otras causas que se ven parecidas. Por eso la mancha heraldo importa tanto: es el dato que ordena el diagnóstico.\n\n🔖 Guarda este carrusel: la pitiriasis rosada dura semanas, y en la tercera o cuarta vas a querer revisar si lo que estás viendo sigue el camino normal o ya toca valoración. Tenerlo guardado te evita volver a buscar a las once de la noche. Y mándaselo a la mamá que anda preguntando en el chat del salón qué son esas manchas: le ahorra el susto completo.\n\n💬 ¿Cuánto tardaron en salir las manchitas después de la primera mancha? Cuéntamelo aquí abajo.\n\n📲 ¿Tu hijo tiene una mancha grande y luego muchas chiquitas? Te lo valoro en consulta y descartamos lo que no es. Agenda en Doctoralia, con el enlace en la biografía.",
+  "pilar": "Ciencia que entiendes",
+  "objetivo": "guardar",
+  "nota": "Tema nuevo. Una mancha grande primero y luego muchas pequeñas en forma de árbol; suele irse sola; descartar otras causas. Fuente sugerida: AAD y DermNet",
+  "hashtags": [
+    "#PitiriasisRosada",
+    "#ManchaHeraldo",
+    "#DermatologiaPediatrica",
+    "#ManchasEnLaPiel",
+    "#DermatologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*La mancha que*\n**avisa primero**",
+      "pregunta": "¿Y luego salen más?",
+      "foto": "/proyectos/dr-edwin/media/pitiriasis-rosada-la-mancha-heraldo-que-avisa/pexels-8472954.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "MART  PRODUCTION",
+        "url": "https://www.pexels.com/photo/a-man-wearing-plaid-shirt-in-bed-8472954/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 100
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Qué es la* **pitiriasis rosada?**",
+      "bajada": "Una erupción pasajera que empieza con una sola mancha.",
+      "cuerpo": "Primero aparece una sola mancha ovalada, más grande que las demás, casi siempre en el pecho, la espalda o la panza. Se llama mancha heraldo porque avisa. Días o semanas después salen muchas manchitas chiquitas alrededor. No es hongo, no es alergia y no es por algo que comió.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "herald trumpet"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**Primero una,**\n*luego muchas.*",
+      "bajada": "En la espalda se acomodan como las ramas de un pino.",
+      "cuerpo": "La mancha heraldo mide de dos a diez centímetros y es ovalada, rosada o café, con el borde un poco escamoso. Una o dos semanas después salen manchas pequeñas en el tronco. En la espalda se acomodan en diagonal, como las ramas de un pino.",
+      "visual": {
+        "clase": "icono",
+        "slug": "pine-tree-in-a-stand",
+        "iconoSugerido": "pine tree"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Se le pega* **a los demás?**",
+      "bajada": "No se considera contagiosa: puede seguir yendo a la escuela.",
+      "cuerpo": "No hay pruebas de que pase de un niño a otro, así que no hace falta aislarlo ni sacarlo de la escuela. Se cree que detrás hay un virus común, pero no se comporta como la varicela. Y se va sola: suele desaparecer en seis a ocho semanas.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/pitiriasis-rosada-la-mancha-heraldo-que-avisa/pexels-31155018.jpg",
+        "ideaImagen": "Un salón de clases con niños sentados en sus bancas trabajando, ambiente cotidiano de escuela primaria, nada de consultorio ni de niños enfermos.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "This And No Internet 25",
+          "url": "https://www.pexels.com/photo/students-focused-on-school-test-in-classroom-31155018/"
+        }
+      },
+      "fuente": "AAD y StatPearls"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Qué hacer* **mientras se va**",
+      "puntos": [
+        "Baños cortos con agua tibia, nunca caliente: el calor sube la comezón.",
+        "Humectante sin perfume apenas sale del baño, con la piel todavía húmeda.",
+        "Ropa de algodón holgada; la ropa apretada lo hace sudar y pica más.",
+        "Anota la fecha en que salió la primera mancha: ese dato ordena la consulta."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*Cuándo sí* **hay que revisarla**",
+      "bajada": "Hay manchas que se parecen y no son lo mismo.",
+      "cuerpo": "Lleva a tu hijo a valoración si la comezón no lo deja dormir, si las manchas siguen después de tres meses, o si hay fiebre y malestar junto con la erupción. También si solo hay una mancha y no salen más: puede ser tiña, un hongo, y se trata distinto.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "calendar with circled date"
+      },
+      "fuente": "Mayo Clinic y StatPearls"
+    }
+  ]
+}

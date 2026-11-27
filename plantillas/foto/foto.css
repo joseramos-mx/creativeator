@@ -1,0 +1,212 @@
+/* plantillas/foto/foto.css
+ *
+ * Todo bajo .foto, para que conviva con las otras plantillas en la misma app.
+ * Las tipografías y los colores llegan como variables desde Slide.tsx; aquí
+ * solo va la forma. Medidas sobre 1080 × 1350, sacadas de los posts de Ahimsa
+ * Travel (capturas de 710 px de ancho, × 1,52).
+ */
+
+.foto {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  background: var(--foto-fondo);
+  color: #fff;
+  font-family: var(--foto-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+.foto--sin-foto {
+  color: var(--foto-tinta);
+}
+
+.foto__imagen {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Nada encima de la foto: va entera, sin degradados. Lo que hace legible el
+   texto es su sombra. El velo solo existe para los slides prestados. */
+.foto__velo {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+
+/* Los slides que van sobre la foto de la portada: oscurecida, para que se lea
+   que es fondo y no otra foto del viaje. */
+.foto--prestada .foto__imagen {
+  filter: blur(6px) saturate(0.9);
+  transform: scale(1.04);
+}
+
+.foto--prestada .foto__velo {
+  display: block;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* El logo abajo al centro, fuera de la zona que tapa la interfaz de Instagram. */
+.foto__logo {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.foto__logo--texto {
+  width: auto;
+  white-space: nowrap;
+  font-family: var(--foto-titulo);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.foto__area {
+  position: absolute;
+  top: 260px;
+  bottom: 260px;
+  left: 90px;
+  right: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+  zoom: var(--escala, 1);
+  z-index: 1;
+}
+
+/* La frase: serif delgada, blanca, dos renglones del mismo tamaño. */
+.foto__frase {
+  margin: 0;
+  max-width: 900px;
+  font-family: var(--foto-titulo);
+  font-weight: 400;
+  font-size: 78px;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  text-transform: var(--foto-mayusculas);
+  white-space: pre-line;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.foto__renglon {
+  display: block;
+  text-wrap: balance;
+}
+
+.foto__frase--larga {
+  font-size: 60px;
+}
+
+.foto--sin-foto .foto__frase {
+  text-shadow: none;
+}
+
+/* ── estilo texto: título y párrafo en la mitad de abajo ── */
+
+.foto--texto .foto__area {
+  top: auto;
+  bottom: 190px;
+  height: 640px;
+  justify-content: flex-end;
+  gap: 22px;
+}
+
+.foto--texto .foto__frase {
+  font-size: 64px;
+  line-height: 1.1;
+}
+
+.foto--texto .foto__cuerpo {
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.38;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55), 0 2px 22px rgba(0, 0, 0, 0.55);
+}
+
+/* ── estilo imagen: casi solo la foto ── */
+
+.foto--imagen .foto__area {
+  top: auto;
+  bottom: 160px;
+  height: 120px;
+  justify-content: flex-end;
+}
+
+.foto__pie {
+  margin: 0;
+  font-family: var(--foto-titulo);
+  font-style: italic;
+  font-size: 36px;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.foto__cuerpo,
+.foto__puntos {
+  margin: 0;
+  max-width: 820px;
+  font-size: 32px;
+  line-height: 1.4;
+  white-space: pre-line;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+.foto__puntos {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.foto__cuerpo b,
+.foto__puntos b {
+  font-weight: 700;
+}
+
+.foto__fuente {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 48px;
+  font-size: 18px;
+  opacity: 0.8;
+  text-align: center;
+  z-index: 2;
+}
+
+/* ── cierre ── */
+
+.foto__lugar {
+  margin: 0;
+  font-family: var(--foto-titulo);
+  font-size: 56px;
+  line-height: 1.1;
+}
+
+.foto__invitacion {
+  margin: 0;
+  font-size: 32px;
+}
+
+.foto__plataforma {
+  max-width: 420px;
+  max-height: 120px;
+}
+
+.foto__plataforma--texto {
+  margin: 0;
+  font-size: 44px;
+  font-weight: 700;
+}

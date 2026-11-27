@@ -230,7 +230,7 @@ function Rejilla({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={c.vista} alt={c.descripcion} loading="lazy" />
           <span>
-            {bajando === c.id ? 'bajando…' : c.credito?.autor}
+            {bajando === c.id ? 'bajando…' : c.proveedor === 'propia' ? 'de la cuenta' : c.credito?.autor}
             {'porque' in c ? <em> · {c.porque}</em> : null}
           </span>
         </button>

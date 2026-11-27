@@ -1,0 +1,106 @@
+{
+  "slug": "europa-verano-2027-reserva-antes-de-enero",
+  "tema": "Europa verano 2027: reserva antes de enero",
+  "creado": "2026-11-11",
+  "estado": "borrador",
+  "paleta": "turquesa",
+  "copy": "El verano 2027 se arma en enero, no en mayo.\n\nLos vuelos a Europa para julio y agosto abren venta con mucha anticipación, y las tarifas cómodas son las primeras que se agotan.\nLos hoteles bien ubicados —los que te ahorran transporte, tiempo y berrinches— son los que primero se llenan en temporada alta.\nLos trenes entre ciudades también abren venta con meses de antelación: llegar tarde casi siempre significa pagar más por el mismo asiento.\nY si tu viaje necesita trámites o renovación de pasaporte, revisa los requisitos en el sitio de la SRE con calma, no en mayo.\nPaquetes desde [PRECIO] por persona, sujetos a disponibilidad.\n\nViví en Francia y recorrí Europa con presupuesto de mochilera: el mejor descuento que existe siempre fue el tiempo.\n\nComenta EUROPA y te mando mi checklist ✈️",
+  "pilar": "Europa con criterio",
+  "objetivo": "comentar",
+  "nota": "Formato A, fotos con frase. Por qué el verano 2027 se reserva antes de enero: vuelos, hospedaje y disponibilidad. Fotos propias de Francia e Italia. CTA comenta EUROPA.",
+  "hashtags": [
+    "#EuropaATuMedida",
+    "#ViajarEnFamilia",
+    "#VeranoEnEuropa",
+    "#ViajesQueInspiran",
+    "#EuropaDesdeCDMX"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "Verano 2027\nSe reserva en enero",
+      "pregunta": "",
+      "foto": "/proyectos/ahimsatravel/fotos/francia/paris/3f657d7a.jpg",
+      "fotoCredito": {
+        "fuente": "Proporcionada por la cuenta",
+        "licencia": "Uso autorizado por la cuenta"
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Reservar en abril\nsale caro",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/rennes/3d13afa5.jpg",
+        "ideaImagen": "Calle empedrada vacía de Florencia a primera hora, sin gente en el centro del encuadre",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "El hotel que querías\nya no está",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/italia/florencia/5246124b.jpg",
+        "ideaImagen": "Vista amplia de los techos de Florencia con el Duomo al fondo y cielo despejado arriba",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Saint-Malo, sin filas",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/saint-malo/831772e0.jpg",
+        "ideaImagen": "Mujer apoyada en una baranda frente al mar en Saint-Malo, momento real de viaje",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "imagen"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Pagar doble\npor lo mismo",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/paris/48d3a086.jpg",
+        "ideaImagen": "Vista desde el interior de la pirámide de vidrio del Louvre hacia el cielo azul, centro limpio",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Enero se planea\nJulio se vive",
+      "cuerpo": "",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/ahimsatravel/fotos/francia/saint-malo/f50c193a.jpg",
+        "ideaImagen": "Callejón empedrado y vacío entre edificios de piedra en el casco antiguo de Saint-Malo",
+        "credito": {
+          "fuente": "Proporcionada por la cuenta",
+          "licencia": "Uso autorizado por la cuenta"
+        }
+      },
+      "estilo": "frase"
+    }
+  ]
+}

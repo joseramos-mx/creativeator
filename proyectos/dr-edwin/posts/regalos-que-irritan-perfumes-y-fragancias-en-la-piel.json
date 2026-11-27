@@ -1,0 +1,99 @@
+{
+  "slug": "regalos-que-irritan-perfumes-y-fragancias-en-la-piel",
+  "tema": "Regalos que irritan: perfumes y fragancias en la piel",
+  "creado": "2026-12-14",
+  "estado": "borrador",
+  "paleta": "violeta",
+  "copy": "El perfume que le irrita la piel 🎁\n\nSi tu hijo estrenó una fragancia estos días y le salió una roncha roja con comezón en el cuello o las muñecas, puede ser dermatitis por contacto a fragancias. En temporada de regalos pasa más, porque llegan juntos el perfume, la crema, el jabón y el gel de baño, y todos se estrenan la misma semana.\n\n🔍 Cómo reconocerlo: aparece justo donde se aplicó —cuello, muñecas, detrás de las orejas—, rojo, con comezón y a veces con descamación, y puede tardar uno o dos días en salir (Mayo Clinic).\n\n⚠️ Por qué ahora: las fragancias están entre las causas más comunes de dermatitis por contacto, y el mismo aroma se repite en varios productos del mismo regalo (AAD).\n\n✅ Qué hacer: fragancia sobre la ropa y no sobre la piel, un producto nuevo a la vez, prueba una gota en el antebrazo varios días y lee la etiqueta: \"sin fragancia\" no es lo mismo que \"sin aroma\" (AAD).\n\n⚡ Ojo, con esto se confunde: la urticaria sale y se borra en minutos y cambia de lugar; la dermatitis atópica vive en los pliegues y viene de años atrás. La de fragancia respeta el dibujo de dónde se aplicó: el cuello, la muñeca, o el escurrido del rocío.\n\n🔖 Guárdalo ahora, porque te va a servir el día que abra los regalos: tener a la mano la regla de \"un producto nuevo a la vez\" es lo que después permite saber cuál fue. Y mándaselo a quien le va a regalar perfume, crema o un set de baño a un niño estas fiestas: es el momento exacto en que sirve.\n\n💬 ¿A tu hijo le ha salido comezón después de estrenar algo perfumado? Cuéntame dónde le salió.\n\n📲 ¿Le sale lo mismo cada temporada y no sabes con cuál producto? En consulta la prueba de parche identifica el ingrediente. Agenda en Doctoralia, el enlace está en la biografía.",
+  "pilar": "Soluciones reales",
+  "objetivo": "guardar",
+  "nota": "Temporada de regalos. Dermatitis por contacto a fragancias; dónde aplicar el perfume; prueba de parche. Fuente sugerida: AAD y DermNet",
+  "hashtags": [
+    "#DermatitisPorContacto",
+    "#RegalosDeDiciembre",
+    "#DermatologiaPediatrica",
+    "#PielSensible",
+    "#AlergologoDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "*El perfume que*\nle **irrita la piel**",
+      "pregunta": "¿Le regalaron una fragancia?",
+      "foto": "/proyectos/dr-edwin/media/regalos-que-irritan-perfumes-y-fragancias-en-la-piel/pexels-20899854.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Laura Chouette",
+        "url": "https://www.pexels.com/photo/female-model-holding-a-bottle-of-perfume-20899854/"
+      },
+      "overrides": {
+        "fotoX": 50,
+        "fotoY": 0
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "**No es su piel.**\n*Es la fragancia.*",
+      "bajada": "La fragancia es de los alérgenos de contacto más comunes.",
+      "cuerpo": "Las fragancias son una de las causas más frecuentes de dermatitis por contacto: una reacción de la piel al tocar algo. No es que su piel esté mal hecha. Es que su cuerpo reconoce ese ingrediente y responde. Y el mismo aroma viene en el perfume, en la crema y en el jabón.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "perfume bottle with spray nozzle"
+      },
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cómo sé* **que fue\nel perfume?**",
+      "bajada": "Sale donde se aplicó, pero no siempre el mismo día.",
+      "cuerpo": "Aparece justo donde se puso: cuello, muñecas, detrás de las orejas. Rojo, con comezón, a veces con descamación. Lo que confunde es el tiempo: puede tardar uno o dos días en salir. Para entonces ya nadie relaciona la roncha con el perfume del sábado.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "perfume spray on wrist"
+      },
+      "fuente": "Mayo Clinic"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*En diciembre* **estrena\ntodo el mismo día.**",
+      "bajada": "Cuatro productos nuevos en una semana borran la pista.",
+      "cuerpo": "En estas fechas llegan juntos el perfume, la crema de regalo, el jabón nuevo y el gel de baño. Todos se estrenan la misma semana. Si la piel reacciona, ya no hay forma de saber cuál fue. Por eso conviene abrir uno, usarlo unos días y después el siguiente.",
+      "visual": {
+        "clase": "foto",
+        "src": "/proyectos/dr-edwin/media/regalos-que-irritan-perfumes-y-fragancias-en-la-piel/pexels-6306056.jpg",
+        "ideaImagen": "Regalos envueltos sobre una mesa junto a un set de baño y una crema, en casa, sin personas y con espacio libre arriba.",
+        "credito": {
+          "fuente": "Pexels",
+          "licencia": "Pexels License",
+          "licenciaUrl": "https://www.pexels.com/license/",
+          "autor": "Anastasia  Shuraeva",
+          "url": "https://www.pexels.com/photo/christmas-presents-on-a-table-6306056/"
+        }
+      }
+    },
+    {
+      "tipo": "lista",
+      "titulo": "*Cuatro cosas* **antes\nde estrenarlo**",
+      "puntos": [
+        "Aplica la fragancia sobre la ropa, no directo sobre la piel.",
+        "Estrena un producto a la vez y espera unos días antes del siguiente.",
+        "Prueba una gota en el antebrazo, dos veces al día, varios días seguidos.",
+        "Lee la etiqueta: \"sin fragancia\" no es lo mismo que \"sin aroma\"."
+      ],
+      "fuente": "AAD"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*¿Cuándo* **lo revisamos?**",
+      "bajada": "Si se repite y no sabes con cuál, hay forma de saberlo.",
+      "cuerpo": "Agenda si la piel no mejora al suspender el producto, si la reacción pasa más allá de donde se aplicó, si salen ampollas o costras, o si vuelve cada temporada sin saber cuál fue. En consulta, la prueba de parche ayuda a identificar el ingrediente exacto.",
+      "visual": {
+        "clase": "icono",
+        "iconoSugerido": "allergy patch test strips"
+      },
+      "fuente": "AAD"
+    }
+  ]
+}

@@ -1,12 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BuscadorClinicas } from './BuscadorClinicas';
 import { BuscadorFotos } from './BuscadorFotos';
 import { BuscadorIconos } from './BuscadorIconos';
 import {
   FOTO_PENDIENTE,
   OVERRIDES_DEMASIADOS,
+  ajustesDe,
   borrarSlide,
   cambiarSlide,
   contarOverrides,
@@ -14,17 +15,21 @@ import {
   limpiarOverrides,
   moverSlide,
   nuevoSlide,
+  ponerEncuadre,
   ponerFotoDeBanco,
   tituloDeTarjeta,
 } from '@/lib/edicion';
 import type { NombrePaleta } from '@/plantillas/clinica/tokens';
 import type { Credito, Post, Slide } from '@/plantillas/clinica/tipos';
 import type { EstadoAjuste } from '@/plantillas/clinica/usarAjuste';
+import { useApi } from './proyecto';
 
 export type Seleccion = { slide: number; parte: 'bloque' | 'titulo' | 'cuerpo' | 'media' };
 
 type Props = {
   slide: Slide;
+  /** La plantilla `foto`: el slide elige cómo va el texto sobre la foto. */
+  conEstilos?: boolean;
   /** El slug del post: la búsqueda de fotos lo necesita para guardar. */
   slug: string;
   /** Sube una imagen propia al slide. La misma que arrastrar la foto encima. */
@@ -50,6 +55,7 @@ type Props = {
 
 export function PanelSlide({
   slide,
+  conEstilos,
   slug,
   onSubir,
   subiendo,
@@ -124,6 +130,21 @@ export function PanelSlide({
       <div className="tarjeta__cuerpo">
         <Avisos aviso={aviso} slide={slide} />
 
+        {conEstilos && (slide.tipo === 'portada' || slide.tipo === 'contenido') ? (
+          <>
+            <label>Estilo del slide</label>
+            <select
+              data-estilo
+              value={slide.estilo ?? 'frase'}
+              onChange={(e) => cambiar({ estilo: e.target.value } as Partial<Slide>)}
+            >
+              <option value="frase">frase — dos renglones grandes al centro</option>
+              <option value="texto">texto — título y un párrafo corto</option>
+              <option value="imagen">imagen — casi solo la foto, con un pie chico</option>
+            </select>
+          </>
+        ) : null}
+
         {slide.tipo === 'portada' ? (
           <>
             <label>Título — *itálica serif* y **negrita crema**</label>
@@ -143,6 +164,14 @@ export function PanelSlide({
                 cambiar({ foto: ruta, fotoCredito: credito } as Partial<Slide>)
               }
             />
+
+            {slide.foto ? (
+              <Encuadre
+                foto={slide.foto}
+                ov={slide.overrides}
+                poner={(e) => setPost((p) => ponerEncuadre(p, indice, e))}
+              />
+            ) : null}
 
             {slide.foto ? (
               <CamposCredito
@@ -377,12 +406,9 @@ function Ajustes({
   setPost: (f: (p: Post) => Post) => void;
 }) {
   if (slide.tipo === 'cierre') return null;
-  const detalle = slide.overrides
-    ? Object.entries(slide.overrides)
-        .filter(([, v]) => v !== undefined)
-        .map(([k, v]) => `${k} ${v}`)
-        .join(' · ')
-    : '';
+  const detalle = ajustesDe(slide)
+    .map(([k, v]) => `${k} ${v}`)
+    .join(' · ');
 
   return (
     <div className="ajustes">
@@ -417,6 +443,95 @@ function Ajustes({
           </button>
         </>
       )}
+    </div>
+  );
+}
+
+type ValoresEncuadre = { fotoX?: number; fotoY?: number; fotoZoom?: number };
+
+/**
+ * El encuadre de la foto de fondo: qué parte queda a la vista y cuánto se
+ * acerca. Ver plantillas/encuadre.ts y lib/foco.ts.
+ *
+ * Cuando la foto cambia —del buscador, subida, arrastrada— se encuadra sola.
+ * Al abrir el editor no: un post ya aprobado no debe cambiar por mirarlo.
+ */
+function Encuadre({
+  foto,
+  ov,
+  poner,
+}: {
+  foto: string;
+  ov: ValoresEncuadre | undefined;
+  poner: (e: ValoresEncuadre | undefined) => void;
+}) {
+  const api = useApi();
+  const [calculando, setCalculando] = useState(false);
+  const [error, setError] = useState<string>();
+  const anterior = useRef(foto);
+
+  async function automatico() {
+    setCalculando(true);
+    setError(undefined);
+    try {
+      const r = await fetch(api('/fotos/encuadre'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ src: foto }),
+      });
+      const c = await r.json();
+      if (!r.ok) throw new Error(c.error);
+      poner({ fotoX: c.fotoX, fotoY: c.fotoY });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'No se pudo encuadrar.');
+    } finally {
+      setCalculando(false);
+    }
+  }
+
+  useEffect(() => {
+    if (anterior.current === foto) return;
+    anterior.current = foto;
+    if (foto !== FOTO_PENDIENTE) void automatico();
+    // Solo cuando cambia la foto; `automatico` lee la foto nueva.
+  }, [foto]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const x = ov?.fotoX ?? 50;
+  const y = ov?.fotoY ?? 50;
+  const zoom = ov?.fotoZoom ?? 1;
+  const mover = (cambio: ValoresEncuadre) => poner({ fotoX: x, fotoY: y, fotoZoom: zoom, ...cambio });
+
+  return (
+    <div className="encuadre">
+      <label>Encuadre de la foto</label>
+      <label className="encuadre__fila">
+        <span>← →</span>
+        <input type="range" min={0} max={100} step={1} value={x} onChange={(e) => mover({ fotoX: Number(e.target.value) })} />
+      </label>
+      <label className="encuadre__fila">
+        <span>↑ ↓</span>
+        <input type="range" min={0} max={100} step={1} value={y} onChange={(e) => mover({ fotoY: Number(e.target.value) })} />
+      </label>
+      <label className="encuadre__fila">
+        <span>zoom</span>
+        <input
+          type="range"
+          min={1}
+          max={2.5}
+          step={0.05}
+          value={zoom}
+          onChange={(e) => mover({ fotoZoom: Number(e.target.value) })}
+        />
+      </label>
+      <div className="fila">
+        <button type="button" className="boton sm" onClick={() => void automatico()} disabled={calculando}>
+          {calculando ? 'buscando el foco…' : 'Automático'}
+        </button>
+        <button type="button" className="boton sm" onClick={() => poner(undefined)} disabled={ov?.fotoX === undefined && ov?.fotoY === undefined && ov?.fotoZoom === undefined}>
+          como venía
+        </button>
+      </div>
+      {error ? <p className="aviso">{error}</p> : null}
     </div>
   );
 }

@@ -1,0 +1,106 @@
+{
+  "slug": "posadas-sin-sustos-reales-dulces-pinatas-y-alergias",
+  "tema": "Posadas sin sustos reales: dulces, piñatas y alergias",
+  "creado": "2026-12-04",
+  "estado": "aprobado",
+  "paleta": "azul",
+  "colores": {
+    "fondo": "#4C0519"
+  },
+  "copy": "Posadas sin sustos reales 🎄\n\nYa empezaron las posadas y con ellas la escena de siempre: se rompe la piñata, se avientan todos al piso y tu hijo de 2 años sale de ahí con un dulce duro en la boca que ni tú le diste. No es descuido tuyo, es que todo pasa en diez segundos. El atragantamiento en menores de 4 años y las alergias escondidas en los dulces de la bolsa son dos cosas que sí se pueden prevenir sin arruinarle la fiesta a nadie.\n\n🍬 \"Nada más un dulcecito\": casi siempre viene de alguien que lo quiere mucho. Nadie está haciendo nada malo; simplemente no todos saben qué dulces no van todavía.\n\n🥑 Qué dice la evidencia: antes de los 4 años se recomienda evitar dulces duros, cacahuates, nueces, palomitas y malvaviscos grandes, porque los molares que trituran aún no terminan de salir y la vía aérea es estrecha (AAP).\n\n🪅 \"Ya mastica todo bien\": sí mastica. Lo que cambia en la posada es que come corriendo, riéndose y gritando. El atragantamiento casi siempre pasa en movimiento, no sentado en la mesa.\n\n🏷️ Lo que la bolsa no dice: los dulces de piñata llegan sueltos, sin envoltura y sin lista de ingredientes. Ahí es donde se esconden cacahuate, nuez y leche, y por eso una fiesta no es el momento de estrenar un dulce nuevo si tu hijo ya tuvo una reacción (KidsHealth).\n\n✔️ El plan completo: cenen antes de salir, los chiquitos miran la piñata desde atrás, los dulces se recogen por turnos y la bolsita la abres tú primero.\n\n🔖 Guarda este post ahorita, antes de la primera posada. Te va a servir el día que estés en el patio de alguien más, con el niño en brazos y la bolsa de dulces ya repartida: abres la última lámina y en diez segundos sabes qué se queda y qué se guarda para después. Y mándaselo a quien organiza la posada de tu familia y a la mamá que va a llevar bebé: es más fácil que recordarlo todo de memoria con la música a todo volumen.\n\n💙 Si ya le diste un dulce duro en otra fiesta y no pasó nada, no eres una mala mamá: eres una mamá que no tenía este dato. Para eso está. Prevenir no es quitarle la posada a tu hijo, es cambiarle el dulce.\n\n💬 ¿Cuál es el dulce que siempre te lo dan a escondidas en las fiestas? Te leo abajo 👇\n\n📲 ¿Tu hijo ya tuvo una reacción a algún alimento o te preocupa cómo come todavía a esta edad? Eso se revisa con calma en consulta, no en el patio de la posada. Agenda en Doctoralia, el enlace está en la biografía, o escríbeme por WhatsApp. Consulta en Durango.",
+  "pilar": "prevención",
+  "objetivo": "guardar",
+  "nota": "7 láminas. Arranca la temporada de posadas y fiestas. Dulces duros y cacahuates de la piñata como riesgo de atragantamiento en menores de 4. Alergias escondidas en dulces y botanas. La piñata: los chiquitos lejos del palo y recoger dulces sin aglomeración. Cenar antes de la fiesta. Paleta navideña, nada de Halloween.",
+  "hashtags": [
+    "#Atragantamiento",
+    "#Posadas",
+    "#AlergiasAlimentarias",
+    "#CrianzaSinCulpa",
+    "#PediatraDurango"
+  ],
+  "slides": [
+    {
+      "tipo": "portada",
+      "titulo": "Posadas sin **sustos reales**",
+      "pregunta": "Dulces, piñatas y alergias",
+      "foto": "/proyectos/dra-mildreth-solis-bravo/media/posadas-sin-sustos-reales-dulces-pinatas-y-alergias/pexels-8159021.jpg",
+      "fotoCredito": {
+        "fuente": "Pexels",
+        "licencia": "Pexels License",
+        "licenciaUrl": "https://www.pexels.com/license/",
+        "autor": "Alena Darmel",
+        "url": "https://www.pexels.com/photo/smiling-boy-and-girl-looking-at-pinata-8159021/"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Nada más* **un dulcecito\"**",
+      "bajada": "Todas hemos cedido en una fiesta.",
+      "cuerpo": "Se rompe la piñata y en dos segundos tu hijo de 2 años ya tiene un dulce duro en la boca. Alguien se lo dio con todo el cariño del mundo. No vengo a juzgarte. Vengo a contarte qué pasa con esos dulces para que decidas con información.",
+      "visual": {
+        "clase": "icono",
+        "slug": "bowl-of-colorful-hard-candies",
+        "iconoSugerido": "bowl of colorful hard candies"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*La ciencia* **dice**",
+      "bajada": "Antes de los 4 años, la vía aérea es angosta.",
+      "cuerpo": "La AAP pide evitar dulces duros, cacahuates, nueces, palomitas y malvaviscos grandes antes de los 4 años. No es exageración: los molares que trituran todavía no terminan de llegar y el conducto por donde pasa el aire es estrecho. Un dulce redondo lo tapa completo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "handful-of-peanuts-in-shell",
+        "iconoSugerido": "handful of peanuts in shell"
+      },
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "*\"Ya mastica* **todo bien\"**",
+      "bajada": "Masticar no es el problema. Correr sí.",
+      "cuerpo": "Sí mastica. El problema es todo lo demás: en la posada come corriendo, se ríe con el dulce en la boca y grita cuando cae la piñata. El atragantamiento casi nunca pasa sentado y tranquilo, pasa en movimiento. Por eso el mismo dulce es otra cosa en una fiesta.",
+      "visual": {
+        "clase": "icono",
+        "slug": "striped-candy-cane",
+        "iconoSugerido": "striped candy cane"
+      }
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Lo que **la bolsa no dice**",
+      "bajada": "La mayoría de esos dulces llega sin etiqueta.",
+      "cuerpo": "Los dulces de piñata salen de una bolsa grande y llegan a tu hijo sueltos: sin envoltura, sin lista de ingredientes y sin nombre. Ahí es donde se esconden cacahuate, nuez y leche. Si tu hijo ya tuvo una reacción, la fiesta no es el lugar para estrenar un dulce nuevo.",
+      "visual": {
+        "clase": "icono",
+        "slug": "peanut-next-to-candy-wrapper-with-ingredient-label",
+        "iconoSugerido": "candy wrapper with ingredient label"
+      },
+      "fuente": "KidsHealth"
+    },
+    {
+      "tipo": "lista",
+      "titulo": "El plan para **la posada**",
+      "puntos": [
+        "→ **Cenen antes de salir** Un niño que llega con hambre come lo que sea y a la velocidad que sea.",
+        "→ **Los chiquitos, lejos del palo** Menores de 4 miran la piñata desde atrás, cargados o sentados. El palo no avisa.",
+        "→ **Dulces por turnos, no en bola** Recoger en montón es donde se empujan, se caen y se meten todo a la boca corriendo.",
+        "→ **Tú abres la bolsita** Revisa antes de dárselos: lo duro, lo redondo y lo que trae cacahuate se guarda para después.",
+        "→ **Cambios que sí funcionan** Gelatina, fruta suave, galleta blanda o chocolate que se derrite. Dulce igual, riesgo menor."
+      ],
+      "fuente": "AAP"
+    },
+    {
+      "tipo": "contenido",
+      "titulo": "Guarda esto **antes de la posada**",
+      "bajada": "Antes de los 4 años, fuera de la bolsita.",
+      "cuerpo": "Fuera: dulces duros, paletas de caramelo, cacahuates, nueces, palomitas, malvaviscos grandes y chicles. Dentro: fruta suave, gelatina, galleta blanda y chocolate que se derrite. Y si después de la fiesta aparecen ronchas, vómito, tos que no cede o le cuesta respirar, es motivo de valoración ese mismo día.",
+      "visual": {
+        "clase": "icono",
+        "slug": "christmas-gift-bag-filled-with-soft-candy",
+        "iconoSugerido": "christmas gift bag filled with soft candy"
+      },
+      "fuente": "AAP · KidsHealth"
+    }
+  ]
+}

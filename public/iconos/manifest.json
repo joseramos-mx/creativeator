@@ -1,5 +1,29 @@
 [
  {
+  "slug": "3d-baby-growth-chart-paper-with-curve",
+  "nombre": "3d baby growth chart paper with curve",
+  "etiquetas": [
+   "3d",
+   "baby",
+   "growth",
+   "chart",
+   "paper",
+   "with",
+   "curve",
+   "bebe",
+   "nino",
+   "recien-nacido"
+  ],
+  "color": "#6EB2D4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1034999,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d baby growth chart paper with curve",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "3d-crumpled-tissue",
   "nombre": "3d crumpled tissue",
   "etiquetas": [
@@ -15,6 +39,26 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "3d crumpled tissue",
   "fecha": "2026-10-09"
+ },
+ {
+  "slug": "3d-desk-calculator-with-minus-key",
+  "nombre": "3d desk calculator with minus key",
+  "etiquetas": [
+   "3d",
+   "desk",
+   "calculator",
+   "with",
+   "minus",
+   "key"
+  ],
+  "color": "#EAA795",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 890090,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d desk calculator with minus key",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "3d-medicine-bottle",
@@ -52,6 +96,25 @@
   "fecha": "2026-10-09"
  },
  {
+  "slug": "3d-purple-awareness-ribbon-knot",
+  "nombre": "3d purple awareness ribbon knot",
+  "etiquetas": [
+   "3d",
+   "purple",
+   "awareness",
+   "ribbon",
+   "knot"
+  ],
+  "color": "#B670CC",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 569576,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d purple awareness ribbon knot",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "3d-wall-calendar",
   "nombre": "3d wall calendar",
   "etiquetas": [
@@ -70,6 +133,30 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "3d wall calendar",
   "fecha": "2026-10-09"
+ },
+ {
+  "slug": "3d-wall-calendar-with-one-date-circled",
+  "nombre": "3d wall calendar with one date circled",
+  "etiquetas": [
+   "3d",
+   "wall",
+   "calendar",
+   "with",
+   "one",
+   "date",
+   "circled",
+   "calendario",
+   "cita",
+   "fecha"
+  ],
+  "color": "#A8B9CE",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1068835,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "3d wall calendar with one date circled",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "adhesive-bandage",
@@ -103,6 +190,28 @@
   "w": 1024,
   "h": 1024,
   "bytes": 800106
+ },
+ {
+  "slug": "alarm-clock-showing-3-am",
+  "nombre": "alarm clock showing 3 am",
+  "etiquetas": [
+   "alarm",
+   "clock",
+   "showing",
+   "3",
+   "am",
+   "reloj",
+   "tiempo",
+   "horas"
+  ],
+  "color": "#F3E5BA",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 991663,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "alarm clock showing 3 am",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "alerta",
@@ -139,6 +248,40 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "allergy skin prick test",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "anatomical-ear-model-toy",
+  "nombre": "anatomical ear model toy",
+  "etiquetas": [
+   "anatomical",
+   "ear",
+   "model",
+   "toy"
+  ],
+  "color": "#F3A790",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1108904,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "anatomical ear model toy",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "antibiotic-capsule",
+  "nombre": "antibiotic capsule",
+  "etiquetas": [
+   "antibiotic",
+   "capsule"
+  ],
+  "color": "#A9D4E9",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 659429,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "antibiotic capsule",
+  "fecha": "2026-11-25"
  },
  {
   "slug": "antibiotic-pill-bottle",
@@ -178,6 +321,26 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "antibiotic-syrup-bottle-with-dosing-spoon",
+  "nombre": "antibiotic syrup bottle with dosing spoon",
+  "etiquetas": [
+   "antibiotic",
+   "syrup",
+   "bottle",
+   "with",
+   "dosing",
+   "spoon"
+  ],
+  "color": "#344D8E",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 844891,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "antibiotic syrup bottle with dosing spoon",
+  "fecha": "2026-11-25"
+ },
+ {
   "slug": "appointment-calendar",
   "nombre": "appointment calendar",
   "etiquetas": [
@@ -195,6 +358,22 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "appointment calendar",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "audiometry-headphones",
+  "nombre": "audiometry headphones",
+  "etiquetas": [
+   "audiometry",
+   "headphones"
+  ],
+  "color": "#1A5669",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 786045,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "audiometry headphones",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "baby-crib",
@@ -257,6 +436,87 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "bed with pillow at night",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "bedside-alarm-clock-at-2-am",
+  "nombre": "bedside alarm clock at 2 am",
+  "etiquetas": [
+   "bedside",
+   "alarm",
+   "clock",
+   "at",
+   "2",
+   "am",
+   "reloj",
+   "tiempo",
+   "horas"
+  ],
+  "color": "#E2DDCD",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 889493,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "bedside alarm clock at 2 am",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "blue-gas-stove-flame",
+  "nombre": "blue gas stove flame",
+  "etiquetas": [
+   "blue",
+   "gas",
+   "stove",
+   "flame"
+  ],
+  "color": "#4E5253",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1226529,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "blue gas stove flame",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "bowl-of-colorful-hard-candies",
+  "nombre": "bowl of colorful hard candies",
+  "etiquetas": [
+   "bowl",
+   "of",
+   "colorful",
+   "hard",
+   "candies"
+  ],
+  "color": "#647389",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1116062,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "bowl of colorful hard candies",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "button-battery-next-to-two-magnetic-balls",
+  "nombre": "button battery next to two magnetic balls",
+  "etiquetas": [
+   "button",
+   "battery",
+   "next",
+   "to",
+   "two",
+   "magnetic",
+   "balls"
+  ],
+  "color": "#B25213",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 881466,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "button battery next to two magnetic balls",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "calendar-with-appointment-check",
@@ -324,6 +584,109 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "car-keys-on-keyring",
+  "nombre": "car keys on keyring",
+  "etiquetas": [
+   "car",
+   "keys",
+   "on",
+   "keyring"
+  ],
+  "color": "#ACACAC",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 825783,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "car keys on keyring",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "child-bed-at-night",
+  "nombre": "child bed at night",
+  "etiquetas": [
+   "child",
+   "bed",
+   "at",
+   "night",
+   "nino",
+   "peque",
+   "hijo",
+   "cama",
+   "sabanas",
+   "colchon"
+  ],
+  "color": "#90C4E3",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 769626,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "child bed at night",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "child-health-record-booklet",
+  "nombre": "child health record booklet",
+  "etiquetas": [
+   "child",
+   "health",
+   "record",
+   "booklet",
+   "nino",
+   "peque",
+   "hijo"
+  ],
+  "color": "#77C7D0",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 996609,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "child health record booklet",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "children-eye-test-chart-poster",
+  "nombre": "children eye test chart poster",
+  "etiquetas": [
+   "children",
+   "eye",
+   "test",
+   "chart",
+   "poster"
+  ],
+  "color": "#6F7784",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 729164,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "children eye test chart poster",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "christmas-gift-bag-filled-with-soft-candy",
+  "nombre": "christmas gift bag filled with soft candy",
+  "etiquetas": [
+   "christmas",
+   "gift",
+   "bag",
+   "filled",
+   "with",
+   "soft",
+   "candy"
+  ],
+  "color": "#902C26",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1225994,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "christmas gift bag filled with soft candy",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "closed-house-window",
   "nombre": "closed house window",
   "etiquetas": [
@@ -389,6 +752,26 @@
   "w": 1024,
   "h": 1024,
   "bytes": 857648
+ },
+ {
+  "slug": "cotton-swabs-and-small-dropper-bottle",
+  "nombre": "cotton swabs and small dropper bottle",
+  "etiquetas": [
+   "cotton",
+   "swabs",
+   "and",
+   "small",
+   "dropper",
+   "bottle"
+  ],
+  "color": "#ADD2D1",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 817040,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "cotton swabs and small dropper bottle",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "cough-syrup-bottle-with-measuring-spoon",
@@ -544,6 +927,23 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "empty-dining-chair",
+  "nombre": "empty dining chair",
+  "etiquetas": [
+   "empty",
+   "dining",
+   "chair"
+  ],
+  "color": "#F19371",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 467783,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "empty dining chair",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "empty-picture-frame",
   "nombre": "empty picture frame",
   "etiquetas": [
@@ -595,6 +995,25 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "folded-wool-scarf-3d-render",
+  "nombre": "folded wool scarf 3D render",
+  "etiquetas": [
+   "folded",
+   "wool",
+   "scarf",
+   "3d",
+   "render"
+  ],
+  "color": "#F7D771",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 843553,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "folded wool scarf 3D render",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "fork-with-clock",
   "nombre": "fork with clock",
   "etiquetas": [
@@ -615,6 +1034,24 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "framed-photo-with-candle",
+  "nombre": "framed photo with candle",
+  "etiquetas": [
+   "framed",
+   "photo",
+   "with",
+   "candle"
+  ],
+  "color": "#4D8C96",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1173352,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "framed photo with candle",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "fridge-with-magnet-holding-a-note",
   "nombre": "fridge with magnet holding a note",
   "etiquetas": [
@@ -633,6 +1070,26 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "fridge with magnet holding a note",
   "fecha": "2026-10-08"
+ },
+ {
+  "slug": "gas-water-heater",
+  "nombre": "gas water heater",
+  "etiquetas": [
+   "gas",
+   "water",
+   "heater",
+   "agua",
+   "hidratacion",
+   "bano"
+  ],
+  "color": "#9299A5",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 959568,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "gas water heater",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "glass-of-milk-next-to-a-peanut",
@@ -720,6 +1177,44 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "handful-of-peanuts-in-shell",
+  "nombre": "handful of peanuts in shell",
+  "etiquetas": [
+   "handful",
+   "of",
+   "peanuts",
+   "in",
+   "shell"
+  ],
+  "color": "#C7986B",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 757538,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "handful of peanuts in shell",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "height-measuring-ruler-for-children",
+  "nombre": "height measuring ruler for children",
+  "etiquetas": [
+   "height",
+   "measuring",
+   "ruler",
+   "for",
+   "children"
+  ],
+  "color": "#DAAC52",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 550267,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "height measuring ruler for children",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "hives-welts",
   "nombre": "hives welts",
   "etiquetas": [
@@ -767,6 +1262,43 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "hourglass-3d-render",
+  "nombre": "hourglass 3D render",
+  "etiquetas": [
+   "hourglass",
+   "3d",
+   "render"
+  ],
+  "color": "#2D5157",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 828437,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "hourglass 3D render",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "house-with-closed-windows-at-night",
+  "nombre": "house with closed windows at night",
+  "etiquetas": [
+   "house",
+   "with",
+   "closed",
+   "windows",
+   "at",
+   "night"
+  ],
+  "color": "#30356D",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 704686,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "house with closed windows at night",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "ice-cube",
   "nombre": "ice cube",
   "etiquetas": [
@@ -786,6 +1318,27 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "ice-cube-with-stopwatch",
+  "nombre": "ice cube with stopwatch",
+  "etiquetas": [
+   "ice",
+   "cube",
+   "with",
+   "stopwatch",
+   "hielo",
+   "frio",
+   "compresa"
+  ],
+  "color": "#B6D8E9",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1039164,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "ice cube with stopwatch",
+  "fecha": "2026-11-25"
+ },
+ {
   "slug": "informacion",
   "nombre": "informacion",
   "etiquetas": [
@@ -798,6 +1351,27 @@
   "w": 1024,
   "h": 1024,
   "bytes": 1414167
+ },
+ {
+  "slug": "inhaler-with-daily-calendar",
+  "nombre": "inhaler with daily calendar",
+  "etiquetas": [
+   "inhaler",
+   "with",
+   "daily",
+   "calendar",
+   "calendario",
+   "cita",
+   "fecha"
+  ],
+  "color": "#F0EDE2",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1091764,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "inhaler with daily calendar",
+  "fecha": "2026-11-25"
  },
  {
   "slug": "jigsaw-puzzle-with-one-missing-piece",
@@ -838,6 +1412,23 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "knitted baby hat",
   "fecha": "2026-10-08"
+ },
+ {
+  "slug": "knitted-winter-hat",
+  "nombre": "knitted winter hat",
+  "etiquetas": [
+   "knitted",
+   "winter",
+   "hat"
+  ],
+  "color": "#B4946E",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1292062,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "knitted winter hat",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "knitted-winter-scarf",
@@ -882,6 +1473,23 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "leftover pill bottle with child-proof cap",
   "fecha": "2026-10-08"
+ },
+ {
+  "slug": "liquid-nitrogen-canister",
+  "nombre": "liquid nitrogen canister",
+  "etiquetas": [
+   "liquid",
+   "nitrogen",
+   "canister"
+  ],
+  "color": "#B0B0B0",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 844837,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "liquid nitrogen canister",
+  "fecha": "2026-11-25"
  },
  {
   "slug": "lit-candle-on-windowsill",
@@ -935,6 +1543,24 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "lp-gas-cylinder-tank",
+  "nombre": "lp gas cylinder tank",
+  "etiquetas": [
+   "lp",
+   "gas",
+   "cylinder",
+   "tank"
+  ],
+  "color": "#354E6B",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 796672,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "lp gas cylinder tank",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "lupa",
   "nombre": "Lupa",
   "etiquetas": [
@@ -954,6 +1580,27 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "Una lupa clásica: aro y mango, con la lente de vidrio transparente",
   "fecha": "2026-09-06"
+ },
+ {
+  "slug": "melanin-pigment-drop-fading",
+  "nombre": "melanin pigment drop fading",
+  "etiquetas": [
+   "melanin",
+   "pigment",
+   "drop",
+   "fading",
+   "gota",
+   "humedad",
+   "suero"
+  ],
+  "color": "#724B32",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 910323,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "melanin pigment drop fading",
+  "fecha": "2026-11-25"
  },
  {
   "slug": "moisturizer-tube",
@@ -1009,6 +1656,43 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "open-window-fresh-air",
+  "nombre": "open window fresh air",
+  "etiquetas": [
+   "open",
+   "window",
+   "fresh",
+   "air"
+  ],
+  "color": "#92D1AC",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1228225,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "open window fresh air",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "pair-of-lungs-3d-render",
+  "nombre": "pair of lungs 3D render",
+  "etiquetas": [
+   "pair",
+   "of",
+   "lungs",
+   "3d",
+   "render"
+  ],
+  "color": "#EA898C",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 935392,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "pair of lungs 3D render",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "palomita-verde",
   "nombre": "palomita-verde",
   "etiquetas": [
@@ -1050,6 +1734,57 @@
   "fecha": "2026-10-08"
  },
  {
+  "slug": "pinched-drinking-straw",
+  "nombre": "pinched drinking straw",
+  "etiquetas": [
+   "pinched",
+   "drinking",
+   "straw"
+  ],
+  "color": "#77C7BB",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 504757,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "pinched drinking straw",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "pine-tree-in-a-stand",
+  "nombre": "pine tree in a stand",
+  "etiquetas": [
+   "pine",
+   "tree",
+   "in",
+   "a",
+   "stand"
+  ],
+  "color": "#717170",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 643215,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "pine tree in a stand",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "popsicle",
+  "nombre": "popsicle",
+  "etiquetas": [
+   "popsicle"
+  ],
+  "color": "#F18C96",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 849019,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "popsicle",
+  "fecha": "2026-11-25"
+ },
+ {
   "slug": "preservativo",
   "nombre": "preservativo",
   "etiquetas": [
@@ -1082,6 +1817,38 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "rescue-inhaler",
+  "nombre": "rescue inhaler",
+  "etiquetas": [
+   "rescue",
+   "inhaler"
+  ],
+  "color": "#3A5579",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 578035,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "rescue inhaler",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "running-sneakers",
+  "nombre": "running sneakers",
+  "etiquetas": [
+   "running",
+   "sneakers"
+  ],
+  "color": "#6E93D2",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 868652,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "running sneakers",
+  "fecha": "2026-11-25"
+ },
+ {
   "slug": "serum-dropper-bottle",
   "nombre": "serum dropper bottle",
   "etiquetas": [
@@ -1097,6 +1864,27 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "serum dropper bottle",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "shower-head-with-steam",
+  "nombre": "shower head with steam",
+  "etiquetas": [
+   "shower",
+   "head",
+   "with",
+   "steam",
+   "regadera",
+   "bano",
+   "ducha"
+  ],
+  "color": "#6E798C",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 795342,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "shower head with steam",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "silencio",
@@ -1135,6 +1923,51 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "skin layers cross section",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "skin-prick-test-tray-with-allergen-droppers",
+  "nombre": "skin prick test tray with allergen droppers",
+  "etiquetas": [
+   "skin",
+   "prick",
+   "test",
+   "tray",
+   "with",
+   "allergen",
+   "droppers",
+   "piel",
+   "cutis",
+   "dermis"
+  ],
+  "color": "#8DB1D6",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 727646,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "skin prick test tray with allergen droppers",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "small-bed-with-pillow",
+  "nombre": "small bed with pillow",
+  "etiquetas": [
+   "small",
+   "bed",
+   "with",
+   "pillow",
+   "cama",
+   "sabanas",
+   "colchon"
+  ],
+  "color": "#B1C8D4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 672724,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "small bed with pillow",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "small-kids-chair-with-plate-on-table",
@@ -1177,6 +2010,28 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "small knitted baby bootie",
   "fecha": "2026-10-08"
+ },
+ {
+  "slug": "smartphone-with-shopping-cart-full-of-toy-boxes",
+  "nombre": "smartphone with shopping cart full of toy boxes",
+  "etiquetas": [
+   "smartphone",
+   "with",
+   "shopping",
+   "cart",
+   "full",
+   "of",
+   "toy",
+   "boxes"
+  ],
+  "color": "#8D97AC",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1221859,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "smartphone with shopping cart full of toy boxes",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "snowflake",
@@ -1259,6 +2114,23 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "stopwatch",
   "fecha": "2026-09-07"
+ },
+ {
+  "slug": "striped-candy-cane",
+  "nombre": "striped candy cane",
+  "etiquetas": [
+   "striped",
+   "candy",
+   "cane"
+  ],
+  "color": "#F1706C",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 568217,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "striped candy cane",
+  "fecha": "2026-11-09"
  },
  {
   "slug": "stud-earring",
@@ -1360,6 +2232,51 @@
   "fecha": "2026-09-07"
  },
  {
+  "slug": "toilet-paper-tube-with-small-toy-pieces-beside-it",
+  "nombre": "toilet paper tube with small toy pieces beside it",
+  "etiquetas": [
+   "toilet",
+   "paper",
+   "tube",
+   "with",
+   "small",
+   "toy",
+   "pieces",
+   "beside",
+   "it"
+  ],
+  "color": "#714E35",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 721620,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "toilet paper tube with small toy pieces beside it",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "toy-box-label-tag-with-3-age-mark",
+  "nombre": "toy box label tag with 3+ age mark",
+  "etiquetas": [
+   "toy",
+   "box",
+   "label",
+   "tag",
+   "with",
+   "3",
+   "age",
+   "mark"
+  ],
+  "color": "#AAD0D0",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 800123,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "toy box label tag with 3+ age mark",
+  "fecha": "2026-11-09"
+ },
+ {
   "slug": "traffic-light",
   "nombre": "traffic light",
   "etiquetas": [
@@ -1374,6 +2291,44 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "traffic light",
   "fecha": "2026-10-22"
+ },
+ {
+  "slug": "two-inhalers-side-by-side",
+  "nombre": "two inhalers side by side",
+  "etiquetas": [
+   "two",
+   "inhalers",
+   "side",
+   "by"
+  ],
+  "color": "#266978",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 605252,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "two inhalers side by side",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "two-week-calendar",
+  "nombre": "two week calendar",
+  "etiquetas": [
+   "two",
+   "week",
+   "calendar",
+   "calendario",
+   "cita",
+   "fecha"
+  ],
+  "color": "#E4E4E3",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1049083,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "two week calendar",
+  "fecha": "2026-11-25"
  },
  {
   "slug": "vaccine-vial",
@@ -1407,5 +2362,135 @@
   "proveedor": "gemini-3.1-flash-image",
   "prompt": "virus particle 3d",
   "fecha": "2026-10-22"
+ },
+ {
+  "slug": "wall-calendar-with-a-circled-date",
+  "nombre": "wall calendar with a circled date",
+  "etiquetas": [
+   "wall",
+   "calendar",
+   "with",
+   "a",
+   "circled",
+   "date",
+   "calendario",
+   "cita",
+   "fecha"
+  ],
+  "color": "#94A7CC",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1261709,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wall calendar with a circled date",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "wooden-hourglass",
+  "nombre": "wooden hourglass",
+  "etiquetas": [
+   "wooden",
+   "hourglass"
+  ],
+  "color": "#CFAF8B",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 949482,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wooden hourglass",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "wooden-rocking-chair-with-cushion",
+  "nombre": "wooden rocking chair with cushion",
+  "etiquetas": [
+   "wooden",
+   "rocking",
+   "chair",
+   "with",
+   "cushion"
+  ],
+  "color": "#B5944C",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 908433,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wooden rocking chair with cushion",
+  "fecha": "2026-11-09"
+ },
+ {
+  "slug": "woods-lamp-ultraviolet-exam",
+  "nombre": "woods lamp ultraviolet exam",
+  "etiquetas": [
+   "woods",
+   "lamp",
+   "ultraviolet",
+   "exam"
+  ],
+  "color": "#CDABEB",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 923306,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "woods lamp ultraviolet exam",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "wool-mitten",
+  "nombre": "wool mitten",
+  "etiquetas": [
+   "wool",
+   "mitten"
+  ],
+  "color": "#8DB2DA",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 937225,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wool mitten",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "wool-sock",
+  "nombre": "wool sock",
+  "etiquetas": [
+   "wool",
+   "sock"
+  ],
+  "color": "#D26D46",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 764299,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wool sock",
+  "fecha": "2026-11-25"
+ },
+ {
+  "slug": "wrapped-toy-gift-box-with-a-checklist-tag",
+  "nombre": "wrapped toy gift box with a checklist tag",
+  "etiquetas": [
+   "wrapped",
+   "toy",
+   "gift",
+   "box",
+   "with",
+   "a",
+   "checklist",
+   "tag"
+  ],
+  "color": "#9366C4",
+  "w": 1024,
+  "h": 1024,
+  "bytes": 1138646,
+  "origen": "generado",
+  "proveedor": "gemini-3.1-flash-image",
+  "prompt": "wrapped toy gift box with a checklist tag",
+  "fecha": "2026-11-09"
  }
 ]

@@ -8,8 +8,17 @@ import { NOMBRES_PALETA } from '@/plantillas/clinica/tokens';
 import { paletaDelPost, paletaPorDefectoDe, paletasDe } from '@/plantillas/paletas';
 import { MODELO_REDACCION } from './modelo';
 import { repartir } from './variedad';
-import { CAJA_CONTENIDO, CAJA_PORTADA, bancoDe, cribar, porEncuadre } from './bancos';
+import { bancoDe, cajaDe, cribar, porEncuadre } from './bancos';
+import {
+  PROVEEDOR as PROVEEDOR_PROPIO,
+  aCandidato as candidatoPropio,
+  automaticas,
+  catalogoParaPrompt,
+  leerCatalogo,
+  type FotoPropia,
+} from './bancos/propio';
 import { descargarFoto } from './bancos/descargar';
+import { encuadreAutomatico } from './foco';
 import { SEPARACION_MINIMA, mejorCoincidencia, separacion, type Icono } from './iconos';
 import { MODELO as MODELO_ICONOS, generar as generarIcono } from './iconos/gemini';
 import { guardarIcono } from './iconos/guardar';
@@ -20,7 +29,7 @@ import { instruccionesDeRedaccion } from './instrucciones';
 import { leerIdentidad } from './identidad';
 import { asegurarEscrito, leerPieza, leerVoz } from './piezas';
 import { leerProyecto, listarPosts } from './posts';
-import type { TPost, TSlide } from './schema';
+import { ESTILOS_FOTO, type EstiloFoto, type TPost, type TSlide } from './schema';
 
 /**
  * lib/redactar.ts — el borrador que escribe el modelo.
@@ -68,7 +77,24 @@ const SlideRedactado = z.object({
    */
   busqueda: z.string(),
   descartar: z.array(z.string()),
+  /**
+   * El id de una foto del catálogo de la cuenta, o "". Solo lo llena una
+   * cuenta con fotos propias; ver lib/bancos/propio.ts. Si el id no existe o
+   * ya se usó, la foto se busca con `busqueda` como siempre.
+   */
+  fotoPropia: z.string(),
+  /**
+   * El estilo del slide en la plantilla `foto`; ver `ESTILOS_FOTO` en
+   * lib/schema.ts. Texto libre y no enum: las cuentas de otra plantilla no
+   * saben nada de estilos y el modelo lo llenaba con cualquier cosa, y un enum
+   * tiraba el carrusel entero por un campo que ahí ni se usa. `estiloDe` se
+   * queda con los válidos.
+   */
+  estilo: z.string(),
 });
+
+const estiloDe = (s: string): EstiloFoto | undefined =>
+  (ESTILOS_FOTO as readonly string[]).includes(s.trim()) ? (s.trim() as EstiloFoto) : undefined;
 
 const Redaccion = z.object({
   tema: z.string(),
@@ -144,10 +170,11 @@ export async function redactar(
   // plataforma y el último hashtag lleva la ciudad.
   const marca = await leerProyecto(proyecto);
   asegurarEscrito(proyecto, marca);
-  const [estructura, iconos, fotos] = await Promise.all([
+  const [estructura, iconos, fotos, catalogo] = await Promise.all([
     leerPieza(proyecto, 'estructura'),
     leerPieza(proyecto, 'iconos'),
     leerPieza(proyecto, 'fotos'),
+    leerCatalogo(proyecto),
   ]);
   const prompt = instruccionesDeRedaccion(
     tema,
@@ -156,6 +183,8 @@ export async function redactar(
       piezas: { estructura, iconos, fotos },
       paletas: Object.fromEntries(paletasDe(marca).map((p) => [p.clave, { cuando: p.cuando }])),
       paletaPorDefecto: paletaPorDefectoDe(marca),
+      todoFoto: marca.plantilla === 'foto',
+      ...(catalogo.length ? { fotosPropias: catalogoParaPrompt(catalogo, marca.fotosConRostro) } : {}),
     },
     opciones.editorial,
   );
@@ -218,7 +247,7 @@ export async function redactar(
     porQuePaleta = `${reparto.porque}. Cámbiala en el editor si no encaja.`;
   }
 
-  const post = aPost(redaccion, slug, await leerManifiesto());
+  const post = aPost(redaccion, slug, await leerManifiesto(), marca.plantilla === 'foto');
 
   /*
    * Lo de la hoja gana, siempre.
@@ -248,7 +277,7 @@ export async function redactar(
   }
   // Las dos en paralelo: son redes distintas y ninguna depende de la otra.
   await Promise.all([
-    rellenarFotos(proyecto, post, redaccion, slug, avisos, opciones.usadas ?? new Set()),
+    rellenarFotos(proyecto, post, redaccion, slug, avisos, opciones.usadas ?? new Set(), catalogo, marca),
     rellenarIconos(post, avisos, marca, inicio + PLAZO_DE_ICONOS),
   ]);
   return {
@@ -377,7 +406,14 @@ async function rellenarFotos(
   slug: string,
   avisos: string[],
   usadas: Set<string>,
+  catalogo: FotoPropia[],
+  marca: { plantilla: string; fotosConRostro?: boolean },
 ): Promise<void> {
+  const plantilla = marca.plantilla;
+  const propias = new Map(automaticas(catalogo, marca.fotosConRostro).map((f) => [f.id, f]));
+  // Sin las propias: si el modelo no eligió una del catálogo es porque ninguna
+  // muestra lo que el slide dice, y buscarlas por palabras traería justo esas
+  // —un parque de Brujas para «theme park»—.
   const banco = bancoDe(slug);
   if (!banco.disponible()) {
     avisos.push(`El banco de fotos no está configurado, así que van sin imagen.`);
@@ -394,6 +430,29 @@ async function rellenarFotos(
       if (!esPortada && !esContenido) return;
 
       const pedido = r.slides[i];
+
+      // La que eligió el modelo del catálogo de la cuenta, si existe y nadie
+      // la tiene ya. Con eso no hay búsqueda: la eligió quien escribió el slide.
+      const elegida = propias.get(pedido?.fotoPropia?.trim() ?? '');
+      if (elegida && !usadas.has(`${PROVEEDOR_PROPIO}:${elegida.id}`)) {
+        usadas.add(`${PROVEEDOR_PROPIO}:${elegida.id}`);
+        const { credito } = candidatoPropio(elegida);
+        if (elegida.personas === 'rostro') {
+          avisos.push(
+            `${slide.tipo === 'portada' ? 'La portada' : `El slide ${String(i).padStart(2, '0')}`} lleva una foto ` +
+              `donde se reconoce una cara (${elegida.id}): confirma que es de la cuenta o que hay permiso.`,
+          );
+        }
+        if (slide.tipo === 'portada') {
+          slide.foto = elegida.url;
+          slide.fotoCredito = credito!;
+        } else if (slide.tipo === 'contenido' && slide.visual.clase === 'foto') {
+          slide.visual.src = elegida.url;
+          slide.visual.credito = credito!;
+        }
+        return;
+      }
+
       const consulta = pedido?.busqueda?.trim() || pedido?.ideaImagen?.trim();
       const donde = esPortada ? 'la portada' : `el slide ${String(i).padStart(2, '0')}`;
       if (!consulta) {
@@ -403,7 +462,7 @@ async function rellenarFotos(
 
       // La caja donde va a caer decide dos cosas: qué orientación se le pide al
       // banco y cuánto recorte se tolera. Ver lib/bancos/encuadre.ts.
-      const caja = esPortada ? CAJA_PORTADA : CAJA_CONTENIDO;
+      const caja = cajaDe(slide.tipo, plantilla);
       const orientacion = caja.ancho >= caja.alto ? 'landscape' : 'portrait';
 
       try {
@@ -449,6 +508,14 @@ async function rellenarFotos(
       }
     }),
   );
+
+  // La portada sale ya encuadrada (lib/foco.ts). Si falla, queda como la
+  // recorta la plantilla, que es como salía antes.
+  const portada = post.slides.find((s) => s.tipo === 'portada');
+  if (portada?.tipo === 'portada' && portada.foto) {
+    const encuadre = await encuadreAutomatico(portada.foto, plantilla).catch(() => null);
+    if (encuadre) portada.overrides = { ...portada.overrides, ...encuadre };
+  }
 }
 
 /**
@@ -488,7 +555,12 @@ async function leerManifiesto(): Promise<Icono[]> {
   return crudo ? JSON.parse(crudo) : [];
 }
 
-function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
+/**
+ * `todoFoto`: la plantilla `foto`, donde cada slide de contenido es una foto a
+ * sangre. Ahí un "icono" o un "ninguno" del modelo no tendría dónde pintarse,
+ * así que se convierte en foto.
+ */
+function aPost(r: TRedaccion, slug: string, manifiesto: Icono[], todoFoto = false): TPost {
   const slides: TSlide[] = [];
 
   for (const bruto of r.slides) {
@@ -498,7 +570,7 @@ function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
     const s = { ...bruto, titulo: desescapar(bruto.titulo), frase: desescapar(bruto.frase) };
 
     if (s.tipo === 'portada') {
-      slides.push({ tipo: 'portada', titulo: s.titulo, pregunta: s.pregunta });
+      slides.push({ tipo: 'portada', titulo: s.titulo, pregunta: s.pregunta, ...(todoFoto && estiloDe(s.estilo) ? { estilo: estiloDe(s.estilo) } : {}) });
       continue;
     }
     if (s.tipo === 'cierre') {
@@ -523,7 +595,7 @@ function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
       // Ni la idea de imagen ni el ícono sugerido se dibujan: la primera es
       // para quien busque la foto, el segundo para el buscador de íconos.
       visual:
-        s.visual === 'foto'
+        s.visual === 'foto' || todoFoto
           ? { clase: 'foto', src: FOTO_PENDIENTE, ...(s.ideaImagen ? { ideaImagen: s.ideaImagen } : {}) }
           : s.visual === 'icono'
             ? {
@@ -543,6 +615,7 @@ function aPost(r: TRedaccion, slug: string, manifiesto: Icono[]): TPost {
               }
             : { clase: 'ninguno' },
       ...(s.fuente ? { fuente: s.fuente } : {}),
+      ...(todoFoto && estiloDe(s.estilo) ? { estilo: estiloDe(s.estilo) } : {}),
     });
   }
 
